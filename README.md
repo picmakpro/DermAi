@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧬 DermAI V2 - Diagnostic Dermatologique IA
 
-## Getting Started
+> Application révolutionnaire de diagnostic dermatologique utilisant GPT-4o Vision pour des analyses précises et des recommandations personnalisées.
 
-First, run the development server:
+## ✨ Fonctionnalités
 
-```bash
+- 🤖 **Analyse IA avancée** - GPT-4o Vision pour diagnostic précis
+- 📸 **Upload professionnel** - Interface drag & drop intuitive  
+- 🎯 **Diagnostic spécifique** - Conditions nommées précisément
+- 📊 **Scores détaillés** - 8 paramètres cutanés analysés
+- 🛍️ **Recommandations** - Produits et routine personnalisés
+- 📱 **Mobile-first** - Interface responsive optimisée
+
+## 🚀 Technologies
+
+- **Frontend**: Next.js 15, TypeScript, Tailwind CSS
+- **IA**: OpenAI GPT-4o Vision API
+- **Architecture**: App Router, composants modulaires
+- **Validation**: Validation d'images avancée
+- **Performance**: Optimisé pour mobile et desktop
+
+## 🛠️ Installation
+
+Cloner le repository
+git clone https://github.com/YOUR_USERNAME/dermai-v2.git
+cd dermai-v2
+
+Installer les dépendances
+npm install
+
+Configurer les variables d'environnement
+cp .env.example .env.local
+Ajouter votre clé OpenAI dans .env.local
+
+Lancer en développement
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔧 Configuration
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Variables d'environnement requises
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+OPENAI_API_KEY=sk-your-openai-key-here
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+NODE_ENV=development
 
-## Learn More
+## 📋 Roadmap
 
-To learn more about Next.js, take a look at the following resources:
+### ✅ Phase 1 - MVP (Complété)
+- [x] Architecture Next.js 15 + TypeScript
+- [x] Integration GPT-4o Vision
+- [x] Upload photos professionnel
+- [x] Prompt engineering optimisé
+- [x] Interface moderne
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🚧 Phase 2 - En cours
+- [ ] Formulaire contextuel dynamique
+- [ ] Page résultats avec scores
+- [ ] Recommandations produits
+- [ ] Chat support IA
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🔮 Phase 3 - À venir
+- [ ] Authentication utilisateur
+- [ ] Dashboard personnel
+- [ ] Historique analyses
+- [ ] Notifications push
+- [ ] Monétisation affiliate
 
-## Deploy on Vercel
+## 🎯 Objectifs Business
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Cible** : 10K€/mois de revenus
+- **Modèle** : Commissions d'affiliation produits
+- **Conversion** : 8-12% diagnostic → achat
+- **AOV** : 120-150€ par utilisateur
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+**DermAI V2** - Révolutionner le diagnostic dermatologique par l'IA 🚀
