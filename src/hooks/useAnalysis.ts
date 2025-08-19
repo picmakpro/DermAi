@@ -29,18 +29,8 @@ export function useAnalysis(): UseAnalysisReturn {
         setProgress(prev => Math.min(prev + Math.random() * 15, 85))
       }, 1000)
 
-      // Convertir les fichiers en base64 pour l'API
-      const photosForAPI = await Promise.all(
-        request.photos.map(async (photo) => ({
-          ...photo,
-          file: await convertFileToBase64(photo.file)
-        }))
-      )
-
-      const requestForAPI = {
-        ...request,
-        photos: photosForAPI
-      }
+      // Les photos sont déjà en base64 depuis le sessionStorage
+      const requestForAPI = request
 
       // Appel API au lieu du service direct
       const response = await fetch('/api/analyze', {
@@ -84,14 +74,4 @@ export function useAnalysis(): UseAnalysisReturn {
     analyze,
     reset
   }
-}
-
-// Helper function pour convertir File en base64
-async function convertFileToBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => resolve(reader.result as string)
-    reader.onerror = reject
-    reader.readAsDataURL(file)
-  })
 }

@@ -58,21 +58,10 @@ export interface SkinDiagnostic {
 }
 
 export interface ProductRecommendations {
-  routine: {
-    morning: RoutineStep[]
-    evening: RoutineStep[]
-    weekly: RoutineStep[]
-  }
-  products: {
-    essential: Product[]
-    bonus: Product[]
-    luxury: Product[]
-  }
-  budgetOptions: {
-    economical: ProductBundle
-    balanced: ProductBundle
-    premium: ProductBundle
-  }
+  immediate: string[]
+  routine: string[]
+  products: string[]
+  lifestyle: string[]
 }
 
 export interface Product {

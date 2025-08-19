@@ -14,27 +14,49 @@ export default function UploadPage() {
     setPhotos(newPhotos)
   }
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (photos.length === 0) {
       alert('Veuillez sélectionner au moins une photo')
       return
     }
 
-    // Stocker les photos dans sessionStorage pour la suite
-    const photosData = photos.map(photo => ({
-      id: photo.id,
-      preview: photo.preview,
-      type: photo.type,
-      quality: photo.quality,
-      fileName: photo.file.name,
-      size: photo.file.size
-    }))
-    
-    sessionStorage.setItem('dermAI_photos', JSON.stringify(photosData))
-    sessionStorage.setItem('dermAI_files', JSON.stringify(photos.map(p => p.file)))
-    
-    // Rediriger vers le formulaire
-    router.push('/questionnaire')
+    setIsUploading(true)
+
+    try {
+      // Convertir les fichiers en base64 pour le stockage
+      const photosWithBase64 = await Promise.all(
+        photos.map(async (photo) => {
+          const base64 = await convertFileToBase64(photo.file)
+          return {
+            id: photo.id,
+            file: base64, // Stocker directement le base64
+            preview: photo.preview,
+            type: photo.type,
+            quality: photo.quality
+          }
+        })
+      )
+      
+      sessionStorage.setItem('dermai_photos', JSON.stringify(photosWithBase64))
+      
+      // Rediriger vers le formulaire
+      router.push('/questionnaire')
+    } catch (error) {
+      console.error('Erreur lors de la conversion des photos:', error)
+      alert('Erreur lors du traitement des photos')
+    } finally {
+      setIsUploading(false)
+    }
+  }
+
+  // Helper function pour convertir File en base64
+  const convertFileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = reject
+      reader.readAsDataURL(file)
+    })
   }
 
   return (
@@ -93,9 +115,16 @@ export default function UploadPage() {
             <button
               onClick={handleContinue}
               disabled={photos.length === 0 || isUploading}
-              className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >
-              Continuer →
+              {isUploading ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  Préparation...
+                </>
+              ) : (
+                'Continuer →'
+              )}
             </button>
           </div>
         </div>

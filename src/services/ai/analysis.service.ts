@@ -14,18 +14,27 @@ export class AnalysisService {
       // Les images sont déjà en base64 depuis le client
       const imageContents = request.photos.map(photo => {
         // Extraire la partie base64 si elle contient le prefix data:
-        const base64Data = typeof photo.file === 'string' 
-          ? photo.file.includes('base64,') 
-            ? photo.file.split('base64,')[1]
-            : photo.file
-          : ''
+        let base64Data = ''
+        
+        if (typeof photo.file === 'string') {
+          if (photo.file.includes('base64,')) {
+            base64Data = photo.file.split('base64,')[1]
+          } else {
+            base64Data = photo.file
+          }
+        }
         
         return base64Data
-      })
+      }).filter(base64 => base64.length > 0)
 
       // Prompt principal optimisé
       const systemPrompt = this.buildSystemPrompt()
       const userPrompt = this.buildUserPrompt(request)
+
+      // Validation des images
+      if (imageContents.length === 0) {
+        throw new Error('Aucune image valide trouvée pour l\'analyse')
+      }
 
       console.log('Envoi à OpenAI:', {
         imagesCount: imageContents.length,
@@ -33,45 +42,63 @@ export class AnalysisService {
         userPromptLength: userPrompt.length
       })
 
-      // Appel GPT-4o Vision
-      const response = await openai.chat.completions.create({
-        model: ANALYSIS_MODEL,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          {
-            role: 'user',
-            content: [
-              { type: 'text', text: userPrompt },
-              ...imageContents.map(image => ({
-                type: 'image_url' as const,
-                image_url: {
-                  url: `data:image/jpeg;base64,${image}`,
-                  detail: 'high' as const
-                }
-              }))
-            ]
-          }
-        ],
-        max_tokens: 4000,
-        temperature: 0.3,
-      })
+      // Appel GPT-4o Vision avec timeout
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 120000) // 2 minutes timeout
 
-      console.log('Réponse OpenAI reçue:', {
-        usage: response.usage,
-        model: response.model
-      })
+      try {
+        const response = await openai.chat.completions.create({
+          model: ANALYSIS_MODEL,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            {
+              role: 'user',
+              content: [
+                { type: 'text', text: userPrompt },
+                ...imageContents.map(image => ({
+                  type: 'image_url' as const,
+                  image_url: {
+                    url: `data:image/jpeg;base64,${image}`,
+                    detail: 'high' as const
+                  }
+                }))
+              ]
+            }
+          ],
+          max_tokens: 4000,
+          temperature: 0.3,
+        }, {
+          signal: controller.signal
+        })
 
-      // Parser la réponse en JSON structuré
-      const analysisResult = this.parseAnalysisResponse(response.choices[0]?.message?.content)
-      
-      return {
-        id: this.generateId(),
-        userId: 'temp-user',
-        photos: request.photos,
-        scores: analysisResult.scores,
-        diagnostic: analysisResult.diagnostic,
-        recommendations: analysisResult.recommendations,
-        createdAt: new Date()
+        clearTimeout(timeoutId)
+
+        console.log('Réponse OpenAI reçue:', {
+          usage: response.usage,
+          model: response.model
+        })
+
+        // Parser la réponse en JSON structuré
+        const analysisResult = this.parseAnalysisResponse(response.choices[0]?.message?.content)
+        
+        return {
+          id: this.generateId(),
+          userId: 'temp-user',
+          photos: request.photos,
+          scores: analysisResult.scores,
+          diagnostic: analysisResult.diagnostic,
+          recommendations: analysisResult.recommendations,
+          createdAt: new Date()
+        }
+
+      } catch (apiError) {
+        clearTimeout(timeoutId)
+        
+        if (apiError instanceof Error && apiError.name === 'AbortError') {
+          throw new Error('Timeout: L\'analyse a pris trop de temps')
+        }
+        
+        throw apiError
       }
 
     } catch (error) {

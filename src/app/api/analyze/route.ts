@@ -12,7 +12,14 @@ export async function POST(request: NextRequest) {
     console.log('Body reçu:', {
       photosCount: body.photos?.length,
       userProfile: body.userProfile,
-      skinConcerns: body.skinConcerns
+      skinConcerns: body.skinConcerns,
+      currentRoutine: body.currentRoutine
+    })
+
+    console.log('Détails userProfile:', {
+      age: body.userProfile?.age,
+      gender: body.userProfile?.gender,
+      skinType: body.userProfile?.skinType
     })
 
     if (!body.photos || body.photos.length === 0) {

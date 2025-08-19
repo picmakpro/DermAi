@@ -91,7 +91,7 @@ export default function SkinQuestionnaire() {
 
   useEffect(() => {
     // Récupérer le nombre de photos
-    const photosData = sessionStorage.getItem('dermAI_photos')
+    const photosData = sessionStorage.getItem('dermai_photos')
     if (photosData) {
       const photos = JSON.parse(photosData)
       setPhotosCount(photos.length)
@@ -127,7 +127,7 @@ export default function SkinQuestionnaire() {
     }
 
     // Récupérer les photos du sessionStorage
-    const photosData = sessionStorage.getItem('dermAI_photos')
+    const photosData = sessionStorage.getItem('dermai_photos')
     if (!photosData) {
       alert('Erreur : photos non trouvées. Veuillez recommencer.')
       router.push('/upload')
@@ -143,7 +143,7 @@ export default function SkinQuestionnaire() {
       allergies: data.allergies
     }
 
-    sessionStorage.setItem('dermAI_questionnaire', JSON.stringify(completeData))
+    sessionStorage.setItem('dermai_questionnaire', JSON.stringify(completeData))
     
     // Rediriger vers l'analyse
     router.push('/analyze')

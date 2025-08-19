@@ -10,7 +10,7 @@ export default function QuestionnairePage() {
 
   useEffect(() => {
     // Vérifier que les photos sont disponibles
-    const photosData = sessionStorage.getItem('dermAI_photos')
+    const photosData = sessionStorage.getItem('dermai_photos')
     if (!photosData) {
       // Rediriger vers l'upload si pas de photos
       router.push('/upload')
