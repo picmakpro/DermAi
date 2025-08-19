@@ -210,7 +210,7 @@ export default function AnalyzePage() {
             >
               Notre intelligence artificielle examine vos photos avec une 
               <strong className="text-purple-600"> précision dermatologique</strong>
-            </p>
+            </motion.p>
           </div>
 
           {/* Contenu principal */}
@@ -379,7 +379,7 @@ export default function AnalyzePage() {
                 </div>
               </div>
             )}
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>
