@@ -5,8 +5,8 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json() as {
       messages: { role: 'user' | 'assistant' | 'system', content: string }[]
-      analysis: any
-      questionnaire?: any
+      analysis: Record<string, unknown>
+      questionnaire?: Record<string, unknown>
     }
 
     if (!Array.isArray(body.messages) || body.messages.length === 0) {
@@ -15,31 +15,42 @@ export async function POST(request: NextRequest) {
 
     const openai = createOpenAIClient()
 
-    const systemPrompt = `Tu es l'assistant Derma AI.
+    const systemPrompt = `Tu es l'assistant DermAI (Derma AI Vision 3.0).
 Objectif: répondre UNIQUEMENT aux questions liées au diagnostic, aux scores et aux recommandations affichées à l'utilisateur.
-Comportement:
-- Style clair, empathique, professionnel.
-- Pas de jargon technique inutile.
-- Si la question est hors sujet (ex: actualités, sujets personnels, technique), réponds poliment que tu es dédié au diagnostic en cours.
-- Si une recommandation comporte un ingrédient listé en allergie, propose une alternative.
-- N'invente pas des données absentes du résultat fourni.
-`
+Style: clair, empathique, professionnel. Pas de jargon. Si hors sujet, expliquer poliment que tu es dédié au diagnostic en cours.`
 
-    const contextPrompt = `CONTEXTE ANALYSE (JSON):\n${JSON.stringify({ analysis: body.analysis, questionnaire: body.questionnaire ?? null })}`
+    const essentialContext = {
+      diagnostic: body.analysis?.diagnostic || null,
+      scores: body.analysis?.scores || null,
+      recommendations: {
+        routine: body.analysis?.recommendations?.routine || null,
+        products: (body.analysis as any)?.recommendations?.products?.slice?.(0, 3) || null
+      },
+      userProfile: {
+        age: (body.questionnaire as any)?.userProfile?.age || null,
+        gender: (body.questionnaire as any)?.userProfile?.gender || null,
+        skinType: (body.questionnaire as any)?.userProfile?.skinType || null
+      },
+      allergies: (body.questionnaire as any)?.allergies?.ingredients || null
+    }
+    
+    const contextPrompt = `CONTEXTE ANALYSE:\n${JSON.stringify(essentialContext, null, 2)}`
 
+    const recentMessages = body.messages.slice(-6)
+    
     const response = await openai.chat.completions.create({
       model: CHAT_MODEL,
       temperature: 0.2,
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'system', content: contextPrompt },
-        ...body.messages,
+        ...recentMessages,
       ],
-      max_tokens: 600,
+      max_tokens: 400,
     })
 
-    const text = response.choices[0]?.message?.content ?? 'Désolé, je n’ai pas pu formuler une réponse.'
-    return NextResponse.json({ reply: text })
+    const text = response.choices?.[0]?.message?.content?.trim()
+    return NextResponse.json({ reply: text || 'Je n’ai pas pu générer de réponse pour le moment.' })
 
   } catch (error) {
     console.error('Erreur API /chat:', error)

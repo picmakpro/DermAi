@@ -455,29 +455,30 @@ export default function ResultsPage() {
       </div>
 
              {/* Floating Chat Bubble */}
-       <motion.button
-         initial={{ scale: 0 }}
-         animate={{ scale: 1 }}
-         transition={{ delay: 1.5, type: "spring" }}
-         onClick={() => setIsChatOpen(true)}
-         className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 z-50 flex items-center justify-center group"
-       >
-         <MessageCircle className="w-7 h-7" />
-         <span className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full animate-pulse flex items-center justify-center">
-           <span className="text-white text-xs font-bold">!</span>
-         </span>
-         
-         {/* Tooltip */}
-         <div className="absolute bottom-full right-0 mb-3 hidden group-hover:block">
-           <div className="bg-gray-900 text-white text-sm rounded-lg px-4 py-3 whitespace-nowrap shadow-xl">
-             <div className="font-semibold">💬 Besoin d'aide ?</div>
-             <div className="text-xs text-gray-300 mt-1">Posez vos questions à votre conseiller IA</div>
-             <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+       {!isChatOpen && (
+         <motion.button
+           initial={{ scale: 0 }}
+           animate={{ scale: 1 }}
+           transition={{ delay: 1.5, type: "spring" }}
+           onClick={() => setIsChatOpen(true)}
+           className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 z-50 flex items-center justify-center group"
+         >
+           <MessageCircle className="w-7 h-7" />
+           <span className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full animate-pulse flex items-center justify-center">
+             <span className="text-white text-xs font-bold">!</span>
+           </span>
+           {/* Tooltip */}
+           <div className="absolute bottom-full right-0 mb-3 hidden group-hover:block">
+             <div className="bg-gray-900 text-white text-sm rounded-lg px-4 py-3 whitespace-nowrap shadow-xl">
+               <div className="font-semibold">💬 Besoin d'aide ?</div>
+               <div className="text-xs text-gray-300 mt-1">Posez vos questions à votre conseiller IA</div>
+               <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+             </div>
            </div>
-         </div>
-       </motion.button>
-
-       {/* Chat Widget */}
+         </motion.button>
+       )}
+ 
+        {/* Chat Widget */}
        {isChatOpen && (
          <ChatWidget analysis={analysis} onClose={() => setIsChatOpen(false)} />
        )}

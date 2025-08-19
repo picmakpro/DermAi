@@ -23,7 +23,7 @@ export default function AnalyzePage() {
   const analysisSteps = [
     { id: 'load', label: 'Chargement des données', icon: Loader2 },
     { id: 'prepare', label: 'Préparation des images', icon: Camera },
-    { id: 'analyze', label: 'Analyse IA GPT-4o Vision', icon: Brain },
+    { id: 'analyze', label: 'Analyse IA DermAI Vision 3.0', icon: Brain },
     { id: 'complete', label: 'Analyse terminée', icon: CheckCircle2 }
   ]
 
@@ -345,7 +345,7 @@ export default function AnalyzePage() {
                     </div>
                     <div>
                       <span className="text-gray-600">Modèle IA :</span>
-                      <span className="font-medium ml-2">GPT-4o Vision</span>
+                      <span className="font-medium ml-2">DermAI Vision 3.0</span>
                     </div>
                     <div>
                       <span className="text-gray-600">Type de peau :</span>

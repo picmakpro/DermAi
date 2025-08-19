@@ -211,7 +211,7 @@ export default function HomePage() {
               {
                 icon: <Zap className="w-8 h-8 text-yellow-500" />,
                 title: "Analyse instantanée",
-                description: "Résultats précis en moins de 2 minutes grâce à l'IA GPT-4o Vision"
+                description: "Résultats précis en moins de 2 minutes grâce à l'IA DermAI Vision 3.0"
               },
               {
                 icon: <Shield className="w-8 h-8 text-green-500" />,
