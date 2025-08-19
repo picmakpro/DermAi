@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { useAnalysis } from '@/hooks/useAnalysis'
 import type { AnalyzeRequest, PhotoUpload } from '@/types'
+import { getPhotoDataUrl } from '@/utils/storage/photoStore'
 import { AlertCircle, Brain, Camera, CheckCircle2, Loader2 } from 'lucide-react'
 
 interface SessionData {
@@ -36,11 +37,22 @@ export default function AnalyzePage() {
     }
 
     try {
-      const photosData = JSON.parse(photos)
+      const photosData = JSON.parse(photos) as Array<{ id: string; preview: string; type: PhotoUpload['type']; quality: PhotoUpload['quality'] }>
       const questionnaireData = JSON.parse(questionnaire)
 
+      // Reconstituer les photos avec dataURL depuis IndexedDB (pas de quota)
+      const rebuiltPhotos: PhotoUpload[] = await Promise.all(
+        photosData.map(async (p) => ({
+          id: p.id,
+          file: (await getPhotoDataUrl(p.id)) || '',
+          preview: p.preview,
+          type: p.type,
+          quality: p.quality,
+        }))
+      )
+
       setSessionData({
-        photos: photosData,
+        photos: rebuiltPhotos,
         questionnaire: questionnaireData
       })
     } catch (error) {

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import PhotoUploadZone from '@/components/upload/PhotoUploadZone'
 import type { PhotoUpload } from '@/types'
+import { savePhotoDataUrl } from '@/utils/storage/photoStore'
 
 export default function UploadPage() {
   const [photos, setPhotos] = useState<PhotoUpload[]>([])
@@ -23,21 +24,15 @@ export default function UploadPage() {
     setIsUploading(true)
 
     try {
-      // Convertir les fichiers en base64 pour le stockage
-      const photosWithBase64 = await Promise.all(
-        photos.map(async (photo) => {
-          const base64 = await convertFileToBase64(photo.file)
-          return {
-            id: photo.id,
-            file: base64, // Stocker directement le base64
-            preview: photo.preview,
-            type: photo.type,
-            quality: photo.quality
-          }
-        })
-      )
-      
-      sessionStorage.setItem('dermai_photos', JSON.stringify(photosWithBase64))
+      // Stocker les dataURL en IndexedDB pour éviter le quota sessionStorage
+      const meta = [] as Array<{ id: string; type: PhotoUpload['type']; quality: PhotoUpload['quality']; preview: string }>
+      for (const photo of photos) {
+        const dataUrl = await convertFileToBase64(photo.file)
+        await savePhotoDataUrl(photo.id, dataUrl)
+        meta.push({ id: photo.id, type: photo.type, quality: photo.quality, preview: photo.preview })
+      }
+      // Ne mettre que les métadonnées légères dans sessionStorage
+      sessionStorage.setItem('dermai_photos', JSON.stringify(meta))
       
       // Rediriger vers le formulaire
       router.push('/questionnaire')
