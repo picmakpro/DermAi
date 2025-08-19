@@ -116,14 +116,14 @@ export class AnalysisService {
    */
   private static computeWeightedOverall(scores: any): number {
     const weights: Record<string, number> = {
-      hydration: 0.15,
-      wrinkles: 0.20,
-      firmness: 0.15,
-      radiance: 0.10,
-      pores: 0.15,
-      spots: 0.10,
-      darkCircles: 0.05,
-      skinAge: 0.10,
+      hydration: 0.15,   // Hydratation
+      wrinkles: 0.20,    // Rides
+      firmness: 0.12,    // Fermeté
+      radiance: 0.12,    // Éclat
+      pores: 0.15,       // Pores
+      spots: 0.08,       // Taches
+      darkCircles: 0.08, // Cernes
+      skinAge: 0.10,     // Âge de la peau
     }
 
     let weightedSum = 0
