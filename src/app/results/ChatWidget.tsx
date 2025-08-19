@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 
 export default function ChatWidget({ analysis, onClose }: { analysis: any; onClose: () => void }) {
   const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([
-    { role: 'assistant', content: 'Bonjour ! Je suis l’assistant Derma AI. Posez vos questions sur votre diagnostic et vos recommandations.' },
+    { role: 'assistant', content: 'Bonjour ! Je suis votre assistant DermAI. Posez vos questions sur votre diagnostic et vos recommandations.' },
   ])
   const [input, setInput] = useState('')
   const [isSending, setIsSending] = useState(false)

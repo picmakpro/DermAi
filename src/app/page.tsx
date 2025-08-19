@@ -75,7 +75,7 @@ export default function HomePage() {
             <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
               Obtenez un diagnostic précis de votre peau en quelques minutes. 
               <strong className="text-gray-800"> Recommandations personnalisées</strong> et 
-              <strong className="text-gray-800"> routine sur-mesure</strong> grâce à l'IA avancée.
+              <strong className="text-gray-800"> routine sur-mesure</strong> grâce à l&apos;IA DermAI.
             </p>
           </motion.div>
 
@@ -151,26 +151,26 @@ export default function HomePage() {
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                step: "01",
-                title: "Prenez vos photos",
-                description: "Capturez votre visage sous différents angles avec votre smartphone. Nos guides vous aident à prendre les meilleures photos.",
-                icon: <div className="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center text-white font-bold">📸</div>
-              },
-              {
-                step: "02", 
-                title: "Répondez au questionnaire",
-                description: "Quelques questions simples sur votre routine actuelle, vos préoccupations et votre type de peau.",
-                icon: <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">📋</div>
-              },
-              {
-                step: "03",
-                title: "Recevez votre analyse",
-                description: "L'IA analyse vos photos et vous fournit un diagnostic précis avec des recommandations personnalisées.",
-                icon: <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold">✨</div>
-              }
-            ].map((item, index) => (
+                          {[
+                {
+                  step: "01",
+                  title: "Prenez vos photos",
+                  description: "Capturez votre visage sous différents angles avec votre smartphone. Nos guides vous aident à prendre les meilleures photos.",
+                  icon: <div className="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center text-white font-bold">📸</div>
+                },
+                {
+                  step: "02", 
+                  title: "Répondez au questionnaire",
+                  description: "Quelques questions simples sur votre routine actuelle, vos préoccupations et votre type de peau.",
+                  icon: <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">📋</div>
+                },
+                {
+                  step: "03",
+                  title: "Recevez votre analyse",
+                  description: "DermAI analyse vos photos et vous fournit un diagnostic précis avec des recommandations personnalisées.",
+                  icon: <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold">✨</div>
+                }
+              ].map((item, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -207,28 +207,28 @@ export default function HomePage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                icon: <Zap className="w-8 h-8 text-yellow-500" />,
-                title: "Analyse instantanée",
-                description: "Résultats précis en moins de 2 minutes grâce à l'IA GPT-4o Vision"
-              },
-              {
-                icon: <Shield className="w-8 h-8 text-green-500" />,
-                title: "Précision experte", 
-                description: "Diagnostic spécifique et personnalisé, pas de réponses génériques"
-              },
-              {
-                icon: <Heart className="w-8 h-8 text-red-500" />,
-                title: "Recommandations sur-mesure",
-                description: "Produits et routine adaptés à votre type de peau et budget"
-              },
-              {
-                icon: <Users className="w-8 h-8 text-blue-500" />,
-                title: "Accompagnement continu",
-                description: "Chat avec l'IA pour toutes vos questions après le diagnostic"
-              }
-            ].map((feature, index) => (
+                          {[
+                {
+                  icon: <Zap className="w-8 h-8 text-yellow-500" />,
+                  title: "Analyse instantanée",
+                  description: "Résultats précis en moins de 2 minutes grâce à l&apos;IA DermAI"
+                },
+                {
+                  icon: <Shield className="w-8 h-8 text-green-500" />,
+                  title: "Précision experte", 
+                  description: "Diagnostic spécifique et personnalisé, pas de réponses génériques"
+                },
+                {
+                  icon: <Heart className="w-8 h-8 text-red-500" />,
+                  title: "Recommandations sur-mesure",
+                  description: "Produits et routine adaptés à votre type de peau et budget"
+                },
+                {
+                  icon: <Users className="w-8 h-8 text-blue-500" />,
+                  title: "Accompagnement continu",
+                  description: "Assistance DermAI pour toutes vos questions après le diagnostic"
+                }
+              ].map((feature, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}

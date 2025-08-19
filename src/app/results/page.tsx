@@ -423,9 +423,9 @@ export default function ResultsPage() {
         >
           <div className="max-w-2xl mx-auto">
             <MessageCircle className="w-12 h-12 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold mb-2">Discussion avec votre conseiller IA</h2>
+            <h2 className="text-2xl font-bold mb-2">Discussion avec votre assistant DermAI</h2>
             <p className="text-lg opacity-90 mb-6">
-              Posez vos questions sur votre analyse !
+              Posez vos questions sur votre diagnostic !
             </p>
             <p className="text-sm opacity-75 mb-4">
               Ex: "Comment appliquer ces produits ?" ou "Puis-je utiliser du rétinol ?"
@@ -471,7 +471,7 @@ export default function ResultsPage() {
          <div className="absolute bottom-full right-0 mb-3 hidden group-hover:block">
            <div className="bg-gray-900 text-white text-sm rounded-lg px-4 py-3 whitespace-nowrap shadow-xl">
              <div className="font-semibold">💬 Besoin d'aide ?</div>
-             <div className="text-xs text-gray-300 mt-1">Posez vos questions à votre conseiller IA</div>
+             <div className="text-xs text-gray-300 mt-1">Posez vos questions à votre assistant DermAI</div>
              <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
            </div>
          </div>

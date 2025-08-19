@@ -26,8 +26,8 @@ export default function AnalyzePage() {
   const analysisSteps = [
     { id: 'load', label: 'Chargement des données', icon: Loader2 },
     { id: 'prepare', label: 'Préparation des images', icon: Camera },
-    { id: 'analyze', label: 'Analyse IA GPT-4o Vision', icon: Brain },
-    { id: 'complete', label: 'Analyse terminée', icon: CheckCircle2 }
+    { id: 'analyze', label: 'Analyse par DermAI', icon: Brain },
+    { id: 'complete', label: 'Diagnostic prêt', icon: CheckCircle2 }
   ]
 
   useEffect(() => {
@@ -211,7 +211,7 @@ export default function AnalyzePage() {
               transition={{ delay: 0.4 }}
               className="text-xl text-gray-600 leading-relaxed"
             >
-              Notre intelligence artificielle examine vos photos avec une 
+              DermAI examine vos photos avec une 
               <strong className="text-purple-600"> précision dermatologique</strong>
             </motion.p>
           </div>
@@ -347,8 +347,8 @@ export default function AnalyzePage() {
                       </span>
                     </div>
                     <div>
-                      <span className="text-gray-600">Modèle IA :</span>
-                      <span className="font-medium ml-2">GPT-4o Vision</span>
+                      <span className="text-gray-600">Technologie :</span>
+                      <span className="font-medium ml-2">DermAI Vision</span>
                     </div>
                     <div>
                       <span className="text-gray-600">Type de peau :</span>

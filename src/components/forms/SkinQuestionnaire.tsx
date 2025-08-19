@@ -372,9 +372,9 @@ export default function SkinQuestionnaire() {
         <button
           onClick={handleSubmit}
           disabled={!isFormComplete()}
-          className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-        >
-          {isFormComplete() ? '🚀 Lancer l\'analyse IA' : '⏳ Compléter le formulaire'}
+                            className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                >
+                  {isFormComplete() ? '🚀 Lancer l\'analyse DermAI' : '⏳ Compléter le formulaire'}
         </button>
       </div>
     </div>
@@ -695,7 +695,7 @@ export default function SkinQuestionnaire() {
                 >
                   <span>
                     {currentStep === totalSteps ? (
-                      isFormComplete() ? '🚀 Lancer l\'analyse' : '⏳ Compléter le formulaire'
+                      isFormComplete() ? '🚀 Lancer l\'analyse DermAI' : '⏳ Compléter le formulaire'
                     ) : 'Suivant'}
                   </span>
                   {currentStep !== totalSteps && (
@@ -720,7 +720,7 @@ export default function SkinQuestionnaire() {
                   disabled={!isFormComplete()}
                   className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                 >
-                  {isFormComplete() ? '🚀 Lancer l\'analyse IA' : '⏳ Compléter le formulaire'}
+                  {isFormComplete() ? '🚀 Lancer l\'analyse DermAI' : '⏳ Compléter le formulaire'}
                 </button>
               </div>
             </div>

@@ -128,7 +128,7 @@ export default function UploadPage() {
                 transition={{ delay: 0.4 }}
                 className="text-xl opacity-90 leading-relaxed"
               >
-                Prenez quelques photos de votre visage pour que notre IA puisse analyser 
+                Prenez quelques photos de votre visage pour que DermAI puisse analyser 
                 votre peau avec une <strong>précision dermatologique</strong>
               </motion.p>
             </div>
