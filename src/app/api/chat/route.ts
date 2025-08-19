@@ -1,13 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createOpenAIClient, CHAT_MODEL } from '@/lib/openai'
+import type { SkinAnalysis, AnalyzeRequest } from '@/types'
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json() as {
+    interface ChatRequestBody {
       messages: { role: 'user' | 'assistant' | 'system', content: string }[]
-      analysis: any
-      questionnaire?: any
+      analysis: SkinAnalysis
+      questionnaire?: AnalyzeRequest
     }
+    
+    const body = await request.json() as ChatRequestBody
 
     if (!Array.isArray(body.messages) || body.messages.length === 0) {
       return NextResponse.json({ error: 'Messages requis' }, { status: 400 })

@@ -1,3 +1,5 @@
+import type { SkinAnalysis } from '@/types'
+
 const DB_NAME = 'dermai-db'
 const DB_VERSION = 2 // align with photoStore to ensure upgrade
 const STORE = 'analysis'
@@ -29,7 +31,7 @@ export async function saveAnalysis(id: string, data: unknown): Promise<void> {
   })
 }
 
-export async function getAnalysis(id: string): Promise<any | null> {
+export async function getAnalysis(id: string): Promise<SkinAnalysis | null> {
   const db = await openDB()
   return await new Promise((resolve, reject) => {
     const tx = db.transaction(STORE, 'readonly')

@@ -108,7 +108,7 @@ export default function SkinQuestionnaire() {
     }
   }, [])
 
-  const updateData = (section: keyof QuestionnaireData, updates: any) => {
+  const updateData = (section: keyof QuestionnaireData, updates: Partial<QuestionnaireData[keyof QuestionnaireData]>) => {
     setData(prev => ({
       ...prev,
       [section]: { ...prev[section], ...updates }

@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-export default function ChatWidget({ analysis, onClose }: { analysis: any; onClose: () => void }) {
+import type { SkinAnalysis } from '@/types'
+
+export default function ChatWidget({ analysis, onClose }: { analysis: SkinAnalysis; onClose: () => void }) {
   const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([
     { role: 'assistant', content: 'Bonjour ! Je suis votre assistant DermAI. Posez vos questions sur votre diagnostic et vos recommandations.' },
   ])

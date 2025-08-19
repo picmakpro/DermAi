@@ -59,17 +59,37 @@ export interface SkinDiagnostic {
 
 export interface ProductRecommendations {
   immediate: string[]
-  routine: string[]
+  routine: string[] | AdvancedRoutine // Support ancien + nouveau format
   products: string[]
   lifestyle: string[]
   // Optionnel: données enrichies pour l'UI produit
   productsDetailed?: RecommendedProductCard[]
-  // Optionnel: routine structurée
+  // Optionnel: routine structurée (obsolète, remplacé par AdvancedRoutine)
   routineBreakdown?: {
     morning: string[]
     evening: string[]
     weekly: string[]
   }
+}
+
+// Import du nouveau système de routine
+export interface AdvancedRoutine {
+  immediate: AdvancedRoutineStep[]
+  adaptation: AdvancedRoutineStep[]
+  maintenance: AdvancedRoutineStep[]
+}
+
+export interface AdvancedRoutineStep {
+  title: string
+  description: string
+  frequency: 'daily' | 'weekly' | 'monthly' | 'as-needed' | 'progressive'
+  timeOfDay: 'morning' | 'evening' | 'both'
+  frequencyDetails?: string
+  phase: 'immediate' | 'adaptation' | 'maintenance'
+  startAfterDays?: number
+  category: 'cleansing' | 'treatment' | 'hydration' | 'protection' | 'exfoliation'
+  productSuggestion?: string
+  applicationTips: string[]
 }
 
 export interface RecommendedProductCard {

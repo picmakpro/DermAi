@@ -50,7 +50,7 @@ export default function ProductCard({
         {/* Category badge */}
         <div className="flex items-center justify-between">
           <span className="text-xs bg-gradient-to-r from-pink-100 to-purple-100 text-pink-700 px-3 py-1.5 rounded-full font-semibold">
-            ✨ Recommandé par l'IA
+            ✨ Recommandé par l&apos;IA
           </span>
           <div className="flex items-center space-x-2">
             {/* Why this product tooltip */}

@@ -26,7 +26,9 @@ export const validateImage = (file: File): { valid: boolean; error?: string } =>
   })
 }
 
-export const validateUserProfile = (profile: any): { valid: boolean; errors: string[] } => {
+import type { UserProfile } from '@/types/api'
+
+export const validateUserProfile = (profile: UserProfile): { valid: boolean; errors: string[] } => {
   const errors: string[] = []
 
   if (!profile.age || profile.age < 13 || profile.age > 100) {

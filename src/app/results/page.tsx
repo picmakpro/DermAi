@@ -28,6 +28,7 @@ import { getAnalysis } from '@/utils/storage/analysisStore'
 import ChatWidget from './ChatWidget'
 import ScoreCircle from './components/ScoreCircle'
 import ProductCard from './components/ProductCard'
+import AdvancedRoutineDisplay from '@/components/routine/AdvancedRoutineDisplay'
 
 const scoreIcons = {
   hydration: <Droplets className="w-6 h-6" />,
@@ -51,35 +52,11 @@ const scoreLabels: Record<keyof Omit<SkinScores, 'overall'>, string> = {
   skinAge: 'Âge de la peau',
 }
 
-// Mock products data - remplacer par des vraies données
-const mockProducts = [
-  {
-    name: "Gel Nettoyant Moussant",
-    brand: "CeraVe",
-    price: 12.99,
-    originalPrice: 15.99,
-    imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop",
-    discount: 19,
-    frequency: "Matin et soir",
-    benefits: ["Élimine l'excès de sébum", "Respecte la barrière cutanée"],
-    instructions: "Masser 30 secondes sur peau humide. Rincer à l'eau tiède, jamais chaude",
-    whyThisProduct: "Élimine l'excès de sébum sans dessécher",
-    affiliateLink: "https://example.com/cerave-gel"
-  },
-  {
-    name: "Sérum Niacinamide 10%",
-    brand: "The Ordinary",
-    price: 7.20,
-    originalPrice: 8.90,
-    imageUrl: "https://images.unsplash.com/photo-1570194065650-d99fb4bedf0a?w=400&h=400&fit=crop",
-    discount: 19,
-    frequency: "Soir uniquement", 
-    benefits: ["Régule le sébum", "Minimise les pores"],
-    instructions: "Appliquer 2-3 gouttes sur peau propre le soir",
-    whyThisProduct: "Régule efficacement la production de sébum",
-    affiliateLink: "https://example.com/ordinary-niacinamide"
-  }
-]
+// Données de produits recommandés - à remplacer par une vraie base de données
+const getProductRecommendations = (analysis: SkinAnalysis) => {
+  // Future: récupérer les vrais produits selon l'analyse
+  return analysis.recommendations?.productsDetailed || []
+}
 
 export default function ResultsPage() {
   const router = useRouter()
@@ -220,23 +197,14 @@ export default function ResultsPage() {
               </div>
 
               {/* Skin age */}
-              {skinAgeYears && userAge && (
-                <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6">
-                  <div className="flex items-center space-x-3 mb-3">
+              {skinAgeYears && (
+                <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6 text-center">
+                  <div className="flex items-center justify-center space-x-3 mb-3">
                     <TrendingUp className="w-6 h-6" />
-                    <span className="font-semibold">Estimation Âge de Peau</span>
+                    <span className="font-semibold">Âge de peau estimé</span>
                   </div>
-                  <div className="flex items-center space-x-4">
-                    <div className="text-center">
-                      <div className="text-sm opacity-90">Âge réel</div>
-                      <div className="text-lg font-bold">{userAge} ans</div>
-                    </div>
-                    <ChevronRight className="w-5 h-5" />
-                    <div className="text-center">
-                      <div className="text-sm opacity-90">Âge de peau</div>
-                      <div className="text-2xl font-bold text-purple-200">{skinAgeYears} ans</div>
-                    </div>
-                  </div>
+                  <div className="text-3xl font-bold text-purple-200">{skinAgeYears} ans</div>
+                  <div className="text-xs opacity-80 mt-1">Estimation basée sur votre analyse DermAI</div>
                 </div>
               )}
 
@@ -318,62 +286,67 @@ export default function ResultsPage() {
            </div>
          </motion.div>
 
-         {/* Routine Section */}
-         <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ delay: 0.3 }}
-           className="bg-white rounded-3xl shadow-xl p-8"
-         >
-           <div className="flex items-center space-x-3 mb-6">
-             <Calendar className="w-6 h-6 text-purple-500" />
-             <h2 className="text-2xl font-bold text-gray-900">Routine Personnalisée</h2>
-           </div>
-           
-           <div className="grid md:grid-cols-2 gap-6">
-             {/* Morning routine */}
-             <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-6 border border-orange-100">
-               <div className="flex items-center space-x-3 mb-4">
-                 <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-                   <span className="text-white text-sm">☀️</span>
-                 </div>
-                 <h3 className="text-lg font-semibold text-gray-900">ROUTINE MATIN</h3>
-               </div>
-               
-               <div className="space-y-3">
-                 {analysis.recommendations.routine.slice(0, 3).map((step, index) => (
-                   <div key={index} className="flex items-start space-x-3">
-                     <div className="w-6 h-6 bg-orange-200 text-orange-800 rounded-full flex items-center justify-center text-sm font-bold">
-                       {index + 1}
-                     </div>
-                     <p className="text-gray-800 text-sm">{step}</p>
-                   </div>
-                 ))}
-               </div>
-             </div>
+                 {/* Routine Section */}
+        {analysis.recommendations.routine && typeof analysis.recommendations.routine === 'object' && analysis.recommendations.routine.immediate ? (
+          <AdvancedRoutineDisplay routine={analysis.recommendations.routine} />
+        ) : (
+          // Fallback pour l'ancien format
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-white rounded-3xl shadow-xl p-8"
+          >
+            <div className="flex items-center space-x-3 mb-6">
+              <Calendar className="w-6 h-6 text-purple-500" />
+              <h2 className="text-2xl font-bold text-gray-900">Routine Personnalisée</h2>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Morning routine */}
+              <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-6 border border-orange-100">
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm">☀️</span>
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900">ROUTINE MATIN</h3>
+                </div>
+                
+                <div className="space-y-3">
+                  {Array.isArray(analysis.recommendations.routine) && analysis.recommendations.routine.slice(0, 3).map((step, index) => (
+                    <div key={index} className="flex items-start space-x-3">
+                      <div className="w-6 h-6 bg-orange-200 text-orange-800 rounded-full flex items-center justify-center text-sm font-bold">
+                        {index + 1}
+                      </div>
+                      <p className="text-gray-800 text-sm">{step}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-             {/* Evening routine */}
-             <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-6 border border-indigo-100">
-               <div className="flex items-center space-x-3 mb-4">
-                 <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center">
-                   <span className="text-white text-sm">🌙</span>
-                 </div>
-                 <h3 className="text-lg font-semibold text-gray-900">ROUTINE SOIR</h3>
-               </div>
-               
-               <div className="space-y-3">
-                 {analysis.recommendations.routine.slice(3, 6).map((step, index) => (
-                   <div key={index} className="flex items-start space-x-3">
-                     <div className="w-6 h-6 bg-indigo-200 text-indigo-800 rounded-full flex items-center justify-center text-sm font-bold">
-                       {index + 1}
-                     </div>
-                     <p className="text-gray-800 text-sm">{step}</p>
-                   </div>
-                 ))}
-               </div>
-             </div>
-           </div>
-         </motion.div>
+              {/* Evening routine */}
+              <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-6 border border-indigo-100">
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm">🌙</span>
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900">ROUTINE SOIR</h3>
+                </div>
+                
+                <div className="space-y-3">
+                  {Array.isArray(analysis.recommendations.routine) && analysis.recommendations.routine.slice(3, 6).map((step, index) => (
+                    <div key={index} className="flex items-start space-x-3">
+                      <div className="w-6 h-6 bg-indigo-200 text-indigo-800 rounded-full flex items-center justify-center text-sm font-bold">
+                        {index + 1}
+                      </div>
+                      <p className="text-gray-800 text-sm">{step}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
 
          {/* Products Section */}
          <motion.div
@@ -408,9 +381,16 @@ export default function ResultsPage() {
            </div>
 
            <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory">
-             {mockProducts.map((product, index) => (
-               <ProductCard key={index} {...product} />
-             ))}
+             {getProductRecommendations(analysis).length > 0 ? (
+               getProductRecommendations(analysis).map((product, index) => (
+                 <ProductCard key={index} {...product} />
+               ))
+             ) : (
+               <div className="text-center py-8 text-gray-500">
+                 <p>Les recommandations de produits spécifiques arriveront bientôt.</p>
+                 <p className="text-sm mt-2">Consultez vos recommandations générales ci-dessus.</p>
+               </div>
+             )}
            </div>
          </motion.div>
 

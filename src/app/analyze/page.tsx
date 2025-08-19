@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { useAnalysis } from '@/hooks/useAnalysis'
@@ -73,7 +73,7 @@ export default function AnalyzePage() {
     if (sessionData && !isAnalyzing && !analysis && !error) {
       startAnalysis()
     }
-  }, [sessionData])
+  }, [sessionData, isAnalyzing, analysis, error, startAnalysis])
 
   useEffect(() => {
     // Rediriger vers les résultats quand l'analyse est terminée
@@ -104,7 +104,7 @@ export default function AnalyzePage() {
     }
   }, [progress, isAnalyzing])
 
-  const startAnalysis = async () => {
+  const startAnalysis = useCallback(async () => {
     if (!sessionData) return
 
     const { photos, questionnaire } = sessionData
@@ -123,7 +123,7 @@ export default function AnalyzePage() {
     console.log('Photos détaillées:', analyzeRequest.photos.map(p => ({ id: p.id, type: p.type, hasFile: !!p.file })))
     
     await analyze(analyzeRequest)
-  }
+  }, [sessionData, analyze])
 
   const handleRetry = () => {
     reset()

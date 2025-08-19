@@ -114,7 +114,7 @@ export class AnalysisService {
    * Calcule un score global pondéré à partir des sous-scores
    * Pondérations choisies pour être parlantes grand public (somme = 1)
    */
-  private static computeWeightedOverall(scores: any): number {
+  private static computeWeightedOverall(scores: Record<string, { value: number }>): number {
     const weights: Record<string, number> = {
       hydration: 0.15,   // Hydratation
       wrinkles: 0.20,    // Rides
@@ -195,12 +195,46 @@ Répondre UNIQUEMENT en JSON valide avec cette structure exacte :
       "Appliquer une crème apaisante anti-inflammatoire",
       "Éviter les produits alcoolisés"
     ],
-    "routine": [
-      "Nettoyage doux matin et soir avec un gel sans savon",
-      "Exfoliation chimique douce 2x/semaine (AHA/BHA)",
-      "Hydratation quotidienne non-comédogène",
-      "Protection solaire SPF 30+ quotidienne"
-    ],
+    "routine": {
+      "immediate": [
+        {
+          "title": "Nettoyage doux",
+          "description": "Nettoyer avec un gel sans savon",
+          "frequency": "daily",
+          "timeOfDay": "both",
+          "phase": "immediate",
+          "category": "cleansing",
+          "productSuggestion": "CeraVe Gel Moussant ou similaire",
+          "applicationTips": ["Masser délicatement", "Rincer à l'eau tiède"]
+        }
+      ],
+      "adaptation": [
+        {
+          "title": "Exfoliation chimique",
+          "description": "Exfoliant doux AHA/BHA",
+          "frequency": "weekly",
+          "frequencyDetails": "2-3 fois par semaine",
+          "timeOfDay": "evening",
+          "phase": "adaptation",
+          "startAfterDays": 14,
+          "category": "exfoliation",
+          "productSuggestion": "Paula's Choice BHA 2%",
+          "applicationTips": ["Commencer 1x/semaine", "Augmenter progressivement", "Toujours suivre d'un hydratant"]
+        }
+      ],
+      "maintenance": [
+        {
+          "title": "Protection solaire",
+          "description": "SPF 30+ quotidien",
+          "frequency": "daily",
+          "timeOfDay": "morning",
+          "phase": "maintenance",
+          "category": "protection",
+          "productSuggestion": "La Roche-Posay Anthelios",
+          "applicationTips": ["Renouveler toutes les 2h", "Appliquer 20min avant exposition"]
+        }
+      ]
+    },
     "products": [
       "Nettoyant : CeraVe Gel Moussant",
       "Exfoliant : Paula's Choice BHA 2%", 
@@ -283,7 +317,7 @@ RÉPONSE EN JSON UNIQUEMENT - PAS DE TEXTE LIBRE.`
   /**
    * Parser la réponse JSON de GPT-4o
    */
-  private static parseAnalysisResponse(content: string | null): any {
+  private static parseAnalysisResponse(content: string | null): Record<string, unknown> {
     if (!content) {
       throw new Error('Réponse vide de l\'IA')
     }

@@ -62,7 +62,7 @@ export default function HomePage() {
           >
             <div className="inline-flex items-center space-x-2 bg-white/60 backdrop-blur-sm border border-purple-200 rounded-full px-4 py-2 text-sm">
               <Star className="w-4 h-4 text-yellow-500" />
-              <span className="text-gray-700">Nouvelle technologie d'analyse dermatologique</span>
+              <span className="text-gray-700">Nouvelle technologie d&apos;analyse dermatologique</span>
             </div>
             
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight">
@@ -123,8 +123,8 @@ export default function HomePage() {
               ))}
             </div>
             <p className="text-gray-700 mb-3">
-              "DermAI m'a aidé à identifier mon type de peau et à trouver les bons produits. 
-              Les recommandations sont très précises !"
+              &quot;DermAI m&apos;a aidé à identifier mon type de peau et à trouver les bons produits. 
+              Les recommandations sont très précises !&quot;
             </p>
             <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
               <Users className="w-4 h-4" />
@@ -260,7 +260,7 @@ export default function HomePage() {
               Prêt à découvrir votre peau ?
             </h2>
             <p className="text-xl opacity-90 mb-8">
-              Rejoignez des milliers d'utilisateurs qui ont déjà transformé leur routine skincare
+              Rejoignez des milliers d&apos;utilisateurs qui ont déjà transformé leur routine skincare
             </p>
             <Link
               href="/upload"
