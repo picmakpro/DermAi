@@ -37,9 +37,8 @@ export default function TestAIPage() {
         skinType: 'Mixte'
       },
       skinConcerns: {
-        primary: ['Poils incarnés', 'Boutons'],
-        severity: 6,
-        duration: '3-6 mois'
+        primary: ['Pores dilatés', 'Taches'],
+        duration: '1-6 mois'
       },
       currentRoutine: {
         morningProducts: ['Nettoyant doux'],

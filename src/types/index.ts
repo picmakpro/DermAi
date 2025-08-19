@@ -32,13 +32,13 @@ export interface SkinAnalysis {
 
 export interface SkinScores {
   hydration: ScoreDetail
-  sebum: ScoreDetail
-  texture: ScoreDetail
-  uniformity: ScoreDetail
-  acneIngrown: ScoreDetail
-  redness: ScoreDetail
-  aging: ScoreDetail
-  photoaging: ScoreDetail
+  wrinkles: ScoreDetail // rides
+  firmness: ScoreDetail // fermeté
+  radiance: ScoreDetail // éclat
+  pores: ScoreDetail
+  spots: ScoreDetail // taches
+  darkCircles: ScoreDetail // cernes
+  skinAge: ScoreDetail // âge de la peau
   overall: number
 }
 

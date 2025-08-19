@@ -127,14 +127,14 @@ Répondre UNIQUEMENT en JSON valide avec cette structure exacte :
 
 {
   "scores": {
-    "hydration": {"value": 75, "justification": "Peau bien hydratée visible", "confidence": 0.8, "basedOn": ["texture uniforme", "absence de desquamation"]},
-    "sebum": {"value": 60, "justification": "Zone T légèrement brillante", "confidence": 0.7, "basedOn": ["reflets sur le front", "pores visibles"]},
-    "texture": {"value": 70, "justification": "Texture globalement lisse", "confidence": 0.85, "basedOn": ["surface régulière", "grain de peau fin"]},
-    "uniformity": {"value": 65, "justification": "Légères variations de pigmentation", "confidence": 0.8, "basedOn": ["zones plus sombres", "variations de teint"]},
-    "acneIngrown": {"value": 45, "justification": "Présence de poils incarnés visibles", "confidence": 0.9, "basedOn": ["boutons inflammatoires", "poils sous cutanés"]},
-    "redness": {"value": 55, "justification": "Rougeurs modérées localisées", "confidence": 0.8, "basedOn": ["zones érythémateuses", "inflammation visible"]},
-    "aging": {"value": 80, "justification": "Peu de signes de vieillissement", "confidence": 0.7, "basedOn": ["élasticité préservée", "rides minimales"]},
-    "photoaging": {"value": 85, "justification": "Protection solaire efficace", "confidence": 0.6, "basedOn": ["absence de taches", "teint uniforme"]},
+    "hydration": {"value": 72, "justification": "Peau bien hydratée", "confidence": 0.8, "basedOn": ["absence de desquamation", "reflets sains"]},
+    "wrinkles": {"value": 64, "justification": "Rides fines principalement d'expression", "confidence": 0.75, "basedOn": ["plis dynamiques", "absence de sillons profonds"]},
+    "firmness": {"value": 68, "justification": "Bonne tonicité globale", "confidence": 0.7, "basedOn": ["contours net", "peu d'affaissement"]},
+    "radiance": {"value": 70, "justification": "Teint relativement lumineux", "confidence": 0.75, "basedOn": ["reflets homogènes", "peu de zones ternes"]},
+    "pores": {"value": 58, "justification": "Pores visibles dans la zone T", "confidence": 0.8, "basedOn": ["texture irrégulière", "reflets localisés"]},
+    "spots": {"value": 62, "justification": "Taches pigmentaires légères et localisées", "confidence": 0.75, "basedOn": ["macules discrètes", "différence de teint"]},
+    "darkCircles": {"value": 55, "justification": "Cernes pigmentaires légers", "confidence": 0.7, "basedOn": ["teinte sous-orbitaire", "légère dépression"]},
+    "skinAge": {"value": 78, "justification": "Âge cutané proche de l'âge réel", "confidence": 0.7, "basedOn": ["élasticité", "texture"]},
     "overall": 68
   },
   "diagnostic": {

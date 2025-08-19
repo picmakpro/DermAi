@@ -10,13 +10,11 @@ import {
   AlertTriangle, 
   Star, 
   TrendingUp, 
-  TrendingDown,
   Clock,
   Heart,
   Shield,
   Droplets,
   Sun,
-  Zap,
   Eye,
   RotateCcw,
   Download,
@@ -26,14 +24,36 @@ import type { SkinAnalysis, SkinScores, ScoreDetail } from '@/types'
 
 const scoreIcons = {
   hydration: Droplets,
-  sebum: Zap,
-  texture: Eye,
-  uniformity: Shield,
-  acneIngrown: AlertTriangle,
-  redness: Heart,
-  aging: Clock,
-  photoaging: Sun,
+  wrinkles: Clock,
+  firmness: Shield,
+  radiance: Sun,
+  pores: Eye,
+  spots: AlertTriangle,
+  darkCircles: Heart,
+  skinAge: Star,
 }
+
+const scoreLabels: Record<keyof Omit<SkinScores, 'overall'>, string> = {
+  hydration: 'Hydratation',
+  wrinkles: 'Rides',
+  firmness: 'Fermeté',
+  radiance: 'Éclat',
+  pores: 'Pores',
+  spots: 'Taches',
+  darkCircles: 'Cernes',
+  skinAge: 'Âge de la peau',
+}
+
+const scoreOrder: Array<keyof Omit<SkinScores, 'overall'>> = [
+  'hydration',
+  'wrinkles',
+  'firmness',
+  'radiance',
+  'pores',
+  'spots',
+  'darkCircles',
+  'skinAge',
+]
 
 const getScoreColor = (score: number) => {
   if (score >= 80) return 'text-green-600 bg-green-100'
@@ -101,8 +121,7 @@ export default function ResultsPage() {
             </div>
             <div>
               <h3 className="font-semibold text-gray-900 capitalize">
-                {key === 'acneIngrown' ? 'Acné/Poils incarnés' : 
-                 key === 'photoaging' ? 'Photo-vieillissement' : key}
+                {scoreLabels[key as keyof typeof scoreLabels] || key}
               </h3>
               <p className="text-sm text-gray-500">
                 Confiance: {confidence}%
@@ -241,7 +260,11 @@ export default function ResultsPage() {
                 <div className="text-center">
                   <Star className="w-8 h-8 text-yellow-600 mx-auto mb-2" />
                   <div className="font-medium text-gray-900">
-                    {Math.round(Object.values(analysis.scores).filter(s => typeof s === 'object').reduce((acc, curr) => acc + (curr as ScoreDetail).confidence, 0) / 8 * 100)}%
+                    {(() => {
+                      const entries = Object.entries(analysis.scores).filter(([k, v]) => k !== 'overall' && typeof v === 'object') as [string, ScoreDetail][]
+                      const avg = entries.reduce((acc, [, v]) => acc + v.confidence, 0) / entries.length
+                      return Math.round(avg * 100)
+                    })()}%
                   </div>
                   <div className="text-sm text-gray-600">Confiance</div>
                 </div>
@@ -281,9 +304,7 @@ export default function ResultsPage() {
               {/* Onglet Scores */}
               {activeTab === 'scores' && (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {Object.entries(analysis.scores).map(([key, value]) => 
-                    typeof value === 'object' ? renderScoreCard(key as keyof SkinScores, value) : null
-                  )}
+                  {scoreOrder.map((k) => renderScoreCard(k, analysis.scores[k]))}
                 </div>
               )}
 
