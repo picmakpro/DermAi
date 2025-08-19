@@ -1,7 +1,7 @@
 // Client-side IndexedDB store for large photo payloads
 
 const DB_NAME = 'dermai-db'
-const DB_VERSION = 1
+const DB_VERSION = 2 // bump version to ensure stores are created
 const STORE = 'photos'
 
 function openDB(): Promise<IDBDatabase> {
@@ -9,8 +9,12 @@ function openDB(): Promise<IDBDatabase> {
     const req = indexedDB.open(DB_NAME, DB_VERSION)
     req.onupgradeneeded = () => {
       const db = req.result
-      if (!db.objectStoreNames.contains(STORE)) {
-        db.createObjectStore(STORE)
+      // Créer les stores si manquants
+      if (!db.objectStoreNames.contains('photos')) {
+        db.createObjectStore('photos')
+      }
+      if (!db.objectStoreNames.contains('analysis')) {
+        db.createObjectStore('analysis')
       }
     }
     req.onsuccess = () => resolve(req.result)
