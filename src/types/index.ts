@@ -62,6 +62,25 @@ export interface ProductRecommendations {
   routine: string[]
   products: string[]
   lifestyle: string[]
+  // Optionnel: données enrichies pour l'UI produit
+  productsDetailed?: RecommendedProductCard[]
+  // Optionnel: routine structurée
+  routineBreakdown?: {
+    morning: string[]
+    evening: string[]
+    weekly: string[]
+  }
+}
+
+export interface RecommendedProductCard {
+  name: string
+  brand: string
+  price: number
+  imageUrl: string
+  affiliateLink: string
+  frequency: 'Quotidien' | 'Hebdomadaire' | 'Ponctuel'
+  benefits: string[]
+  badges?: string[]
 }
 
 export interface Product {

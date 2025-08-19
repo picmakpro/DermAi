@@ -21,7 +21,7 @@ import {
   Download,
   Share2
 } from 'lucide-react'
-import type { SkinAnalysis, SkinScores, ScoreDetail } from '@/types'
+import type { SkinAnalysis, SkinScores, ScoreDetail, RecommendedProductCard } from '@/types'
 
 const scoreIcons = {
   hydration: Droplets,
@@ -368,16 +368,48 @@ export default function ResultsPage() {
                   </ul>
                 </div>
 
-                <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 overflow-hidden">
                   <h3 className="font-semibold text-blue-900 mb-3">Produits recommandés</h3>
-                  <div className="grid gap-2">
-                    {analysis.recommendations.products.map((product, index) => (
-                      <div key={index} className="flex items-center bg-white border border-blue-100 rounded-lg p-3">
-                        <Star className="w-4 h-4 text-blue-600 mr-3 flex-shrink-0" />
-                        <span className="text-blue-900">{product}</span>
-                        <span className="ml-auto text-xs text-blue-700 bg-blue-100 px-2 py-0.5 rounded-full">Jusqu'à -10%</span>
-                      </div>
-                    ))}
+                  <div className="relative">
+                    <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2">
+                      {(analysis.recommendations as any).productsDetailed?.length
+                        ? (analysis.recommendations as any).productsDetailed.map((p: RecommendedProductCard, i: number) => (
+                            <a
+                              key={i}
+                              href={p.affiliateLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="min-w-[260px] snap-start bg-white rounded-xl shadow border border-blue-100 overflow-hidden hover:shadow-md transition-shadow"
+                            >
+                              <div className="w-full h-40 bg-gray-100">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src={p.imageUrl} alt={p.name} className="w-full h-full object-cover" />
+                              </div>
+                              <div className="p-4 space-y-2">
+                                <div className="text-xs text-gray-500">{p.brand}</div>
+                                <div className="font-semibold text-gray-900">{p.name}</div>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-blue-900 font-bold">{p.price.toFixed(2)} €</span>
+                                  <span className="text-xs text-blue-700 bg-blue-100 px-2 py-0.5 rounded-full">-10% exclusif</span>
+                                </div>
+                                <div className="flex flex-wrap gap-1">
+                                  <span className="text-[10px] bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full">{p.frequency}</span>
+                                  {p.benefits.slice(0,2).map((b, j) => (
+                                    <span key={j} className="text-[10px] bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full">{b}</span>
+                                  ))}
+                                </div>
+                                <button className="w-full mt-1 bg-indigo-600 text-white py-2 rounded-md text-sm hover:bg-indigo-700">Acheter</button>
+                              </div>
+                            </a>
+                          ))
+                        : analysis.recommendations.products.map((product, index) => (
+                            <div key={index} className="min-w-[260px] snap-start flex items-center bg-white border border-blue-100 rounded-lg p-3 shadow">
+                              <Star className="w-4 h-4 text-blue-600 mr-3 flex-shrink-0" />
+                              <span className="text-blue-900">{product}</span>
+                              <span className="ml-auto text-xs text-blue-700 bg-blue-100 px-2 py-0.5 rounded-full">-10%</span>
+                            </div>
+                          ))}
+                    </div>
                   </div>
                 </div>
               </div>
