@@ -454,14 +454,15 @@ export default function ResultsPage() {
         </div>
       </div>
 
-             {/* Floating Chat Bubble */}
-       <motion.button
-         initial={{ scale: 0 }}
-         animate={{ scale: 1 }}
-         transition={{ delay: 1.5, type: "spring" }}
-         onClick={() => setIsChatOpen(true)}
-         className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 z-50 flex items-center justify-center group"
-       >
+             {/* Floating Chat Bubble - masqué quand le chat est ouvert */}
+       {!isChatOpen && (
+         <motion.button
+           initial={{ scale: 0 }}
+           animate={{ scale: 1 }}
+           transition={{ delay: 1.5, type: "spring" }}
+           onClick={() => setIsChatOpen(true)}
+           className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 z-50 flex items-center justify-center group"
+         >
          <MessageCircle className="w-7 h-7" />
          <span className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full animate-pulse flex items-center justify-center">
            <span className="text-white text-xs font-bold">!</span>
@@ -476,6 +477,7 @@ export default function ResultsPage() {
            </div>
          </div>
        </motion.button>
+       )}
 
        {/* Chat Widget */}
        {isChatOpen && (

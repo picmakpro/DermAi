@@ -25,17 +25,36 @@ Comportement:
 - N'invente pas des données absentes du résultat fourni.
 `
 
-    const contextPrompt = `CONTEXTE ANALYSE (JSON):\n${JSON.stringify({ analysis: body.analysis, questionnaire: body.questionnaire ?? null })}`
+    // Créer un contexte optimisé avec seulement les infos essentielles
+    const essentialContext = {
+      diagnostic: body.analysis?.diagnostic || null,
+      scores: body.analysis?.scores || null,
+      recommendations: {
+        routine: body.analysis?.recommendations?.routine || null,
+        products: body.analysis?.recommendations?.products?.slice(0, 3) || null // Limiter à 3 produits
+      },
+      userProfile: {
+        age: body.questionnaire?.userProfile?.age || null,
+        gender: body.questionnaire?.userProfile?.gender || null,
+        skinType: body.questionnaire?.userProfile?.skinType || null
+      },
+      allergies: body.questionnaire?.allergies?.ingredients || null
+    }
+    
+    const contextPrompt = `CONTEXTE ANALYSE:\n${JSON.stringify(essentialContext, null, 2)}`
 
+    // Limiter l'historique des messages pour éviter trop de tokens
+    const recentMessages = body.messages.slice(-6) // Garder seulement les 6 derniers messages
+    
     const response = await openai.chat.completions.create({
       model: CHAT_MODEL,
       temperature: 0.2,
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'system', content: contextPrompt },
-        ...body.messages,
+        ...recentMessages,
       ],
-      max_tokens: 600,
+      max_tokens: 400, // Réduire aussi la taille de la réponse
     })
 
     const text = response.choices[0]?.message?.content ?? 'Désolé, je n’ai pas pu formuler une réponse.'

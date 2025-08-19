@@ -28,10 +28,21 @@ export default function ChatWidget({ analysis, onClose }: { analysis: any; onClo
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: [...messages, userMsg], analysis, questionnaire }),
       })
+      
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`)
+      }
+      
       const data = await res.json()
-      setMessages((m) => [...m, { role: 'assistant', content: data.reply || '...' }])
+      
+      if (data.error) {
+        throw new Error(data.error)
+      }
+      
+      setMessages((m) => [...m, { role: 'assistant', content: data.reply || 'Désolé, je n\'ai pas pu formuler une réponse.' }])
     } catch (e) {
-      setMessages((m) => [...m, { role: 'assistant', content: "Désolé, une erreur est survenue." }])
+      console.error('Erreur chat:', e)
+      setMessages((m) => [...m, { role: 'assistant', content: "Désolé, je ne peux pas répondre pour le moment. Veuillez réessayer." }])
     } finally {
       setIsSending(false)
     }
