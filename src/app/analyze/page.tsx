@@ -27,38 +27,42 @@ export default function AnalyzePage() {
   ]
 
   useEffect(() => {
-    // Récupérer les données du sessionStorage
-    const photos = sessionStorage.getItem('dermai_photos')
-    const questionnaire = sessionStorage.getItem('dermai_questionnaire')
+    const load = async () => {
+      // Récupérer les données du sessionStorage
+      const photos = sessionStorage.getItem('dermai_photos')
+      const questionnaire = sessionStorage.getItem('dermai_questionnaire')
 
-    if (!photos || !questionnaire) {
-      router.push('/upload')
-      return
+      if (!photos || !questionnaire) {
+        router.push('/upload')
+        return
+      }
+
+      try {
+        const photosData = JSON.parse(photos) as Array<{ id: string; preview: string; type: PhotoUpload['type']; quality: PhotoUpload['quality'] }>
+        const questionnaireData = JSON.parse(questionnaire)
+
+        // Reconstituer les photos avec dataURL depuis IndexedDB (pas de quota)
+        const rebuiltPhotos: PhotoUpload[] = await Promise.all(
+          photosData.map(async (p) => ({
+            id: p.id,
+            file: (await getPhotoDataUrl(p.id)) || '',
+            preview: p.preview,
+            type: p.type,
+            quality: p.quality,
+          }))
+        )
+
+        setSessionData({
+          photos: rebuiltPhotos,
+          questionnaire: questionnaireData
+        })
+      } catch (error) {
+        console.error('Erreur parsing sessionStorage:', error)
+        router.push('/upload')
+      }
     }
 
-    try {
-      const photosData = JSON.parse(photos) as Array<{ id: string; preview: string; type: PhotoUpload['type']; quality: PhotoUpload['quality'] }>
-      const questionnaireData = JSON.parse(questionnaire)
-
-      // Reconstituer les photos avec dataURL depuis IndexedDB (pas de quota)
-      const rebuiltPhotos: PhotoUpload[] = await Promise.all(
-        photosData.map(async (p) => ({
-          id: p.id,
-          file: (await getPhotoDataUrl(p.id)) || '',
-          preview: p.preview,
-          type: p.type,
-          quality: p.quality,
-        }))
-      )
-
-      setSessionData({
-        photos: rebuiltPhotos,
-        questionnaire: questionnaireData
-      })
-    } catch (error) {
-      console.error('Erreur parsing sessionStorage:', error)
-      router.push('/upload')
-    }
+    load()
   }, [router])
 
   useEffect(() => {
