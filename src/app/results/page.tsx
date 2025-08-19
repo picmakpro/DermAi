@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { 
@@ -9,7 +9,6 @@ import {
   CheckCircle2, 
   AlertTriangle, 
   Star, 
-  TrendingUp, 
   Clock,
   Heart,
   Shield,
@@ -72,11 +71,13 @@ const getScoreLabel = (score: number) => {
 export default function ResultsPage() {
   const router = useRouter()
   const [analysis, setAnalysis] = useState<SkinAnalysis | null>(null)
-  const [activeTab, setActiveTab] = useState<'scores' | 'diagnostic' | 'recommendations'>('scores')
+  const [userAge, setUserAge] = useState<number | null>(null)
+  const [isChatOpen, setIsChatOpen] = useState(false)
 
   useEffect(() => {
     // Récupérer les résultats du sessionStorage
     const analysisData = sessionStorage.getItem('dermai_analysis')
+    const questionnaireData = sessionStorage.getItem('dermai_questionnaire')
     
     if (!analysisData) {
       router.push('/upload')
@@ -86,11 +87,25 @@ export default function ResultsPage() {
     try {
       const parsedAnalysis = JSON.parse(analysisData)
       setAnalysis(parsedAnalysis)
+      if (questionnaireData) {
+        const q = JSON.parse(questionnaireData)
+        if (q?.userProfile?.age) setUserAge(q.userProfile.age)
+      }
     } catch (error) {
       console.error('Erreur parsing analysis:', error)
       router.push('/upload')
     }
   }, [router])
+
+  const skinAgeYears = useMemo(() => {
+    if (!analysis || userAge == null) return null
+    const score = (analysis.scores as any)?.skinAge as ScoreDetail | undefined
+    if (!score || typeof score.value !== 'number') return null
+    // Conversion heuristique: chaque 5 points d'écart autour de 50 = ±1 an
+    const deltaYears = (50 - score.value) / 5
+    const computed = Math.round(userAge + deltaYears)
+    return Math.max(10, Math.min(100, computed))
+  }, [analysis, userAge])
 
   const handleNewAnalysis = () => {
     // Nettoyer le sessionStorage
@@ -136,28 +151,18 @@ export default function ResultsPage() {
           </div>
         </div>
 
-        <div className="mb-4">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm text-gray-600">Score</span>
-            <span className="text-sm font-medium">{score}/100</span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div 
-              className={`h-2 rounded-full ${getScoreColor(score).replace('text-', 'bg-').replace('bg-', 'bg-').split(' ')[1].replace('100', '600')}`}
-              style={{ width: `${score}%` }}
-            />
-          </div>
+        <div className="mb-1 flex items-center justify-between">
+          <span className="text-sm text-gray-600">{getScoreLabel(score)}</span>
+          <span className="text-sm font-semibold text-gray-900">{score}/100</span>
         </div>
 
-        <p className="text-sm text-gray-700 mb-3">
-          {scoreDetail.justification}
-        </p>
+        <p className="text-sm text-gray-700 mb-2 line-clamp-2">{scoreDetail.justification}</p>
 
         {scoreDetail.basedOn && scoreDetail.basedOn.length > 0 && (
           <div>
             <p className="text-xs text-gray-500 mb-2">Basé sur :</p>
             <div className="flex flex-wrap gap-1">
-              {scoreDetail.basedOn.map((item, index) => (
+              {scoreDetail.basedOn.slice(0, 3).map((item, index) => (
                 <span 
                   key={index}
                   className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full"
@@ -213,18 +218,16 @@ export default function ResultsPage() {
             </div>
           </div>
 
-          {/* Score global */}
+          {/* En-tête + score global */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             className="bg-white rounded-2xl shadow-xl p-8 mb-8"
           >
             <div className="text-center">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Votre Analyse Dermatologique
-              </h1>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Résultats de votre peau</h1>
               <p className="text-gray-600 mb-6">
-                Analyse réalisée avec GPT-4o Vision le {new Date(analysis.createdAt).toLocaleDateString('fr-FR')}
+                Analyse réalisée le {new Date(analysis.createdAt).toLocaleDateString('fr-FR')}
               </p>
               
               <div className="flex items-center justify-center mb-6">
@@ -250,13 +253,15 @@ export default function ResultsPage() {
                   </div>
                   <div className="text-sm text-gray-600">Analysées</div>
                 </div>
-                <div className="text-center">
-                  <CheckCircle2 className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                  <div className="font-medium text-gray-900">
-                    {analysis.diagnostic.severity}
+                {skinAgeYears && (
+                  <div className="text-center">
+                    <Clock className="w-8 h-8 text-green-600 mx-auto mb-2" />
+                    <div className="font-medium text-gray-900">Âge de la peau: {skinAgeYears} ans</div>
+                    {userAge != null && (
+                      <div className="text-sm text-gray-600">Comparé à votre âge: {userAge} ans</div>
+                    )}
                   </div>
-                  <div className="text-sm text-gray-600">Sévérité</div>
-                </div>
+                )}
                 <div className="text-center">
                   <Star className="w-8 h-8 text-yellow-600 mx-auto mb-2" />
                   <div className="font-medium text-gray-900">
@@ -275,158 +280,95 @@ export default function ResultsPage() {
             </div>
           </motion.div>
 
-          {/* Navigation par onglets */}
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-            <div className="border-b border-gray-200">
-              <nav className="flex">
-                {[
-                  { id: 'scores', label: 'Scores détaillés', icon: TrendingUp },
-                  { id: 'diagnostic', label: 'Diagnostic', icon: AlertTriangle },
-                  { id: 'recommendations', label: 'Recommandations', icon: Heart }
-                ].map((tab) => {
-                  const IconComponent = tab.icon
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveTab(tab.id as any)}
-                      className={`flex items-center gap-2 px-6 py-4 font-medium transition-colors ${
-                        activeTab === tab.id
-                          ? 'border-b-2 border-indigo-600 text-indigo-600 bg-indigo-50'
-                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                      }`}
-                    >
-                      <IconComponent className="w-5 h-5" />
-                      {tab.label}
-                    </button>
-                  )
-                })}
-              </nav>
-            </div>
+          {/* Contenu monobloc */}
+          <div className="bg-white rounded-2xl shadow-xl p-8 space-y-10">
+            {/* Scores détaillés compacts */}
+            <section>
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Votre peau en un coup d'œil</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                {scoreOrder
+                  .filter((k) => {
+                    const s: any = (analysis.scores as any)[k]
+                    return s && typeof s.value === 'number'
+                  })
+                  .map((k) => renderScoreCard(k as keyof SkinScores, (analysis.scores as any)[k]))}
+              </div>
+            </section>
 
-            <div className="p-8">
-              {/* Onglet Scores */}
-              {activeTab === 'scores' && (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {scoreOrder
-                    .filter((k) => {
-                      const s: any = (analysis.scores as any)[k]
-                      return s && typeof s.value === 'number'
-                    })
-                    .map((k) => renderScoreCard(k as keyof SkinScores, (analysis.scores as any)[k]))}
+            {/* Diagnostic principal */}
+            <section>
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Diagnostic principal</h2>
+              <div className="bg-gray-50 rounded-xl p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <span className="text-sm text-gray-600">Condition :</span>
+                    <span className="ml-2 font-semibold text-gray-900">{analysis.diagnostic.primaryCondition}</span>
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-600">Sévérité :</span>
+                    <span className={`ml-2 px-2 py-1 rounded-full text-sm font-medium ${
+                      analysis.diagnostic.severity === 'Légère' ? 'bg-green-100 text-green-800' :
+                      analysis.diagnostic.severity === 'Modérée' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-red-100 text-red-800'
+                    }`}>
+                      {analysis.diagnostic.severity}
+                    </span>
+                  </div>
                 </div>
-              )}
+                <h3 className="font-semibold text-gray-900 mb-2">Observations clés</h3>
+                <ul className="grid md:grid-cols-2 gap-2">
+                  {analysis.diagnostic.observations.slice(0,6).map((observation, index) => (
+                    <li key={index} className="flex items-start">
+                      <CheckCircle2 className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
+                      <span className="text-gray-700">{observation}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
 
-              {/* Onglet Diagnostic */}
-              {activeTab === 'diagnostic' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="space-y-6"
-                >
-                  <div className="bg-gray-50 rounded-xl p-6">
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">
-                      {analysis.diagnostic.primaryCondition}
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                      <div>
-                        <span className="text-sm text-gray-600">Sévérité :</span>
-                        <span className={`ml-2 px-2 py-1 rounded-full text-sm font-medium ${
-                          analysis.diagnostic.severity === 'Légère' ? 'bg-green-100 text-green-800' :
-                          analysis.diagnostic.severity === 'Modérée' ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-red-100 text-red-800'
-                        }`}>
-                          {analysis.diagnostic.severity}
-                        </span>
+            {/* Recommandations */}
+            <section>
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Recommandations</h2>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+                  <h3 className="font-semibold text-red-900 mb-3">Actions immédiates</h3>
+                  <ul className="space-y-2">
+                    {analysis.recommendations.immediate.map((action, index) => (
+                      <li key={index} className="flex items-start">
+                        <AlertTriangle className="w-5 h-5 text-red-600 mr-3 mt-0.5 flex-shrink-0" />
+                        <span className="text-red-800">{action}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="bg-green-50 border border-green-200 rounded-xl p-6">
+                  <h3 className="font-semibold text-green-900 mb-3">Routine personnalisée</h3>
+                  <ul className="space-y-2">
+                    {analysis.recommendations.routine.map((step, index) => (
+                      <li key={index} className="flex items-start">
+                        <CheckCircle2 className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
+                        <span className="text-green-800">{step}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                  <h3 className="font-semibold text-blue-900 mb-3">Produits recommandés</h3>
+                  <div className="grid gap-2">
+                    {analysis.recommendations.products.map((product, index) => (
+                      <div key={index} className="flex items-center bg-white border border-blue-100 rounded-lg p-3">
+                        <Star className="w-4 h-4 text-blue-600 mr-3 flex-shrink-0" />
+                        <span className="text-blue-900">{product}</span>
+                        <span className="ml-auto text-xs text-blue-700 bg-blue-100 px-2 py-0.5 rounded-full">Jusqu'à -10%</span>
                       </div>
-                      <div>
-                        <span className="text-sm text-gray-600">Zones affectées :</span>
-                        <span className="ml-2 font-medium">
-                          {analysis.diagnostic.affectedAreas.join(', ')}
-                        </span>
-                      </div>
-                    </div>
+                    ))}
                   </div>
-
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-3">Observations cliniques :</h4>
-                    <ul className="space-y-2">
-                      {analysis.diagnostic.observations.map((observation, index) => (
-                        <li key={index} className="flex items-start">
-                          <CheckCircle2 className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
-                          <span className="text-gray-700">{observation}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-                    <h4 className="font-semibold text-blue-900 mb-2">Pronostic :</h4>
-                    <p className="text-blue-800">{analysis.diagnostic.prognosis}</p>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Onglet Recommandations */}
-              {activeTab === 'recommendations' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="space-y-8"
-                >
-                  {/* Actions immédiates */}
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-4">Actions immédiates</h3>
-                    <div className="grid gap-3">
-                      {analysis.recommendations.immediate.map((action, index) => (
-                        <div key={index} className="flex items-center bg-red-50 border border-red-200 rounded-lg p-4">
-                          <AlertTriangle className="w-5 h-5 text-red-600 mr-3 flex-shrink-0" />
-                          <span className="text-red-800">{action}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Routine quotidienne */}
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-4">Routine quotidienne</h3>
-                    <div className="grid gap-3">
-                      {analysis.recommendations.routine.map((step, index) => (
-                        <div key={index} className="flex items-center bg-green-50 border border-green-200 rounded-lg p-4">
-                          <CheckCircle2 className="w-5 h-5 text-green-600 mr-3 flex-shrink-0" />
-                          <span className="text-green-800">{step}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Produits recommandés */}
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-4">Produits recommandés</h3>
-                    <div className="grid gap-3">
-                      {analysis.recommendations.products.map((product, index) => (
-                        <div key={index} className="flex items-center bg-blue-50 border border-blue-200 rounded-lg p-4">
-                          <Star className="w-5 h-5 text-blue-600 mr-3 flex-shrink-0" />
-                          <span className="text-blue-800">{product}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Conseils de mode de vie */}
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-4">Conseils de mode de vie</h3>
-                    <div className="grid gap-3">
-                      {analysis.recommendations.lifestyle.map((advice, index) => (
-                        <div key={index} className="flex items-center bg-purple-50 border border-purple-200 rounded-lg p-4">
-                          <Heart className="w-5 h-5 text-purple-600 mr-3 flex-shrink-0" />
-                          <span className="text-purple-800">{advice}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </div>
+                </div>
+              </div>
+            </section>
           </div>
 
           {/* Note légale */}
@@ -443,6 +385,27 @@ export default function ResultsPage() {
               </div>
             </div>
           </div>
+
+          {/* Assistant discret */}
+          <button
+            onClick={() => setIsChatOpen(true)}
+            className="fixed bottom-6 right-6 bg-indigo-600 text-white px-4 py-3 rounded-full shadow-lg hover:bg-indigo-700"
+          >
+            Besoin d'aide ?
+          </button>
+
+          {isChatOpen && (
+            <div className="fixed bottom-6 right-6 w-full max-w-md bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+              <div className="flex items-center justify-between px-4 py-3 border-b">
+                <h4 className="font-semibold">Assistant Derma AI</h4>
+                <button className="text-gray-500 hover:text-gray-900" onClick={() => setIsChatOpen(false)}>✕</button>
+              </div>
+              <div className="p-4 text-sm text-gray-600">
+                Posez vos questions sur votre diagnostic et vos recommandations. Réponses ciblées et claires.
+              </div>
+              {/* Intégration API chat à venir */}
+            </div>
+          )}
         </div>
       </div>
     </div>
