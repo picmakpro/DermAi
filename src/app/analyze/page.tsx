@@ -69,6 +69,28 @@ export default function AnalyzePage() {
     load()
   }, [router])
 
+  // Définir startAnalysis en premier
+  const startAnalysis = useCallback(async () => {
+    if (!sessionData) return
+
+    const { photos, questionnaire } = sessionData
+
+    // Construire la requête d'analyse (les données sont déjà dans la bonne structure)
+    const analyzeRequest: AnalyzeRequest = {
+      photos,
+      userProfile: questionnaire.userProfile,
+      skinConcerns: questionnaire.skinConcerns,
+      currentRoutine: questionnaire.currentRoutine,
+      allergies: questionnaire.allergies
+    }
+
+    console.log('Démarrage analyse avec:', analyzeRequest)
+    console.log('UserProfile détaillé:', analyzeRequest.userProfile)
+    console.log('Photos détaillées:', analyzeRequest.photos.map(p => ({ id: p.id, type: p.type, hasFile: !!p.file })))
+    
+    await analyze(analyzeRequest)
+  }, [sessionData, analyze])
+
   useEffect(() => {
     if (sessionData && !isAnalyzing && !analysis && !error) {
       startAnalysis()
@@ -103,27 +125,6 @@ export default function AnalyzePage() {
       else setCurrentStep(3)
     }
   }, [progress, isAnalyzing])
-
-  const startAnalysis = useCallback(async () => {
-    if (!sessionData) return
-
-    const { photos, questionnaire } = sessionData
-
-    // Construire la requête d'analyse (les données sont déjà dans la bonne structure)
-    const analyzeRequest: AnalyzeRequest = {
-      photos,
-      userProfile: questionnaire.userProfile,
-      skinConcerns: questionnaire.skinConcerns,
-      currentRoutine: questionnaire.currentRoutine,
-      allergies: questionnaire.allergies
-    }
-
-    console.log('Démarrage analyse avec:', analyzeRequest)
-    console.log('UserProfile détaillé:', analyzeRequest.userProfile)
-    console.log('Photos détaillées:', analyzeRequest.photos.map(p => ({ id: p.id, type: p.type, hasFile: !!p.file })))
-    
-    await analyze(analyzeRequest)
-  }, [sessionData, analyze])
 
   const handleRetry = () => {
     reset()
