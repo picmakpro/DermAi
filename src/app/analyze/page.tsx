@@ -11,7 +11,10 @@ import { AlertCircle, Brain, Camera, CheckCircle2, Loader2 } from 'lucide-react'
 
 interface SessionData {
   photos: PhotoUpload[]
-  questionnaire: any
+  questionnaire: {
+    userProfile?: { skinType?: string }
+    skinConcerns?: { primary?: string[] }
+  }
 }
 
 export default function AnalyzePage() {
@@ -210,7 +213,7 @@ export default function AnalyzePage() {
             >
               Notre intelligence artificielle examine vos photos avec une 
               <strong className="text-purple-600"> précision dermatologique</strong>
-            </p>
+            </motion.p>
           </div>
 
           {/* Contenu principal */}
@@ -231,7 +234,7 @@ export default function AnalyzePage() {
                   <AlertCircle className="w-8 h-8 text-red-600" />
                 </div>
                 <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                  Erreur d'analyse
+                  Erreur d&apos;analyse
                 </h2>
                 <p className="text-gray-600 mb-6">
                   {error}
@@ -379,7 +382,7 @@ export default function AnalyzePage() {
                 </div>
               </div>
             )}
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>
