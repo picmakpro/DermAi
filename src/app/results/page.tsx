@@ -108,10 +108,16 @@ export default function ResultsPage() {
     if (!analysis || userAge == null) return null
     const score = (analysis.scores as any)?.skinAge as ScoreDetail | undefined
     if (!score || typeof score.value !== 'number') return null
-    // Conversion heuristique: chaque 5 points d'écart autour de 50 = ±1 an
-    const deltaYears = (50 - score.value) / 5
-    const computed = Math.round(userAge + deltaYears)
-    return Math.max(10, Math.min(100, computed))
+    
+    // Logique corrigée: score élevé = peau plus jeune, score bas = peau plus âgée
+    // Formule: âge de peau = âge réel + (75 - score) / 10
+    // - Score 100 : âge peau = âge réel - 2.5 ans (peau plus jeune)  
+    // - Score 75 : âge peau = âge réel (neutre)
+    // - Score 50 : âge peau = âge réel + 2.5 ans (peau plus âgée)
+    // - Score 25 : âge peau = âge réel + 5 ans (peau beaucoup plus âgée)
+    const ageDelta = (75 - score.value) / 10
+    const computed = Math.round(userAge + ageDelta)
+    return Math.max(15, Math.min(80, computed))
   }, [analysis, userAge])
 
   const handleNewAnalysis = () => {
