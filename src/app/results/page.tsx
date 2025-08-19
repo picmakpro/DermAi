@@ -395,16 +395,7 @@ export default function ResultsPage() {
           </button>
 
           {isChatOpen && (
-            <div className="fixed bottom-6 right-6 w-full max-w-md bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
-              <div className="flex items-center justify-between px-4 py-3 border-b">
-                <h4 className="font-semibold">Assistant Derma AI</h4>
-                <button className="text-gray-500 hover:text-gray-900" onClick={() => setIsChatOpen(false)}>✕</button>
-              </div>
-              <div className="p-4 text-sm text-gray-600">
-                Posez vos questions sur votre diagnostic et vos recommandations. Réponses ciblées et claires.
-              </div>
-              {/* Intégration API chat à venir */}
-            </div>
+            <ChatWidget analysis={analysis} onClose={() => setIsChatOpen(false)} />
           )}
         </div>
       </div>
