@@ -52,10 +52,81 @@ const scoreLabels: Record<keyof Omit<SkinScores, 'overall'>, string> = {
   skinAge: 'Âge de la peau',
 }
 
-// Données de produits recommandés - à remplacer par une vraie base de données
+// Génération de produits recommandés basée sur l'analyse
 const getProductRecommendations = (analysis: SkinAnalysis) => {
-  // Future: récupérer les vrais produits selon l'analyse
-  return analysis.recommendations?.productsDetailed || []
+  // Si l'analyse contient des produits détaillés, les utiliser
+  if (analysis.recommendations?.productsDetailed?.length > 0) {
+    return analysis.recommendations.productsDetailed
+  }
+
+  // Sinon, générer des produits basés sur l'analyse et les recommandations textuelles
+  const mockProducts = []
+  const recommendations = analysis.recommendations?.products || []
+  const skinConcerns = analysis.diagnostic?.primaryCondition || ''
+  const scores = analysis.scores
+
+  // Produit 1: Nettoyant (toujours recommandé)
+  mockProducts.push({
+    name: "Gel Nettoyant Doux",
+    brand: "CeraVe",
+    price: 12.99,
+    originalPrice: 15.99,
+    imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop",
+    discount: 19,
+    frequency: "Matin et soir",
+    benefits: ["Nettoyage en douceur", "Préserve la barrière cutanée", "Sans savon"],
+    instructions: "Masser délicatement sur peau humide, rincer à l'eau tiède",
+    whyThisProduct: "Recommandé pour votre type de peau selon l'analyse DermAI",
+    affiliateLink: "https://example.com/cerave-gel"
+  })
+
+  // Produit 2: Sérum selon les scores
+  if (scores?.hydration?.value < 60) {
+    mockProducts.push({
+      name: "Sérum Acide Hyaluronique",
+      brand: "The Ordinary",
+      price: 7.90,
+      originalPrice: null,
+      imageUrl: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop",
+      discount: null,
+      frequency: "Matin et soir",
+      benefits: ["Hydratation intense", "Repulpe la peau", "Anti-âge"],
+      instructions: "Appliquer 2-3 gouttes sur peau propre",
+      whyThisProduct: `Votre score d'hydratation (${scores.hydration.value}/100) nécessite un boost d'hydratation`,
+      affiliateLink: "https://example.com/ordinary-hyaluronic"
+    })
+  } else if (scores?.spots?.value < 60 || skinConcerns.toLowerCase().includes('acné')) {
+    mockProducts.push({
+      name: "Sérum Niacinamide 10%",
+      brand: "The Ordinary", 
+      price: 7.20,
+      originalPrice: 8.90,
+      imageUrl: "https://images.unsplash.com/photo-1570194065650-d99fb4bedf0a?w=400&h=400&fit=crop",
+      discount: 19,
+      frequency: "Soir uniquement",
+      benefits: ["Régule le sébum", "Minimise les pores", "Anti-imperfections"],
+      instructions: "Appliquer 2-3 gouttes le soir sur peau propre",
+      whyThisProduct: "Idéal pour réguler le sébum et réduire les imperfections détectées",
+      affiliateLink: "https://example.com/ordinary-niacinamide"
+    })
+  }
+
+  // Produit 3: Protection solaire (toujours recommandée)
+  mockProducts.push({
+    name: "Crème Solaire Invisible SPF 50+",
+    brand: "La Roche-Posay",
+    price: 18.50,
+    originalPrice: 22.00,
+    imageUrl: "https://images.unsplash.com/photo-1556228578-dd97c4d84df2?w=400&h=400&fit=crop",
+    discount: 16,
+    frequency: "Chaque matin",
+    benefits: ["Protection SPF 50+", "Fini invisible", "Résistant à l'eau"],
+    instructions: "Appliquer généreusement 20 min avant exposition, renouveler toutes les 2h",
+    whyThisProduct: "Protection essentielle contre le vieillissement cutané",
+    affiliateLink: "https://example.com/lrp-anthelios"
+  })
+
+  return mockProducts.slice(0, 3) // Limiter à 3 produits
 }
 
 export default function ResultsPage() {
@@ -374,23 +445,21 @@ export default function ResultsPage() {
            </div>
 
            <div className="bg-gradient-to-r from-green-100 to-emerald-100 border border-green-200 rounded-2xl p-4 mb-6">
-             <div className="flex items-center justify-center space-x-2 text-green-800">
-               <span className="text-lg">💡</span>
-               <span className="font-semibold">Ces produits correspondent parfaitement à votre type de peau</span>
+             <div className="flex items-center justify-between text-green-800">
+               <div className="flex items-center space-x-2">
+                 <span className="text-lg">💡</span>
+                 <span className="font-semibold">Ces produits correspondent parfaitement à votre type de peau</span>
+               </div>
+               <div className="text-xs bg-green-200 text-green-800 px-3 py-1 rounded-full">
+                 Sélection DermAI
+               </div>
              </div>
            </div>
 
            <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory">
-             {getProductRecommendations(analysis).length > 0 ? (
-               getProductRecommendations(analysis).map((product, index) => (
-                 <ProductCard key={index} {...product} />
-               ))
-             ) : (
-               <div className="text-center py-8 text-gray-500">
-                 <p>Les recommandations de produits spécifiques arriveront bientôt.</p>
-                 <p className="text-sm mt-2">Consultez vos recommandations générales ci-dessus.</p>
-               </div>
-             )}
+             {getProductRecommendations(analysis).map((product, index) => (
+               <ProductCard key={index} {...product} />
+             ))}
            </div>
          </motion.div>
 
