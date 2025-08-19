@@ -100,12 +100,12 @@ export default function ResultsPage() {
     router.push('/upload')
   }
 
-  const renderScoreCard = (key: keyof SkinScores, scoreDetail: ScoreDetail) => {
-    if (key === 'overall') return null
+  const renderScoreCard = (key: keyof SkinScores, scoreDetail: ScoreDetail | undefined) => {
+    if (key === 'overall' || !scoreDetail || typeof scoreDetail.value !== 'number') return null
 
     const IconComponent = scoreIcons[key as keyof typeof scoreIcons]
-    const score = scoreDetail.value
-    const confidence = Math.round(scoreDetail.confidence * 100)
+    const score = Math.round(scoreDetail.value)
+    const confidence = Math.round((scoreDetail.confidence ?? 0) * 100)
 
     return (
       <motion.div
@@ -261,8 +261,11 @@ export default function ResultsPage() {
                   <Star className="w-8 h-8 text-yellow-600 mx-auto mb-2" />
                   <div className="font-medium text-gray-900">
                     {(() => {
-                      const entries = Object.entries(analysis.scores).filter(([k, v]) => k !== 'overall' && typeof v === 'object') as [string, ScoreDetail][]
-                      const avg = entries.reduce((acc, [, v]) => acc + v.confidence, 0) / entries.length
+                      const entries = scoreOrder
+                        .map((k) => (analysis.scores as any)[k] as ScoreDetail | undefined)
+                        .filter((s): s is ScoreDetail => !!s && typeof s.confidence === 'number')
+                      if (entries.length === 0) return 0
+                      const avg = entries.reduce((acc, v) => acc + (v.confidence ?? 0), 0) / entries.length
                       return Math.round(avg * 100)
                     })()}%
                   </div>
@@ -304,7 +307,12 @@ export default function ResultsPage() {
               {/* Onglet Scores */}
               {activeTab === 'scores' && (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {scoreOrder.map((k) => renderScoreCard(k, analysis.scores[k]))}
+                  {scoreOrder
+                    .filter((k) => {
+                      const s: any = (analysis.scores as any)[k]
+                      return s && typeof s.value === 'number'
+                    })
+                    .map((k) => renderScoreCard(k as keyof SkinScores, (analysis.scores as any)[k]))}
                 </div>
               )}
 
