@@ -84,7 +84,8 @@ export default function AnalyzePage() {
       photos,
       userProfile: questionnaire.userProfile,
       skinConcerns: questionnaire.skinConcerns,
-      currentRoutine: questionnaire.currentRoutine
+      currentRoutine: questionnaire.currentRoutine,
+      allergies: questionnaire.allergies
     }
 
     console.log('Démarrage analyse avec:', analyzeRequest)

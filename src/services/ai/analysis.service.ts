@@ -182,9 +182,17 @@ Répondre UNIQUEMENT en JSON valide avec cette structure exacte :
 - 61-85: État correct avec optimisations mineures
 - 86-100: Excellent état, maintenir routine actuelle
 
+## CONSIDÉRATIONS OBLIGATOIRES
+✅ Respecter strictement les allergies mentionnées dans les recommandations
+✅ Adapter les produits au budget indiqué
+✅ Déterminer la sévérité UNIQUEMENT par observation visuelle
+✅ Intégrer la durée du problème dans le pronostic
+
 ## INTERDICTIONS
 ❌ Diagnostic médical prescriptif
 ❌ Recommandations de médicaments sur ordonnance
+❌ Produits contenant des ingrédients allergènes mentionnés
+❌ Recommandations hors budget
 ❌ Promesses de guérison garantie
 ❌ Réponse en texte libre (UNIQUEMENT JSON valide)`
   }
@@ -198,21 +206,35 @@ Répondre UNIQUEMENT en JSON valide avec cette structure exacte :
 **Type de peau déclaré :** ${request.userProfile.skinType}
 
 ## PRÉOCCUPATIONS PRINCIPALES
-${request.skinConcerns.primary.join(', ')}
-**Sévérité ressentie :** ${request.skinConcerns.severity}/10
+${request.skinConcerns.primary.join(', ')}${request.skinConcerns.otherText ? ` (Autres: ${request.skinConcerns.otherText})` : ''}
 **Durée du problème :** ${request.skinConcerns.duration}
 
 ## ROUTINE ACTUELLE
 **Matin :** ${request.currentRoutine.morningProducts.join(', ') || 'Aucune routine'}
 **Soir :** ${request.currentRoutine.eveningProducts.join(', ') || 'Aucune routine'}
+**Fréquence nettoyage :** ${request.currentRoutine.cleansingFrequency}
 **Budget mensuel :** ${request.currentRoutine.monthlyBudget}
+
+## ALLERGIES ET SENSIBILITÉS
+**Ingrédients à éviter :** ${request.allergies?.ingredients?.join(', ') || 'Aucune allergie connue'}
+**Réactions passées :** ${request.allergies?.pastReactions || 'Aucune réaction signalée'}
 
 ## PHOTOS FOURNIES
 ${request.photos.map((photo, index) => `Photo ${index + 1}: ${photo.type}`).join('\n')}
 
 ## MISSION
 Analyser ces ${request.photos.length} photos avec expertise dermatologique maximale.
-Focus particulier sur : ${request.skinConcerns.primary.join(', ')}
+
+**ATTENTION PARTICULIÈRE À :**
+- Préoccupations mentionnées : ${request.skinConcerns.primary.join(', ')}
+- Durée des problèmes : ${request.skinConcerns.duration}
+- Allergies à considérer : ${request.allergies?.ingredients?.filter(i => i !== 'Aucune allergie connue').join(', ') || 'Aucune'}
+- Budget disponible : ${request.currentRoutine.monthlyBudget}
+
+**TU DOIS DÉTERMINER :**
+- La sévérité réelle basée uniquement sur l'analyse visuelle (ignore toute auto-évaluation)
+- Les conditions dermatologiques précises observées
+- Les recommandations adaptées au budget et aux allergies
 
 Fournir diagnostic précis + scores justifiés + recommandations actionables.
 RÉPONSE EN JSON UNIQUEMENT - PAS DE TEXTE LIBRE.`

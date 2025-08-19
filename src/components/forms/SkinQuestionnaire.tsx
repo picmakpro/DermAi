@@ -71,7 +71,6 @@ export default function SkinQuestionnaire() {
     },
     skinConcerns: {
       primary: [],
-      severity: 5,
       duration: '1-6 mois',
       otherText: '' // Nouveau champ
     },

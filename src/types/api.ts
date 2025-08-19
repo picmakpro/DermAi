@@ -10,6 +10,10 @@ export interface AnalyzeRequest {
   userProfile: UserProfile
   skinConcerns: SkinConcerns
   currentRoutine: CurrentRoutine
+  allergies?: {
+    ingredients: string[]
+    pastReactions: string
+  }
 }
 
 export interface UserProfile {
@@ -20,8 +24,8 @@ export interface UserProfile {
 
 export interface SkinConcerns {
   primary: string[]
-  severity: number // 1-10
   duration: '< 1 mois' | '1-6 mois' | '6-12 mois' | '> 1 an'
+  otherText?: string
 }
 
 export interface CurrentRoutine {
