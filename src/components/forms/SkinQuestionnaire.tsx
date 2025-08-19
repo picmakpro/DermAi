@@ -57,11 +57,22 @@ const ALLERGENIC_INGREDIENTS = [
   'Aucune allergie connue'
 ]
 
+const AGE_RANGES = [
+  { label: '13-17 ans', value: 15, range: '13-17' },
+  { label: '18-24 ans', value: 21, range: '18-24' },
+  { label: '25-34 ans', value: 29, range: '25-34' },
+  { label: '35-44 ans', value: 39, range: '35-44' },
+  { label: '45-54 ans', value: 49, range: '45-54' },
+  { label: '55-64 ans', value: 59, range: '55-64' },
+  { label: '65+ ans', value: 70, range: '65+' }
+]
+
 export default function SkinQuestionnaire() {
   const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
   const [showAiMessage, setShowAiMessage] = useState(false)
   const [photosCount, setPhotosCount] = useState(0)
+  const [selectedAgeRange, setSelectedAgeRange] = useState<string>('')
   
   const [data, setData] = useState<QuestionnaireData>({
     userProfile: {
@@ -179,8 +190,8 @@ export default function SkinQuestionnaire() {
 
   // Validation complète du formulaire
   const isFormComplete = () => {
-    // Étape 1: Profil (âge valide requis)
-    const step1Valid = data.userProfile.age >= 13 && data.userProfile.age <= 100
+    // Étape 1: Profil (tranche d'âge sélectionnée)
+    const step1Valid = selectedAgeRange !== ''
 
     // Étape 2: Préoccupations (au moins une sélection requise)
     const step2Valid = data.skinConcerns.primary.length > 0
@@ -193,7 +204,7 @@ export default function SkinQuestionnaire() {
   const canProceed = () => {
     switch (currentStep) {
       case 1:
-        return data.userProfile.age >= 13 && data.userProfile.age <= 100
+        return selectedAgeRange !== ''
       case 2:
         return data.skinConcerns.primary.length > 0
       case 3:
@@ -203,6 +214,12 @@ export default function SkinQuestionnaire() {
       default:
         return true
     }
+  }
+
+  // Fonction pour sélectionner une tranche d'âge
+  const handleAgeRangeSelect = (range: typeof AGE_RANGES[0]) => {
+    setSelectedAgeRange(range.range)
+    updateData('userProfile', { age: range.value })
   }
 
   // Vérifier si la routine a des produits
@@ -251,27 +268,29 @@ export default function SkinQuestionnaire() {
 
   // Récapitulatif dynamique
   const renderSummary = () => (
-    <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
-      <h3 className="font-semibold text-gray-900 mb-3 flex items-center">
-        <svg className="w-5 h-5 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-          <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
-        </svg>
+    <div className="bg-white border border-purple-100 rounded-3xl p-6 shadow-xl">
+      <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
+        <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center mr-3">
+          <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+          </svg>
+        </div>
         Récapitulatif
       </h3>
       
       <div className="space-y-3">
         {/* Photos */}
         <div className="flex items-center text-sm">
-          <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+          <span className="w-3 h-3 bg-green-500 rounded-full mr-3"></span>
           <span className="text-gray-700">{photosCount} photo{photosCount > 1 ? 's' : ''} uploadée{photosCount > 1 ? 's' : ''}</span>
         </div>
 
         {/* Profil - toujours affiché avec valeurs actuelles */}
         <div className="flex items-center text-sm">
-          <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+          <span className="w-3 h-3 bg-purple-500 rounded-full mr-3"></span>
           <span className="text-gray-700">
             {data.userProfile.gender !== 'Ne souhaite pas préciser' && `${data.userProfile.gender}, `}
-            {data.userProfile.age} ans
+            {selectedAgeRange || `${data.userProfile.age} ans`}
             {data.userProfile.skinType !== 'Je ne sais pas' && ` • Peau ${data.userProfile.skinType}`}
           </span>
         </div>
@@ -279,7 +298,7 @@ export default function SkinQuestionnaire() {
         {/* Préoccupations */}
         {data.skinConcerns.primary.length > 0 && (
           <div className="flex items-start text-sm">
-            <span className="w-2 h-2 bg-orange-500 rounded-full mr-2 mt-1.5"></span>
+            <span className="w-3 h-3 bg-orange-500 rounded-full mr-3 mt-1"></span>
             <div className="text-gray-700">
               {data.skinConcerns.primary.includes('Je ne sais pas') ? (
                 <span className="italic text-blue-600">IA analysera automatiquement</span>
@@ -292,7 +311,7 @@ export default function SkinQuestionnaire() {
 
         {/* Routine - toujours afficher même si vide */}
         <div className="flex items-start text-sm">
-          <span className="w-2 h-2 bg-purple-500 rounded-full mr-2 mt-1.5"></span>
+          <span className="w-3 h-3 bg-purple-500 rounded-full mr-3 mt-1"></span>
           <span className="text-gray-700 text-xs">
             {getRoutineDisplay()}
           </span>
@@ -300,14 +319,14 @@ export default function SkinQuestionnaire() {
 
         {/* Budget - toujours afficher */}
         <div className="flex items-center text-sm">
-          <span className="w-2 h-2 bg-green-600 rounded-full mr-2"></span>
+          <span className="w-3 h-3 bg-green-600 rounded-full mr-3"></span>
           <span className="text-gray-700">Budget {data.currentRoutine.monthlyBudget}</span>
         </div>
 
         {/* Allergies */}
         {data.allergies.ingredients.length > 0 && (
           <div className="flex items-start text-sm">
-            <span className="w-2 h-2 bg-red-500 rounded-full mr-2 mt-1.5"></span>
+            <span className="w-3 h-3 bg-red-500 rounded-full mr-3 mt-1"></span>
             <span className="text-gray-700 text-xs">
               {data.allergies.ingredients.includes('Aucune allergie connue') 
                 ? 'Aucune allergie connue'
@@ -320,7 +339,7 @@ export default function SkinQuestionnaire() {
         {/* Réactions passées (si renseignées) */}
         {data.allergies.pastReactions.trim() && (
           <div className="flex items-start text-sm">
-            <span className="w-2 h-2 bg-yellow-500 rounded-full mr-2 mt-1.5"></span>
+            <span className="w-3 h-3 bg-yellow-500 rounded-full mr-3 mt-1"></span>
             <div className="text-gray-700 text-xs">
               <span className="font-medium">Réactions passées:</span><br/>
               <span className="italic">"{data.allergies.pastReactions.trim()}"</span>
@@ -353,7 +372,7 @@ export default function SkinQuestionnaire() {
         <button
           onClick={handleSubmit}
           disabled={!isFormComplete()}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-400"
+          className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
         >
           {isFormComplete() ? '🚀 Lancer l\'analyse IA' : '⏳ Compléter le formulaire'}
         </button>
@@ -373,15 +392,23 @@ export default function SkinQuestionnaire() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Âge *</label>
-                <input
-                  type="number"
-                  min="13"
-                  max="100"
-                  value={data.userProfile.age}
-                  onChange={(e) => updateData('userProfile', { age: parseInt(e.target.value) })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
+                <label className="block text-sm font-medium text-gray-700 mb-3">Âge *</label>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                  {AGE_RANGES.map((range) => (
+                    <button
+                      key={range.range}
+                      type="button"
+                      onClick={() => handleAgeRangeSelect(range)}
+                      className={`p-3 text-sm font-medium rounded-xl border-2 transition-all ${
+                        selectedAgeRange === range.range
+                          ? 'border-purple-500 bg-purple-50 text-purple-700'
+                          : 'border-gray-200 bg-white text-gray-700 hover:border-purple-300 hover:bg-purple-50'
+                      }`}
+                    >
+                      {range.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <div>
@@ -601,20 +628,38 @@ export default function SkinQuestionnaire() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
       {/* Header avec progression */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="bg-white/80 backdrop-blur-sm border-b border-purple-100 sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Questionnaire personnalisé</h1>
-              <p className="text-gray-600 mt-1">Étape 2 sur 3 • Analyse DermAI</p>
+            {/* Logo */}
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
+                <span className="text-white font-bold text-lg">D</span>
+              </div>
+              <div>
+                <h1 className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                  DermAI
+                </h1>
+                <p className="text-sm text-gray-600">Diagnostic personnalisé par IA</p>
+              </div>
             </div>
+
+            {/* Progress dots */}
+            <div className="hidden md:flex items-center space-x-2">
+              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+              <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+              <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
+              <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
+            </div>
+
             <div className="text-right">
-              <div className="text-sm text-gray-500">Étape {currentStep}/{totalSteps}</div>
+              <div className="text-sm text-gray-500">Étape 2 sur 4</div>
+              <div className="text-sm text-gray-500">Question {currentStep}/{totalSteps}</div>
               <div className="w-32 bg-gray-200 rounded-full h-2 mt-1">
                 <div 
-                  className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                  className="bg-gradient-to-r from-pink-500 to-purple-600 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${(currentStep / totalSteps) * 100}%` }}
                 ></div>
               </div>
@@ -629,7 +674,7 @@ export default function SkinQuestionnaire() {
           
           {/* Contenu principal */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+            <div className="bg-white rounded-3xl shadow-xl border border-purple-100 p-8 hover:shadow-2xl transition-shadow">
               {renderStep()}
 
               {/* Navigation */}
@@ -637,19 +682,27 @@ export default function SkinQuestionnaire() {
                 <button
                   onClick={handlePrevious}
                   disabled={currentStep === 1}
-                  className="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  ← Précédent
+                  <span>←</span>
+                  <span>Précédent</span>
                 </button>
                 
                 <button
                   onClick={handleNext}
                   disabled={!canProceed()}
-                  className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center space-x-3 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-8 rounded-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                 >
-                  {currentStep === totalSteps ? (
-                    isFormComplete() ? '🚀 Lancer l\'analyse' : '⏳ Compléter le formulaire'
-                  ) : 'Suivant →'}
+                  <span>
+                    {currentStep === totalSteps ? (
+                      isFormComplete() ? '🚀 Lancer l\'analyse' : '⏳ Compléter le formulaire'
+                    ) : 'Suivant'}
+                  </span>
+                  {currentStep !== totalSteps && (
+                    <div className="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center">
+                      <span className="text-xs">→</span>
+                    </div>
+                  )}
                 </button>
               </div>
             </div>
@@ -665,7 +718,7 @@ export default function SkinQuestionnaire() {
                 <button
                   onClick={handleSubmit}
                   disabled={!isFormComplete()}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-400"
+                  className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                 >
                   {isFormComplete() ? '🚀 Lancer l\'analyse IA' : '⏳ Compléter le formulaire'}
                 </button>

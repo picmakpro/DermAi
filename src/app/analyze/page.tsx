@@ -136,35 +136,90 @@ export default function AnalyzePage() {
 
   if (!sessionData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-indigo-600"></div>
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600"></div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+      {/* Header */}
+      <div className="bg-white/80 backdrop-blur-sm border-b border-purple-100 sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
+                <span className="text-white font-bold text-lg">D</span>
+              </div>
+              <div>
+                <h1 className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                  DermAI
+                </h1>
+                <p className="text-sm text-gray-600">Diagnostic personnalisé par IA</p>
+              </div>
+            </div>
+
+            {/* Progress dots */}
+            <div className="hidden md:flex items-center space-x-2">
+              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+              <div className="w-3 h-3 bg-purple-500 rounded-full animate-pulse"></div>
+              <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
+            </div>
+
+            <div className="text-right">
+              <div className="text-sm text-gray-500">Étape 3 sur 4</div>
+              <div className="text-sm text-purple-600 font-medium">Analyse en cours...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-4 py-12">
         <div className="max-w-2xl mx-auto">
           {/* En-tête */}
           <div className="text-center mb-8">
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="w-20 h-20 bg-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4"
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", duration: 0.8 }}
+              className="relative w-24 h-24 mx-auto mb-6"
             >
-              <Brain className="w-10 h-10 text-white" />
+              <div className="w-24 h-24 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 rounded-full flex items-center justify-center">
+                <Brain className="w-12 h-12 text-white" />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 rounded-full animate-ping opacity-20"></div>
             </motion.div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Analyse en cours
-            </h1>
-            <p className="text-gray-600">
-              Notre IA analyse vos photos avec la technologie GPT-4o Vision
+            
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-4xl font-bold text-gray-900 mb-4"
+            >
+              DermAI analyse votre peau
+            </motion.h1>
+            
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="text-xl text-gray-600 leading-relaxed"
+            >
+              Notre intelligence artificielle examine vos photos avec une 
+              <strong className="text-purple-600"> précision dermatologique</strong>
             </p>
           </div>
 
           {/* Contenu principal */}
-          <div className="bg-white rounded-2xl shadow-xl p-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="bg-white rounded-3xl shadow-xl border border-purple-100 p-8"
+          >
             {error ? (
               // État d'erreur
               <motion.div
@@ -184,13 +239,13 @@ export default function AnalyzePage() {
                 <div className="flex gap-4 justify-center">
                   <button
                     onClick={handleRetry}
-                    className="bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors"
+                    className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-6 py-3 rounded-2xl font-medium transition-all transform hover:scale-105"
                   >
                     Réessayer
                   </button>
                   <button
                     onClick={handleGoBack}
-                    className="bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+                    className="bg-gray-100 text-gray-700 px-6 py-3 rounded-2xl font-medium hover:bg-gray-200 transition-colors"
                   >
                     Retour
                   </button>
@@ -209,9 +264,9 @@ export default function AnalyzePage() {
                       {Math.round(progress)}%
                     </span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div className="w-full bg-gray-200 rounded-full h-4">
                     <motion.div
-                      className="bg-indigo-600 h-3 rounded-full"
+                      className="bg-gradient-to-r from-pink-500 to-purple-600 h-4 rounded-full shadow-sm"
                       initial={{ width: 0 }}
                       animate={{ width: `${progress}%` }}
                       transition={{ duration: 0.5 }}
@@ -232,17 +287,17 @@ export default function AnalyzePage() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className={`flex items-center p-4 rounded-lg border-2 transition-all ${
+                        className={`flex items-center p-6 rounded-2xl border-2 transition-all ${
                           isActive
-                            ? 'border-indigo-300 bg-indigo-50'
+                            ? 'border-purple-300 bg-purple-50 shadow-lg'
                             : isCompleted
-                            ? 'border-green-300 bg-green-50'
+                            ? 'border-green-300 bg-green-50 shadow-md'
                             : 'border-gray-200 bg-gray-50'
                         }`}
                       >
-                        <div className={`w-12 h-12 rounded-full flex items-center justify-center mr-4 ${
+                        <div className={`w-14 h-14 rounded-full flex items-center justify-center mr-4 shadow-sm ${
                           isActive
-                            ? 'bg-indigo-600 text-white'
+                            ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white'
                             : isCompleted
                             ? 'bg-green-600 text-white'
                             : 'bg-gray-300 text-gray-600'
@@ -276,9 +331,10 @@ export default function AnalyzePage() {
                 </div>
 
                 {/* Informations sur l'analyse */}
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <h3 className="font-medium text-gray-900 mb-3">
-                    Analyse en cours :
+                <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-100 rounded-2xl p-6">
+                  <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
+                    <span className="text-lg mr-2">🔍</span>
+                    Analyse en cours
                   </h3>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
@@ -307,11 +363,19 @@ export default function AnalyzePage() {
                 </div>
 
                 {/* Note de sécurité */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <p className="text-sm text-blue-800">
-                    <strong>Note :</strong> Cette analyse est réalisée par IA et ne remplace pas un avis médical professionnel. 
-                    En cas de problème dermatologique sévère, consultez un dermatologue.
-                  </p>
+                <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6">
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-white text-xs font-bold">!</span>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-blue-900 mb-2">Avertissement médical</h4>
+                      <p className="text-sm text-blue-800 leading-relaxed">
+                        Cette analyse est réalisée par intelligence artificielle et ne remplace pas un diagnostic médical professionnel. 
+                        En cas de problème dermatologique persistant ou sévère, consultez un dermatologue qualifié.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}

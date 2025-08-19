@@ -5,9 +5,9 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'DermAI V2 - Diagnostic Dermatologique IA',
-  description: 'Analyse précise de votre peau avec intelligence artificielle avancée',
-  keywords: ['dermatologie', 'IA', 'diagnostic', 'peau', 'skincare'],
+  title: 'DermAI - Diagnostic Dermatologique par IA',
+  description: 'Obtenez un diagnostic précis de votre peau en quelques minutes grâce à l\'intelligence artificielle avancée. Recommandations personnalisées et routine sur-mesure.',
+  keywords: ['dermatologie', 'intelligence artificielle', 'diagnostic peau', 'skincare', 'analyse dermatologique', 'routine beauté'],
 }
 
 export default function RootLayout({
@@ -18,9 +18,7 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className={inter.className}>
-        <main className="min-h-screen bg-gray-50">
-          {children}
-        </main>
+        {children}
       </body>
     </html>
   )
