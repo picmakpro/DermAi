@@ -2,10 +2,6 @@ import { createOpenAIClient, ANALYSIS_MODEL } from '@/lib/openai'
 import type { AnalyzeRequest, SkinAnalysis } from '@/types'
 
 export class AnalysisService {
-  
-  /**
-   * Analyse DermAI Vision 3.0 des photos
-   */
   static async analyzeSkin(request: AnalyzeRequest): Promise<SkinAnalysis> {
     try {
       const openai = createOpenAIClient()
@@ -15,25 +11,19 @@ export class AnalysisService {
           if (typeof photo.file === 'string' && photo.file.startsWith('data:image/')) {
             return photo.file
           }
-        if (typeof photo.file === 'string') {
+          if (typeof photo.file === 'string') {
             return `data:image/jpeg;base64,${photo.file}`
           }
           return ''
         })
         .filter(url => url.length > 0)
-        
+
       const systemPrompt = this.buildSystemPrompt()
       const userPrompt = this.buildUserPrompt(request)
 
       if (imageUrls.length === 0) {
         throw new Error('Aucune image valide trouvée pour l\'analyse')
       }
-
-      console.log('Envoi à moteur IA DermAI:', {
-        imagesCount: imageUrls.length,
-        systemPromptLength: systemPrompt.length,
-        userPromptLength: userPrompt.length
-      })
 
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), 120000)
@@ -47,25 +37,18 @@ export class AnalysisService {
               role: 'user',
               content: [
                 { type: 'text', text: userPrompt },
-                ...imageUrls.map(url => ({
-                  type: 'image_url' as const,
-                  image_url: { url }
-                }))
+                ...imageUrls.map(url => ({ type: 'image_url' as const, image_url: { url } }))
               ]
             }
           ],
-          max_tokens: 4000,
+          max_tokens: 1500,
           temperature: 0.3,
         }, { signal: controller.signal })
 
         clearTimeout(timeoutId)
 
-        console.log('Réponse IA reçue:', {
-          usage: response.usage,
-          model: response.model
-        })
-
-        const analysisResult = this.parseAnalysisResponse(response.choices[0]?.message?.content)
+        const raw = response.choices?.[0]?.message?.content ?? ''
+        const analysisResult = this.parseAnalysisResponse(raw)
         analysisResult.scores.overall = this.computeWeightedOverall(analysisResult.scores)
 
         return {
@@ -77,17 +60,54 @@ export class AnalysisService {
           recommendations: analysisResult.recommendations,
           createdAt: new Date()
         }
-      } catch (apiError) {
+      } catch (apiError: any) {
         clearTimeout(timeoutId)
+        const msg = String(apiError?.message || apiError)
+        if (msg.toLowerCase().includes('too large') || msg.toLowerCase().includes('context length')) {
+          throw new Error('Images ou prompt trop volumineux. Réduisez la taille/quantité des photos et réessayez.')
+        }
         if (apiError instanceof Error && apiError.name === 'AbortError') {
           throw new Error('Timeout: L\'analyse a pris trop de temps')
         }
         throw apiError
       }
     } catch (error) {
-      console.error('Erreur analyse IA:', error)
       throw new Error(`Échec de l'analyse: ${error instanceof Error ? error.message : 'Erreur inconnue'}`)
     }
+  }
+
+  private static extractJsonBlock(text: string): string | null {
+    if (!text) return null
+    const start = text.indexOf('{')
+    const end = text.lastIndexOf('}')
+    if (start === -1 || end === -1 || end <= start) return null
+    return text.slice(start, end + 1)
+  }
+
+  private static parseAnalysisResponse(content: string): any {
+    if (!content) throw new Error('Réponse vide de l\'IA')
+
+    const cleaned = content
+      .replace(/```json\s*/gi, '')
+      .replace(/```\s*/g, '')
+      .trim()
+
+    // Tentative 1: parse direct
+    try {
+      return JSON.parse(cleaned)
+    } catch {}
+
+    // Tentative 2: extraire le bloc JSON le plus large
+    const block = this.extractJsonBlock(cleaned)
+    if (block) {
+      try {
+        return JSON.parse(block)
+      } catch {}
+    }
+
+    // Logging minimal pour diagnostic (sans exposer tout au client)
+    const preview = cleaned.slice(0, 80)
+    throw new Error(`Réponse IA non JSON (aperçu: ${preview}...)`)
   }
 
   private static computeWeightedOverall(scores: any): number {
@@ -101,10 +121,8 @@ export class AnalysisService {
       darkCircles: 0.08,
       skinAge: 0.10,
     }
-
     let weightedSum = 0
     let usedWeightSum = 0
-
     for (const key of Object.keys(weights)) {
       const weight = weights[key]
       const detail = scores?.[key]
@@ -114,71 +132,17 @@ export class AnalysisService {
         usedWeightSum += weight
       }
     }
-
     if (usedWeightSum === 0) return 0
     return Math.round(weightedSum / usedWeightSum)
   }
 
   private static buildSystemPrompt(): string {
-    return `Tu es un expert dermatologue IA de niveau mondial avec 20 ans d'expérience. 
-
-## MISSION CRITIQUE
-Analyser avec précision maximale les photos de peau fournies et donner un diagnostic dermatologique professionnel.
-
-## PHILOSOPHIE D'ANALYSE
-- PRÉCISION > Politesse : Diagnostic factuel et direct
-- OBSERVATION > Supposition : Basé uniquement sur ce qui est visible
-- SPÉCIFICITÉ > Généralité : Nommer les conditions précises
-- CONFIANCE MESURÉE : Indiquer le niveau de certitude (0-1)
-
-## FORMAT RÉPONSE OBLIGATOIRE
-Répondre UNIQUEMENT en JSON valide avec la structure demandée.`
+    return `Tu es un expert dermatologue IA.
+Réponds uniquement en JSON valide, sans texte autour.`
   }
 
   private static buildUserPrompt(request: AnalyzeRequest): string {
-    return `## CONTEXTE UTILISATEUR
-**Profil :** ${request.userProfile.gender}, ${request.userProfile.age} ans
-**Type de peau déclaré :** ${request.userProfile.skinType}
-
-## PRÉOCCUPATIONS PRINCIPALES
-${request.skinConcerns.primary.join(', ')}${request.skinConcerns.otherText ? ` (Autres: ${request.skinConcerns.otherText})` : ''}
-**Durée du problème :** ${request.skinConcerns.duration}
-
-## ROUTINE ACTUELLE
-**Matin :** ${request.currentRoutine.morningProducts.join(', ') || 'Aucune routine'}
-**Soir :** ${request.currentRoutine.eveningProducts.join(', ') || 'Aucune routine'}
-**Fréquence nettoyage :** ${request.currentRoutine.cleansingFrequency}
-**Budget mensuel :** ${request.currentRoutine.monthlyBudget}
-
-## ALLERGIES ET SENSIBILITÉS
-**Ingrédients à éviter :** ${request.allergies?.ingredients?.join(', ') || 'Aucune allergie connue'}
-**Réactions passées :** ${request.allergies?.pastReactions || 'Aucune réaction signalée'}
-
-## PHOTOS FOURNIES
-${request.photos.map((photo, index) => `Photo ${index + 1}: ${photo.type}`).join('\n')}
-
-## MISSION
-Analyser ces ${request.photos.length} photos avec expertise dermatologique maximale.
-
-Fournir diagnostic précis + scores justifiés + recommandations actionables.
-RÉPONSE EN JSON UNIQUEMENT - PAS DE TEXTE LIBRE.`
-  }
-
-  private static parseAnalysisResponse(content: string | null): any {
-    if (!content) throw new Error('Réponse vide de l\'IA')
-    try {
-      const cleanContent = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
-      console.log('Contenu à parser:', cleanContent.substring(0, 200) + '...')
-      const parsed = JSON.parse(cleanContent)
-      if (!parsed.scores || !parsed.diagnostic || !parsed.recommendations) {
-        throw new Error('Structure de réponse invalide')
-      }
-      return parsed
-    } catch (error) {
-      console.error('Erreur parsing JSON:', error)
-      console.error('Contenu reçu:', content)
-      throw new Error('Format de réponse invalide de l\'IA')
-    }
+    return `## CONTEXTE UTILISATEUR\nProfil: ${request.userProfile.gender}, ${request.userProfile.age} ans\nType: ${request.userProfile.skinType}\nPréoccupations: ${request.skinConcerns.primary.join(', ')}\nDurée: ${request.skinConcerns.duration}\nAllergies: ${request.allergies?.ingredients?.join(', ') || 'Aucune'}\nPHOTOS: ${request.photos.length}`
   }
 
   private static generateId(): string {
