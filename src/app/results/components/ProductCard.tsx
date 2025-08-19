@@ -49,8 +49,8 @@ export default function ProductCard({
       <div className="p-4 space-y-3">
         {/* Category badge */}
         <div className="flex items-center justify-between">
-          <span className="text-xs bg-pink-100 text-pink-600 px-2 py-1 rounded-full font-medium">
-            Nettoyant Purifiant
+          <span className="text-xs bg-gradient-to-r from-pink-100 to-purple-100 text-pink-700 px-3 py-1.5 rounded-full font-semibold">
+            ✨ Recommandé par l'IA
           </span>
           <div className="flex items-center space-x-2">
             {/* Why this product tooltip */}
@@ -122,9 +122,10 @@ export default function ProductCard({
         </a>
         
         {/* Exclusive offer badge */}
-        <div className="bg-gradient-to-r from-orange-100 to-yellow-100 border border-orange-200 rounded-lg p-2 text-center">
-          <div className="text-xs text-orange-800 font-medium flex items-center justify-center">
-            🔥 Réduction exclusive via ce lien !
+        <div className="bg-gradient-to-r from-green-100 to-emerald-100 border border-green-200 rounded-lg p-2.5 text-center">
+          <div className="text-xs text-green-800 font-semibold flex items-center justify-center space-x-1">
+            <span>💡</span>
+            <span>Prix DermAI : jusqu'à -19% vs pharmacie</span>
           </div>
         </div>
       </div>

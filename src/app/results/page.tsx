@@ -150,17 +150,17 @@ export default function ResultsPage() {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-lg">S</span>
-              </div>
-              <div>
-                <h1 className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-                  SkinCare AI
-                </h1>
-                <p className="text-sm text-gray-600">Diagnostic personnalisé par IA</p>
-              </div>
-            </div>
+                         <div className="flex items-center space-x-3">
+               <div className="w-10 h-10 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
+                 <span className="text-white font-bold text-lg">D</span>
+               </div>
+               <div>
+                 <h1 className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                   DermAI
+                 </h1>
+                 <p className="text-sm text-gray-600">Diagnostic personnalisé par IA</p>
+               </div>
+             </div>
 
             {/* Progress dots */}
             <div className="hidden md:flex items-center space-x-2">
@@ -183,20 +183,26 @@ export default function ResultsPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        {/* Hero Section - Diagnostic */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-r from-pink-500 to-purple-600 rounded-3xl p-8 text-white relative overflow-hidden"
-        >
-          <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-10 translate-x-10"></div>
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full translate-y-10 -translate-x-10"></div>
+                 {/* Hero Section - Diagnostic */}
+         <motion.div
+           initial={{ opacity: 0, y: 20 }}
+           animate={{ opacity: 1, y: 0 }}
+           className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 rounded-3xl p-8 text-white relative overflow-hidden"
+         >
+           <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-10 translate-x-10 animate-pulse"></div>
+           <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full translate-y-10 -translate-x-10 animate-pulse delay-1000"></div>
+           <div className="absolute top-1/2 left-1/2 w-20 h-20 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2 animate-ping"></div>
           
           <div className="relative z-10">
-            <div className="flex items-center space-x-3 mb-6">
-              <Award className="w-8 h-8" />
-              <h2 className="text-2xl font-bold">Diagnostic Personnalisé</h2>
-            </div>
+                       <div className="flex items-center space-x-3 mb-6">
+             <div className="p-2 bg-white/20 rounded-full">
+               <Award className="w-8 h-8" />
+             </div>
+             <div>
+               <h2 className="text-2xl font-bold">Diagnostic Personnalisé</h2>
+               <p className="text-purple-100 text-sm">Analyse complétée avec succès</p>
+             </div>
+           </div>
             
             <div className="grid md:grid-cols-3 gap-6">
               {/* Skin type */}
@@ -244,18 +250,30 @@ export default function ResultsPage() {
           </div>
         </motion.div>
 
-        {/* Scores Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-white rounded-3xl shadow-xl p-8"
-        >
-          <div className="flex items-center space-x-3 mb-6">
-            <Award className="w-6 h-6 text-pink-500" />
-            <h2 className="text-2xl font-bold text-gray-900">Vos Scores Peau</h2>
-          </div>
-          <p className="text-gray-600 mb-8">Analyse sur 5 piliers essentiels</p>
+                 {/* Scores Section */}
+         <motion.div
+           initial={{ opacity: 0, y: 20 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ delay: 0.1 }}
+           className="bg-white rounded-3xl shadow-xl p-8 hover:shadow-2xl transition-shadow"
+         >
+           <div className="flex items-center justify-between mb-6">
+             <div className="flex items-center space-x-3">
+               <div className="p-2 bg-pink-100 rounded-full">
+                 <Award className="w-6 h-6 text-pink-500" />
+               </div>
+               <div>
+                 <h2 className="text-2xl font-bold text-gray-900">Vos Scores Peau</h2>
+                 <p className="text-gray-600">Analyse sur 5 piliers essentiels</p>
+               </div>
+             </div>
+             <div className="text-right">
+               <div className="text-sm text-gray-500">Score global</div>
+               <div className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
+                 {analysis.scores.overall}/100
+               </div>
+             </div>
+           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
             {scoreOrder.map((key) => {
@@ -274,114 +292,127 @@ export default function ResultsPage() {
           </div>
         </motion.div>
 
-        {/* Key Observations */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-white rounded-3xl shadow-xl p-8"
-        >
-          <div className="flex items-center space-x-3 mb-6">
-            <Star className="w-6 h-6 text-blue-500" />
-            <h2 className="text-2xl font-bold text-gray-900">Observations Détaillées</h2>
-          </div>
+                 {/* Key Observations */}
+         <motion.div
+           initial={{ opacity: 0, y: 20 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ delay: 0.2 }}
+           className="bg-white rounded-3xl shadow-xl p-8"
+         >
+           <div className="flex items-center space-x-3 mb-6">
+             <Star className="w-6 h-6 text-blue-500" />
+             <h2 className="text-2xl font-bold text-gray-900">Observations Détaillées</h2>
+           </div>
 
-          <div className="grid md:grid-cols-3 gap-4">
-            {analysis.diagnostic.observations.slice(0, 3).map((observation, index) => (
-              <div key={index} className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-4 border border-blue-100">
-                <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                    {index + 1}
-                  </div>
-                  <p className="text-gray-800 text-sm">{observation}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </motion.div>
+           <div className="grid md:grid-cols-3 gap-4">
+             {analysis.diagnostic.observations.slice(0, 3).map((observation, index) => (
+               <div key={index} className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-4 border border-blue-100">
+                 <div className="flex items-start space-x-3">
+                   <div className="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                     {index + 1}
+                   </div>
+                   <p className="text-gray-800 text-sm">{observation}</p>
+                 </div>
+               </div>
+             ))}
+           </div>
+         </motion.div>
 
-        {/* Products Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-white rounded-3xl shadow-xl p-8"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
-                <span className="text-white text-lg">🛍️</span>
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900">Produits Recommandés</h2>
-                <p className="text-gray-600">Sélectionnés spécialement pour votre peau</p>
-              </div>
-            </div>
-          </div>
+         {/* Routine Section */}
+         <motion.div
+           initial={{ opacity: 0, y: 20 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ delay: 0.3 }}
+           className="bg-white rounded-3xl shadow-xl p-8"
+         >
+           <div className="flex items-center space-x-3 mb-6">
+             <Calendar className="w-6 h-6 text-purple-500" />
+             <h2 className="text-2xl font-bold text-gray-900">Routine Personnalisée</h2>
+           </div>
+           
+           <div className="grid md:grid-cols-2 gap-6">
+             {/* Morning routine */}
+             <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-6 border border-orange-100">
+               <div className="flex items-center space-x-3 mb-4">
+                 <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                   <span className="text-white text-sm">☀️</span>
+                 </div>
+                 <h3 className="text-lg font-semibold text-gray-900">ROUTINE MATIN</h3>
+               </div>
+               
+               <div className="space-y-3">
+                 {analysis.recommendations.routine.slice(0, 3).map((step, index) => (
+                   <div key={index} className="flex items-start space-x-3">
+                     <div className="w-6 h-6 bg-orange-200 text-orange-800 rounded-full flex items-center justify-center text-sm font-bold">
+                       {index + 1}
+                     </div>
+                     <p className="text-gray-800 text-sm">{step}</p>
+                   </div>
+                 ))}
+               </div>
+             </div>
 
-          <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory">
-            {mockProducts.map((product, index) => (
-              <ProductCard key={index} {...product} />
-            ))}
-          </div>
-        </motion.div>
+             {/* Evening routine */}
+             <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-6 border border-indigo-100">
+               <div className="flex items-center space-x-3 mb-4">
+                 <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center">
+                   <span className="text-white text-sm">🌙</span>
+                 </div>
+                 <h3 className="text-lg font-semibold text-gray-900">ROUTINE SOIR</h3>
+               </div>
+               
+               <div className="space-y-3">
+                 {analysis.recommendations.routine.slice(3, 6).map((step, index) => (
+                   <div key={index} className="flex items-start space-x-3">
+                     <div className="w-6 h-6 bg-indigo-200 text-indigo-800 rounded-full flex items-center justify-center text-sm font-bold">
+                       {index + 1}
+                     </div>
+                     <p className="text-gray-800 text-sm">{step}</p>
+                   </div>
+                 ))}
+               </div>
+             </div>
+           </div>
+         </motion.div>
 
-        {/* Routine Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="bg-white rounded-3xl shadow-xl p-8"
-        >
-          <div className="flex items-center space-x-3 mb-6">
-            <Calendar className="w-6 h-6 text-purple-500" />
-            <h2 className="text-2xl font-bold text-gray-900">Routine Personnalisée</h2>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Morning routine */}
-            <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-6 border border-orange-100">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm">☀️</span>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900">ROUTINE MATIN</h3>
-              </div>
-              
-              <div className="space-y-3">
-                {analysis.recommendations.routine.slice(0, 3).map((step, index) => (
-                  <div key={index} className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-orange-200 text-orange-800 rounded-full flex items-center justify-center text-sm font-bold">
-                      {index + 1}
-                    </div>
-                    <p className="text-gray-800 text-sm">{step}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+         {/* Products Section */}
+         <motion.div
+           initial={{ opacity: 0, y: 20 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ delay: 0.4 }}
+           className="bg-gradient-to-br from-white to-purple-50 rounded-3xl shadow-xl p-8 border border-purple-100"
+         >
+           <div className="flex items-center justify-between mb-6">
+             <div className="flex items-center space-x-3">
+               <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+                 <span className="text-white text-xl">🛍️</span>
+               </div>
+               <div>
+                 <h2 className="text-2xl font-bold text-gray-900">Produits Recommandés</h2>
+                 <p className="text-gray-600">
+                   Sélectionnés par l'IA • <span className="text-green-600 font-semibold">Livraison gratuite dès 49€</span>
+                 </p>
+               </div>
+             </div>
+             <div className="text-right hidden md:block">
+               <div className="text-sm text-gray-500">Offre spéciale</div>
+               <div className="text-lg font-bold text-green-600">-19% vs pharmacie</div>
+             </div>
+           </div>
 
-            {/* Evening routine */}
-            <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-6 border border-indigo-100">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm">🌙</span>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900">ROUTINE SOIR</h3>
-              </div>
-              
-              <div className="space-y-3">
-                {analysis.recommendations.routine.slice(3, 6).map((step, index) => (
-                  <div key={index} className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-indigo-200 text-indigo-800 rounded-full flex items-center justify-center text-sm font-bold">
-                      {index + 1}
-                    </div>
-                    <p className="text-gray-800 text-sm">{step}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </motion.div>
+           <div className="bg-gradient-to-r from-green-100 to-emerald-100 border border-green-200 rounded-2xl p-4 mb-6">
+             <div className="flex items-center justify-center space-x-2 text-green-800">
+               <span className="text-lg">💡</span>
+               <span className="font-semibold">Ces produits correspondent parfaitement à votre type de peau</span>
+             </div>
+           </div>
+
+           <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory">
+             {mockProducts.map((product, index) => (
+               <ProductCard key={index} {...product} />
+             ))}
+           </div>
+         </motion.div>
 
         {/* Chat CTA */}
         <motion.div
@@ -423,10 +454,33 @@ export default function ResultsPage() {
         </div>
       </div>
 
-      {/* Chat Widget */}
-      {isChatOpen && (
-        <ChatWidget analysis={analysis} onClose={() => setIsChatOpen(false)} />
-      )}
-    </div>
-  )
-}
+             {/* Floating Chat Bubble */}
+       <motion.button
+         initial={{ scale: 0 }}
+         animate={{ scale: 1 }}
+         transition={{ delay: 1.5, type: "spring" }}
+         onClick={() => setIsChatOpen(true)}
+         className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 z-50 flex items-center justify-center group"
+       >
+         <MessageCircle className="w-7 h-7" />
+         <span className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full animate-pulse flex items-center justify-center">
+           <span className="text-white text-xs font-bold">!</span>
+         </span>
+         
+         {/* Tooltip */}
+         <div className="absolute bottom-full right-0 mb-3 hidden group-hover:block">
+           <div className="bg-gray-900 text-white text-sm rounded-lg px-4 py-3 whitespace-nowrap shadow-xl">
+             <div className="font-semibold">💬 Besoin d'aide ?</div>
+             <div className="text-xs text-gray-300 mt-1">Posez vos questions à votre conseiller IA</div>
+             <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+           </div>
+         </div>
+       </motion.button>
+
+       {/* Chat Widget */}
+       {isChatOpen && (
+         <ChatWidget analysis={analysis} onClose={() => setIsChatOpen(false)} />
+       )}
+     </div>
+   )
+ }
