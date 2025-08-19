@@ -80,7 +80,10 @@ export class AnalysisService {
 
         // Parser la réponse en JSON structuré
         const analysisResult = this.parseAnalysisResponse(response.choices[0]?.message?.content)
-        
+
+        // Calcul du score global (moyenne pondérée) basé sur les 8 sous-scores
+        analysisResult.scores.overall = this.computeWeightedOverall(analysisResult.scores)
+
         return {
           id: this.generateId(),
           userId: 'temp-user',
@@ -105,6 +108,43 @@ export class AnalysisService {
       console.error('Erreur analyse IA:', error)
       throw new Error(`Échec de l'analyse: ${error instanceof Error ? error.message : 'Erreur inconnue'}`)
     }
+  }
+
+  /**
+   * Calcule un score global pondéré à partir des sous-scores
+   * Pondérations choisies pour être parlantes grand public (somme = 1)
+   */
+  private static computeWeightedOverall(scores: any): number {
+    const weights: Record<string, number> = {
+      hydration: 0.15,
+      wrinkles: 0.20,
+      firmness: 0.15,
+      radiance: 0.10,
+      pores: 0.15,
+      spots: 0.10,
+      darkCircles: 0.05,
+      skinAge: 0.10,
+    }
+
+    let weightedSum = 0
+    let usedWeightSum = 0
+
+    for (const key of Object.keys(weights)) {
+      const weight = weights[key]
+      const detail = scores?.[key]
+      const value: number | undefined = detail && typeof detail.value === 'number' ? detail.value : undefined
+
+      if (typeof value === 'number' && !Number.isNaN(value)) {
+        weightedSum += value * weight
+        usedWeightSum += weight
+      }
+    }
+
+    if (usedWeightSum === 0) {
+      return 0
+    }
+
+    return Math.round(weightedSum / usedWeightSum)
   }
 
   /**
