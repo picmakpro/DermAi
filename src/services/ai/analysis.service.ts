@@ -48,16 +48,36 @@ export class AnalysisService {
         clearTimeout(timeoutId)
 
         const raw = response.choices?.[0]?.message?.content ?? ''
-        const analysisResult = this.parseAnalysisResponse(raw)
-        analysisResult.scores.overall = this.computeWeightedOverall(analysisResult.scores)
+        const parsed = this.parseAnalysisResponse(raw)
+
+        // Garantir la présence des sections attendues
+        const analysisResult = {
+          scores: parsed?.scores ?? {},
+          diagnostic: parsed?.diagnostic ?? {
+            primaryCondition: 'Analyse DermAI',
+            severity: 'Légère',
+            affectedAreas: [],
+            observations: [],
+            prognosis: ''
+          },
+          recommendations: parsed?.recommendations ?? {
+            immediate: [],
+            routine: [],
+            products: [],
+            lifestyle: []
+          }
+        }
+
+        // Calcul/ajout du score global
+        ;(analysisResult as any).scores.overall = this.computeWeightedOverall((analysisResult as any).scores)
 
         return {
           id: this.generateId(),
           userId: 'temp-user',
           photos: request.photos,
-          scores: analysisResult.scores,
-          diagnostic: analysisResult.diagnostic,
-          recommendations: analysisResult.recommendations,
+          scores: (analysisResult as any).scores,
+          diagnostic: (analysisResult as any).diagnostic,
+          recommendations: (analysisResult as any).recommendations,
           createdAt: new Date()
         }
       } catch (apiError: any) {
@@ -92,20 +112,13 @@ export class AnalysisService {
       .replace(/```\s*/g, '')
       .trim()
 
-    // Tentative 1: parse direct
-    try {
-      return JSON.parse(cleaned)
-    } catch {}
+    try { return JSON.parse(cleaned) } catch {}
 
-    // Tentative 2: extraire le bloc JSON le plus large
     const block = this.extractJsonBlock(cleaned)
     if (block) {
-      try {
-        return JSON.parse(block)
-      } catch {}
+      try { return JSON.parse(block) } catch {}
     }
 
-    // Logging minimal pour diagnostic (sans exposer tout au client)
     const preview = cleaned.slice(0, 80)
     throw new Error(`Réponse IA non JSON (aperçu: ${preview}...)`)
   }
@@ -137,8 +150,7 @@ export class AnalysisService {
   }
 
   private static buildSystemPrompt(): string {
-    return `Tu es un expert dermatologue IA.
-Réponds uniquement en JSON valide, sans texte autour.`
+    return `Tu es un expert dermatologue IA. Réponds uniquement en JSON valide, sans texte autour.`
   }
 
   private static buildUserPrompt(request: AnalyzeRequest): string {
