@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import { useAnalysis } from '@/hooks/useAnalysis'
 import type { AnalyzeRequest, PhotoUpload } from '@/types'
 import { getPhotoDataUrl } from '@/utils/storage/photoStore'
+import { saveAnalysis } from '@/utils/storage/analysisStore'
 import { AlertCircle, Brain, Camera, CheckCircle2, Loader2 } from 'lucide-react'
 
 interface SessionData {
@@ -74,9 +75,19 @@ export default function AnalyzePage() {
   useEffect(() => {
     // Rediriger vers les résultats quand l'analyse est terminée
     if (analysis) {
-      // Sauvegarder les résultats en sessionStorage
-      sessionStorage.setItem('dermai_analysis', JSON.stringify(analysis))
-      router.push('/results')
+      const id = analysis.id || `analysis_${Date.now()}`
+      // Stocker payload lourd en IndexedDB et garder ID léger en sessionStorage
+      saveAnalysis(id, analysis).then(() => {
+        sessionStorage.setItem('dermai_analysis_id', id)
+        router.push('/results')
+      }).catch((e) => {
+        console.error('Erreur sauvegarde analysis:', e)
+        // fallback minimal (tronqué) si nécessaire
+        try {
+          sessionStorage.setItem('dermai_analysis_id', id)
+        } catch {}
+        router.push('/results')
+      })
     }
   }, [analysis, router])
 

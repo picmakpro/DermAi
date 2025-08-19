@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
+import { getAnalysis } from '@/utils/storage/analysisStore'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { 
@@ -75,26 +76,31 @@ export default function ResultsPage() {
   const [isChatOpen, setIsChatOpen] = useState(false)
 
   useEffect(() => {
-    // Récupérer les résultats du sessionStorage
-    const analysisData = sessionStorage.getItem('dermai_analysis')
-    const questionnaireData = sessionStorage.getItem('dermai_questionnaire')
-    
-    if (!analysisData) {
-      router.push('/upload')
-      return
-    }
-
-    try {
-      const parsedAnalysis = JSON.parse(analysisData)
-      setAnalysis(parsedAnalysis)
-      if (questionnaireData) {
-        const q = JSON.parse(questionnaireData)
-        if (q?.userProfile?.age) setUserAge(q.userProfile.age)
+    // Charger via ID en sessionStorage + payload en IndexedDB
+    const load = async () => {
+      const analysisId = sessionStorage.getItem('dermai_analysis_id')
+      const questionnaireData = sessionStorage.getItem('dermai_questionnaire')
+      if (!analysisId) {
+        router.push('/upload')
+        return
       }
-    } catch (error) {
-      console.error('Erreur parsing analysis:', error)
-      router.push('/upload')
+      try {
+        const stored = await getAnalysis(analysisId)
+        if (!stored) {
+          router.push('/upload')
+          return
+        }
+        setAnalysis(stored)
+        if (questionnaireData) {
+          const q = JSON.parse(questionnaireData)
+          if (q?.userProfile?.age) setUserAge(q.userProfile.age)
+        }
+      } catch (e) {
+        console.error('Erreur chargement results:', e)
+        router.push('/upload')
+      }
     }
+    load()
   }, [router])
 
   const skinAgeYears = useMemo(() => {
