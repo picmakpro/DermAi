@@ -26,17 +26,13 @@ export default function UploadPage() {
     setIsUploading(true)
 
     try {
-      // Stocker les dataURL en IndexedDB pour éviter le quota sessionStorage
       const meta = [] as Array<{ id: string; type: PhotoUpload['type']; quality: PhotoUpload['quality']; preview: string }>
       for (const photo of photos) {
-        const dataUrl = await convertFileToBase64(photo.file)
+        const dataUrl = await convertFileToJpegDataUrl(photo.file)
         await savePhotoDataUrl(photo.id, dataUrl)
         meta.push({ id: photo.id, type: photo.type, quality: photo.quality, preview: photo.preview })
       }
-      // Ne mettre que les métadonnées légères dans sessionStorage
       sessionStorage.setItem('dermai_photos', JSON.stringify(meta))
-      
-      // Rediriger vers le formulaire
       router.push('/questionnaire')
     } catch (error) {
       console.error('Erreur lors de la conversion des photos:', error)
@@ -46,11 +42,26 @@ export default function UploadPage() {
     }
   }
 
-  // Helper function pour convertir File en base64
-  const convertFileToBase64 = (file: File): Promise<string> => {
+  // Conversion + redimensionnement → JPEG pour limiter la taille (max côté long 1600px)
+  const convertFileToJpegDataUrl = (file: File, maxSize = 1600, quality = 0.85): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
-      reader.onload = () => resolve(reader.result as string)
+      reader.onload = () => {
+        const img = new Image()
+        img.onload = () => {
+          const scale = Math.min(maxSize / img.width, maxSize / img.height, 1)
+          const canvas = document.createElement('canvas')
+          canvas.width = Math.max(1, Math.round(img.width * scale))
+          canvas.height = Math.max(1, Math.round(img.height * scale))
+          const ctx = canvas.getContext('2d')
+          if (!ctx) return reject(new Error('Canvas non supporté'))
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+          const dataUrl = canvas.toDataURL('image/jpeg', quality)
+          resolve(dataUrl)
+        }
+        img.onerror = () => reject(new Error('Image illisible'))
+        img.src = reader.result as string
+      }
       reader.onerror = reject
       reader.readAsDataURL(file)
     })
