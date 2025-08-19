@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { getAnalysis } from '@/utils/storage/analysisStore'
+import ChatWidget from './ChatWidget'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { 
