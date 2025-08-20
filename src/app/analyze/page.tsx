@@ -335,32 +335,46 @@ export default function AnalyzePage() {
                 </div>
 
                 {/* Informations sur l'analyse */}
-                <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-100 rounded-2xl p-6">
-                  <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
-                    <span className="text-lg mr-2">🔍</span>
-                    Analyse en cours
-                  </h3>
-                  <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="bg-white border border-gray-200 rounded-2xl p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="font-semibold text-gray-900 flex items-center">
+                      <span className="text-lg mr-2">🔍</span>
+                      Analyse DermAI
+                    </h3>
+                    <span className="text-xs text-gray-500">Ne quittez pas la page</span>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                     <div>
                       <span className="text-gray-600">Photos analysées :</span>
-                      <span className="font-medium ml-2">
-                        {sessionData.photos.length}
-                      </span>
+                      <span className="font-medium ml-2">{sessionData.photos.length}</span>
                     </div>
                     <div>
-                      <span className="text-gray-600">Technologie :</span>
-                      <span className="font-medium ml-2">DermAI Vision</span>
+                      <span className="text-gray-600">Modèle IA :</span>
+                      <span className="font-medium ml-2">DermAI Vision 3.0</span>
+                    </div>
+                    <div>
+                      <span className="text-gray-600">Étape :</span>
+                      <span className="font-medium ml-2">{`${currentStep + 1}/${analysisSteps.length} — ${analysisSteps[currentStep]?.label}`}</span>
+                    </div>
+                    <div>
+                      <span className="text-gray-600">Durée estimée :</span>
+                      <span className="font-medium ml-2">≈ 30–90 s</span>
                     </div>
                     <div>
                       <span className="text-gray-600">Type de peau :</span>
                       <span className="font-medium ml-2">
-                        {sessionData.questionnaire.userProfile?.skinType}
+                        {sessionData.questionnaire.userProfile?.skinType === 'Je ne sais pas' 
+                          ? 'À déterminer par l’IA' 
+                          : sessionData.questionnaire.userProfile?.skinType}
                       </span>
                     </div>
                     <div>
                       <span className="text-gray-600">Préoccupations :</span>
                       <span className="font-medium ml-2">
-                        {sessionData.questionnaire.skinConcerns?.primary?.length || 0}
+                        {sessionData.questionnaire.skinConcerns?.primary?.includes('Je ne sais pas') ||
+                        (sessionData.questionnaire.skinConcerns?.primary?.length || 0) === 0
+                          ? 'À déterminer par l’IA'
+                          : (sessionData.questionnaire.skinConcerns?.primary?.length || 0)}
                       </span>
                     </div>
                   </div>

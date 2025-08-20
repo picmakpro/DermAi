@@ -25,7 +25,7 @@ export function useAnalysis(): UseAnalysisReturn {
       setProgress(0)
 
       // Simulation du progress (GPT-4o ne donne pas de feedback temps réel)
-      const progressInterval = setInterval(() => {
+      let progressInterval: ReturnType<typeof setInterval> | null = setInterval(() => {
         setProgress(prev => Math.min(prev + Math.random() * 15, 85))
       }, 1000)
 
@@ -48,13 +48,21 @@ export function useAnalysis(): UseAnalysisReturn {
 
       const result = await response.json()
       
-      clearInterval(progressInterval)
+      if (progressInterval) clearInterval(progressInterval)
       setProgress(100)
       setAnalysis(result.data)
 
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur inconnue')
+      const message = err instanceof Error ? err.message : 'Erreur inconnue'
+      if (message === 'Failed to fetch') {
+        setError("La page a été interrompue pendant l’analyse (fermeture/rafraîchissement/enregistrement). Relancez l’analyse.")
+      } else {
+        setError(message)
+      }
     } finally {
+      try {
+        if (progressInterval) clearInterval(progressInterval)
+      } catch {}
       setIsAnalyzing(false)
     }
   }

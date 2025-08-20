@@ -269,7 +269,7 @@ export default function SkinQuestionnaire() {
 
   // Récapitulatif dynamique
   const renderSummary = () => (
-    <div className="bg-white border border-purple-100 rounded-3xl p-6 shadow-xl">
+    <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
       <h3 className="font-semibold text-gray-800 mb-4 flex items-center">
         <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center mr-3">
           <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -282,37 +282,38 @@ export default function SkinQuestionnaire() {
       <div className="space-y-2 text-sm text-gray-700">
         {/* Photos */}
         <div className="flex items-center">
-          <span className="w-3 h-3 bg-green-500 rounded-full mr-3"></span>
+          <span className="w-2.5 h-2.5 bg-green-500 rounded-full mr-3"></span>
           <span className="text-gray-700">{photosCount} photo{photosCount > 1 ? 's' : ''} uploadée{photosCount > 1 ? 's' : ''}</span>
         </div>
 
         {/* Profil - toujours affiché avec valeurs actuelles */}
         <div className="flex items-center">
-          <span className="w-3 h-3 bg-purple-500 rounded-full mr-3"></span>
+          <span className="w-2.5 h-2.5 bg-purple-500 rounded-full mr-3"></span>
           <span className="text-gray-700">
             {data.userProfile.gender !== 'Ne souhaite pas préciser' && `${data.userProfile.gender}, `}
             {selectedAgeRange || `${data.userProfile.age} ans`}
-            {data.userProfile.skinType !== 'Je ne sais pas' && ` • Peau ${data.userProfile.skinType}`}
+            {` • Peau ${data.userProfile.skinType === 'Je ne sais pas' ? 'à déterminer par l’IA' : data.userProfile.skinType}`}
           </span>
         </div>
 
         {/* Préoccupations */}
         {data.skinConcerns.primary.length > 0 && (
           <div className="flex items-start">
-            <span className="w-3 h-3 bg-orange-500 rounded-full mr-3 mt-1"></span>
+            <span className="w-2.5 h-2.5 bg-orange-500 rounded-full mr-3 mt-1"></span>
             <div className="text-gray-700">
-              {data.skinConcerns.primary.includes('Je ne sais pas') ? (
-                <span className="italic text-blue-600">IA analysera automatiquement</span>
-              ) : (
-                <span>{getConcernsDisplay()}</span>
-              )}
+              {data.skinConcerns.primary.includes('Je ne sais pas') || data.skinConcerns.primary.length === 0 ? 
+                (
+                  <span className="italic text-blue-600">À déterminer par l’IA</span>
+                ) : (
+                  <span>{getConcernsDisplay()}</span>
+                )}
             </div>
           </div>
         )}
 
         {/* Routine - toujours afficher même si vide */}
         <div className="flex items-start">
-          <span className="w-3 h-3 bg-purple-500 rounded-full mr-3 mt-1"></span>
+          <span className="w-2.5 h-2.5 bg-purple-500 rounded-full mr-3 mt-1"></span>
           <span className="text-gray-700 text-xs">
             {getRoutineDisplay()} {data.currentRoutine.routinePreference ? `• Préférence: ${data.currentRoutine.routinePreference}` : ''}
           </span>
@@ -320,7 +321,7 @@ export default function SkinQuestionnaire() {
 
         {/* Budget - toujours afficher */}
         <div className="flex items-center">
-          <span className="w-3 h-3 bg-green-600 rounded-full mr-3"></span>
+          <span className="w-2.5 h-2.5 bg-green-600 rounded-full mr-3"></span>
           <span className="text-gray-700">Budget {data.currentRoutine.monthlyBudget}</span>
         </div>
 
@@ -393,7 +394,7 @@ export default function SkinQuestionnaire() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">Âge *</label>
+                <label className="block text-sm font-semibold text-gray-800 mb-3">Âge *</label>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                   {AGE_RANGES.map((range) => (
                     <button
@@ -413,7 +414,7 @@ export default function SkinQuestionnaire() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Genre</label>
+                <label className="block text-sm font-semibold text-gray-800 mb-2">Genre</label>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {GENDER_OPTIONS.map(option => (
                     <button
@@ -433,7 +434,7 @@ export default function SkinQuestionnaire() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Type de peau (si vous le connaissez)</label>
+                <label className="block text-sm font-semibold text-gray-800 mb-2">Type de peau (si vous le connaissez)</label>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {SKIN_TYPES.map(type => (
                     <button
@@ -536,7 +537,7 @@ export default function SkinQuestionnaire() {
 
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">Routine du matin</label>
+                <label className="block text-sm font-semibold text-gray-800 mb-3">Routine du matin</label>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {COMMON_PRODUCTS.map(product => (
                     <button
@@ -557,7 +558,7 @@ export default function SkinQuestionnaire() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">Routine du soir</label>
+                <label className="block text-sm font-semibold text-gray-800 mb-3">Routine du soir</label>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {COMMON_PRODUCTS.map(product => (
                     <button
@@ -578,23 +579,7 @@ export default function SkinQuestionnaire() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Budget mensuel souhaité</label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                  {BUDGET_RANGES.map(range => (
-                    <button
-                      key={range}
-                      type="button"
-                      onClick={() => updateData('currentRoutine', { monthlyBudget: range as any })}
-                      className={`p-2 text-sm rounded-lg border transition-all ${
-                        data.currentRoutine.monthlyBudget === range
-                          ? 'border-green-500 bg-green-50 text-green-700'
-                          : 'border-gray-200 hover:border-gray-300'
-                      }`}
-                    >
-                      {range}
-                    </button>
-                  ))}
-                </div>
+                {/* (Budget déplacé à l'étape 4 après le type de routine) */}
               </div>
             </div>
           </div>
@@ -634,7 +619,7 @@ export default function SkinQuestionnaire() {
             </div>
 
             <div>
-              <h3 className="text-sm font-medium text-gray-700 mb-2">Allergies et sensibilités (optionnel)</h3>
+              <h3 className="text-sm font-semibold text-gray-800 mb-2">Allergies et sensibilités (optionnel)</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                 {ALLERGENIC_INGREDIENTS.map(ingredient => (
                   <button
@@ -652,6 +637,29 @@ export default function SkinQuestionnaire() {
                   </button>
                 ))}
               </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-800 mb-2">Budget mensuel souhaité</label>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                {BUDGET_RANGES.map(range => (
+                  <button
+                    key={range}
+                    type="button"
+                    onClick={() => updateData('currentRoutine', { monthlyBudget: range as any })}
+                    className={`p-2 text-sm rounded-lg border transition-all ${
+                      data.currentRoutine.monthlyBudget === range
+                        ? 'border-green-500 bg-green-50 text-green-700'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    {range}
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-gray-500 mt-2">
+                Cela nous aide à recommander des produits adaptés à votre fourchette de prix.
+              </p>
             </div>
           </div>
         )
