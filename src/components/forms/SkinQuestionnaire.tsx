@@ -87,7 +87,7 @@ export default function SkinQuestionnaire() {
     currentRoutine: {
       morningProducts: [],
       eveningProducts: [],
-      routinePreference: 'Équilibrée',
+      // routinePreference sera choisie à la fin du formulaire
       monthlyBudget: '50-100€'
     },
     allergies: {
@@ -195,8 +195,10 @@ export default function SkinQuestionnaire() {
     // Étape 2: Préoccupations (au moins une sélection requise)
     const step2Valid = data.skinConcerns.primary.length > 0
 
-    // Étapes 3 et 4 sont optionnelles
-    return step1Valid && step2Valid
+    // Étape 4: Préférence de routine choisie
+    const step4Valid = !!data.currentRoutine.routinePreference
+
+    return step1Valid && step2Valid && step4Valid
   }
 
   // Validation de l'étape actuelle
@@ -209,7 +211,7 @@ export default function SkinQuestionnaire() {
       case 3:
         return true // Routine optionnelle
       case 4:
-        return true // Allergies optionnelles
+        return !!data.currentRoutine.routinePreference // Doit choisir un type de routine
       default:
         return true
     }
@@ -268,7 +270,7 @@ export default function SkinQuestionnaire() {
   // Récapitulatif dynamique
   const renderSummary = () => (
     <div className="bg-white border border-purple-100 rounded-3xl p-6 shadow-xl">
-      <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
+      <h3 className="font-semibold text-gray-800 mb-4 flex items-center">
         <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center mr-3">
           <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
@@ -277,15 +279,15 @@ export default function SkinQuestionnaire() {
         Récapitulatif
       </h3>
       
-      <div className="space-y-3">
+      <div className="space-y-2 text-sm text-gray-700">
         {/* Photos */}
-        <div className="flex items-center text-sm">
+        <div className="flex items-center">
           <span className="w-3 h-3 bg-green-500 rounded-full mr-3"></span>
           <span className="text-gray-700">{photosCount} photo{photosCount > 1 ? 's' : ''} uploadée{photosCount > 1 ? 's' : ''}</span>
         </div>
 
         {/* Profil - toujours affiché avec valeurs actuelles */}
-        <div className="flex items-center text-sm">
+        <div className="flex items-center">
           <span className="w-3 h-3 bg-purple-500 rounded-full mr-3"></span>
           <span className="text-gray-700">
             {data.userProfile.gender !== 'Ne souhaite pas préciser' && `${data.userProfile.gender}, `}
@@ -296,7 +298,7 @@ export default function SkinQuestionnaire() {
 
         {/* Préoccupations */}
         {data.skinConcerns.primary.length > 0 && (
-          <div className="flex items-start text-sm">
+          <div className="flex items-start">
             <span className="w-3 h-3 bg-orange-500 rounded-full mr-3 mt-1"></span>
             <div className="text-gray-700">
               {data.skinConcerns.primary.includes('Je ne sais pas') ? (
@@ -309,7 +311,7 @@ export default function SkinQuestionnaire() {
         )}
 
         {/* Routine - toujours afficher même si vide */}
-        <div className="flex items-start text-sm">
+        <div className="flex items-start">
           <span className="w-3 h-3 bg-purple-500 rounded-full mr-3 mt-1"></span>
           <span className="text-gray-700 text-xs">
             {getRoutineDisplay()} {data.currentRoutine.routinePreference ? `• Préférence: ${data.currentRoutine.routinePreference}` : ''}
@@ -317,7 +319,7 @@ export default function SkinQuestionnaire() {
         </div>
 
         {/* Budget - toujours afficher */}
-        <div className="flex items-center text-sm">
+        <div className="flex items-center">
           <span className="w-3 h-3 bg-green-600 rounded-full mr-3"></span>
           <span className="text-gray-700">Budget {data.currentRoutine.monthlyBudget}</span>
         </div>
@@ -412,28 +414,42 @@ export default function SkinQuestionnaire() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Genre</label>
-                <select
-                  value={data.userProfile.gender}
-                  onChange={(e) => updateData('userProfile', { gender: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {GENDER_OPTIONS.map(option => (
-                    <option key={option} value={option}>{option}</option>
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => updateData('userProfile', { gender: option as any })}
+                      className={`p-2 text-sm rounded-lg border transition-all ${
+                        data.userProfile.gender === option
+                          ? 'border-blue-500 bg-blue-50 text-blue-700'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      {option}
+                    </button>
                   ))}
-                </select>
+                </div>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Type de peau (si vous le connaissez)</label>
-                <select
-                  value={data.userProfile.skinType}
-                  onChange={(e) => updateData('userProfile', { skinType: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {SKIN_TYPES.map(type => (
-                    <option key={type} value={type}>{type}</option>
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => updateData('userProfile', { skinType: type as any })}
+                      className={`p-2 text-sm rounded-lg border transition-all ${
+                        data.userProfile.skinType === type
+                          ? 'border-purple-500 bg-purple-50 text-purple-700'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      {type}
+                    </button>
                   ))}
-                </select>
+                </div>
               </div>
             </div>
           </div>
@@ -515,36 +531,10 @@ export default function SkinQuestionnaire() {
           <div className="space-y-6">
             <div className="text-center">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Routine actuelle</h2>
-              <p className="text-gray-600">Choisissez votre style de routine et indiquez les produits utilisés (optionnel)</p>
+              <p className="text-gray-600">Quels produits utilisez-vous ? (optionnel)</p>
             </div>
 
             <div className="space-y-6">
-              {/* Préférence de routine */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">Type de routine souhaitée</label>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {[
-                    { label: 'Minimaliste', help: '2-3 étapes essentielles' },
-                    { label: 'Simple', help: '3-4 étapes faciles' },
-                    { label: 'Équilibrée', help: '4-5 étapes optimisées' },
-                    { label: 'Complète', help: '5-7 étapes détaillées' }
-                  ].map(opt => (
-                    <button
-                      key={opt.label}
-                      onClick={() => updateData('currentRoutine', { routinePreference: opt.label as any })}
-                      className={`p-3 text-left rounded-xl border-2 transition-all ${
-                        data.currentRoutine.routinePreference === opt.label
-                          ? 'border-purple-500 bg-purple-50'
-                          : 'border-gray-200 hover:border-purple-300 hover:bg-purple-50'
-                      }`}
-                    >
-                      <div className="font-semibold text-gray-900">{opt.label}</div>
-                      <div className="text-xs text-gray-600 mt-1">{opt.help}</div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">Routine du matin</label>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -589,15 +579,22 @@ export default function SkinQuestionnaire() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Budget mensuel souhaité</label>
-                <select
-                  value={data.currentRoutine.monthlyBudget}
-                  onChange={(e) => updateData('currentRoutine', { monthlyBudget: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {BUDGET_RANGES.map(range => (
-                    <option key={range} value={range}>{range}</option>
+                    <button
+                      key={range}
+                      type="button"
+                      onClick={() => updateData('currentRoutine', { monthlyBudget: range as any })}
+                      className={`p-2 text-sm rounded-lg border transition-all ${
+                        data.currentRoutine.monthlyBudget === range
+                          ? 'border-green-500 bg-green-50 text-green-700'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      {range}
+                    </button>
                   ))}
-                </select>
+                </div>
               </div>
             </div>
           </div>
@@ -607,12 +604,37 @@ export default function SkinQuestionnaire() {
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Allergies et sensibilités</h2>
-              <p className="text-gray-600">Ingrédients à éviter dans vos recommandations (optionnel)</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Type de routine souhaitée</h2>
+              <p className="text-gray-600">Choisissez votre style préféré. Cela influencera la complexité des recommandations.</p>
+            </div>
+
+            {/* Préférence de routine déplacée ici */}
+            <div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {[
+                  { label: 'Minimaliste', help: '2-3 étapes essentielles' },
+                  { label: 'Simple', help: '3-4 étapes faciles' },
+                  { label: 'Équilibrée', help: '4-5 étapes optimisées' },
+                  { label: 'Complète', help: '5-7 étapes détaillées' }
+                ].map(opt => (
+                  <button
+                    key={opt.label}
+                    onClick={() => updateData('currentRoutine', { routinePreference: opt.label as any })}
+                    className={`p-3 text-left rounded-xl border-2 transition-all ${
+                      data.currentRoutine.routinePreference === opt.label
+                        ? 'border-purple-500 bg-purple-50'
+                        : 'border-gray-200 hover:border-purple-300 hover:bg-purple-50'
+                    }`}
+                  >
+                    <div className="font-semibold text-gray-900">{opt.label}</div>
+                    <div className="text-xs text-gray-600 mt-1">{opt.help}</div>
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">Allergies/Intolérances connues</label>
+              <h3 className="text-sm font-medium text-gray-700 mb-2">Allergies et sensibilités (optionnel)</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                 {ALLERGENIC_INGREDIENTS.map(ingredient => (
                   <button
@@ -630,19 +652,6 @@ export default function SkinQuestionnaire() {
                   </button>
                 ))}
               </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Réactions passées (optionnel)
-              </label>
-              <textarea
-                value={data.allergies.pastReactions}
-                onChange={(e) => updateData('allergies', { pastReactions: e.target.value })}
-                placeholder="Décrivez brièvement les réactions que vous avez déjà eues..."
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                rows={3}
-              />
             </div>
           </div>
         )
