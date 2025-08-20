@@ -24,13 +24,13 @@ export interface UserProfile {
 
 export interface SkinConcerns {
   primary: string[]
-  duration: '< 1 mois' | '1-6 mois' | '6-12 mois' | '> 1 an'
   otherText?: string
 }
 
 export interface CurrentRoutine {
   morningProducts: string[]
   eveningProducts: string[]
-  cleansingFrequency: string
+  // Préférence utilisateur pour la complexité/étendue de la routine
+  routinePreference?: 'Minimaliste' | 'Simple' | 'Équilibrée' | 'Complète'
   monthlyBudget: '< 50€' | '50-100€' | '100-200€' | '> 200€' | 'Pas de limite'
 }

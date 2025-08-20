@@ -82,13 +82,12 @@ export default function SkinQuestionnaire() {
     },
     skinConcerns: {
       primary: [],
-      duration: '1-6 mois',
       otherText: '' // Nouveau champ
     },
     currentRoutine: {
       morningProducts: [],
       eveningProducts: [],
-      cleansingFrequency: 'Quotidien',
+      routinePreference: 'Équilibrée',
       monthlyBudget: '50-100€'
     },
     allergies: {
@@ -313,7 +312,7 @@ export default function SkinQuestionnaire() {
         <div className="flex items-start text-sm">
           <span className="w-3 h-3 bg-purple-500 rounded-full mr-3 mt-1"></span>
           <span className="text-gray-700 text-xs">
-            {getRoutineDisplay()}
+            {getRoutineDisplay()} {data.currentRoutine.routinePreference ? `• Préférence: ${data.currentRoutine.routinePreference}` : ''}
           </span>
         </div>
 
@@ -516,10 +515,36 @@ export default function SkinQuestionnaire() {
           <div className="space-y-6">
             <div className="text-center">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Routine actuelle</h2>
-              <p className="text-gray-600">Quels produits utilisez-vous ? (optionnel)</p>
+              <p className="text-gray-600">Choisissez votre style de routine et indiquez les produits utilisés (optionnel)</p>
             </div>
 
             <div className="space-y-6">
+              {/* Préférence de routine */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">Type de routine souhaitée</label>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {[
+                    { label: 'Minimaliste', help: '2-3 étapes essentielles' },
+                    { label: 'Simple', help: '3-4 étapes faciles' },
+                    { label: 'Équilibrée', help: '4-5 étapes optimisées' },
+                    { label: 'Complète', help: '5-7 étapes détaillées' }
+                  ].map(opt => (
+                    <button
+                      key={opt.label}
+                      onClick={() => updateData('currentRoutine', { routinePreference: opt.label as any })}
+                      className={`p-3 text-left rounded-xl border-2 transition-all ${
+                        data.currentRoutine.routinePreference === opt.label
+                          ? 'border-purple-500 bg-purple-50'
+                          : 'border-gray-200 hover:border-purple-300 hover:bg-purple-50'
+                      }`}
+                    >
+                      <div className="font-semibold text-gray-900">{opt.label}</div>
+                      <div className="text-xs text-gray-600 mt-1">{opt.help}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">Routine du matin</label>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">

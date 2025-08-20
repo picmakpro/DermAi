@@ -260,7 +260,6 @@ Répondre UNIQUEMENT en JSON valide avec cette structure exacte :
 ✅ Respecter strictement les allergies mentionnées dans les recommandations
 ✅ Adapter les produits au budget indiqué
 ✅ Déterminer la sévérité UNIQUEMENT par observation visuelle
-✅ Intégrer la durée du problème dans le pronostic
 
 ## INTERDICTIONS
 ❌ Diagnostic médical prescriptif
@@ -281,12 +280,12 @@ Répondre UNIQUEMENT en JSON valide avec cette structure exacte :
 
 ## PRÉOCCUPATIONS PRINCIPALES
 ${request.skinConcerns.primary.join(', ')}${request.skinConcerns.otherText ? ` (Autres: ${request.skinConcerns.otherText})` : ''}
-**Durée du problème :** ${request.skinConcerns.duration}
+**Préférence de routine :** ${request.currentRoutine.routinePreference || 'Équilibrée'}
 
 ## ROUTINE ACTUELLE
 **Matin :** ${request.currentRoutine.morningProducts.join(', ') || 'Aucune routine'}
 **Soir :** ${request.currentRoutine.eveningProducts.join(', ') || 'Aucune routine'}
-**Fréquence nettoyage :** ${request.currentRoutine.cleansingFrequency}
+**Préférence routine (complexité) :** ${request.currentRoutine.routinePreference || 'Équilibrée'}
 **Budget mensuel :** ${request.currentRoutine.monthlyBudget}
 
 ## ALLERGIES ET SENSIBILITÉS
@@ -301,7 +300,7 @@ Analyser ces ${request.photos.length} photos avec expertise dermatologique maxim
 
 **ATTENTION PARTICULIÈRE À :**
 - Préoccupations mentionnées : ${request.skinConcerns.primary.join(', ')}
-- Durée des problèmes : ${request.skinConcerns.duration}
+// (Note: l'utilisateur a choisi une préférence de routine: ${request.currentRoutine.routinePreference || 'Équilibrée'})
 - Allergies à considérer : ${request.allergies?.ingredients?.filter(i => i !== 'Aucune allergie connue').join(', ') || 'Aucune'}
 - Budget disponible : ${request.currentRoutine.monthlyBudget}
 
