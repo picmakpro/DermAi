@@ -19,6 +19,7 @@ import {
   Award,
   TrendingUp,
   Sparkles,
+  MapPin,
   MessageCircle,
   ChevronRight,
   Calendar
@@ -97,17 +98,17 @@ const getProductRecommendations = (analysis: SkinAnalysis) => {
     })
   } else if (scores?.spots?.value < 60 || skinConcerns.toLowerCase().includes('acné')) {
     mockProducts.push({
-      name: "Sérum Niacinamide 10%",
-      brand: "The Ordinary", 
-      price: 7.20,
-      originalPrice: 8.90,
-      imageUrl: "https://images.unsplash.com/photo-1570194065650-d99fb4bedf0a?w=400&h=400&fit=crop",
-      discount: 19,
-      frequency: "Soir uniquement",
+    name: "Sérum Niacinamide 10%",
+    brand: "The Ordinary",
+    price: 7.20,
+    originalPrice: 8.90,
+    imageUrl: "https://images.unsplash.com/photo-1570194065650-d99fb4bedf0a?w=400&h=400&fit=crop",
+    discount: 19,
+    frequency: "Soir uniquement", 
       benefits: ["Régule le sébum", "Minimise les pores", "Anti-imperfections"],
       instructions: "Appliquer 2-3 gouttes le soir sur peau propre",
       whyThisProduct: "Idéal pour réguler le sébum et réduire les imperfections détectées",
-      affiliateLink: "https://example.com/ordinary-niacinamide"
+    affiliateLink: "https://example.com/ordinary-niacinamide"
     })
   }
 
@@ -343,6 +344,22 @@ export default function ResultsPage() {
              <h2 className="text-2xl font-bold text-gray-900">Observations Détaillées</h2>
            </div>
 
+          {/* Vue d'ensemble (overview) si disponible, sinon fallback sur observations classiques */}
+          {Array.isArray((analysis as any).diagnostic?.overview) && (analysis as any).diagnostic.overview.length > 0 ? (
+            <div className="mb-6">
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Vue d’ensemble</h4>
+              <div className="grid md:grid-cols-3 gap-3">
+                {(analysis as any).diagnostic.overview.slice(0, 3).map((item: string, idx: number) => (
+                  <div key={idx} className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-4 border border-blue-100">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">{idx + 1}</div>
+                      <p className="text-gray-800 text-sm">{item}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
            <div className="grid md:grid-cols-3 gap-4">
              {analysis.diagnostic.observations.slice(0, 3).map((observation, index) => (
                <div key={index} className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-4 border border-blue-100">
@@ -355,68 +372,119 @@ export default function ResultsPage() {
                </div>
              ))}
            </div>
+          )}
+
+          {/* Observations localisées par zones */}
+          {Array.isArray((analysis as any).diagnostic?.localized) && (analysis as any).diagnostic.localized.length > 0 && (
+            <div className="mt-4">
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Zones à surveiller</h4>
+              <div className="grid md:grid-cols-2 gap-3">
+                {(analysis as any).diagnostic.localized.map((loc: any, idx: number) => {
+                  const severity = String(loc.severity || '').toLowerCase()
+                  const severityColor = severity.includes('sévère') || severity.includes('severe')
+                    ? 'bg-red-500'
+                    : severity.includes('modérée') || severity.includes('moderate')
+                    ? 'bg-orange-400'
+                    : 'bg-yellow-300'
+                  const fillPercent = severity.includes('sévère') || severity.includes('severe')
+                    ? 90
+                    : severity.includes('modérée') || severity.includes('moderate')
+                    ? 65
+                    : 35
+                  return (
+                    <div key={idx} className="bg-white rounded-2xl p-4 border border-gray-100">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center space-x-3">
+                          {/* Voyant de sévérité */}
+                          <div className={`w-4 h-4 rounded-full ring-2 ring-offset-2 ${severityColor} ring-${severity.includes('sévère') ? 'red' : severity.includes('modérée') ? 'orange' : 'yellow'}-200`} />
+                          <span className="font-medium text-gray-900 capitalize">{loc.zone}</span>
+                        </div>
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-gray-50 border border-gray-200 text-gray-600">{loc.severity || '—'}</span>
+                      </div>
+
+                      <div className="text-sm text-gray-800 mb-3">{loc.issue}</div>
+
+                      {/* Barre de remplissage visuelle */}
+                      <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div
+                          className={`${severityColor} h-2 rounded-full`}
+                          style={{ width: `${fillPercent}%` }}
+                        />
+                      </div>
+
+                      {Array.isArray(loc.notes) && loc.notes.length > 0 && (
+                        <ul className="mt-3 text-xs text-gray-600 list-disc pl-5 space-y-0.5">
+                          {loc.notes.map((n: string, i: number) => (<li key={i}>{n}</li>))}
+                        </ul>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
          </motion.div>
 
-                 {/* Routine Section */}
+         {/* Routine Section */}
         {analysis.recommendations.routine && typeof analysis.recommendations.routine === 'object' && analysis.recommendations.routine.immediate ? (
           <AdvancedRoutineDisplay routine={analysis.recommendations.routine} />
         ) : (
           // Fallback pour l'ancien format
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="bg-white rounded-3xl shadow-xl p-8"
-          >
-            <div className="flex items-center space-x-3 mb-6">
-              <Calendar className="w-6 h-6 text-purple-500" />
-              <h2 className="text-2xl font-bold text-gray-900">Routine Personnalisée</h2>
-            </div>
-            
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Morning routine */}
-              <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-6 border border-orange-100">
-                <div className="flex items-center space-x-3 mb-4">
-                  <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-                    <span className="text-white text-sm">☀️</span>
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900">ROUTINE MATIN</h3>
-                </div>
-                
-                <div className="space-y-3">
+         <motion.div
+           initial={{ opacity: 0, y: 20 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ delay: 0.3 }}
+           className="bg-white rounded-3xl shadow-xl p-8"
+         >
+           <div className="flex items-center space-x-3 mb-6">
+             <Calendar className="w-6 h-6 text-purple-500" />
+             <h2 className="text-2xl font-bold text-gray-900">Routine Personnalisée</h2>
+           </div>
+           
+           <div className="grid md:grid-cols-2 gap-6">
+             {/* Morning routine */}
+             <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-6 border border-orange-100">
+               <div className="flex items-center space-x-3 mb-4">
+                 <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                   <span className="text-white text-sm">☀️</span>
+                 </div>
+                 <h3 className="text-lg font-semibold text-gray-900">ROUTINE MATIN</h3>
+               </div>
+               
+               <div className="space-y-3">
                   {Array.isArray(analysis.recommendations.routine) && analysis.recommendations.routine.slice(0, 3).map((step, index) => (
-                    <div key={index} className="flex items-start space-x-3">
-                      <div className="w-6 h-6 bg-orange-200 text-orange-800 rounded-full flex items-center justify-center text-sm font-bold">
-                        {index + 1}
-                      </div>
-                      <p className="text-gray-800 text-sm">{step}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                   <div key={index} className="flex items-start space-x-3">
+                     <div className="w-6 h-6 bg-orange-200 text-orange-800 rounded-full flex items-center justify-center text-sm font-bold">
+                       {index + 1}
+                     </div>
+                     <p className="text-gray-800 text-sm">{step}</p>
+                   </div>
+                 ))}
+               </div>
+             </div>
 
-              {/* Evening routine */}
-              <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-6 border border-indigo-100">
-                <div className="flex items-center space-x-3 mb-4">
-                  <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center">
-                    <span className="text-white text-sm">🌙</span>
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900">ROUTINE SOIR</h3>
-                </div>
-                
-                <div className="space-y-3">
+             {/* Evening routine */}
+             <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-6 border border-indigo-100">
+               <div className="flex items-center space-x-3 mb-4">
+                 <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center">
+                   <span className="text-white text-sm">🌙</span>
+                 </div>
+                 <h3 className="text-lg font-semibold text-gray-900">ROUTINE SOIR</h3>
+               </div>
+               
+               <div className="space-y-3">
                   {Array.isArray(analysis.recommendations.routine) && analysis.recommendations.routine.slice(3, 6).map((step, index) => (
-                    <div key={index} className="flex items-start space-x-3">
-                      <div className="w-6 h-6 bg-indigo-200 text-indigo-800 rounded-full flex items-center justify-center text-sm font-bold">
-                        {index + 1}
-                      </div>
-                      <p className="text-gray-800 text-sm">{step}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
+                   <div key={index} className="flex items-start space-x-3">
+                     <div className="w-6 h-6 bg-indigo-200 text-indigo-800 rounded-full flex items-center justify-center text-sm font-bold">
+                       {index + 1}
+                     </div>
+                     <p className="text-gray-800 text-sm">{step}</p>
+                   </div>
+                 ))}
+               </div>
+             </div>
+           </div>
+         </motion.div>
         )}
 
          {/* Products Section */}
@@ -447,8 +515,8 @@ export default function ResultsPage() {
            <div className="bg-gradient-to-r from-green-100 to-emerald-100 border border-green-200 rounded-2xl p-4 mb-6">
              <div className="flex items-center justify-between text-green-800">
                <div className="flex items-center space-x-2">
-                 <span className="text-lg">💡</span>
-                 <span className="font-semibold">Ces produits correspondent parfaitement à votre type de peau</span>
+               <span className="text-lg">💡</span>
+               <span className="font-semibold">Ces produits correspondent parfaitement à votre type de peau</span>
                </div>
                <div className="text-xs bg-green-200 text-green-800 px-3 py-1 rounded-full">
                  Sélection DermAI
@@ -505,13 +573,13 @@ export default function ResultsPage() {
 
              {/* Floating Chat Bubble - masqué quand le chat est ouvert */}
        {!isChatOpen && (
-         <motion.button
-           initial={{ scale: 0 }}
-           animate={{ scale: 1 }}
-           transition={{ delay: 1.5, type: "spring" }}
-           onClick={() => setIsChatOpen(true)}
-           className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 z-50 flex items-center justify-center group"
-         >
+       <motion.button
+         initial={{ scale: 0 }}
+         animate={{ scale: 1 }}
+         transition={{ delay: 1.5, type: "spring" }}
+         onClick={() => setIsChatOpen(true)}
+         className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 z-50 flex items-center justify-center group"
+       >
          <MessageCircle className="w-7 h-7" />
          <span className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full animate-pulse flex items-center justify-center">
            <span className="text-white text-xs font-bold">!</span>
