@@ -90,6 +90,36 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
     return 'catalogId' in step && 'timing' in step
   }
 
+  // Helper pour obtenir le nom du produit depuis le catalogId
+  const getProductNameFromCatalogId = (catalogId: string): string => {
+    // Mapping basé sur les patterns d'ID du catalogue
+    if (catalogId.includes('CERAVE') && catalogId.includes('HYDRATING')) {
+      return 'CeraVe Gel Nettoyant Hydratant'
+    }
+    if (catalogId.includes('AVENE') && catalogId.includes('CICALFATE')) {
+      return 'Avène Cicalfate+ Crème Réparatrice'
+    }
+    if (catalogId.includes('ORDINARY') && catalogId.includes('NIACINAMIDE')) {
+      return 'The Ordinary Sérum Niacinamide 10%'
+    }
+    if (catalogId.includes('LRP') && catalogId.includes('ANTHELIOS')) {
+      return 'La Roche-Posay Anthelios SPF 50+'
+    }
+    if (catalogId.includes('EFFACLAR')) {
+      return 'La Roche-Posay Effaclar Gel Nettoyant'
+    }
+    
+    // Fallback générique basé sur l'ID
+    const parts = catalogId.split('_')
+    if (parts.length >= 2) {
+      const brand = parts[0].replace(/([A-Z])/g, ' $1').trim()
+      const product = parts.slice(1, -1).join(' ').replace(/([A-Z])/g, ' $1').trim()
+      return `${brand} ${product}`.replace(/\s+/g, ' ')
+    }
+    
+    return 'Produit Recommandé'
+  }
+
   // Helper pour normaliser une étape avant filtrage
   const normalizeStep = (step: RoutineStep | NewRoutineStep) => {
     if (isNewStructure(step)) {
@@ -186,9 +216,9 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
             <div className="bg-blue-50 rounded-lg p-2 mb-2 border border-blue-200">
               <div className="flex items-center space-x-1 text-xs text-blue-700 mb-1">
                 <Target className="w-3 h-3" />
-                <span className="font-medium">Produit catalogue</span>
+                <span className="font-medium">Produit recommandé</span>
               </div>
-              <p className="text-xs text-blue-600 font-mono">{step.catalogId}</p>
+              <p className="text-xs text-gray-800 font-medium">{getProductNameFromCatalogId(step.catalogId)}</p>
               <p className="text-xs text-gray-600 mt-1">Commencer: {step.startDate}</p>
             </div>
           )}

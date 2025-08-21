@@ -58,6 +58,12 @@ const scoreLabels: Record<keyof Omit<SkinScores, 'overall'>, string> = {
 const extractCatalogIds = (analysis: SkinAnalysis): string[] => {
   const catalogIds = new Set<string>()
   
+  console.log('🔍 Extraction catalogId - Structure reçue:', {
+    hasRoutine: !!analysis.recommendations?.routine,
+    hasLocalizedRoutine: !!analysis.recommendations?.localizedRoutine,
+    routineType: typeof analysis.recommendations?.routine
+  })
+  
   // Extraire catalogId de la routine principale
   const routine = analysis.recommendations?.routine
   if (routine && typeof routine === 'object' && 'immediate' in routine) {
@@ -66,7 +72,9 @@ const extractCatalogIds = (analysis: SkinAnalysis): string[] => {
     // Phases immediate, adaptation, maintenance
     ;['immediate', 'adaptation', 'maintenance'].forEach(phase => {
       const steps = newRoutine[phase] || []
-      steps.forEach((step: any) => {
+      console.log(`📋 Phase ${phase}:`, steps.length, 'étapes')
+      steps.forEach((step: any, index: number) => {
+        console.log(`  - Étape ${index + 1}:`, step.name || step.title, 'catalogId:', step.catalogId)
         if (step.catalogId) {
           catalogIds.add(step.catalogId)
         }
@@ -76,16 +84,21 @@ const extractCatalogIds = (analysis: SkinAnalysis): string[] => {
   
   // Extraire catalogId de localizedRoutine
   const localizedRoutine = analysis.recommendations?.localizedRoutine || []
-  localizedRoutine.forEach((zoneRoutine: any) => {
+  console.log('🎯 Routine localisée:', localizedRoutine.length, 'zones')
+  localizedRoutine.forEach((zoneRoutine: any, zoneIndex: number) => {
     const steps = zoneRoutine.steps || []
-    steps.forEach((step: any) => {
+    console.log(`  Zone ${zoneIndex + 1} (${zoneRoutine.zone}):`, steps.length, 'étapes')
+    steps.forEach((step: any, stepIndex: number) => {
+      console.log(`    - Étape ${stepIndex + 1}:`, step.name, 'catalogId:', step.catalogId)
       if (step.catalogId) {
         catalogIds.add(step.catalogId)
       }
     })
   })
 
-  return Array.from(catalogIds)
+  const result = Array.from(catalogIds)
+  console.log('✅ CatalogIds extraits au total:', result.length, result)
+  return result
 }
 
 // Génération de produits recommandés basée sur l'analyse
@@ -100,8 +113,10 @@ const getProductRecommendations = (analysis: SkinAnalysis) => {
   
   // Si on a des catalogId, créer des produits avec référence au catalogue
   if (catalogIds.length > 0) {
-    console.log('CatalogIds trouvés:', catalogIds)
-    return getProductsFromCatalogIds(catalogIds)
+    console.log('🎯 CatalogIds trouvés:', catalogIds)
+    const products = getProductsFromCatalogIds(catalogIds)
+    console.log('📦 Produits générés:', products.length, products.map(p => `${p.brand} ${p.name}`))
+    return products
   }
 
   // Fallback vers produits génériques
@@ -113,8 +128,8 @@ const getProductRecommendations = (analysis: SkinAnalysis) => {
 const getProductsFromCatalogIds = (catalogIds: string[]): RecommendedProductCard[] => {
   const products: RecommendedProductCard[] = []
   
-  // Pour chaque catalogId, créer un produit représentatif
-  catalogIds.slice(0, 3).forEach((catalogId, index) => {
+  // Pour chaque catalogId, créer un produit représentatif (TOUS les produits, pas de limite)
+  catalogIds.forEach((catalogId, index) => {
     // Déterminer le type de produit selon l'ID
     let productInfo = getProductInfoByCatalogId(catalogId)
     
@@ -125,55 +140,85 @@ const getProductsFromCatalogIds = (catalogIds: string[]): RecommendedProductCard
     })
   })
   
+  console.log('🎁 Produits créés depuis catalogIds:', products.length, 'produits')
   return products
 }
 
-// Déterminer les infos produit selon le catalogId
-const getProductInfoByCatalogId = (catalogId: string) => {
-  // Mapping basé sur les patterns d'ID du catalogue
-  if (catalogId.includes('CLEANSE') || catalogId.includes('GEL') || catalogId.includes('FOAM')) {
-    return {
-      name: "Gel Nettoyant Doux",
-      brand: "Sélection DermAI",
+// Déterminer les infos produit selon le catalogId avec vrais données du catalogue
+const getProductInfoByCatalogId = (catalogId: string): RecommendedProductCard => {
+  // Mapping précis basé sur les IDs réels du catalogue
+  const productMap: Record<string, RecommendedProductCard> = {
+    'CERAVE_HYDRATING_CLEANSER_004': {
+      name: "Gel Nettoyant Hydratant",
+      brand: "CeraVe",
       price: 12.99,
       originalPrice: 15.99,
       imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop",
       discount: 19,
       frequency: "Matin et soir",
-      benefits: ["Nettoyage en douceur", "Préserve la barrière cutanée", "Recommandé par l'IA"],
+      benefits: ["Nettoyage en douceur", "Préserve la barrière cutanée", "Hydratant"],
       instructions: "Masser délicatement sur peau humide, rincer à l'eau tiède",
-      affiliateLink: "#"
-    }
-  }
-  
-  if (catalogId.includes('SERUM') || catalogId.includes('NIACINAMIDE') || catalogId.includes('ORDINARY')) {
-    return {
+      whyThisProduct: "Recommandé par l'IA pour votre type de peau",
+      affiliateLink: "https://amazon.fr/dp/B003B3N4OU/"
+    },
+    'AVENE_CICALFATE_070': {
+      name: "Cicalfate+ Crème Réparatrice",
+      brand: "Avène",
+      price: 15.99,
+      originalPrice: 19.99,
+      imageUrl: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop",
+      discount: 20,
+      frequency: "Selon besoin",
+      benefits: ["Répare", "Apaise les irritations", "Anti-bactérien"],
+      instructions: "Couche fine sur les zones irritées",
+      whyThisProduct: "Parfait pour apaiser les irritations post-rasage",
+      affiliateLink: "https://amazon.fr/dp/B01N0QKRXW/"
+    },
+    'ORDINARY_NIACINAMIDE_033': {
       name: "Sérum Niacinamide 10%",
-      brand: "Sélection DermAI",
+      brand: "The Ordinary",
       price: 7.20,
       originalPrice: 8.90,
       imageUrl: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop",
       discount: 19,
       frequency: "Matin et soir",
-      benefits: ["Régule le sébum", "Minimise les pores", "Recommandé par l'IA"],
+      benefits: ["Régule le sébum", "Minimise les pores", "Anti-inflammatoire"],
       instructions: "Appliquer quelques gouttes après le nettoyage",
-      affiliateLink: "#"
-    }
-  }
-  
-  if (catalogId.includes('SPF') || catalogId.includes('ANTHELIOS') || catalogId.includes('SUNSCREEN')) {
-    return {
-      name: "Crème Solaire Invisible SPF 50+",
-      brand: "Sélection DermAI",
+      whyThisProduct: "Idéal pour réguler le sébum et minimiser les pores",
+      affiliateLink: "https://amazon.fr/dp/B06Y2GXM8G/"
+    },
+    'LRP_ANTHELIOS_SPF50_095': {
+      name: "Anthelios SPF 50+ Invisible",
+      brand: "La Roche-Posay",
       price: 18.50,
       originalPrice: 22.00,
       imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop",
       discount: 16,
       frequency: "Quotidien le matin",
-      benefits: ["Protection SPF 50+", "Fini invisible", "Recommandé par l'IA"],
+      benefits: ["Protection SPF 50+", "Fini invisible", "Résistant à l'eau"],
       instructions: "Appliquer généreusement 20 minutes avant l'exposition",
-      affiliateLink: "#"
+      whyThisProduct: "Protection solaire indispensable pour votre peau",
+      affiliateLink: "https://amazon.fr/dp/B01N6YH9HF/"
     }
+  }
+
+  // Chercher d'abord une correspondance exacte
+  if (productMap[catalogId]) {
+    return productMap[catalogId]
+  }
+
+  // Fallback basé sur les patterns
+  if (catalogId.includes('CERAVE') && catalogId.includes('HYDRATING')) {
+    return productMap['CERAVE_HYDRATING_CLEANSER_004']
+  }
+  if (catalogId.includes('AVENE') && catalogId.includes('CICALFATE')) {
+    return productMap['AVENE_CICALFATE_070']
+  }
+  if (catalogId.includes('ORDINARY') && catalogId.includes('NIACINAMIDE')) {
+    return productMap['ORDINARY_NIACINAMIDE_033']
+  }
+  if (catalogId.includes('LRP') && catalogId.includes('ANTHELIOS')) {
+    return productMap['LRP_ANTHELIOS_SPF50_095']
   }
   
   // Produit générique si pattern non reconnu
@@ -187,6 +232,7 @@ const getProductInfoByCatalogId = (catalogId: string) => {
     frequency: "Selon routine",
     benefits: ["Soin personnalisé", "Adapté à votre peau", "Recommandé par l'IA"],
     instructions: "Suivre les conseils de la routine personnalisée",
+    whyThisProduct: `Produit sélectionné pour votre routine (${catalogId})`,
     affiliateLink: "#"
   }
 }
@@ -310,6 +356,36 @@ const timeOfDayLabel = (t?: string) => {
   if (t === 'morning') return 'Matin'
   if (t === 'evening') return 'Soir'
   return t
+}
+
+// Helper pour obtenir le nom du produit depuis le catalogId
+const getProductNameFromCatalogId = (catalogId: string): string => {
+  // Mapping basé sur les patterns d'ID du catalogue
+  if (catalogId.includes('CERAVE') && catalogId.includes('HYDRATING')) {
+    return 'CeraVe Gel Nettoyant Hydratant'
+  }
+  if (catalogId.includes('AVENE') && catalogId.includes('CICALFATE')) {
+    return 'Avène Cicalfate+ Crème Réparatrice'
+  }
+  if (catalogId.includes('ORDINARY') && catalogId.includes('NIACINAMIDE')) {
+    return 'The Ordinary Sérum Niacinamide 10%'
+  }
+  if (catalogId.includes('LRP') && catalogId.includes('ANTHELIOS')) {
+    return 'La Roche-Posay Anthelios SPF 50+'
+  }
+  if (catalogId.includes('EFFACLAR')) {
+    return 'La Roche-Posay Effaclar Gel Nettoyant'
+  }
+  
+  // Fallback générique basé sur l'ID
+  const parts = catalogId.split('_')
+  if (parts.length >= 2) {
+    const brand = parts[0].replace(/([A-Z])/g, ' $1').trim()
+    const product = parts.slice(1, -1).join(' ').replace(/([A-Z])/g, ' $1').trim()
+    return `${brand} ${product}`.replace(/\s+/g, ' ')
+  }
+  
+  return 'Produit Recommandé'
 }
 
 const getCatalogProductName = (analysis: any, step: any): string | null => {
@@ -775,9 +851,9 @@ export default function ResultsPage() {
                                 <div className="bg-blue-50 rounded-lg p-2 mb-2 border border-blue-200">
                                   <div className="flex items-center space-x-1 text-xs text-blue-700 mb-1">
                                     <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                                    <span className="font-medium">Produit catalogue</span>
+                                    <span className="font-medium">Produit recommandé</span>
                                   </div>
-                                  <p className="text-xs text-blue-600 font-mono">{s.catalogId}</p>
+                                  <p className="text-xs text-gray-800 font-medium">{getProductNameFromCatalogId(s.catalogId)}</p>
                                   {s.application && (
                                     <p className="text-xs text-gray-600 mt-1">{s.application}</p>
                                   )}
