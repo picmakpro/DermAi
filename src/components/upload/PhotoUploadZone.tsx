@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react'
 import { PHOTO_TYPES, MAX_PHOTOS, MAX_FILE_SIZE } from '@/constants'
 import { validateImage } from '@/utils/validation'
+import { ensureCompatibleImage } from '@/utils/images/ensureCompatibleImage'
 import type { PhotoUpload, PhotoType } from '@/types'
 
 interface PhotoUploadZoneProps {
@@ -30,9 +31,10 @@ export default function PhotoUploadZone({
       return
     }
 
-    // Valider chaque fichier
+    // Convertir si nécessaire puis valider chaque fichier
     for (let i = 0; i < fileArray.length; i++) {
-      const file = fileArray[i]
+      const original = fileArray[i]
+      const { file } = await ensureCompatibleImage(original)
       const validation = await validateImage(file)
       
       if (validation.valid) {
@@ -114,7 +116,8 @@ export default function PhotoUploadZone({
           id="photo-input"
           type="file"
           multiple
-          accept="image/*"
+          accept="image/heic,image/heif,image/avif,image/jpeg,image/jpg,image/png,image/webp,image/*"
+          capture="environment"
           onChange={handleInputChange}
           className="hidden"
           disabled={photos.length >= maxPhotos}
@@ -138,7 +141,7 @@ export default function PhotoUploadZone({
               }
             </p>
             <p className="text-sm text-gray-500 mt-2">
-              JPG, PNG, WebP • Max {(MAX_FILE_SIZE / (1024 * 1024)).toFixed(0)}MB par photo
+              Formats acceptés: JPG, PNG, WebP, HEIC/HEIF, AVIF. Les photos non supportées sont converties automatiquement en JPEG. • Max {(MAX_FILE_SIZE / (1024 * 1024)).toFixed(0)}MB par photo
             </p>
           </div>
         </div>
