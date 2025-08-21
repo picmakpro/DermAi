@@ -153,7 +153,7 @@ const getProductInfoByCatalogId = (catalogId: string): RecommendedProductCard =>
       brand: "CeraVe",
       price: 12.99,
       originalPrice: 15.99,
-      imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop",
+      imageUrl: "/api/placeholder/400/400",
       discount: 19,
       frequency: "Matin et soir",
       benefits: ["Nettoyage en douceur", "Préserve la barrière cutanée", "Hydratant"],
@@ -166,7 +166,7 @@ const getProductInfoByCatalogId = (catalogId: string): RecommendedProductCard =>
       brand: "Avène",
       price: 15.99,
       originalPrice: 19.99,
-      imageUrl: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop",
+      imageUrl: "/api/placeholder/400/400",
       discount: 20,
       frequency: "Selon besoin",
       benefits: ["Répare", "Apaise les irritations", "Anti-bactérien"],
@@ -179,7 +179,7 @@ const getProductInfoByCatalogId = (catalogId: string): RecommendedProductCard =>
       brand: "The Ordinary",
       price: 7.20,
       originalPrice: 8.90,
-      imageUrl: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop",
+      imageUrl: "/api/placeholder/400/400",
       discount: 19,
       frequency: "Matin et soir",
       benefits: ["Régule le sébum", "Minimise les pores", "Anti-inflammatoire"],
@@ -192,13 +192,26 @@ const getProductInfoByCatalogId = (catalogId: string): RecommendedProductCard =>
       brand: "La Roche-Posay",
       price: 18.50,
       originalPrice: 22.00,
-      imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop",
+      imageUrl: "/api/placeholder/400/400",
       discount: 16,
       frequency: "Quotidien le matin",
       benefits: ["Protection SPF 50+", "Fini invisible", "Résistant à l'eau"],
       instructions: "Appliquer généreusement 20 minutes avant l'exposition",
       whyThisProduct: "Protection solaire indispensable pour votre peau",
       affiliateLink: "https://amazon.fr/dp/B01N6YH9HF/"
+    },
+    'PAULA_CHOICE_BHA_016': {
+      name: "BHA 2% Exfoliant Liquide",
+      brand: "Paula's Choice",
+      price: 15.99,
+      originalPrice: 19.99,
+      imageUrl: "/api/placeholder/400/400",
+      discount: 20,
+      frequency: "2-3 fois par semaine",
+      benefits: ["Exfolie en douceur", "Réduit les pores", "Améliore la texture"],
+      instructions: "Commencer 1x/semaine, augmenter progressivement",
+      whyThisProduct: "Exfoliation ciblée pour améliorer la texture de votre peau",
+      affiliateLink: "https://amazon.fr/dp/B00949CTQQ/"
     }
   }
 
@@ -207,18 +220,28 @@ const getProductInfoByCatalogId = (catalogId: string): RecommendedProductCard =>
     return productMap[catalogId]
   }
 
-  // Fallback basé sur les patterns
-  if (catalogId.includes('CERAVE') && catalogId.includes('HYDRATING')) {
+  // Fallback basé sur les patterns (reconnaissance intelligente)
+  console.log('🔍 Recherche produit pour catalogId:', catalogId)
+  
+  if (catalogId.includes('CERAVE') || catalogId.includes('HYDRATING') || catalogId.includes('CLEANSER')) {
+    console.log('✅ Trouvé: CeraVe')
     return productMap['CERAVE_HYDRATING_CLEANSER_004']
   }
-  if (catalogId.includes('AVENE') && catalogId.includes('CICALFATE')) {
+  if (catalogId.includes('AVENE') || catalogId.includes('CICALFATE')) {
+    console.log('✅ Trouvé: Avène')
     return productMap['AVENE_CICALFATE_070']
   }
-  if (catalogId.includes('ORDINARY') && catalogId.includes('NIACINAMIDE')) {
+  if (catalogId.includes('ORDINARY') || catalogId.includes('NIACINAMIDE')) {
+    console.log('✅ Trouvé: The Ordinary')
     return productMap['ORDINARY_NIACINAMIDE_033']
   }
-  if (catalogId.includes('LRP') && catalogId.includes('ANTHELIOS')) {
+  if (catalogId.includes('LRP') || catalogId.includes('ANTHELIOS') || catalogId.includes('SPF')) {
+    console.log('✅ Trouvé: La Roche-Posay')
     return productMap['LRP_ANTHELIOS_SPF50_095']
+  }
+  if (catalogId.includes('PAULA') || catalogId.includes('CHOICE') || catalogId.includes('BHA')) {
+    console.log('✅ Trouvé: Paula\'s Choice')
+    return productMap['PAULA_CHOICE_BHA_016']
   }
   
   // Produit générique si pattern non reconnu
@@ -310,32 +333,93 @@ const getGenericProducts = (analysis: SkinAnalysis) => {
 
 // Routine localisée – helper avec fallback à partir du diagnostic si l'IA n'a pas produit localizedRoutine
 const getLocalizedRoutine = (analysis: any) => {
+  console.log('🎯 getLocalizedRoutine - analyse structure:', {
+    hasLocalizedRoutine: !!analysis?.recommendations?.localizedRoutine,
+    localizedRoutineLength: analysis?.recommendations?.localizedRoutine?.length || 0,
+    hasLocalized: !!analysis?.diagnostic?.localized,
+    localizedLength: analysis?.diagnostic?.localized?.length || 0,
+    localizedData: analysis?.diagnostic?.localized
+  })
+
   const lr = analysis?.recommendations?.localizedRoutine
-  if (Array.isArray(lr) && lr.length > 0) return lr
+  if (Array.isArray(lr) && lr.length > 0) {
+    console.log('✅ Utilisation localizedRoutine de l\'IA:', lr.length, 'zones')
+    return lr
+  }
 
   const localized = analysis?.diagnostic?.localized
-  if (!Array.isArray(localized) || localized.length === 0) return []
+  if (!Array.isArray(localized) || localized.length === 0) {
+    console.log('❌ Aucune zone localisée trouvée')
+    return []
+  }
 
-  // Fallback minimal: pour chaque zone irritée, proposer apaisement + hydratation, et restreindre les actifs irritants
-  return localized.map((loc: any, i: number) => {
-    const issueText: string = String(loc.issue || '').toLowerCase()
-    const isIrritated = issueText.includes('irrit') || issueText.includes('rougeur')
+  console.log('🔄 Création fallback depuis diagnostic.localized:', localized.length, 'zones')
+  
+  // Fallback amélioré: pour chaque zone, créer une routine appropriée
+  const results = localized.map((loc: any, i: number) => {
+    console.log(`  Zone ${i + 1}:`, loc.zone, loc.issues || loc.issue, loc.severity)
+    
+    const issues = Array.isArray(loc.issues) ? loc.issues : [loc.issue].filter(Boolean)
+    const issueText = issues.join(' ').toLowerCase()
+    const isIrritated = issueText.includes('irrit') || issueText.includes('rougeur') || issueText.includes('inflam')
+    const hasPores = issueText.includes('pore') || issueText.includes('sébum')
+    
     const restrictions = isIrritated ? ["Éviter AHA/BHA et rétinoïdes jusqu'à disparition des rougeurs"] : []
     const resumeCondition = isIrritated ? "Réintroduire progressivement après 5-7 jours sans irritation" : undefined
+
+    const steps = []
+    
+    // Ajouter les soins selon les problèmes détectés
+    if (isIrritated) {
+      steps.push({
+        name: 'Crème apaisante réparatrice',
+        category: 'treatment',
+        frequency: 'quotidien',
+        timing: 'soir',
+        catalogId: 'AVENE_CICALFATE_070',
+        application: 'Couche fine sur les zones irritées',
+        duration: 'jusqu\'à cicatrisation',
+        resume: 'quand irritation disparue'
+      })
+    }
+    
+    if (hasPores) {
+      steps.push({
+        name: 'Sérum régulateur',
+        category: 'treatment', 
+        frequency: 'quotidien',
+        timing: 'soir',
+        catalogId: 'ORDINARY_NIACINAMIDE_033',
+        application: 'Quelques gouttes sur la zone',
+        duration: 'routine continue',
+        resume: 'selon besoin'
+      })
+    }
 
     return {
       zone: loc.zone || `zone ${i + 1}`,
       priority: isIrritated ? 1 : 3,
       severity: loc.severity,
-      issues: [loc.issue].filter(Boolean),
+      issues: issues,
       restrictions,
       resumeCondition,
-      steps: [
-        isIrritated && { title: 'Crème apaisante réparatrice', category: 'treatment', frequency: 'daily', timeOfDay: 'evening', target: 'zone', zones: [loc.zone], applicationTips: ['couche fine', 'sans massage fort'] },
-        { title: 'Hydratant barrière', category: 'hydration', frequency: 'daily', timeOfDay: 'both', target: 'zone', zones: [loc.zone], applicationTips: ['appliquer sur peau propre'] }
-      ].filter(Boolean)
+      steps: steps.length > 0 ? steps : [
+        {
+          name: 'Hydratant barrière',
+          category: 'hydration',
+          frequency: 'quotidien',
+          timing: 'matin_et_soir',
+          catalogId: 'CERAVE_HYDRATING_CLEANSER_004',
+          application: 'Appliquer sur peau propre',
+          duration: 'routine quotidienne',
+          resume: 'continu'
+        }
+      ]
     }
   })
+
+  console.log('📋 Zones créées:', results.length, results.map(r => r.zone))
+  return results
 }
 
 // Helpers d'affichage pour la routine localisée
@@ -360,32 +444,9 @@ const timeOfDayLabel = (t?: string) => {
 
 // Helper pour obtenir le nom du produit depuis le catalogId
 const getProductNameFromCatalogId = (catalogId: string): string => {
-  // Mapping basé sur les patterns d'ID du catalogue
-  if (catalogId.includes('CERAVE') && catalogId.includes('HYDRATING')) {
-    return 'CeraVe Gel Nettoyant Hydratant'
-  }
-  if (catalogId.includes('AVENE') && catalogId.includes('CICALFATE')) {
-    return 'Avène Cicalfate+ Crème Réparatrice'
-  }
-  if (catalogId.includes('ORDINARY') && catalogId.includes('NIACINAMIDE')) {
-    return 'The Ordinary Sérum Niacinamide 10%'
-  }
-  if (catalogId.includes('LRP') && catalogId.includes('ANTHELIOS')) {
-    return 'La Roche-Posay Anthelios SPF 50+'
-  }
-  if (catalogId.includes('EFFACLAR')) {
-    return 'La Roche-Posay Effaclar Gel Nettoyant'
-  }
-  
-  // Fallback générique basé sur l'ID
-  const parts = catalogId.split('_')
-  if (parts.length >= 2) {
-    const brand = parts[0].replace(/([A-Z])/g, ' $1').trim()
-    const product = parts.slice(1, -1).join(' ').replace(/([A-Z])/g, ' $1').trim()
-    return `${brand} ${product}`.replace(/\s+/g, ' ')
-  }
-  
-  return 'Produit Recommandé'
+  // Utiliser le même mapping que getProductInfoByCatalogId pour la cohérence
+  const productInfo = getProductInfoByCatalogId(catalogId)
+  return `${productInfo.brand} ${productInfo.name}`
 }
 
 const getCatalogProductName = (analysis: any, step: any): string | null => {

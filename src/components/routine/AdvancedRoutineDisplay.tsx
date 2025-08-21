@@ -92,18 +92,21 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
 
   // Helper pour obtenir le nom du produit depuis le catalogId
   const getProductNameFromCatalogId = (catalogId: string): string => {
-    // Mapping basé sur les patterns d'ID du catalogue
-    if (catalogId.includes('CERAVE') && catalogId.includes('HYDRATING')) {
+    // Mapping cohérent avec la page de résultats
+    if (catalogId.includes('CERAVE') || catalogId.includes('HYDRATING') || catalogId.includes('CLEANSER')) {
       return 'CeraVe Gel Nettoyant Hydratant'
     }
-    if (catalogId.includes('AVENE') && catalogId.includes('CICALFATE')) {
+    if (catalogId.includes('AVENE') || catalogId.includes('CICALFATE')) {
       return 'Avène Cicalfate+ Crème Réparatrice'
     }
-    if (catalogId.includes('ORDINARY') && catalogId.includes('NIACINAMIDE')) {
+    if (catalogId.includes('ORDINARY') || catalogId.includes('NIACINAMIDE')) {
       return 'The Ordinary Sérum Niacinamide 10%'
     }
-    if (catalogId.includes('LRP') && catalogId.includes('ANTHELIOS')) {
+    if (catalogId.includes('LRP') || catalogId.includes('ANTHELIOS') || catalogId.includes('SPF')) {
       return 'La Roche-Posay Anthelios SPF 50+'
+    }
+    if (catalogId.includes('PAULA') || catalogId.includes('CHOICE') || catalogId.includes('BHA')) {
+      return 'Paula\'s Choice BHA 2% Exfoliant'
     }
     if (catalogId.includes('EFFACLAR')) {
       return 'La Roche-Posay Effaclar Gel Nettoyant'
