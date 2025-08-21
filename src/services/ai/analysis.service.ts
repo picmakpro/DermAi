@@ -1,5 +1,5 @@
 import { createOpenAIClient, ANALYSIS_MODEL } from '@/lib/openai'
-import type { SkinAnalysis } from '@/types'
+import type { SkinAnalysis, SkinScores, SkinDiagnostic, ProductRecommendations } from '@/types'
 import type { AnalyzeRequest } from '@/types/api'
 
 export class AnalysisService {
@@ -83,15 +83,16 @@ export class AnalysisService {
         const analysisResult = this.parseAnalysisResponse(response.choices[0]?.message?.content)
 
         // Calcul du score global (moyenne pondérée) basé sur les 8 sous-scores
-        analysisResult.scores.overall = this.computeWeightedOverall(analysisResult.scores)
+        const scores = analysisResult.scores as any
+        scores.overall = this.computeWeightedOverall(scores)
 
         return {
           id: this.generateId(),
           userId: 'temp-user',
           photos: request.photos,
-          scores: analysisResult.scores,
-          diagnostic: analysisResult.diagnostic,
-          recommendations: analysisResult.recommendations,
+          scores: scores as SkinScores,
+          diagnostic: analysisResult.diagnostic as SkinDiagnostic,
+          recommendations: analysisResult.recommendations as ProductRecommendations,
           createdAt: new Date()
         }
 
@@ -288,7 +289,6 @@ Répondre UNIQUEMENT en JSON valide avec cette structure exacte :
 - Adapter la sélection selon le type de peau et les besoins
 - La routine doit être progressive : immediate → adaptation → maintenance
 - Les localizedRoutine traitent les problèmes spécifiques par zone`
-  }
   }
 
   /**
