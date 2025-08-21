@@ -153,7 +153,7 @@ const getProductInfoByCatalogId = (catalogId: string): RecommendedProductCard =>
       brand: "CeraVe",
       price: 12.99,
       originalPrice: 15.99,
-      imageUrl: "/api/placeholder/400/400",
+      imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop&auto=format",
       discount: 19,
       frequency: "Matin et soir",
       benefits: ["Nettoyage en douceur", "Préserve la barrière cutanée", "Hydratant"],
@@ -166,7 +166,7 @@ const getProductInfoByCatalogId = (catalogId: string): RecommendedProductCard =>
       brand: "Avène",
       price: 15.99,
       originalPrice: 19.99,
-      imageUrl: "/api/placeholder/400/400",
+      imageUrl: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop&auto=format",
       discount: 20,
       frequency: "Selon besoin",
       benefits: ["Répare", "Apaise les irritations", "Anti-bactérien"],
@@ -179,7 +179,7 @@ const getProductInfoByCatalogId = (catalogId: string): RecommendedProductCard =>
       brand: "The Ordinary",
       price: 7.20,
       originalPrice: 8.90,
-      imageUrl: "/api/placeholder/400/400",
+      imageUrl: "https://images.unsplash.com/photo-1570194065650-d99fb4bedf0a?w=400&h=400&fit=crop&auto=format",
       discount: 19,
       frequency: "Matin et soir",
       benefits: ["Régule le sébum", "Minimise les pores", "Anti-inflammatoire"],
@@ -192,7 +192,7 @@ const getProductInfoByCatalogId = (catalogId: string): RecommendedProductCard =>
       brand: "La Roche-Posay",
       price: 18.50,
       originalPrice: 22.00,
-      imageUrl: "/api/placeholder/400/400",
+      imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop&auto=format",
       discount: 16,
       frequency: "Quotidien le matin",
       benefits: ["Protection SPF 50+", "Fini invisible", "Résistant à l'eau"],
@@ -205,7 +205,7 @@ const getProductInfoByCatalogId = (catalogId: string): RecommendedProductCard =>
       brand: "Paula's Choice",
       price: 15.99,
       originalPrice: 19.99,
-      imageUrl: "/api/placeholder/400/400",
+      imageUrl: "https://images.unsplash.com/photo-1631730486887-4d4d1eb4cd24?w=400&h=400&fit=crop&auto=format",
       discount: 20,
       frequency: "2-3 fois par semaine",
       benefits: ["Exfolie en douceur", "Réduit les pores", "Améliore la texture"],
@@ -244,13 +244,15 @@ const getProductInfoByCatalogId = (catalogId: string): RecommendedProductCard =>
     return productMap['PAULA_CHOICE_BHA_016']
   }
   
+  console.log('⚠️ Produit générique utilisé pour:', catalogId)
+  
   // Produit générique si pattern non reconnu
   return {
     name: "Produit Soin Ciblé",
     brand: "Sélection DermAI",
     price: 15.99,
     originalPrice: 19.99,
-    imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop",
+    imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop&auto=format",
     discount: 20,
     frequency: "Selon routine",
     benefits: ["Soin personnalisé", "Adapté à votre peau", "Recommandé par l'IA"],
