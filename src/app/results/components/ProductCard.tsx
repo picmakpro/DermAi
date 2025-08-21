@@ -1,4 +1,4 @@
-import { ShoppingCart, Info, Clock } from 'lucide-react'
+import { ShoppingCart, Info, Clock, RefreshCcw } from 'lucide-react'
 
 interface ProductCardProps {
   name: string
@@ -12,6 +12,7 @@ interface ProductCardProps {
   instructions: string
   whyThisProduct: string
   affiliateLink: string
+  onAlternativeClick?: (criteria?: 'cheaper' | 'natural' | 'similar') => void
 }
 
 export default function ProductCard({
@@ -25,16 +26,12 @@ export default function ProductCard({
   benefits,
   instructions,
   whyThisProduct,
-  affiliateLink
+  affiliateLink,
+  onAlternativeClick
 }: ProductCardProps) {
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden min-w-[280px] snap-start relative group hover:shadow-md transition-shadow">
-      {/* Discount badge */}
-      {discount && (
-        <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full z-10">
-          -{discount}%
-        </div>
-      )}
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 min-w-[280px] snap-start relative group hover:shadow-md transition-shadow">
+      {/* Discount badge supprimé (pas de marketing) */}
       
       {/* Product image */}
       <div className="w-full h-48 bg-gray-50 overflow-hidden">
@@ -56,7 +53,7 @@ export default function ProductCard({
             {/* Why this product tooltip */}
             <div className="relative group/tooltip">
               <Info className="w-4 h-4 text-blue-500 cursor-help" />
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover/tooltip:block">
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover/tooltip:block z-50">
                 <div className="bg-blue-50 border border-blue-200 text-blue-800 text-xs rounded-lg p-3 w-64 shadow-lg">
                   <div className="font-semibold mb-1">✨ Pourquoi ce produit ?</div>
                   <div>{whyThisProduct}</div>
@@ -67,7 +64,7 @@ export default function ProductCard({
             {/* Instructions tooltip */}
             <div className="relative group/tooltip">
               <Clock className="w-4 h-4 text-green-500 cursor-help" />
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover/tooltip:block">
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover/tooltip:block z-50">
                 <div className="bg-green-50 border border-green-200 text-green-800 text-xs rounded-lg p-3 w-64 shadow-lg">
                   <div className="font-semibold mb-1">📋 Mode d'emploi</div>
                   <div>{instructions}</div>
@@ -110,24 +107,29 @@ export default function ProductCard({
           </div>
         </div>
         
-        {/* CTA Button */}
-        <a
-          href={affiliateLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-2.5 rounded-lg font-medium flex items-center justify-center space-x-2 hover:from-pink-600 hover:to-purple-700 transition-all"
-        >
-          <ShoppingCart className="w-4 h-4" />
-          <span>Acheter</span>
-        </a>
-        
-        {/* Exclusive offer badge */}
-        <div className="bg-gradient-to-r from-green-100 to-emerald-100 border border-green-200 rounded-lg p-2.5 text-center">
-          <div className="text-xs text-green-800 font-semibold flex items-center justify-center space-x-1">
-            <span>💡</span>
-            <span>Prix DermAI : jusqu'à -19% vs pharmacie</span>
-          </div>
+        {/* CTA Buttons */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <a
+            href={affiliateLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-2.5 rounded-lg font-medium flex items-center justify-center space-x-2 hover:from-pink-600 hover:to-purple-700 transition-all"
+          >
+            <ShoppingCart className="w-4 h-4" />
+            <span>Acheter</span>
+          </a>
+
+          <button
+            type="button"
+            onClick={() => onAlternativeClick && onAlternativeClick()}
+            className="w-full bg-white text-purple-600 border border-purple-200 py-2.5 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-purple-50 transition-all"
+          >
+            <RefreshCcw className="w-4 h-4" />
+            <span>Autre alternative</span>
+          </button>
         </div>
+        
+        {/* Badge marketing supprimé */}
       </div>
     </div>
   )

@@ -69,7 +69,7 @@ const phaseColors = {
 
 const phaseLabels = {
   immediate: 'Phase Immédiate',
-  adaptation: 'Phase d&apos;Adaptation',
+  adaptation: 'Phase d’adaptation',
   maintenance: 'Phase de Maintenance'
 }
 
@@ -93,6 +93,22 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
   // Helper pour obtenir le nom du produit depuis le catalogId
   const getProductNameFromCatalogId = (catalogId: string): string => {
     // Mapping cohérent avec la page de résultats
+    if (catalogId === 'B01MSSDEPK') {
+      return 'CeraVe Nettoyant Hydratant'
+    }
+    if (catalogId === 'B00BNUY3HE') {
+      return 'La Roche-Posay Cicaplast Baume B5'
+    }
+    if (catalogId === 'B01MDTVZTZ') {
+      return 'The Ordinary Niacinamide 10% + Zinc 1%'
+    }
+    if (catalogId === 'B00949CTQQ') {
+      return "Paula's Choice SKIN PERFECTING 2% BHA"
+    }
+    if (catalogId === 'B004W55086') {
+      return 'La Roche-Posay Anthelios Fluid SPF 50'
+    }
+
     if (catalogId.includes('CERAVE') || catalogId.includes('HYDRATING') || catalogId.includes('CLEANSER')) {
       return 'CeraVe Gel Nettoyant Hydratant'
     }
@@ -221,8 +237,14 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
                 <Target className="w-3 h-3" />
                 <span className="font-medium">Produit recommandé</span>
               </div>
-              <p className="text-xs text-gray-800 font-medium">{getProductNameFromCatalogId(step.catalogId)}</p>
-              <p className="text-xs text-gray-600 mt-1">Commencer: {step.startDate}</p>
+              <a
+                href={typeof (step as any).affiliateLink === 'string' ? (step as any).affiliateLink : '#'}
+                target="_blank" rel="noopener noreferrer"
+                className="text-xs text-blue-800 font-medium hover:underline"
+              >
+                {getProductNameFromCatalogId(step.catalogId)}
+              </a>
+              <p className="text-xs text-gray-600 mt-1">Commencer: {(step.startDate || '').replace(/_/g,' ').replace('apres','après')}</p>
             </div>
           )}
           

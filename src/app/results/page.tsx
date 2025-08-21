@@ -1,8 +1,9 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
+import LZString from 'lz-string'
 import { useRouter } from 'next/navigation'
-import { getProductInfoByCatalogId, RecommendedProductCard } from '@/services/catalog/catalogService'
+import { getProductInfoByCatalogId, RecommendedProductCard as CatalogRecommendedProductCard, findAlternativeProduct } from '@/services/catalog/catalogService'
 import { motion } from 'framer-motion'
 import { 
   ArrowLeft, 
@@ -26,7 +27,7 @@ import {
   Calendar,
   Target
 } from 'lucide-react'
-import type { SkinAnalysis, SkinScores, ScoreDetail, RecommendedProductCard } from '@/types'
+import type { SkinAnalysis, SkinScores, ScoreDetail } from '@/types'
 import { getAnalysis } from '@/utils/storage/analysisStore'
 import ChatWidget from './ChatWidget'
 import ScoreCircle from './components/ScoreCircle'
@@ -103,15 +104,51 @@ const extractCatalogIds = (analysis: SkinAnalysis): string[] => {
 }
 
 // Génération de produits recommandés basée sur l'analyse
-const getProductRecommendations = async (analysis: SkinAnalysis) => {
-  // Si l'analyse contient des produits détaillés, les utiliser
+const getProductRecommendations = async (analysis: SkinAnalysis): Promise<CatalogRecommendedProductCard[]> => {
+  // Si l'analyse contient des produits détaillés (type léger), les convertir vers le format catalogue
   if (analysis.recommendations?.productsDetailed && analysis.recommendations.productsDetailed.length > 0) {
-    return analysis.recommendations.productsDetailed
+    const mapped = analysis.recommendations.productsDetailed.map((p: any): CatalogRecommendedProductCard => {
+      const safePrice = typeof p.price === 'number' ? p.price : 0
+      const originalPrice = Math.round(safePrice * 1.2 * 100) / 100
+      const discount = originalPrice > 0 ? Math.max(0, Math.min(99, Math.round(((originalPrice - safePrice) / originalPrice) * 100))) : 0
+      return {
+        name: p.name,
+        brand: p.brand,
+        price: safePrice,
+        originalPrice,
+        imageUrl: p.imageUrl,
+        discount,
+        frequency: p.frequency || 'Selon routine',
+        benefits: Array.isArray(p.benefits) ? p.benefits : [],
+        instructions: "Suivre les instructions de la routine personnalisée",
+        whyThisProduct: "Sélectionné par l'IA pour votre diagnostic",
+        affiliateLink: p.affiliateLink || '#'
+      }
+    })
+    return mapped
   }
 
   // Extraire les catalogId de l'analyse
   const catalogIds = extractCatalogIds(analysis)
-  
+ 
+  // Ajouter les catalogId issus du fallback de routine localisée (générée côté UI)
+  try {
+    const localizedComputed = getLocalizedRoutine(analysis) as any[]
+    const extraIds: string[] = []
+    localizedComputed.forEach((zone: any) => {
+      ;(zone.steps || []).forEach((s: any) => {
+        if (s?.catalogId) extraIds.push(s.catalogId)
+      })
+    })
+    if (extraIds.length) {
+      const merged = Array.from(new Set([...catalogIds, ...extraIds]))
+      console.log('➕ Ajout IDs depuis fallback localizedRoutine:', extraIds, '→ total:', merged.length)
+      return await getProductsFromCatalogIds(merged)
+    }
+  } catch (e) {
+    console.warn('Fallback localizedRoutine non disponible pour extraction:', e)
+  }
+
   // Si on a des catalogId, créer des produits avec référence au catalogue
   if (catalogIds.length > 0) {
     console.log('🎯 CatalogIds trouvés:', catalogIds)
@@ -126,8 +163,8 @@ const getProductRecommendations = async (analysis: SkinAnalysis) => {
 }
 
 // Créer des produits basés sur les catalogId trouvés
-const getProductsFromCatalogIds = async (catalogIds: string[]): Promise<RecommendedProductCard[]> => {
-  const products: RecommendedProductCard[] = []
+const getProductsFromCatalogIds = async (catalogIds: string[]): Promise<CatalogRecommendedProductCard[]> => {
+  const products: CatalogRecommendedProductCard[] = []
   
   // Pour chaque catalogId, créer un produit représentatif (TOUS les produits, pas de limite)
   for (const catalogId of catalogIds) {
@@ -151,8 +188,8 @@ const getProductsFromCatalogIds = async (catalogIds: string[]): Promise<Recommen
 
 
 // Fallback pour produits génériques si pas de catalogId
-const getGenericProducts = (analysis: SkinAnalysis) => {
-  const mockProducts = []
+const getGenericProducts = (analysis: SkinAnalysis): CatalogRecommendedProductCard[] => {
+  const mockProducts: CatalogRecommendedProductCard[] = []
   const recommendations = analysis.recommendations?.products || []
   const skinConcerns = analysis.diagnostic?.primaryCondition || ''
   const scores = analysis.scores
@@ -178,9 +215,9 @@ const getGenericProducts = (analysis: SkinAnalysis) => {
       name: "Sérum Acide Hyaluronique",
       brand: "The Ordinary",
       price: 7.90,
-      originalPrice: null,
+      originalPrice: 9.50,
       imageUrl: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop",
-      discount: null,
+      discount: 17,
       frequency: "Matin et soir",
       benefits: ["Hydratation intense", "Repulpe la peau", "Anti-âge"],
       instructions: "Appliquer 2-3 gouttes sur peau propre",
@@ -502,13 +539,47 @@ export default function ResultsPage() {
   const [analysis, setAnalysis] = useState<SkinAnalysis | null>(null)
   const [userAge, setUserAge] = useState<number | null>(null)
   const [isChatOpen, setIsChatOpen] = useState(false)
-  const [products, setProducts] = useState<RecommendedProductCard[]>([])
+  const [products, setProducts] = useState<CatalogRecommendedProductCard[]>([])
   const [productsLoading, setProductsLoading] = useState(false)
+  const [catalogMap, setCatalogMap] = useState<Record<string, { name: string; affiliateLink: string }>>({})
+  const handleAlternative = async (index: number) => {
+    try {
+      const current = products[index]
+      const alternative = await findAlternativeProduct({ name: current.name, brand: current.brand, price: current.price })
+      if (!alternative) return
+      const next = [...products]
+      next[index] = alternative
+      setProducts(next)
+    } catch (e) {
+      console.warn('Impossible de charger une alternative:', e)
+    }
+  }
 
   useEffect(() => {
     const load = async () => {
-      const analysisId = sessionStorage.getItem('dermai_analysis_id')
       const questionnaireData = sessionStorage.getItem('dermai_questionnaire')
+      // Priorité: lien partagé ?d=...
+      try {
+        const url = new URL(window.location.href)
+        const dParam = url.searchParams.get('d')
+        if (dParam) {
+          const json = LZString.decompressFromEncodedURIComponent(dParam)
+          if (json) {
+            const shared = JSON.parse(json)
+            setAnalysis(shared)
+            if (questionnaireData) {
+              const q = JSON.parse(questionnaireData)
+              if (q?.userProfile?.age) setUserAge(q.userProfile.age)
+            }
+            return
+          }
+        }
+      } catch (e) {
+        console.warn('Lien partagé invalide:', e)
+      }
+
+      // Sinon, fallback sessionStorage
+      const analysisId = sessionStorage.getItem('dermai_analysis_id')
       if (!analysisId) {
         router.push('/upload')
         return
@@ -540,7 +611,16 @@ export default function ResultsPage() {
       setProductsLoading(true)
       try {
         const recommendedProducts = await getProductRecommendations(analysis)
-        setProducts(recommendedProducts)
+        setProducts(recommendedProducts as CatalogRecommendedProductCard[])
+
+        // Construire une map catalogId -> {name, affiliateLink} pour toute la page
+        const ids = extractCatalogIds(analysis)
+        const uniqueIds = Array.from(new Set(ids))
+        const infos = await Promise.all(uniqueIds.map(async (id) => {
+          const info = await getProductInfoByCatalogId(id)
+          return [id, { name: info.name, affiliateLink: info.affiliateLink }] as const
+        }))
+        setCatalogMap(Object.fromEntries(infos))
       } catch (error) {
         console.error('❌ Erreur chargement produits:', error)
         setProducts([])
@@ -608,7 +688,8 @@ export default function ResultsPage() {
               <div className="w-3 h-3 bg-pink-500 rounded-full"></div>
             </div>
 
-            {/* New analysis button */}
+            {/* Actions header */}
+            <div className="flex items-center space-x-2">
             <button
               onClick={handleNewAnalysis}
               className="flex items-center space-x-2 bg-white text-gray-700 px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-shadow border border-gray-200"
@@ -616,6 +697,29 @@ export default function ResultsPage() {
               <RotateCcw className="w-4 h-4" />
               <span className="hidden sm:inline">Nouvelle analyse</span>
             </button>
+              <button
+                onClick={() => {
+                  try {
+                    if (!analysis) return
+                    const json = JSON.stringify(analysis)
+                    const encoded = LZString.compressToEncodedURIComponent(json)
+                    const shareUrl = `${window.location.origin}/results?d=${encoded}`
+                    navigator.clipboard.writeText(shareUrl)
+                  } catch (e) { console.warn('Copie du lien impossible', e) }
+                }}
+                className="flex items-center space-x-2 bg-purple-600 text-white px-4 py-2 rounded-full shadow-sm hover:bg-purple-700 transition-colors"
+                title="Copier le lien du diagnostic"
+              >
+                <span>Partager</span>
+              </button>
+              <button
+                disabled
+                className="flex items-center space-x-2 bg-white text-gray-400 px-4 py-2 rounded-full shadow-sm border border-gray-200 cursor-not-allowed"
+                title="Export PDF bientôt disponible"
+              >
+                <span>Enregistrer (PDF bientôt)</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -878,18 +982,18 @@ export default function ResultsPage() {
 
          {/* Routine localisée par zones (si disponible) */}
          {getLocalizedRoutine(analysis).length > 0 && (
-           <motion.div
-             initial={{ opacity: 0, y: 20 }}
-             animate={{ opacity: 1, y: 0 }}
+         <motion.div
+           initial={{ opacity: 0, y: 20 }}
+           animate={{ opacity: 1, y: 0 }}
              transition={{ delay: 0.3 }}
              className="bg-white rounded-3xl shadow-xl p-8"
            >
              <div className="flex items-center space-x-3 mb-6">
                <Target className="w-6 h-6 text-rose-500" />
                <h2 className="text-2xl font-bold text-gray-900">Traitement des zones à surveiller</h2>
-             </div>
+               </div>
 
-                         <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {getLocalizedRoutine(analysis)
                 .sort((a: any, b: any) => (a.priority || 99) - (b.priority || 99))
                 .map((loc: any, idx: number) => {
@@ -906,18 +1010,18 @@ export default function ResultsPage() {
                  
                  return (
                    <div key={idx} className={`rounded-2xl border p-6 ${backgroundClass}`}>
-                     {/* En-tête de zone avec badge de sévérité cohérent */}
-                     <div className="flex items-center justify-between mb-4">
-                       <div className="flex items-center space-x-3">
-                         <h4 className="text-lg font-bold text-gray-900 capitalize">{loc.zone}</h4>
-                         <span className={`text-xs px-3 py-1 rounded-full border ${severityClass}`}>
-                           {loc.severity || 'Modérée'}
-                         </span>
-                       </div>
-                       {Array.isArray(loc.issues) && (
-                         <div className="text-sm text-gray-600">{loc.issues.join(' • ')}</div>
-                       )}
-                     </div>
+                     {/* En-tête: Zone (problème) à gauche, Sévérité à droite */}
+                     <div className="flex items-start justify-between mb-4">
+                       <h4 className="text-lg font-bold text-gray-900 capitalize">
+                         {loc.zone}
+                         {Array.isArray(loc.issues) && loc.issues.length > 0 && (
+                           <span className="ml-2 text-sm font-normal text-gray-700">({loc.issues[0]})</span>
+                         )}
+                       </h4>
+                       <span className={`text-xs px-3 py-1 rounded-full border ${severityClass}`}>
+                         {loc.severity || 'Modérée'}
+                       </span>
+               </div>
 
                       {Array.isArray(loc.restrictions) && loc.restrictions.length > 0 && (
                         <div className="mb-3">
@@ -925,13 +1029,13 @@ export default function ResultsPage() {
                           <ul className="text-xs text-gray-600 list-disc pl-4 space-y-0.5">
                             {loc.restrictions.map((r: string, i: number) => (<li key={i}>{r}</li>))}
                           </ul>
-                        </div>
+             </div>
                       )}
 
                       {loc.resumeCondition && (
                         <div className="text-xs text-gray-600 mb-3">
                           <span className="font-medium">Reprise progressive:</span> {loc.resumeCondition}
-                        </div>
+             </div>
                       )}
 
                       {Array.isArray(loc.steps) && loc.steps.length > 0 && (
@@ -942,7 +1046,7 @@ export default function ResultsPage() {
                               <div className="flex items-start space-x-3 mb-3">
                                 <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
                                   {si + 1}
-                                </div>
+           </div>
                                 <div className="flex-1">
                                   <div className="text-sm font-semibold text-gray-900 mb-1">{s.name || s.title}</div>
                                   <div className="flex flex-wrap items-center gap-2 text-xs">
@@ -961,7 +1065,14 @@ export default function ResultsPage() {
                                     <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
                                     <span className="font-medium">Produit recommandé</span>
                                   </div>
-                                  <p className="text-xs text-gray-800 font-medium">{getProductNameFromCatalogId(s.catalogId)}</p>
+                                  <a
+                                    href={catalogMap[s.catalogId]?.affiliateLink || '#'}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-xs text-blue-800 font-medium hover:underline"
+                                  >
+                                    {catalogMap[s.catalogId]?.name || getProductNameFromCatalogId(s.catalogId)}
+                                  </a>
                                   {s.application && (
                                     <p className="text-xs text-gray-600 mt-1">{s.application}</p>
                                   )}
@@ -1003,48 +1114,51 @@ export default function ResultsPage() {
            transition={{ delay: 0.4 }}
            className="bg-gradient-to-br from-white to-purple-50 rounded-3xl shadow-xl p-8 border border-purple-100"
          >
-           <div className="flex items-center justify-between mb-6">
-             <div className="flex items-center space-x-3">
-               <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
-                 <span className="text-white text-xl">🛍️</span>
-               </div>
-               <div>
-                 <h2 className="text-2xl font-bold text-gray-900">Produits Recommandés</h2>
-                 <p className="text-gray-600">
-                   Sélectionnés par l'IA • <span className="text-green-600 font-semibold">Livraison gratuite dès 49€</span>
-                 </p>
-               </div>
+           <div className="flex items-center space-x-3 mb-6">
+             <div className="w-10 h-10 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+               <span className="text-white text-lg">🛍️</span>
              </div>
-             <div className="text-right hidden md:block">
-               <div className="text-sm text-gray-500">Offre spéciale</div>
-               <div className="text-lg font-bold text-green-600">-19% vs pharmacie</div>
-             </div>
+             <h2 className="text-2xl font-bold text-gray-900">Produits recommandés</h2>
            </div>
 
-           <div className="bg-gradient-to-r from-green-100 to-emerald-100 border border-green-200 rounded-2xl p-4 mb-6">
-             <div className="flex items-center justify-between text-green-800">
-               <div className="flex items-center space-x-2">
-               <span className="text-lg">💡</span>
-               <span className="font-semibold">Ces produits correspondent parfaitement à votre type de peau</span>
-               </div>
-               <div className="text-xs bg-green-200 text-green-800 px-3 py-1 rounded-full">
-                 Sélection DermAI
-               </div>
-             </div>
-           </div>
-
-                     <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory">
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {productsLoading ? (
               <div className="flex items-center justify-center w-full py-8">
                 <div className="text-gray-500">Chargement des produits...</div>
               </div>
             ) : (
               products.map((product, index) => (
-                <ProductCard key={index} {...product} />
+                <ProductCard key={index} {...product} onAlternativeClick={() => handleAlternative(index)} />
               ))
             )}
-          </div>
+           </div>
          </motion.div>
+
+         {/* Actions secondaires après Produits recommandés */}
+         <div className="flex items-center justify-end gap-2">
+           <button
+             onClick={() => {
+               try {
+                 if (!analysis) return
+                 const json = JSON.stringify(analysis)
+                 const encoded = LZString.compressToEncodedURIComponent(json)
+                 const shareUrl = `${window.location.origin}/results?d=${encoded}`
+                 navigator.clipboard.writeText(shareUrl)
+               } catch (e) { console.warn('Copie du lien impossible', e) }
+             }}
+             className="flex items-center space-x-2 bg-purple-600 text-white px-4 py-2 rounded-full shadow-sm hover:bg-purple-700 transition-colors"
+             title="Copier le lien du diagnostic"
+           >
+             <span>Partager</span>
+           </button>
+           <button
+             disabled
+             className="flex items-center space-x-2 bg-white text-gray-400 px-4 py-2 rounded-full shadow-sm border border-gray-200 cursor-not-allowed"
+             title="Export PDF bientôt disponible"
+           >
+             <span>Enregistrer (PDF bientôt)</span>
+           </button>
+         </div>
 
         {/* Chat CTA */}
         <motion.div

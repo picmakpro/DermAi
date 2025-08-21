@@ -55,6 +55,61 @@ export const loadCatalog = async (): Promise<AffiliateCatalog> => {
   }
 }
 
+// Trouver un produit du catalogue par nom (heuristique robuste)
+const findProductByName = (catalog: AffiliateCatalog, name: string, brand?: string): CatalogProduct | null => {
+  const norm = (s: string) => s.toLowerCase().replace(/\s+/g, ' ').trim()
+  const targetName = norm(name)
+  const targetBrand = brand ? norm(brand) : undefined
+
+  // 1) Match exact sur le nom
+  let found = catalog.products.find(p => norm(p.name) === targetName)
+  if (found) return found
+
+  // 2) Match brand+name inclusif
+  if (targetBrand) {
+    found = catalog.products.find(p => norm(p.brand) === targetBrand && norm(p.name).includes(targetName)) || null
+    if (found) return found
+  }
+
+  // 3) Match partiel sur nom
+  found = catalog.products.find(p => norm(p.name).includes(targetName)) || null
+  return found || null
+}
+
+// Rechercher une alternative dans la même catégorie que le produit courant
+export const findAlternativeProduct = async (
+  current: { name: string; brand?: string; price?: number },
+  excludeIds: string[] = []
+): Promise<RecommendedProductCard | null> => {
+  const catalog = await loadCatalog()
+  const currentProduct = findProductByName(catalog, current.name, current.brand)
+  if (!currentProduct) {
+    console.warn('Produit courant introuvable dans le catalogue pour alternative:', current)
+    return null
+  }
+
+  const sameCategory = catalog.products.filter(p => p.category === currentProduct.category)
+  if (sameCategory.length === 0) return null
+
+  // Exclure le produit courant et ceux explicitement exclus
+  const candidates = sameCategory.filter(p => p.id !== currentProduct.id && !excludeIds.includes(p.id))
+  if (candidates.length === 0) return null
+
+  // Heuristique simple: si prix fourni, proposer une option un peu moins chère si possible, sinon la première autre marque
+  let choice: CatalogProduct | undefined
+  if (typeof current.price === 'number') {
+    const cheaper = candidates
+      .filter(p => p.price < (current.price as number))
+      .sort((a, b) => a.price - b.price)[0]
+    choice = cheaper || candidates.sort((a, b) => a.price - b.price)[0]
+  } else {
+    choice = candidates[0]
+  }
+
+  if (!choice) return null
+  return convertToRecommendedCard(choice)
+}
+
 // Rechercher un produit par ID Amazon
 const findProductByAmazonId = (catalog: AffiliateCatalog, amazonId: string): CatalogProduct | null => {
   return catalog.products.find(product => product.id === amazonId) || null
