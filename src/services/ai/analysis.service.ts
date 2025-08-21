@@ -29,7 +29,7 @@ export class AnalysisService {
       }).filter(base64 => base64.length > 0)
 
       // Prompt principal optimisé
-      const systemPrompt = this.buildSystemPrompt()
+      const systemPrompt = await this.buildSystemPrompt()
       const userPrompt = this.buildUserPrompt(request)
 
       // Validation des images
@@ -113,6 +113,61 @@ export class AnalysisService {
   }
 
   /**
+   * Charger le catalogue pour l'injection dans le prompt
+   */
+  private static async loadCatalogForPrompt(): Promise<string> {
+    try {
+      // Charger le catalogue depuis le système de fichiers
+      const fs = await import('fs').then(m => m.promises)
+      const path = await import('path')
+      
+      const catalogPath = path.join(process.cwd(), 'public', 'affiliateCatalog.json')
+      const catalogData = await fs.readFile(catalogPath, 'utf-8')
+      const catalog = JSON.parse(catalogData)
+      const products = catalog.products || []
+      
+      // Formater pour le prompt (sélection diversifiée par catégorie)
+      const categorizedProducts = products.reduce((acc: any, product: any) => {
+        if (!acc[product.category]) acc[product.category] = []
+        acc[product.category].push(product)
+        return acc
+      }, {})
+      
+      // Prendre 3-5 produits par catégorie principale
+      const importantCategories = ['cleanser', 'serum', 'moisturizer', 'sunscreen', 'exfoliant', 'treatment', 'mist']
+      const selectedProducts: any[] = []
+      
+      importantCategories.forEach(category => {
+        if (categorizedProducts[category]) {
+          selectedProducts.push(...categorizedProducts[category].slice(0, 4))
+        }
+      })
+      
+      // Limiter au total pour éviter un prompt trop long
+      const catalogText = selectedProducts
+        .slice(0, 40)
+        .map((product: any) => {
+          const benefits = Array.isArray(product.benefits) ? product.benefits.slice(0, 2).join(', ') : 'Soin ciblé'
+          return `- ${product.id} : ${product.name} (${product.brand}, ${product.category}) - ${benefits}`
+        })
+        .join('\n')
+      
+      console.log('📦 Catalogue chargé pour ChatGPT:', selectedProducts.length, 'produits sélectionnés sur', products.length, 'total')
+      return catalogText
+      
+    } catch (error) {
+      console.error('❌ Erreur chargement catalogue pour prompt:', error)
+      // Fallback avec quelques produits de base du vrai catalogue
+      return `- B01MSSDEPK : CeraVe Nettoyant Hydratant (CeraVe, cleanser) - nettoie tout en hydratant, restaure barrière cutanée
+- B01MDTVZTZ : The Ordinary Niacinamide 10% + Zinc 1% (The Ordinary, serum) - régule sébum, resserre pores
+- B00949CTQQ : Paula's Choice SKIN PERFECTING 2% BHA (Paula's Choice, exfoliant) - désobstrue pores, réduit points noirs
+- B000O7PH34 : Avène Thermal Spring Water (Avène, mist) - apaise, rafraîchit
+- B004W55086 : La Roche-Posay Anthelios Fluid SPF 50 (La Roche-Posay, sunscreen) - ultra-léger, absorption rapide
+- B00BNUY3HE : La Roche-Posay Cicaplast Baume B5 (La Roche-Posay, balm) - réparation, apaise`
+    }
+  }
+
+  /**
    * Calcule un score global pondéré à partir des sous-scores
    * Pondérations choisies pour être parlantes grand public (somme = 1)
    */
@@ -152,27 +207,21 @@ export class AnalysisService {
   /**
    * Prompt système - Expert dermatologue IA
    */
-  private static buildSystemPrompt(): string {
+  private static async buildSystemPrompt(): Promise<string> {
+    // Charger le catalogue réel
+    const catalogText = await this.loadCatalogForPrompt()
+    
     return `Tu es DermAI Vision 3.0, l'assistant dermatologique IA le plus avancé.
 
 ## MISSION CRITIQUE
 Analyser avec précision maximale les photos de peau et recommander UNIQUEMENT des produits du catalogue fourni.
 
 ## CATALOGUE DE PRODUITS DISPONIBLE
-Tu as accès à un catalogue de 100+ produits structurés par ID (exemples) :
-- LRP_EFFACLAR_GEL_001 (cleanser La Roche-Posay)
-- LRP_TOLERIANE_FOAM_002 (cleanser La Roche-Posay)
-- BIODERMA_SENSIBIO_H2O_003 (cleanser Bioderma)
-- CERAVE_HYDRATING_CLEANSER_004 (cleanser CeraVe)
-- AVENE_EXTREMELY_GENTLE_005 (cleanser Avène)
-- PAULA_CHOICE_BHA_016 (exfoliant Paula's Choice)
-- ORDINARY_AHA_BHA_017 (exfoliant The Ordinary)
-- PIXI_GLOW_TONIC_025 (tonique Pixi)
-- ORDINARY_NIACINAMIDE_033 (sérum The Ordinary)
-- CERAVE_PM_FACIAL_043 (hydratant CeraVe)
-- NEUTROGENA_HYDRO_BOOST_044 (hydratant Neutrogena)
-- LRP_ANTHELIOS_SPF50_095 (protection solaire La Roche-Posay)
-Et 90+ autres produits couvrant toutes les catégories.
+Tu as accès au catalogue suivant avec les IDs réels :
+
+${catalogText}
+
+IMPORTANT : Utilise UNIQUEMENT les IDs réels du catalogue ci-dessus (exemple: B01MSSDEPK, B000O7PH34, etc.)
 
 ## RÈGLES IMPÉRATIVES
 1. CATALOGID OBLIGATOIRE : Chaque produit recommandé DOIT avoir un catalogId réel du catalogue
@@ -235,7 +284,7 @@ Répondre UNIQUEMENT en JSON valide avec cette structure exacte :
           "name": "Nettoyage doux",
           "frequency": "quotidien",
           "timing": "matin_et_soir",
-          "catalogId": "CERAVE_HYDRATING_CLEANSER_004",
+          "catalogId": "B01MSSDEPK",
           "application": "Masser délicatement, rincer à l'eau tiède",
           "startDate": "maintenant"
         }
@@ -245,7 +294,7 @@ Répondre UNIQUEMENT en JSON valide avec cette structure exacte :
           "name": "Exfoliation chimique",
           "frequency": "hebdomadaire",
           "timing": "soir",
-          "catalogId": "PAULA_CHOICE_BHA_016",
+          "catalogId": "B00949CTQQ",
           "application": "Commencer 1x/semaine, augmenter progressivement",
           "startDate": "après_2_semaines"
         }
@@ -255,7 +304,7 @@ Répondre UNIQUEMENT en JSON valide avec cette structure exacte :
           "name": "Protection solaire",
           "frequency": "quotidien",
           "timing": "matin",
-          "catalogId": "LRP_ANTHELIOS_SPF50_095",
+          "catalogId": "B004W55086",
           "application": "Renouveler toutes les 2h si exposition",
           "startDate": "maintenant"
         }
@@ -270,7 +319,7 @@ Répondre UNIQUEMENT en JSON valide avec cette structure exacte :
             "name": "Crème apaisante",
             "frequency": "quotidien",
             "timing": "soir",
-            "catalogId": "AVENE_CICALFATE_070",
+            "catalogId": "B00BNUY3HE",
             "application": "Couche fine sur les zones irritées",
             "duration": "jusqu'à cicatrisation",
             "resume": "quand irritation disparue"

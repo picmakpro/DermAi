@@ -262,12 +262,12 @@ const getLocalizedRoutine = (analysis: any) => {
     // Ajouter les soins selon les problèmes détectés
     if (isIrritated) {
       steps.push({
-        name: 'Eau thermale apaisante',
+        name: 'Crème apaisante réparatrice',
         category: 'treatment',
         frequency: 'quotidien',
-        timing: 'matin et soir',
-        catalogId: 'B000O7PH34', // Avène Thermal Spring Water
-        application: 'Vaporiser sur les zones irritées',
+        timing: 'soir',
+        catalogId: 'B00BNUY3HE', // La Roche-Posay Cicaplast Baume B5
+        application: 'Couche fine sur les zones irritées',
         duration: 'jusqu\'à cicatrisation',
         resume: 'quand irritation disparue'
       })
@@ -348,6 +348,11 @@ const getProductNameFromCatalogId = (catalogId: string): string => {
   if (catalogId === 'B000O7PH34') {
     productNameCache[catalogId] = "Avène Thermal Spring Water"
     console.log('✅ ID Amazon Avène trouvé:', productNameCache[catalogId])
+    return productNameCache[catalogId]
+  }
+  if (catalogId === 'B00BNUY3HE') {
+    productNameCache[catalogId] = "La Roche-Posay Cicaplast Baume B5"
+    console.log('✅ ID Amazon Cicaplast trouvé:', productNameCache[catalogId])
     return productNameCache[catalogId]
   }
   if (catalogId === 'B01MDTVZTZ') {
