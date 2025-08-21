@@ -262,12 +262,12 @@ const getLocalizedRoutine = (analysis: any) => {
     // Ajouter les soins selon les problèmes détectés
     if (isIrritated) {
       steps.push({
-        name: 'Crème apaisante réparatrice',
+        name: 'Eau thermale apaisante',
         category: 'treatment',
         frequency: 'quotidien',
-        timing: 'soir',
-        catalogId: 'AVENE_CICALFATE_070',
-        application: 'Couche fine sur les zones irritées',
+        timing: 'matin et soir',
+        catalogId: 'B000O7PH34', // Avène Thermal Spring Water
+        application: 'Vaporiser sur les zones irritées',
         duration: 'jusqu\'à cicatrisation',
         resume: 'quand irritation disparue'
       })
@@ -279,7 +279,7 @@ const getLocalizedRoutine = (analysis: any) => {
         category: 'treatment', 
         frequency: 'quotidien',
         timing: 'soir',
-        catalogId: 'ORDINARY_NIACINAMIDE_033',
+        catalogId: 'B01MDTVZTZ', // The Ordinary Niacinamide 10% + Zinc 1%
         application: 'Quelques gouttes sur la zone',
         duration: 'routine continue',
         resume: 'selon besoin'
@@ -332,27 +332,61 @@ const timeOfDayLabel = (t?: string) => {
   return t
 }
 
-// Helper pour obtenir le nom du produit depuis le catalogId (version synchrone pour l'affichage)
+// Helper pour obtenir le nom du produit depuis le catalogId (état global pour cache)
+let productNameCache: { [key: string]: string } = {}
+
 const getProductNameFromCatalogId = (catalogId: string): string => {
-  // Pattern matching simple pour l'affichage immédiat
+  console.log('🏷️ Demande nom produit pour:', catalogId)
+  
+  // Vérifier le cache d'abord
+  if (productNameCache[catalogId]) {
+    console.log('📋 Cache trouvé:', productNameCache[catalogId])
+    return productNameCache[catalogId]
+  }
+  
+  // Utiliser le même pattern matching que le service catalogue + IDs Amazon directs
+  if (catalogId === 'B000O7PH34') {
+    productNameCache[catalogId] = "Avène Thermal Spring Water"
+    console.log('✅ ID Amazon Avène trouvé:', productNameCache[catalogId])
+    return productNameCache[catalogId]
+  }
+  if (catalogId === 'B01MDTVZTZ') {
+    productNameCache[catalogId] = "The Ordinary Niacinamide 10% + Zinc 1%"
+    console.log('✅ ID Amazon The Ordinary trouvé:', productNameCache[catalogId])
+    return productNameCache[catalogId]
+  }
+  if (catalogId === 'B00949CTQQ') {
+    productNameCache[catalogId] = "Paula's Choice SKIN PERFECTING 2% BHA"
+    console.log('✅ ID Amazon Paula\'s Choice trouvé:', productNameCache[catalogId])
+    return productNameCache[catalogId]
+  }
+  
+  // Patterns pour les anciens IDs fictifs (fallback)
   if (catalogId.includes('CERAVE') && catalogId.includes('CLEANSER')) {
-    return "CeraVe Gel Nettoyant Hydratant"
+    productNameCache[catalogId] = "CeraVe Nettoyant Hydratant"
+    console.log('✅ Pattern CeraVe trouvé:', productNameCache[catalogId])
+    return productNameCache[catalogId]
   }
   if (catalogId.includes('AVENE') && catalogId.includes('CICALFATE')) {
-    return "Avène Cicalfate+ Crème Réparatrice"
+    productNameCache[catalogId] = "Avène Thermal Spring Water"
+    return productNameCache[catalogId]
   }
   if (catalogId.includes('ORDINARY') && catalogId.includes('NIACINAMIDE')) {
-    return "The Ordinary Sérum Niacinamide 10%"
+    productNameCache[catalogId] = "The Ordinary Niacinamide 10% + Zinc 1%"
+    return productNameCache[catalogId]
   }
-  if (catalogId.includes('LRP') || catalogId.includes('ROCHE')) {
-    return "La Roche-Posay Anthelios SPF 50+"
+  if (catalogId.includes('LRP') || catalogId.includes('ROCHE') || catalogId.includes('SPF')) {
+    productNameCache[catalogId] = "La Roche-Posay Anthelios Fluid SPF 50"
+    return productNameCache[catalogId]
   }
-  if (catalogId.includes('PAULA') && catalogId.includes('CHOICE')) {
-    return "Paula's Choice BHA 2% Exfoliant"
+  if (catalogId.includes('PAULA') && (catalogId.includes('CHOICE') || catalogId.includes('BHA'))) {
+    productNameCache[catalogId] = "Paula's Choice SKIN PERFECTING 2% BHA"
+    return productNameCache[catalogId]
   }
   
   // Fallback générique
-  return "Produit Soin Ciblé"
+  productNameCache[catalogId] = "Produit Soin Ciblé"
+  return productNameCache[catalogId]
 }
 
 const getCatalogProductName = (analysis: any, step: any): string | null => {
