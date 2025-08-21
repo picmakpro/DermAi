@@ -1,0 +1,2284 @@
+[
+    {
+      "id": "LRP_EFFACLAR_GEL_001",
+      "name": "Effaclar Gel Nettoyant Purifiant",
+      "brand": "La Roche-Posay",
+      "category": "cleanser",
+      "price": 18.74,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B003JSEGNC/",
+      "activeIngredients": [
+        "Zinc Pidolate"
+      ],
+      "skinTypes": [
+        "grasse",
+        "mixte",
+        "acneique"
+      ],
+      "benefits": [
+        "purifie",
+        "elimine_exces_sebum",
+        "respecte_barriere"
+      ]
+    },
+    {
+      "id": "LRP_TOLERIANE_FOAM_002",
+      "name": "Toleriane Nettoyant Moussant Purifiant",
+      "brand": "La Roche-Posay",
+      "category": "cleanser",
+      "price": 19.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B01N34XW93/",
+      "activeIngredients": [
+        "Niacinamide",
+        "Ceramides"
+      ],
+      "skinTypes": [
+        "sensible",
+        "tous_types"
+      ],
+      "benefits": [
+        "nettoie_sans_dessecher",
+        "apaise",
+        "respecte_pH"
+      ]
+    },
+    {
+      "id": "BIODERMA_SENSIBIO_H2O_003",
+      "name": "Sensibio H2O Eau Micellaire",
+      "brand": "Bioderma",
+      "category": "cleanser",
+      "price": 29.97,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B00AVE22XS/",
+      "activeIngredients": [
+        "Micelles biomimetiques"
+      ],
+      "skinTypes": [
+        "sensible",
+        "tous_types"
+      ],
+      "benefits": [
+        "demaquille",
+        "nettoie",
+        "apaise",
+        "sans_rincage"
+      ]
+    },
+    {
+      "id": "CERAVE_HYDRATING_CLEANSER_004",
+      "name": "Nettoyant Hydratant",
+      "brand": "CeraVe",
+      "category": "cleanser",
+      "price": 19.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B01N7T7JKJ/",
+      "activeIngredients": [
+        "Ceramides",
+        "Niacinamide",
+        "Glycerine"
+      ],
+      "skinTypes": [
+        "seche",
+        "normale",
+        "sensible"
+      ],
+      "benefits": [
+        "nettoie",
+        "hydrate",
+        "restaure_barriere"
+      ]
+    },
+    {
+      "id": "LRP_EFFACLAR_MEDICATED_005",
+      "name": "Effaclar Gel Médical",
+      "brand": "La Roche-Posay",
+      "category": "cleanser",
+      "price": 15.74,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B00LO1DNXU/",
+      "activeIngredients": [
+        "Acide Salicylique 2%",
+        "LHA",
+        "Glycerine"
+      ],
+      "skinTypes": [
+        "grasse",
+        "acneique"
+      ],
+      "benefits": [
+        "traite_acne",
+        "previent_acne",
+        "desobstrue_pores"
+      ]
+    },
+    {
+      "id": "BIODERMA_SENSIBIO_GEL_006",
+      "name": "Sensibio Gel Moussant",
+      "brand": "Bioderma",
+      "category": "cleanser",
+      "price": 18.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B01I4OSYJ2/",
+      "activeIngredients": [
+        "Complexe DAF",
+        "Coco-glucoside"
+      ],
+      "skinTypes": [
+        "sensible",
+        "mixte"
+      ],
+      "benefits": [
+        "nettoie_douceur",
+        "sensation_fraiche"
+      ]
+    },
+    {
+      "id": "BIODERMA_SENSIBIO_OIL_007",
+      "name": "Sensibio Huile Micellaire",
+      "brand": "Bioderma",
+      "category": "cleanser",
+      "price": 17.24,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0C37XZYZ1/",
+      "activeIngredients": [
+        "Huiles vegetales",
+        "Micelles"
+      ],
+      "skinTypes": [
+        "sensible",
+        "seche"
+      ],
+      "benefits": [
+        "demaquillage_profondeur",
+        "texture_huile_lait"
+      ]
+    },
+    {
+      "id": "LRP_LIPIKAR_WASH_008",
+      "name": "Lipikar Nettoyant Surgras",
+      "brand": "La Roche-Posay",
+      "category": "cleanser",
+      "price": 19.96,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B08BJVHYSC/",
+      "activeIngredients": [
+        "Beurre de Karite",
+        "Niacinamide"
+      ],
+      "skinTypes": [
+        "tres_seche",
+        "atopique"
+      ],
+      "benefits": [
+        "nettoie_sans_dessecher",
+        "recommande_eczema"
+      ]
+    },
+    {
+      "id": "PC_BHA_LIQUID_009",
+      "name": "SKIN PERFECTING 2% BHA Liquid",
+      "brand": "Paula's Choice",
+      "category": "exfoliant",
+      "price": 37,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B00949CTQQ/",
+      "activeIngredients": [
+        "Acide Salicylique 2%"
+      ],
+      "skinTypes": [
+        "grasse",
+        "mixte",
+        "pores_dilates"
+      ],
+      "benefits": [
+        "desobstrue_pores",
+        "reduit_points_noirs",
+        "lisse"
+      ]
+    },
+    {
+      "id": "TO_AHA_BHA_PEEL_010",
+      "name": "AHA 30% + BHA 2% Peeling Solution",
+      "brand": "The Ordinary",
+      "category": "exfoliant",
+      "price": 9.5,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B071D4D5DT/",
+      "activeIngredients": [
+        "AHA 30%",
+        "BHA 2%"
+      ],
+      "skinTypes": [
+        "normale",
+        "grasse",
+        "experimentes"
+      ],
+      "benefits": [
+        "peeling_intense",
+        "eclat",
+        "texture_peau"
+      ]
+    },
+    {
+      "id": "PC_AHA_GEL_011",
+      "name": "SKIN PERFECTING 8% AHA Gel",
+      "brand": "Paula's Choice",
+      "category": "exfoliant",
+      "price": 37,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B00949CO66/",
+      "activeIngredients": [
+        "Acide Glycolique 8%",
+        "Camomille"
+      ],
+      "skinTypes": [
+        "normale",
+        "seche",
+        "mature"
+      ],
+      "benefits": [
+        "renouvellement_cellulaire",
+        "anti_age",
+        "eclat"
+      ]
+    },
+    {
+      "id": "PC_AHA_BHA_DUO_012",
+      "name": "AHA 8% + BHA 2% Duo",
+      "brand": "Paula's Choice",
+      "category": "exfoliant",
+      "price": 63,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B07TK4D5VD/",
+      "activeIngredients": [
+        "Acide Glycolique",
+        "Acide Salicylique"
+      ],
+      "skinTypes": [
+        "mixte",
+        "mature"
+      ],
+      "benefits": [
+        "routine_complete",
+        "anti_age",
+        "purifiant"
+      ]
+    },
+    {
+      "id": "PC_CALM_BHA_013",
+      "name": "CALM 1% BHA Liquid Sensible",
+      "brand": "Paula's Choice",
+      "category": "exfoliant",
+      "price": 35,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0BHV2NPT4/",
+      "activeIngredients": [
+        "Acide Salicylique 1%"
+      ],
+      "skinTypes": [
+        "sensible",
+        "rougeurs"
+      ],
+      "benefits": [
+        "exfoliation_douce",
+        "apaise",
+        "convient_rosacee"
+      ]
+    },
+    {
+      "id": "PC_INTENSE_PEEL_014",
+      "name": "25% AHA + 2% BHA Liquid Peel",
+      "brand": "Paula's Choice",
+      "category": "exfoliant",
+      "price": 45,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B089973QWM/",
+      "activeIngredients": [
+        "AHA 25%",
+        "BHA 2%"
+      ],
+      "skinTypes": [
+        "experimentes",
+        "resistante"
+      ],
+      "benefits": [
+        "peeling_professionnel",
+        "resultats_intenses"
+      ]
+    },
+    {
+      "id": "TO_LACTIC_ACID_015",
+      "name": "Lactic Acid 10% + HA",
+      "brand": "The Ordinary",
+      "category": "exfoliant",
+      "price": 8.9,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0779QRV23/",
+      "activeIngredients": [
+        "Acide Lactique 10%",
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "sensible",
+        "debutants"
+      ],
+      "benefits": [
+        "exfoliation_douce",
+        "hydratant"
+      ]
+    },
+    {
+      "id": "TO_GLYCOLIC_TONER_016",
+      "name": "Glycolic Acid 7% Toning Solution",
+      "brand": "The Ordinary",
+      "category": "exfoliant",
+      "price": 8.9,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B01M8G39OW/",
+      "activeIngredients": [
+        "Acide Glycolique 7%"
+      ],
+      "skinTypes": [
+        "normale",
+        "grasse"
+      ],
+      "benefits": [
+        "texture_amelioree",
+        "eclat_quotidien"
+      ]
+    },
+    {
+      "id": "PIXI_GLOW_TONIC_017",
+      "name": "Glow Tonic",
+      "brand": "Pixi",
+      "category": "toner",
+      "price": 29,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B00KH6QX08/",
+      "activeIngredients": [
+        "Acide Glycolique",
+        "Ginseng",
+        "Aloe Vera"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "terne"
+      ],
+      "benefits": [
+        "eclat_immediat",
+        "lisse",
+        "equilibre"
+      ]
+    },
+    {
+      "id": "PC_CALM_TONER_018",
+      "name": "CALM Nourishing Milky Toner",
+      "brand": "Paula's Choice",
+      "category": "toner",
+      "price": 29,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0BHV1PBLY/",
+      "activeIngredients": [
+        "Ceramides",
+        "Cholesterol"
+      ],
+      "skinTypes": [
+        "sensible",
+        "seche",
+        "rosacee"
+      ],
+      "benefits": [
+        "apaise_rougeurs",
+        "hydrate",
+        "restaure"
+      ]
+    },
+    {
+      "id": "PC_RECOVERY_TONER_019",
+      "name": "Skin Recovery Calming Toner",
+      "brand": "Paula's Choice",
+      "category": "toner",
+      "price": 29,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B00949CII0/",
+      "activeIngredients": [
+        "Antioxydants",
+        "Agents apaisants"
+      ],
+      "skinTypes": [
+        "seche",
+        "sensible",
+        "mature"
+      ],
+      "benefits": [
+        "calme_irritations",
+        "prepare_peau"
+      ]
+    },
+    {
+      "id": "PC_RESIST_TONER_020",
+      "name": "RESIST Advanced Replenishing Toner",
+      "brand": "Paula's Choice",
+      "category": "toner",
+      "price": 29,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B00CJWACX2/",
+      "activeIngredients": [
+        "Acide Hyaluronique",
+        "Vitamines C & E"
+      ],
+      "skinTypes": [
+        "mature",
+        "seche"
+      ],
+      "benefits": [
+        "anti_age",
+        "hydratation_legere",
+        "antioxydant"
+      ]
+    },
+    {
+      "id": "PIXI_GLOW_PADS_021",
+      "name": "Glow Tonic To-Go",
+      "brand": "Pixi",
+      "category": "toner",
+      "price": 18,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B072JKKXW2/",
+      "activeIngredients": [
+        "Acide Glycolique"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "voyage"
+      ],
+      "benefits": [
+        "format_pratique",
+        "eclat_quotidien"
+      ]
+    },
+    {
+      "id": "PIXI_VITAMIN_C_022",
+      "name": "Vitamin-C Tonic",
+      "brand": "Pixi",
+      "category": "toner",
+      "price": 15,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B07Q342M1Q/",
+      "activeIngredients": [
+        "Vitamine C",
+        "Acide Ferulique"
+      ],
+      "skinTypes": [
+        "terne",
+        "fatiguee"
+      ],
+      "benefits": [
+        "eclat",
+        "luminosite",
+        "antioxydant"
+      ]
+    },
+    {
+      "id": "PIXI_GLOW_SERUM_023",
+      "name": "Beauty Glow Tonic Serum",
+      "brand": "Pixi",
+      "category": "toner",
+      "price": 22.5,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B07RWL29GF/",
+      "activeIngredients": [
+        "Acide Glycolique concentre"
+      ],
+      "skinTypes": [
+        "normale",
+        "mixte"
+      ],
+      "benefits": [
+        "texture_serum",
+        "eclat_intense",
+        "lissage"
+      ]
+    },
+    {
+      "id": "TO_HYALURONIC_024",
+      "name": "Hyaluronic Acid 2% + B5",
+      "brand": "The Ordinary",
+      "category": "serum",
+      "price": 9.9,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B01MYEZPC8/",
+      "activeIngredients": [
+        "Acide Hyaluronique 2%",
+        "Vitamine B5",
+        "Ceramides"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "deshydratee"
+      ],
+      "benefits": [
+        "hydratation_multi_profondeur",
+        "repulpe"
+      ]
+    },
+    {
+      "id": "TO_NIACINAMIDE_DUO_025",
+      "name": "Skin Support Basics Duo",
+      "brand": "The Ordinary",
+      "category": "serum",
+      "price": 15.9,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0DP1GMQK4/",
+      "activeIngredients": [
+        "Niacinamide 10%",
+        "Zinc 1%"
+      ],
+      "skinTypes": [
+        "grasse",
+        "mixte",
+        "pores_dilates"
+      ],
+      "benefits": [
+        "regule_sebum",
+        "resserre_pores",
+        "matifie"
+      ]
+    },
+    {
+      "id": "TO_RETINOL_1_026",
+      "name": "Retinol 1% in Squalane",
+      "brand": "The Ordinary",
+      "category": "serum",
+      "price": 9.9,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0779YGB2G/",
+      "activeIngredients": [
+        "Retinol 1%",
+        "Squalane"
+      ],
+      "skinTypes": [
+        "mature",
+        "experimentes_retinol"
+      ],
+      "benefits": [
+        "anti_age_puissant",
+        "lisse_rides",
+        "renouvellement"
+      ]
+    },
+    {
+      "id": "TO_BUFFET_027",
+      "name": "Multi-Peptide + Hyaluronic Acid",
+      "brand": "The Ordinary",
+      "category": "serum",
+      "price": 19.9,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0BLHW7JZM/",
+      "activeIngredients": [
+        "Multi-peptides",
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "mature",
+        "ridules"
+      ],
+      "benefits": [
+        "anti_age_global",
+        "fermete",
+        "elasticite"
+      ]
+    },
+    {
+      "id": "TO_CAFFEINE_028",
+      "name": "Caffeine Solution 5% + EGCG",
+      "brand": "The Ordinary",
+      "category": "serum",
+      "price": 9.2,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B01MUZVE1C/",
+      "activeIngredients": [
+        "Cafeine 5%",
+        "EGCG"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "contour_yeux"
+      ],
+      "benefits": [
+        "decongestionne",
+        "reduit_poches",
+        "reduit_cernes"
+      ]
+    },
+    {
+      "id": "VITAMIN_C_SERUM_029",
+      "name": "Vitamin C Serum Anti-âge",
+      "brand": "LilyAna Naturals",
+      "category": "serum",
+      "price": 14.82,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B076611KCY/",
+      "activeIngredients": [
+        "Vitamine C",
+        "Acide Hyaluronique",
+        "Niacinamide"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "terne"
+      ],
+      "benefits": [
+        "eclat",
+        "anti_taches",
+        "antioxydant"
+      ]
+    },
+    {
+      "id": "VITAMIN_C_25_030",
+      "name": "25% Best Vitamin C Serum",
+      "brand": "InstaNatural",
+      "category": "serum",
+      "price": 14.98,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B07N7G2TDK/",
+      "activeIngredients": [
+        "Vitamine C 25%",
+        "Retinol",
+        "Acide Ferulique"
+      ],
+      "skinTypes": [
+        "resistante",
+        "experimentee"
+      ],
+      "benefits": [
+        "anti_age_intensif",
+        "eclat_maximal"
+      ]
+    },
+    {
+      "id": "RETINOL_SERUM_031",
+      "name": "Retinol Serum 2,5% Anti-âge",
+      "brand": "Pura D'or",
+      "category": "serum",
+      "price": 9.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B08QRY56CQ/",
+      "activeIngredients": [
+        "Retinol 2.5%",
+        "Vitamine C",
+        "Niacinamide"
+      ],
+      "skinTypes": [
+        "mature",
+        "ridules"
+      ],
+      "benefits": [
+        "lisse_rides",
+        "texture",
+        "eclat"
+      ]
+    },
+    {
+      "id": "OLAY_REGENERIST_032",
+      "name": "Regenerist Micro-Sculpting Serum",
+      "brand": "Olay",
+      "category": "serum",
+      "price": 27.44,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0000CC64W/",
+      "activeIngredients": [
+        "Complexe Amino-Peptides"
+      ],
+      "skinTypes": [
+        "mature",
+        "tous_types"
+      ],
+      "benefits": [
+        "lisse",
+        "raffermit",
+        "ameliore_elasticite"
+      ]
+    },
+    {
+      "id": "OLAY_REGENERIST_ORIG_033",
+      "name": "Regenerist Serum Original",
+      "brand": "Olay",
+      "category": "serum",
+      "price": 20.57,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0039NMCPG/",
+      "activeIngredients": [
+        "Peptides regenerants"
+      ],
+      "skinTypes": [
+        "mature",
+        "anti_age"
+      ],
+      "benefits": [
+        "renouvellement_cellulaire",
+        "fermete"
+      ]
+    },
+    {
+      "id": "PC_CALM_SERUM_034",
+      "name": "CALM Repairing Serum",
+      "brand": "Paula's Choice",
+      "category": "serum",
+      "price": 49,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0BH8DNXF3/",
+      "activeIngredients": [
+        "Acide Hyaluronique",
+        "Agents apaisants"
+      ],
+      "skinTypes": [
+        "sensible",
+        "reactive",
+        "rosacee"
+      ],
+      "benefits": [
+        "calme_rougeurs",
+        "hydrate",
+        "repare"
+      ]
+    },
+    {
+      "id": "VITAMIN_C_RETINOL_035",
+      "name": "Vitamin C Retinol Serum Anti-âge",
+      "brand": "Beverly Hills",
+      "category": "serum",
+      "price": 19.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0F8RDWX1D/",
+      "activeIngredients": [
+        "Vitamine C",
+        "Retinol",
+        "Peptides"
+      ],
+      "skinTypes": [
+        "mature",
+        "experimentee"
+      ],
+      "benefits": [
+        "raffermit",
+        "lisse",
+        "eclat",
+        "anti_taches"
+      ]
+    },
+    {
+      "id": "VITAMIN_C_20_036",
+      "name": "Vitamin C Serum 20% + Hyaluronic Acid",
+      "brand": "Radiance",
+      "category": "serum",
+      "price": 18.2,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0FCHDRF8X/",
+      "activeIngredients": [
+        "Vitamine C 20%",
+        "Acide Hyaluronique",
+        "Niacinamide"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "taches"
+      ],
+      "benefits": [
+        "eclaircit_taches",
+        "hydrate",
+        "antioxydant"
+      ]
+    },
+    {
+      "id": "OLAY_COLLAGEN_037",
+      "name": "Collagen Peptide Serum",
+      "brand": "Olay",
+      "category": "serum",
+      "price": 24.52,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B09B8BSL88/",
+      "activeIngredients": [
+        "Peptides de Collagene"
+      ],
+      "skinTypes": [
+        "mature",
+        "manque_fermete"
+      ],
+      "benefits": [
+        "raffermit_visiblement",
+        "ameliore_elasticite"
+      ]
+    },
+    {
+      "id": "TO_TRIO_LOVED_038",
+      "name": "Most Loved Skincare Trio Set",
+      "brand": "The Ordinary",
+      "category": "serum",
+      "price": 22.59,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B07QFHZZZL/",
+      "activeIngredients": [
+        "Acide Hyaluronique",
+        "Niacinamide",
+        "Cafeine"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "routine_complete"
+      ],
+      "benefits": [
+        "kit_decouverte",
+        "hydratation",
+        "regulation",
+        "yeux"
+      ]
+    },
+    {
+      "id": "CERAVE_DAILY_MOIST_039",
+      "name": "Daily Moisturizing Lotion",
+      "brand": "CeraVe",
+      "category": "moisturizer",
+      "price": 14.25,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B07RK4HST7/",
+      "activeIngredients": [
+        "Ceramides",
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "seche",
+        "tous_types"
+      ],
+      "benefits": [
+        "hydratation_24h",
+        "restaure_barriere"
+      ]
+    },
+    {
+      "id": "CERAVE_PM_LOTION_040",
+      "name": "PM Facial Moisturizing Lotion",
+      "brand": "CeraVe",
+      "category": "moisturizer",
+      "price": 14.97,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B00365DABC/",
+      "activeIngredients": [
+        "Niacinamide",
+        "Ceramides",
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "sensible"
+      ],
+      "benefits": [
+        "regeneration_nocturne",
+        "texture_legere"
+      ]
+    },
+    {
+      "id": "CERAVE_AM_SPF_041",
+      "name": "AM Facial Moisturizing Lotion SPF 30",
+      "brand": "CeraVe",
+      "category": "moisturizer",
+      "price": 14.97,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B00F97FHAW/",
+      "activeIngredients": [
+        "SPF 30",
+        "Niacinamide",
+        "Ceramides"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "quotidien"
+      ],
+      "benefits": [
+        "hydratation",
+        "protection_solaire",
+        "non_comedogene"
+      ]
+    },
+    {
+      "id": "CERAVE_REPAIR_CREAM_042",
+      "name": "Moisturizing Cream",
+      "brand": "CeraVe",
+      "category": "moisturizer",
+      "price": 18.39,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B00TTD9BRC/",
+      "activeIngredients": [
+        "Ceramides",
+        "Acide Hyaluronique",
+        "Cholesterol"
+      ],
+      "skinTypes": [
+        "tres_seche",
+        "abimee"
+      ],
+      "benefits": [
+        "reparation_intense",
+        "texture_riche"
+      ]
+    },
+    {
+      "id": "NEUTROGENA_HYDRO_043",
+      "name": "Hydro Boost Water Gel",
+      "brand": "Neutrogena",
+      "category": "moisturizer",
+      "price": 14.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B00NR1YQHM/",
+      "activeIngredients": [
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "normale",
+        "grasse"
+      ],
+      "benefits": [
+        "hydratation_24h",
+        "texture_gel",
+        "non_grasse"
+      ]
+    },
+    {
+      "id": "OLAY_NIGHT_CREAM_044",
+      "name": "Regenerist Night Recovery Cream",
+      "brand": "Olay",
+      "category": "moisturizer",
+      "price": 17.44,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B00SNPCSUY/",
+      "activeIngredients": [
+        "Niacinamide",
+        "Complexe Peptides",
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "mature",
+        "anti_age"
+      ],
+      "benefits": [
+        "regeneration_nocturne",
+        "anti_rides"
+      ]
+    },
+    {
+      "id": "NEUTROGENA_HYDRO_SET_045",
+      "name": "Hydro Boost Gel Cream Set",
+      "brand": "Neutrogena",
+      "category": "moisturizer",
+      "price": 18.4,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0CX3CCJWV/",
+      "activeIngredients": [
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "seche",
+        "normale"
+      ],
+      "benefits": [
+        "kit_decouverte",
+        "hydratation_intense"
+      ]
+    },
+    {
+      "id": "NEUTROGENA_BODY_046",
+      "name": "Hydro Boost Body Gel Cream",
+      "brand": "Neutrogena",
+      "category": "moisturizer",
+      "price": 12.29,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B07DJPC8JB/",
+      "activeIngredients": [
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "normale",
+        "seche",
+        "corps"
+      ],
+      "benefits": [
+        "absorption_rapide",
+        "non_grasse",
+        "corps_visage"
+      ]
+    },
+    {
+      "id": "LRP_TOLERIANE_REPAIR_047",
+      "name": "Toleriane Double Repair",
+      "brand": "La Roche-Posay",
+      "category": "moisturizer",
+      "price": 25.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B01NCWV3KM/",
+      "activeIngredients": [
+        "SPF 30",
+        "Niacinamide",
+        "Ceramides"
+      ],
+      "skinTypes": [
+        "sensible",
+        "tous_types"
+      ],
+      "benefits": [
+        "reparation",
+        "protection",
+        "peau_sensible"
+      ]
+    },
+    {
+      "id": "NEUTROGENA_FRAGFREE_048",
+      "name": "Hydro Boost Fragrance Free",
+      "brand": "Neutrogena",
+      "category": "moisturizer",
+      "price": 22.97,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0CX3D74WT/",
+      "activeIngredients": [
+        "Acide Hyaluronique pur"
+      ],
+      "skinTypes": [
+        "sensible",
+        "tous_types"
+      ],
+      "benefits": [
+        "sans_parfum",
+        "hydratation_pure"
+      ]
+    },
+    {
+      "id": "ORGANIC_ROSEHIP_049",
+      "name": "Organic Face Oil Rosehip & Frankincense",
+      "brand": "Radha Beauty",
+      "category": "face-oil",
+      "price": 8.87,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0F6K6S2BM/",
+      "activeIngredients": [
+        "Huile de Rosehip",
+        "Encens",
+        "Vitamine E"
+      ],
+      "skinTypes": [
+        "mature",
+        "seche",
+        "cicatrices"
+      ],
+      "benefits": [
+        "anti_age",
+        "regeneration",
+        "eclat"
+      ]
+    },
+    {
+      "id": "CLIGANIC_MARULA_050",
+      "name": "Organic Marula Oil",
+      "brand": "Cliganic",
+      "category": "face-oil",
+      "price": 9.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B095P98YRH/",
+      "activeIngredients": [
+        "Huile de Marula 100%"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "seche"
+      ],
+      "benefits": [
+        "hydratation_profonde",
+        "antioxydant",
+        "non_comedogene"
+      ]
+    },
+    {
+      "id": "KATZ_MIRACLE_051",
+      "name": "Miracle Beauty Oil",
+      "brand": "Katz Beauty",
+      "category": "face-oil",
+      "price": 19.89,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0D8Y4WDKM/",
+      "activeIngredients": [
+        "Jojoba",
+        "Argan",
+        "Marula"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "anti_age"
+      ],
+      "benefits": [
+        "eclat_anti_age",
+        "non_comedogene"
+      ]
+    },
+    {
+      "id": "BROOKETHORNE_GUASHA_052",
+      "name": "Gua Sha Oil",
+      "brand": "Brookethorne Naturals",
+      "category": "face-oil",
+      "price": 21.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0D1VWDW9S/",
+      "activeIngredients": [
+        "Jojoba",
+        "Rosehip",
+        "Argan",
+        "AHA"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "massage"
+      ],
+      "benefits": [
+        "massage_gua_sha",
+        "raffermit",
+        "restaure"
+      ]
+    },
+    {
+      "id": "MORINGA_OIL_053",
+      "name": "Organic Moringa Oil Multi-usage",
+      "brand": "Organic Harvest",
+      "category": "face-oil",
+      "price": 9.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0DBJW6YGJ/",
+      "activeIngredients": [
+        "Moringa",
+        "Rosehip",
+        "Jojoba",
+        "Vitamine E"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "multi_usage"
+      ],
+      "benefits": [
+        "visage",
+        "corps",
+        "cheveux",
+        "nutrition_intense"
+      ]
+    },
+    {
+      "id": "TO_SQUALANE_054",
+      "name": "100% Plant-Derived Squalane",
+      "brand": "The Ordinary",
+      "category": "face-oil",
+      "price": 9.9,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B01N0GR5GG/",
+      "activeIngredients": [
+        "Squalane 100% vegetal"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "sensible"
+      ],
+      "benefits": [
+        "hydratation_legere",
+        "compatible_tous_produits"
+      ]
+    },
+    {
+      "id": "AZTEC_CLAY_055",
+      "name": "Indian Healing Clay",
+      "brand": "Aztec Secret",
+      "category": "mask",
+      "price": 14.95,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B081FK6L1G/",
+      "activeIngredients": [
+        "Argile Bentonite Calcium 100%"
+      ],
+      "skinTypes": [
+        "grasse",
+        "acneique",
+        "pores_dilates"
+      ],
+      "benefits": [
+        "detox_profonde",
+        "resserre_pores",
+        "purifie"
+      ]
+    },
+    {
+      "id": "FREEMAN_DEAD_SEA_056",
+      "name": "Dead Sea Clay Mask",
+      "brand": "Freeman",
+      "category": "mask",
+      "price": 4.96,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B007CY2C76/",
+      "activeIngredients": [
+        "Argile Mer Morte",
+        "Lavande",
+        "Sel marin"
+      ],
+      "skinTypes": [
+        "stress",
+        "tous_types"
+      ],
+      "benefits": [
+        "anti_stress",
+        "equilibre",
+        "apaise"
+      ]
+    },
+    {
+      "id": "INNISFREE_VOLCANIC_057",
+      "name": "Super Volcanic Clay Mask",
+      "brand": "Innisfree",
+      "category": "mask",
+      "price": 18,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0CQZ3W88P/",
+      "activeIngredients": [
+        "Argile volcanique",
+        "AHA",
+        "Clusters naturels"
+      ],
+      "skinTypes": [
+        "grasse",
+        "pores_dilates"
+      ],
+      "benefits": [
+        "detox_pores",
+        "exfoliation_douce",
+        "controle_sebum"
+      ]
+    },
+    {
+      "id": "FREEMAN_CICA_058",
+      "name": "Korean Cica Clay Mask",
+      "brand": "Freeman",
+      "category": "mask",
+      "price": 4.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0D4R9HRQL/",
+      "activeIngredients": [
+        "Cica",
+        "Argile"
+      ],
+      "skinTypes": [
+        "sensible",
+        "irritee"
+      ],
+      "benefits": [
+        "apaise",
+        "calme_rougeurs",
+        "style_coreen"
+      ]
+    },
+    {
+      "id": "PLANTIFIQUE_KOREAN_059",
+      "name": "Korean Clay Mask",
+      "brand": "PLANTIFIQUE",
+      "category": "mask",
+      "price": 21.95,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B00DCE26AI/",
+      "activeIngredients": [
+        "Avocat",
+        "Superaliments"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "soif_hydratation"
+      ],
+      "benefits": [
+        "hydratation",
+        "purification",
+        "teste_dermato"
+      ]
+    },
+    {
+      "id": "NY_BIOLOGY_MUD_060",
+      "name": "Dead Sea Mud Mask",
+      "brand": "New York Biology",
+      "category": "mask",
+      "price": 15.26,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B01NCM25K7/",
+      "activeIngredients": [
+        "Boue Mer Morte pure"
+      ],
+      "skinTypes": [
+        "acne",
+        "points_noirs",
+        "grasse"
+      ],
+      "benefits": [
+        "reducteur_pores",
+        "anti_acne",
+        "raffermit"
+      ]
+    },
+    {
+      "id": "FREEMAN_CHARCOAL_061",
+      "name": "Charcoal & Black Sugar Mud Mask",
+      "brand": "Freeman",
+      "category": "mask",
+      "price": 10,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B01N0VFWIR/",
+      "activeIngredients": [
+        "Charbon",
+        "Sucre noir"
+      ],
+      "skinTypes": [
+        "grasse",
+        "terne"
+      ],
+      "benefits": [
+        "detoxifie",
+        "hydrate",
+        "absorbe_exces_sebum"
+      ]
+    },
+    {
+      "id": "MEDIHEAL_SHEET_062",
+      "name": "Hyaluronate Sheet Masks",
+      "brand": "Mediheal",
+      "category": "mask",
+      "price": 7.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0F6VHMDB5/",
+      "activeIngredients": [
+        "Hyalu Active 3x"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "deshydratee"
+      ],
+      "benefits": [
+        "hydratation_intense",
+        "format_tissu",
+        "pratique"
+      ]
+    },
+    {
+      "id": "FREEMAN_VOLCANIC_PEEL_063",
+      "name": "Volcanic Ash Peel-Off Mask",
+      "brand": "Freeman",
+      "category": "mask",
+      "price": 6.94,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0799KCB1N/",
+      "activeIngredients": [
+        "Cendres volcaniques"
+      ],
+      "skinTypes": [
+        "pores_obstrues",
+        "hommes"
+      ],
+      "benefits": [
+        "peel_off",
+        "elimine_impuretes",
+        "pas_trop_assechant"
+      ]
+    },
+    {
+      "id": "FREEMAN_DEAD_SEA_2PACK_064",
+      "name": "Dead Sea Clay 2-Pack",
+      "brand": "Freeman",
+      "category": "mask",
+      "price": 9.89,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B00HCUO2DW/",
+      "activeIngredients": [
+        "Mineraux Mer Morte"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "economique"
+      ],
+      "benefits": [
+        "pack_duo_avantageux",
+        "equilibre",
+        "purifie"
+      ]
+    },
+    {
+      "id": "RETINOL_EYE_CREAM_065",
+      "name": "Retinol Eye Cream with Caffeine",
+      "brand": "LilyAna Naturals",
+      "category": "eye-care",
+      "price": 9.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0F6CZZCFM/",
+      "activeIngredients": [
+        "Retinol",
+        "Cafeine",
+        "Acide Hyaluronique",
+        "Vitamine C"
+      ],
+      "skinTypes": [
+        "mature",
+        "cernes",
+        "poches"
+      ],
+      "benefits": [
+        "anti_age_global_yeux",
+        "reduit_cernes",
+        "reduit_rides"
+      ]
+    },
+    {
+      "id": "CAFFEINE_EYE_SERUM_066",
+      "name": "Eye Serum 8% Caffeine + 8% Retinol",
+      "brand": "InstaNatural",
+      "category": "eye-care",
+      "price": 14.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0D3HVNQHN/",
+      "activeIngredients": [
+        "Cafeine 8%",
+        "Retinol 8%",
+        "Niacinamide",
+        "Peptides"
+      ],
+      "skinTypes": [
+        "poches",
+        "cernes_marques"
+      ],
+      "benefits": [
+        "massage_roller_360",
+        "decongestionnant_puissant"
+      ]
+    },
+    {
+      "id": "TO_CAFFEINE_EYE_067",
+      "name": "Caffeine Solution 5% + EGCG Eye",
+      "brand": "The Ordinary",
+      "category": "eye-care",
+      "price": 9.2,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B01MUZVE1C/",
+      "activeIngredients": [
+        "Cafeine 5%",
+        "EGCG"
+      ],
+      "skinTypes": [
+        "poches",
+        "yeux_fatigues"
+      ],
+      "benefits": [
+        "decongestionne",
+        "reduit_poches",
+        "antioxydant"
+      ]
+    },
+    {
+      "id": "CAFFEINE_EYE_BRIGHT_068",
+      "name": "Caffeine Eye Cream Brightener",
+      "brand": "Beverly Hills",
+      "category": "eye-care",
+      "price": 14.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0F24FGXRB/",
+      "activeIngredients": [
+        "Cafeine",
+        "Retinol"
+      ],
+      "skinTypes": [
+        "cernes_fonces",
+        "femmes"
+      ],
+      "benefits": [
+        "eclaircit_cernes",
+        "texture_creme"
+      ]
+    },
+    {
+      "id": "RETINOL_CAFFEINE_ROLLER_069",
+      "name": "Retinol & Caffeine Eye Serum Roller",
+      "brand": "InstaNatural",
+      "category": "eye-care",
+      "price": 19.9,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0FH4P1N69/",
+      "activeIngredients": [
+        "Retinol",
+        "Cafeine"
+      ],
+      "skinTypes": [
+        "poches",
+        "rides_yeux"
+      ],
+      "benefits": [
+        "massage_360",
+        "reducteur_poches",
+        "anti_rides"
+      ]
+    },
+    {
+      "id": "CERAVE_EYE_REPAIR_070",
+      "name": "Eye Repair Cream",
+      "brand": "CeraVe",
+      "category": "eye-care",
+      "price": 16.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B01N3Y9J54/",
+      "activeIngredients": [
+        "Ceramides",
+        "Acide Hyaluronique",
+        "Niacinamide"
+      ],
+      "skinTypes": [
+        "sensible",
+        "tous_types"
+      ],
+      "benefits": [
+        "hydratation_douce",
+        "restaure_barriere"
+      ]
+    },
+    {
+      "id": "TO_RETINOL_02_071",
+      "name": "Retinol 0.2% in Squalane",
+      "brand": "The Ordinary",
+      "category": "treatment",
+      "price": 8.9,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0779QRV23/",
+      "activeIngredients": [
+        "Retinol 0.2%",
+        "Squalane"
+      ],
+      "skinTypes": [
+        "debutants_retinol",
+        "sensible"
+      ],
+      "benefits": [
+        "introduction_douce_retinol",
+        "anti_age"
+      ]
+    },
+    {
+      "id": "TO_RETINOL_05_072",
+      "name": "Retinol 0.5% in Squalane",
+      "brand": "The Ordinary",
+      "category": "treatment",
+      "price": 9.4,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0779QGTV8/",
+      "activeIngredients": [
+        "Retinol 0.5%",
+        "Squalane"
+      ],
+      "skinTypes": [
+        "intermediaire_retinol"
+      ],
+      "benefits": [
+        "anti_age_modere",
+        "progression_retinol"
+      ]
+    },
+    {
+      "id": "TO_ALPHA_ARBUTIN_073",
+      "name": "Alpha Arbutin 2% + HA",
+      "brand": "The Ordinary",
+      "category": "treatment",
+      "price": 9.9,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B01MUZQ7GQ/",
+      "activeIngredients": [
+        "Alpha Arbutine 2%",
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "taches",
+        "hyperpigmentation"
+      ],
+      "benefits": [
+        "eclaircit_taches",
+        "unifie_teint"
+      ]
+    },
+    {
+      "id": "TO_AZELAIC_074",
+      "name": "Azelaic Acid Suspension 10%",
+      "brand": "The Ordinary",
+      "category": "treatment",
+      "price": 9.9,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0779VRTRC/",
+      "activeIngredients": [
+        "Acide Azelaique 10%"
+      ],
+      "skinTypes": [
+        "acne",
+        "rosacee",
+        "taches"
+      ],
+      "benefits": [
+        "anti_acne",
+        "anti_inflammatoire",
+        "unifie"
+      ]
+    },
+    {
+      "id": "TO_VITAMIN_C_23_075",
+      "name": "Vitamin C Suspension 23% + HA",
+      "brand": "The Ordinary",
+      "category": "treatment",
+      "price": 11.9,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B01MUZQ8GH/",
+      "activeIngredients": [
+        "Vitamine C pure 23%",
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "resistante",
+        "experimentee"
+      ],
+      "benefits": [
+        "antioxydant_maximum",
+        "eclat_intense"
+      ]
+    },
+    {
+      "id": "TO_SALICYLIC_MASK_076",
+      "name": "Salicylic Acid 2% Masque",
+      "brand": "The Ordinary",
+      "category": "treatment",
+      "price": 15.9,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0779LMNLG/",
+      "activeIngredients": [
+        "Acide Salicylique 2%",
+        "Argiles"
+      ],
+      "skinTypes": [
+        "grasse",
+        "acneique"
+      ],
+      "benefits": [
+        "traitement_hebdomadaire",
+        "anti_acne_intense"
+      ]
+    },
+    {
+      "id": "PC_CLINICAL_RETINOL_077",
+      "name": "Clinical 0.3% Retinol",
+      "brand": "Paula's Choice",
+      "category": "treatment",
+      "price": 65,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0779QMHXZ/",
+      "activeIngredients": [
+        "Retinol 0.3%",
+        "Peptides",
+        "Ceramides"
+      ],
+      "skinTypes": [
+        "mature",
+        "rides_installees"
+      ],
+      "benefits": [
+        "anti_age_professionnel",
+        "resultats_visibles"
+      ]
+    },
+    {
+      "id": "LRP_EFFACLAR_DUO_078",
+      "name": "Effaclar Duo+",
+      "brand": "La Roche-Posay",
+      "category": "treatment",
+      "price": 16.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B00LXFVMZG/",
+      "activeIngredients": [
+        "Niacinamide",
+        "LHA",
+        "Zinc"
+      ],
+      "skinTypes": [
+        "acneique",
+        "pores_obstrues"
+      ],
+      "benefits": [
+        "anti_imperfections",
+        "previent_marques"
+      ]
+    },
+    {
+      "id": "AQUAPHOR_HEALING_079",
+      "name": "Healing Ointment Advanced Therapy",
+      "brand": "Aquaphor",
+      "category": "balm",
+      "price": 12.97,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0107QPFBU/",
+      "activeIngredients": [
+        "Petrolatum",
+        "Panthenol",
+        "Glycerine"
+      ],
+      "skinTypes": [
+        "tres_seche",
+        "crevassee",
+        "irritee"
+      ],
+      "benefits": [
+        "reparation_intense",
+        "multi_usage",
+        "protection"
+      ]
+    },
+    {
+      "id": "CERAVE_HEALING_080",
+      "name": "Healing Ointment",
+      "brand": "CeraVe",
+      "category": "balm",
+      "price": 9.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B016F3MGQ6/",
+      "activeIngredients": [
+        "Ceramides",
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "abimee",
+        "tres_seche"
+      ],
+      "benefits": [
+        "protege",
+        "repare",
+        "non_comedogene"
+      ]
+    },
+    {
+      "id": "AQUAPHOR_HEALING_POT_081",
+      "name": "Healing Ointment Pot",
+      "brand": "Aquaphor",
+      "category": "balm",
+      "price": 18.37,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B006IB5T4W/",
+      "activeIngredients": [
+        "Petrolatum 41%"
+      ],
+      "skinTypes": [
+        "gerçures",
+        "coupures_mineures",
+        "brulures"
+      ],
+      "benefits": [
+        "guerison_acceleree",
+        "protection_barriere"
+      ]
+    },
+    {
+      "id": "VASELINE_HEALING_082",
+      "name": "Healing Jelly Original",
+      "brand": "Vaseline",
+      "category": "balm",
+      "price": 6.75,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B09HHD9X58/",
+      "activeIngredients": [
+        "Petrolatum 100% pur"
+      ],
+      "skinTypes": [
+        "seche",
+        "levres_gercees"
+      ],
+      "benefits": [
+        "hydratation_occlusive",
+        "multi_usage"
+      ]
+    },
+    {
+      "id": "CERAVE_BABY_083",
+      "name": "Baby Healing Ointment",
+      "brand": "CeraVe",
+      "category": "balm",
+      "price": 9.98,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B01N0K3Y28/",
+      "activeIngredients": [
+        "Ceramides",
+        "Vitamine E",
+        "sans lanoline"
+      ],
+      "skinTypes": [
+        "tres_sensible",
+        "bebe",
+        "eczema"
+      ],
+      "benefits": [
+        "extra_doux",
+        "barriere_protectrice",
+        "sans_parfum"
+      ]
+    },
+    {
+      "id": "LRP_CICAPLAST_084",
+      "name": "Cicaplast Baume B5",
+      "brand": "La Roche-Posay",
+      "category": "balm",
+      "price": 13.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B00BNUY3HE/",
+      "activeIngredients": [
+        "Panthenol 5%",
+        "Madecassoside",
+        "Zinc"
+      ],
+      "skinTypes": [
+        "irritee",
+        "abimee",
+        "post_procedure"
+      ],
+      "benefits": [
+        "reparation",
+        "apaise",
+        "accelere_guerison"
+      ]
+    },
+    {
+      "id": "AQUAPHOR_LIP_REPAIR_085",
+      "name": "Lip Repair",
+      "brand": "Aquaphor",
+      "category": "lip-care",
+      "price": 8.35,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B06XDCPYYL/",
+      "activeIngredients": [
+        "Panthenol",
+        "Vitamines",
+        "Cire d'abeille"
+      ],
+      "skinTypes": [
+        "levres_tres_seches",
+        "gercees"
+      ],
+      "benefits": [
+        "reparation_immediate",
+        "hydratation_longue_duree"
+      ]
+    },
+    {
+      "id": "AQUAPHOR_LIP_STICK_086",
+      "name": "Lip Repair Stick",
+      "brand": "Aquaphor",
+      "category": "lip-care",
+      "price": 8.36,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B07SRRLVQ1/",
+      "activeIngredients": [
+        "Beurre de Karite",
+        "Cires"
+      ],
+      "skinTypes": [
+        "levres_seches",
+        "quotidien"
+      ],
+      "benefits": [
+        "format_stick_pratique",
+        "soulage_secheresse"
+      ]
+    },
+    {
+      "id": "AQUAPHOR_LIP_OINTMENT_087",
+      "name": "Lip Repair Ointment",
+      "brand": "Aquaphor",
+      "category": "lip-care",
+      "price": 4.49,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B004FHZKOA/",
+      "activeIngredients": [
+        "Petrolatum",
+        "Panthenol"
+      ],
+      "skinTypes": [
+        "levres_tres_abimees"
+      ],
+      "benefits": [
+        "texture_baume_riche",
+        "guerison_rapide"
+      ]
+    },
+    {
+      "id": "BLISTEX_REPAIR_088",
+      "name": "Repair & Protect",
+      "brand": "Blistex",
+      "category": "lip-care",
+      "price": 4.17,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0C7T956Q5/",
+      "activeIngredients": [
+        "Agents reparateurs"
+      ],
+      "skinTypes": [
+        "levres_gercees_severes"
+      ],
+      "benefits": [
+        "prevention_gerçures_severes"
+      ]
+    },
+    {
+      "id": "AQUAPHOR_NATURAL_089",
+      "name": "Lip Balm Naturally Inspired",
+      "brand": "Aquaphor",
+      "category": "lip-care",
+      "price": 5.97,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0DBX22FDT/",
+      "activeIngredients": [
+        "Huile Coco",
+        "Beurre Karite naturel"
+      ],
+      "skinTypes": [
+        "levres_seches",
+        "preference_naturel"
+      ],
+      "benefits": [
+        "formule_inspiree_naturel",
+        "soulagement_immediat"
+      ]
+    },
+    {
+      "id": "AVENE_THERMAL_090",
+      "name": "Eau Thermale Spray",
+      "brand": "Avène",
+      "category": "mist",
+      "price": 19,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B002D48QUC/",
+      "activeIngredients": [
+        "Eau thermale Avene pure"
+      ],
+      "skinTypes": [
+        "sensible",
+        "irritee",
+        "tous_types"
+      ],
+      "benefits": [
+        "apaise",
+        "rafraichit",
+        "proprietes_minerales"
+      ]
+    },
+    {
+      "id": "LRP_THERMAL_091",
+      "name": "Eau Thermale Spray",
+      "brand": "La Roche-Posay",
+      "category": "mist",
+      "price": 13.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B002NX0B4W/",
+      "activeIngredients": [
+        "Eau thermale",
+        "Selenium antioxydant"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "antioxydant"
+      ],
+      "benefits": [
+        "hydrate",
+        "apaise",
+        "protege_stress_oxydatif"
+      ]
+    },
+    {
+      "id": "EVIAN_BRUMISATEUR_092",
+      "name": "Brumisateur Facial",
+      "brand": "Evian",
+      "category": "mist",
+      "price": 19.5,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B001RO8MNK/",
+      "activeIngredients": [
+        "Eau minerale naturelle Evian"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "hydratation_quotidienne"
+      ],
+      "benefits": [
+        "rafraichit_maquillage",
+        "tonifie",
+        "hydrate"
+      ]
+    },
+    {
+      "id": "URIAGE_THERMAL_093",
+      "name": "Eau Thermale Spray",
+      "brand": "Uriage",
+      "category": "mist",
+      "price": 22,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0060OUE5G/",
+      "activeIngredients": [
+        "Eau thermale Uriage 100% pure"
+      ],
+      "skinTypes": [
+        "tous_ages",
+        "tous_types"
+      ],
+      "benefits": [
+        "hydrate",
+        "protege",
+        "apaise",
+        "tous_ages"
+      ]
+    },
+    {
+      "id": "EVIAN_MINI_094",
+      "name": "Facial Spray Mini",
+      "brand": "Evian",
+      "category": "mist",
+      "price": 17,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B001PMIN10/",
+      "activeIngredients": [
+        "Eau minerale Evian"
+      ],
+      "skinTypes": [
+        "voyage",
+        "retouches_maquillage"
+      ],
+      "benefits": [
+        "format_voyage_TSA",
+        "hydratation_nomade"
+      ]
+    },
+    {
+      "id": "ELF_POWER_GRIP_095",
+      "name": "Power Grip Primer",
+      "brand": "e.l.f.",
+      "category": "primer",
+      "price": 10,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B09XMYFTB7/",
+      "activeIngredients": [
+        "Base gel hydratante"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "base_maquillage"
+      ],
+      "benefits": [
+        "lisse_peau",
+        "grip_maquillage",
+        "hydrate"
+      ]
+    },
+    {
+      "id": "NEUTROGENA_GRIP_096",
+      "name": "Hydro Boost Grip Primer",
+      "brand": "Neutrogena",
+      "category": "primer",
+      "price": 10.29,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0DMD2QXBF/",
+      "activeIngredients": [
+        "Acide Hyaluronique purifie"
+      ],
+      "skinTypes": [
+        "seche",
+        "terne"
+      ],
+      "benefits": [
+        "hydrate",
+        "accroche_maquillage",
+        "fini_rosee"
+      ]
+    },
+    {
+      "id": "MAYBELLINE_GRIPPY_097",
+      "name": "Grippy Serum Primer",
+      "brand": "Maybelline",
+      "category": "primer",
+      "price": 9.97,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0DMQM25H9/",
+      "activeIngredients": [
+        "Niacinamide 2%"
+      ],
+      "skinTypes": [
+        "pores_dilates",
+        "mixte"
+      ],
+      "benefits": [
+        "tenue_24h",
+        "resserre_pores",
+        "controle_sebum"
+      ]
+    },
+    {
+      "id": "REVOLUTION_VITAMIN_098",
+      "name": "Superbase Vitamin Primer",
+      "brand": "Revolution",
+      "category": "primer",
+      "price": 12,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0BQWTQGQQ/",
+      "activeIngredients": [
+        "Vitamine C",
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "terne",
+        "besoin_eclat"
+      ],
+      "benefits": [
+        "hydratation",
+        "eclat",
+        "base_maquillage"
+      ]
+    },
+    {
+      "id": "MISSHA_GLOW_099",
+      "name": "Glow Skin Balm",
+      "brand": "MISSHA",
+      "category": "primer",
+      "price": 8,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B0D9NLPLWW/",
+      "activeIngredients": [
+        "Complexe luminisant"
+      ],
+      "skinTypes": [
+        "recherche_glass_skin"
+      ],
+      "benefits": [
+        "4_en_1",
+        "effet_glass_skin",
+        "eclat_naturel"
+      ]
+    },
+    {
+      "id": "LRP_ANTHELIOS_FLUID_100",
+      "name": "Anthelios Fluid SPF 50",
+      "brand": "La Roche-Posay",
+      "category": "sunscreen",
+      "price": 39.99,
+      "currency": "EUR",
+      "imageUrl": "",
+      "affiliateLink": "https://amazon.fr/dp/B004W55086/",
+      "activeIngredients": [
+        "Dioxyde de Titane mineral"
+      ],
+      "skinTypes": [
+        "tous_types",
+        "quotidien"
+      ],
+      "benefits": [
+        "ultra_leger",
+        "absorption_rapide",
+        "fini_mat"
+      ]
+    }
+  ]

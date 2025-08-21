@@ -22,7 +22,8 @@ import {
   MapPin,
   MessageCircle,
   ChevronRight,
-  Calendar
+  Calendar,
+  Target
 } from 'lucide-react'
 import type { SkinAnalysis, SkinScores, ScoreDetail, RecommendedProductCard } from '@/types'
 import { getAnalysis } from '@/utils/storage/analysisStore'
@@ -128,6 +129,84 @@ const getProductRecommendations = (analysis: SkinAnalysis) => {
   })
 
   return mockProducts.slice(0, 3) // Limiter à 3 produits
+}
+
+// Routine localisée – helper avec fallback à partir du diagnostic si l'IA n'a pas produit localizedRoutine
+const getLocalizedRoutine = (analysis: any) => {
+  const lr = analysis?.recommendations?.localizedRoutine
+  if (Array.isArray(lr) && lr.length > 0) return lr
+
+  const localized = analysis?.diagnostic?.localized
+  if (!Array.isArray(localized) || localized.length === 0) return []
+
+  // Fallback minimal: pour chaque zone irritée, proposer apaisement + hydratation, et restreindre les actifs irritants
+  return localized.map((loc: any, i: number) => {
+    const issueText: string = String(loc.issue || '').toLowerCase()
+    const isIrritated = issueText.includes('irrit') || issueText.includes('rougeur')
+    const restrictions = isIrritated ? ["Éviter AHA/BHA et rétinoïdes jusqu'à disparition des rougeurs"] : []
+    const resumeCondition = isIrritated ? "Réintroduire progressivement après 5-7 jours sans irritation" : undefined
+
+    return {
+      zone: loc.zone || `zone ${i + 1}`,
+      priority: isIrritated ? 1 : 3,
+      severity: loc.severity,
+      issues: [loc.issue].filter(Boolean),
+      restrictions,
+      resumeCondition,
+      steps: [
+        isIrritated && { title: 'Crème apaisante réparatrice', category: 'treatment', frequency: 'daily', timeOfDay: 'evening', target: 'zone', zones: [loc.zone], applicationTips: ['couche fine', 'sans massage fort'] },
+        { title: 'Hydratant barrière', category: 'hydration', frequency: 'daily', timeOfDay: 'both', target: 'zone', zones: [loc.zone], applicationTips: ['appliquer sur peau propre'] }
+      ].filter(Boolean)
+    }
+  })
+}
+
+// Helpers d'affichage pour la routine localisée
+const formatFrequency = (f?: string) => {
+  switch ((f || '').toLowerCase()) {
+    case 'daily': return 'Quotidien'
+    case 'weekly': return 'Hebdomadaire'
+    case 'monthly': return 'Mensuel'
+    case 'as-needed': return 'Au besoin'
+    case 'progressive': return 'Progressif'
+    default: return f || '—'
+  }
+}
+
+const timeOfDayLabel = (t?: string) => {
+  if (!t) return '—'
+  if (t === 'both') return 'Matin & soir'
+  if (t === 'morning') return 'Matin'
+  if (t === 'evening') return 'Soir'
+  return t
+}
+
+const getCatalogProductName = (analysis: any, step: any): string | null => {
+  if (step?.productName) return step.productName
+  if (step?.catalogId && Array.isArray(analysis?.recommendations?.productsDetailed)) {
+    const found = analysis.recommendations.productsDetailed.find((p: any) => p.id === step.catalogId || p.catalogId === step.catalogId)
+    if (found) return `${found.name}${found.brand ? ' – ' + found.brand : ''}`
+  }
+  if (typeof step?.productSuggestion === 'string') return step.productSuggestion
+  return null
+}
+
+const categoryAccent = (category?: string) => {
+  const c = (category || '').toLowerCase()
+  if (c === 'treatment') return 'border-l-4 border-rose-500'
+  if (c === 'hydration') return 'border-l-4 border-sky-500'
+  if (c === 'protection') return 'border-l-4 border-amber-500'
+  if (c === 'cleansing') return 'border-l-4 border-emerald-500'
+  if (c === 'exfoliation') return 'border-l-4 border-purple-500'
+  return 'border-l-4 border-gray-300'
+}
+
+const severityBadge = (sev?: string) => {
+  const s = (sev || '').toLowerCase()
+  if (s.includes('sévère') || s.includes('severe')) return 'bg-red-50 text-red-700 border-red-200'
+  if (s.includes('modérée') || s.includes('moderate')) return 'bg-orange-50 text-orange-700 border-orange-200'
+  if (s.includes('légère') || s.includes('mild')) return 'bg-yellow-50 text-yellow-700 border-yellow-200'
+  return 'bg-gray-50 text-gray-600 border-gray-200'
 }
 
 export default function ResultsPage() {
@@ -486,6 +565,101 @@ export default function ResultsPage() {
            </div>
          </motion.div>
         )}
+
+         {/* Routine localisée par zones (si disponible) */}
+         {getLocalizedRoutine(analysis).length > 0 && (
+           <motion.div
+             initial={{ opacity: 0, y: 20 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ delay: 0.3 }}
+             className="bg-white rounded-3xl shadow-xl p-8"
+           >
+             <div className="flex items-center space-x-3 mb-6">
+               <Target className="w-6 h-6 text-rose-500" />
+               <h2 className="text-2xl font-bold text-gray-900">Ciblage par zones</h2>
+             </div>
+
+             <div className="grid md:grid-cols-2 gap-6">
+               {getLocalizedRoutine(analysis)
+                 .sort((a: any, b: any) => (a.priority || 99) - (b.priority || 99))
+                 .map((loc: any, idx: number) => {
+                  const sev = String(loc.severity || '').toLowerCase()
+                  const color = sev.includes('sévère') || sev.includes('severe')
+                    ? 'bg-red-500'
+                    : sev.includes('modérée') || sev.includes('moderate')
+                    ? 'bg-orange-400'
+                    : 'bg-yellow-300'
+                  const fill = sev.includes('sévère') || sev.includes('severe') ? 90 : sev.includes('modérée') || sev.includes('moderate') ? 65 : 35
+                  return (
+                    <div key={idx} className="rounded-2xl border border-gray-100 p-6">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center space-x-3">
+                          <div className={`w-4 h-4 rounded-full ring-2 ring-offset-2 ${color} ring-yellow-200`} />
+                          <div>
+                            <div className="font-semibold text-gray-900 capitalize">{loc.zone}</div>
+                            {Array.isArray(loc.issues) && (
+                              <div className="text-xs text-gray-600">{loc.issues.join(' • ')}</div>
+                            )}
+                          </div>
+                        </div>
+                        {loc.severity && (
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-gray-50 border border-gray-200 text-gray-600">{loc.severity}</span>
+                        )}
+                      </div>
+
+                      <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden mb-4">
+                        <div className={`${color} h-2 rounded-full`} style={{ width: `${fill}%` }} />
+                      </div>
+
+                      {Array.isArray(loc.restrictions) && loc.restrictions.length > 0 && (
+                        <div className="mb-3">
+                          <div className="text-xs font-medium text-gray-700 mb-1">Restrictions temporaires</div>
+                          <ul className="text-xs text-gray-600 list-disc pl-4 space-y-0.5">
+                            {loc.restrictions.map((r: string, i: number) => (<li key={i}>{r}</li>))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {loc.resumeCondition && (
+                        <div className="text-xs text-gray-600 mb-3">
+                          <span className="font-medium">Reprise progressive:</span> {loc.resumeCondition}
+                        </div>
+                      )}
+
+                      {Array.isArray(loc.steps) && loc.steps.length > 0 && (
+                        <div className="space-y-3">
+                          {loc.steps.map((s: any, si: number) => (
+                            <div key={si} className={`p-3 rounded-xl bg-gray-50 ${categoryAccent(s.category)}`}>
+                              <div className="flex items-center justify-between mb-1">
+                                <div className="text-sm font-semibold text-gray-900">{s.title}</div>
+                                <span className="text-[10px] uppercase tracking-wide text-gray-500">Étape {si + 1}</span>
+                              </div>
+                              <div className="flex flex-wrap items-center gap-2 text-xs text-gray-700 mb-1">
+                                <span className="px-2 py-0.5 rounded-full bg-white border border-gray-200 capitalize">{s.category || 'soin'}</span>
+                                <span className="px-2 py-0.5 rounded-full bg-white border border-gray-200">{formatFrequency(s.frequency)}</span>
+                                <span className="px-2 py-0.5 rounded-full bg-white border border-gray-200">{timeOfDayLabel(s.timeOfDay)}</span>
+                              </div>
+                              {getCatalogProductName(analysis, s) && (
+                                <div className="text-xs text-gray-800"><span className="font-medium">Produit:</span> {getCatalogProductName(analysis, s)}</div>
+                              )}
+                              {Array.isArray(s.applicationTips) && s.applicationTips.length > 0 && (
+                                <div className="mt-1">
+                                  <div className="text-[11px] text-gray-600 font-medium mb-0.5">Conseils d’application</div>
+                                  <ul className="text-xs text-gray-600 list-disc pl-4 space-y-0.5">
+                                    {s.applicationTips.map((t: string, ti: number) => (<li key={ti}>{t}</li>))}
+                                  </ul>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
+             </div>
+           </motion.div>
+         )}
 
          {/* Products Section */}
          <motion.div

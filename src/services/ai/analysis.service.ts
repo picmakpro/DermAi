@@ -275,6 +275,35 @@ Répondre UNIQUEMENT en JSON valide avec cette structure exacte (conserve les cl
   }
 }
 
+## STRUCTURE DÉTAILLÉE DE LA ROUTINE (OBLIGATOIRE)
+- Tu DOIS compléter ces champs en plus du format ci-dessus, pour permettre une routine intelligente (globale + locale) et hiérarchisée:
+
+1) recommendations.restrictions: liste de restrictions temporaires
+[
+  {"scope": "global", "avoid": ["AHA/BHA"], "reason": "irritation diffuse"},
+  {"scope": "zone", "zone": "joues", "avoid": ["rétinoïdes"], "reason": "rougeurs actives"}
+]
+
+2) recommendations.localizedRoutine: étapes ciblées par zone
+[
+  {
+    "zone": "joues",
+    "priority": 1,
+    "issues": ["irritation", "sécheresse localisée"],
+    "restrictions": ["Pas d'exfoliants acides jusqu'à disparition rougeurs"],
+    "resumeCondition": "Réintroduire exfoliant 1x/semaine après 5-7 jours sans irritation",
+    "steps": [
+      {"title": "Crème apaisante réparatrice", "category": "treatment", "frequency": "daily", "timeOfDay": "evening", "target": "zone", "zones": ["joues"], "applicationTips": ["couche fine", "sans massage fort"]},
+      {"title": "Hydratant barrière", "category": "hydration", "frequency": "daily", "timeOfDay": "both", "target": "zone", "zones": ["joues"]}
+    ]
+  }
+]
+
+3) Étapes de routine (globales et locales):
+- Chaque step DOIT inclure: title, category, frequency, timeOfDay, phase (si applicable), applicationTips[], target ('global' | 'zone'), zones?[string[]]
+- Si un actif est potentiellement irritant, ajouter: contraindications[], deferUntil (condition textuelle)
+- Ajouter behaviorAdvice[] quand pertinent (ex: éviter le rasage X jours)
+
 ## RÈGLES SCORING (0-100)
 - 0-30: Problématique sévère nécessitant attention médicale
 - 31-60: Amélioration possible avec routine adaptée  
