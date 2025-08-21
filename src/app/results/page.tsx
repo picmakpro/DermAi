@@ -261,7 +261,10 @@ const getLocalizedRoutine = (analysis: any) => {
     const steps = []
     
     // Ajouter les soins selon les problèmes détectés
+    console.log(`    🧪 Analyse zone ${loc.zone}:`, { issues, issueText, isIrritated, hasPores })
+    
     if (isIrritated) {
+      console.log(`    ✅ Zone ${loc.zone}: Ajout traitement irritation`)
       steps.push({
         name: 'Crème apaisante réparatrice',
         category: 'treatment',
@@ -275,6 +278,7 @@ const getLocalizedRoutine = (analysis: any) => {
     }
     
     if (hasPores) {
+      console.log(`    ✅ Zone ${loc.zone}: Ajout traitement pores`)
       steps.push({
         name: 'Sérum régulateur',
         category: 'treatment', 
@@ -285,6 +289,38 @@ const getLocalizedRoutine = (analysis: any) => {
         duration: 'routine continue',
         resume: 'selon besoin'
       })
+    }
+    
+    // CRITIQUE: S'assurer qu'CHAQUE zone a au moins une étape
+    if (steps.length === 0) {
+      console.log(`    ⚠️ Zone ${loc.zone}: Aucun traitement spécifique détecté, ajout soin générique`)
+      // Déterminer le soin approprié selon le type de problème
+      const hasRedness = issueText.includes('rougeur') || issueText.includes('rouge')
+      const hasRoughness = issueText.includes('rugos') || issueText.includes('sécheresse')
+      
+      if (hasRedness) {
+        steps.push({
+          name: 'Soin apaisant',
+          category: 'treatment',
+          frequency: 'quotidien',
+          timing: 'soir',
+          catalogId: 'B000O7PH34', // Avène Thermal Spring Water
+          application: 'Vaporiser et tapoter délicatement',
+          duration: 'jusqu\'à amélioration',
+          resume: 'continuer si nécessaire'
+        })
+      } else {
+        steps.push({
+          name: 'Hydratant réparateur',
+          category: 'treatment',
+          frequency: 'quotidien',
+          timing: 'matin et soir',
+          catalogId: 'B01MSSDEPK', // CeraVe Nettoyant Hydratant
+          application: 'Masser délicatement',
+          duration: 'routine continue',
+          resume: 'quotidien'
+        })
+      }
     }
 
     return {
@@ -338,7 +374,7 @@ const timeOfDayLabel = (t?: string) => {
 let productNameCache: { [key: string]: string } = {}
 
 const getProductNameFromCatalogId = (catalogId: string): string => {
-  console.log('🏷️ Demande nom produit pour:', catalogId)
+  console.log('🏷️ Demande nom produit pour catalogId:', catalogId)
   
   // Vérifier le cache d'abord
   if (productNameCache[catalogId]) {
@@ -355,6 +391,11 @@ const getProductNameFromCatalogId = (catalogId: string): string => {
   if (catalogId === 'B00BNUY3HE') {
     productNameCache[catalogId] = "La Roche-Posay Cicaplast Baume B5"
     console.log('✅ ID Amazon Cicaplast trouvé:', productNameCache[catalogId])
+    return productNameCache[catalogId]
+  }
+  if (catalogId === 'B01MSSDEPK') {
+    productNameCache[catalogId] = "CeraVe Nettoyant Hydratant"
+    console.log('✅ ID Amazon CeraVe trouvé:', productNameCache[catalogId])
     return productNameCache[catalogId]
   }
   if (catalogId === 'B01MDTVZTZ') {
@@ -823,8 +864,16 @@ export default function ResultsPage() {
                  // Utiliser la même fonction severityBadge pour la cohérence
                  const severityClass = severityBadge(loc.severity)
                  
+                 // Background coloré selon la sévérité
+                 const sev = String(loc.severity || '').toLowerCase()
+                 const backgroundClass = sev.includes('sévère') || sev.includes('severe')
+                   ? 'bg-red-50 border-red-200'
+                   : sev.includes('modérée') || sev.includes('moderate')
+                   ? 'bg-orange-50 border-orange-200'
+                   : 'bg-yellow-50 border-yellow-200'
+                 
                  return (
-                   <div key={idx} className="rounded-2xl border border-gray-100 p-6 bg-gray-50">
+                   <div key={idx} className={`rounded-2xl border p-6 ${backgroundClass}`}>
                      {/* En-tête de zone avec badge de sévérité cohérent */}
                      <div className="flex items-center justify-between mb-4">
                        <div className="flex items-center space-x-3">
