@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { getProductInfoByCatalogId, RecommendedProductCard } from '@/services/catalog/catalogService'
 import { motion } from 'framer-motion'
 import { 
   ArrowLeft, 
@@ -102,7 +103,7 @@ const extractCatalogIds = (analysis: SkinAnalysis): string[] => {
 }
 
 // Génération de produits recommandés basée sur l'analyse
-const getProductRecommendations = (analysis: SkinAnalysis) => {
+const getProductRecommendations = async (analysis: SkinAnalysis) => {
   // Si l'analyse contient des produits détaillés, les utiliser
   if (analysis.recommendations?.productsDetailed && analysis.recommendations.productsDetailed.length > 0) {
     return analysis.recommendations.productsDetailed
@@ -114,7 +115,7 @@ const getProductRecommendations = (analysis: SkinAnalysis) => {
   // Si on a des catalogId, créer des produits avec référence au catalogue
   if (catalogIds.length > 0) {
     console.log('🎯 CatalogIds trouvés:', catalogIds)
-    const products = getProductsFromCatalogIds(catalogIds)
+    const products = await getProductsFromCatalogIds(catalogIds)
     console.log('📦 Produits générés:', products.length, products.map(p => `${p.brand} ${p.name}`))
     return products
   }
@@ -125,142 +126,29 @@ const getProductRecommendations = (analysis: SkinAnalysis) => {
 }
 
 // Créer des produits basés sur les catalogId trouvés
-const getProductsFromCatalogIds = (catalogIds: string[]): RecommendedProductCard[] => {
+const getProductsFromCatalogIds = async (catalogIds: string[]): Promise<RecommendedProductCard[]> => {
   const products: RecommendedProductCard[] = []
   
   // Pour chaque catalogId, créer un produit représentatif (TOUS les produits, pas de limite)
-  catalogIds.forEach((catalogId, index) => {
-    // Déterminer le type de produit selon l'ID
-    let productInfo = getProductInfoByCatalogId(catalogId)
-    
-    products.push({
-      ...productInfo,
-      whyThisProduct: `Produit sélectionné spécifiquement pour vos besoins par l'IA DermAI`,
-      catalogId: catalogId // Conserver l'ID pour référence
-    })
-  })
+  for (const catalogId of catalogIds) {
+    try {
+      // Déterminer le type de produit selon l'ID depuis le vrai catalogue
+      const productInfo = await getProductInfoByCatalogId(catalogId)
+      
+      products.push({
+        ...productInfo,
+        whyThisProduct: `Produit sélectionné spécifiquement pour vos besoins par l'IA DermAI`
+      })
+    } catch (error) {
+      console.error(`❌ Erreur pour catalogId ${catalogId}:`, error)
+    }
+  }
   
   console.log('🎁 Produits créés depuis catalogIds:', products.length, 'produits')
   return products
 }
 
-// Déterminer les infos produit selon le catalogId avec vrais données du catalogue
-const getProductInfoByCatalogId = (catalogId: string): RecommendedProductCard => {
-  // Mapping précis basé sur les IDs réels du catalogue
-  const productMap: Record<string, RecommendedProductCard> = {
-    'CERAVE_HYDRATING_CLEANSER_004': {
-      name: "Gel Nettoyant Hydratant",
-      brand: "CeraVe",
-      price: 12.99,
-      originalPrice: 15.99,
-      imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop&auto=format",
-      discount: 19,
-      frequency: "Matin et soir",
-      benefits: ["Nettoyage en douceur", "Préserve la barrière cutanée", "Hydratant"],
-      instructions: "Masser délicatement sur peau humide, rincer à l'eau tiède",
-      whyThisProduct: "Recommandé par l'IA pour votre type de peau",
-      affiliateLink: "https://amazon.fr/dp/B003B3N4OU/"
-    },
-    'AVENE_CICALFATE_070': {
-      name: "Cicalfate+ Crème Réparatrice",
-      brand: "Avène",
-      price: 15.99,
-      originalPrice: 19.99,
-      imageUrl: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop&auto=format",
-      discount: 20,
-      frequency: "Selon besoin",
-      benefits: ["Répare", "Apaise les irritations", "Anti-bactérien"],
-      instructions: "Couche fine sur les zones irritées",
-      whyThisProduct: "Parfait pour apaiser les irritations post-rasage",
-      affiliateLink: "https://amazon.fr/dp/B01N0QKRXW/"
-    },
-    'ORDINARY_NIACINAMIDE_033': {
-      name: "Sérum Niacinamide 10%",
-      brand: "The Ordinary",
-      price: 7.20,
-      originalPrice: 8.90,
-      imageUrl: "https://images.unsplash.com/photo-1570194065650-d99fb4bedf0a?w=400&h=400&fit=crop&auto=format",
-      discount: 19,
-      frequency: "Matin et soir",
-      benefits: ["Régule le sébum", "Minimise les pores", "Anti-inflammatoire"],
-      instructions: "Appliquer quelques gouttes après le nettoyage",
-      whyThisProduct: "Idéal pour réguler le sébum et minimiser les pores",
-      affiliateLink: "https://amazon.fr/dp/B06Y2GXM8G/"
-    },
-    'LRP_ANTHELIOS_SPF50_095': {
-      name: "Anthelios SPF 50+ Invisible",
-      brand: "La Roche-Posay",
-      price: 18.50,
-      originalPrice: 22.00,
-      imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop&auto=format",
-      discount: 16,
-      frequency: "Quotidien le matin",
-      benefits: ["Protection SPF 50+", "Fini invisible", "Résistant à l'eau"],
-      instructions: "Appliquer généreusement 20 minutes avant l'exposition",
-      whyThisProduct: "Protection solaire indispensable pour votre peau",
-      affiliateLink: "https://amazon.fr/dp/B01N6YH9HF/"
-    },
-    'PAULA_CHOICE_BHA_016': {
-      name: "BHA 2% Exfoliant Liquide",
-      brand: "Paula's Choice",
-      price: 15.99,
-      originalPrice: 19.99,
-      imageUrl: "https://images.unsplash.com/photo-1631730486887-4d4d1eb4cd24?w=400&h=400&fit=crop&auto=format",
-      discount: 20,
-      frequency: "2-3 fois par semaine",
-      benefits: ["Exfolie en douceur", "Réduit les pores", "Améliore la texture"],
-      instructions: "Commencer 1x/semaine, augmenter progressivement",
-      whyThisProduct: "Exfoliation ciblée pour améliorer la texture de votre peau",
-      affiliateLink: "https://amazon.fr/dp/B00949CTQQ/"
-    }
-  }
 
-  // Chercher d'abord une correspondance exacte
-  if (productMap[catalogId]) {
-    return productMap[catalogId]
-  }
-
-  // Fallback basé sur les patterns (reconnaissance intelligente)
-  console.log('🔍 Recherche produit pour catalogId:', catalogId)
-  
-  if (catalogId.includes('CERAVE') || catalogId.includes('HYDRATING') || catalogId.includes('CLEANSER')) {
-    console.log('✅ Trouvé: CeraVe')
-    return productMap['CERAVE_HYDRATING_CLEANSER_004']
-  }
-  if (catalogId.includes('AVENE') || catalogId.includes('CICALFATE')) {
-    console.log('✅ Trouvé: Avène')
-    return productMap['AVENE_CICALFATE_070']
-  }
-  if (catalogId.includes('ORDINARY') || catalogId.includes('NIACINAMIDE')) {
-    console.log('✅ Trouvé: The Ordinary')
-    return productMap['ORDINARY_NIACINAMIDE_033']
-  }
-  if (catalogId.includes('LRP') || catalogId.includes('ANTHELIOS') || catalogId.includes('SPF')) {
-    console.log('✅ Trouvé: La Roche-Posay')
-    return productMap['LRP_ANTHELIOS_SPF50_095']
-  }
-  if (catalogId.includes('PAULA') || catalogId.includes('CHOICE') || catalogId.includes('BHA')) {
-    console.log('✅ Trouvé: Paula\'s Choice')
-    return productMap['PAULA_CHOICE_BHA_016']
-  }
-  
-  console.log('⚠️ Produit générique utilisé pour:', catalogId)
-  
-  // Produit générique si pattern non reconnu
-  return {
-    name: "Produit Soin Ciblé",
-    brand: "Sélection DermAI",
-    price: 15.99,
-    originalPrice: 19.99,
-    imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop&auto=format",
-    discount: 20,
-    frequency: "Selon routine",
-    benefits: ["Soin personnalisé", "Adapté à votre peau", "Recommandé par l'IA"],
-    instructions: "Suivre les conseils de la routine personnalisée",
-    whyThisProduct: `Produit sélectionné pour votre routine (${catalogId})`,
-    affiliateLink: "#"
-  }
-}
 
 // Fallback pour produits génériques si pas de catalogId
 const getGenericProducts = (analysis: SkinAnalysis) => {
@@ -444,11 +332,27 @@ const timeOfDayLabel = (t?: string) => {
   return t
 }
 
-// Helper pour obtenir le nom du produit depuis le catalogId
+// Helper pour obtenir le nom du produit depuis le catalogId (version synchrone pour l'affichage)
 const getProductNameFromCatalogId = (catalogId: string): string => {
-  // Utiliser le même mapping que getProductInfoByCatalogId pour la cohérence
-  const productInfo = getProductInfoByCatalogId(catalogId)
-  return `${productInfo.brand} ${productInfo.name}`
+  // Pattern matching simple pour l'affichage immédiat
+  if (catalogId.includes('CERAVE') && catalogId.includes('CLEANSER')) {
+    return "CeraVe Gel Nettoyant Hydratant"
+  }
+  if (catalogId.includes('AVENE') && catalogId.includes('CICALFATE')) {
+    return "Avène Cicalfate+ Crème Réparatrice"
+  }
+  if (catalogId.includes('ORDINARY') && catalogId.includes('NIACINAMIDE')) {
+    return "The Ordinary Sérum Niacinamide 10%"
+  }
+  if (catalogId.includes('LRP') || catalogId.includes('ROCHE')) {
+    return "La Roche-Posay Anthelios SPF 50+"
+  }
+  if (catalogId.includes('PAULA') && catalogId.includes('CHOICE')) {
+    return "Paula's Choice BHA 2% Exfoliant"
+  }
+  
+  // Fallback générique
+  return "Produit Soin Ciblé"
 }
 
 const getCatalogProductName = (analysis: any, step: any): string | null => {
@@ -484,6 +388,8 @@ export default function ResultsPage() {
   const [analysis, setAnalysis] = useState<SkinAnalysis | null>(null)
   const [userAge, setUserAge] = useState<number | null>(null)
   const [isChatOpen, setIsChatOpen] = useState(false)
+  const [products, setProducts] = useState<RecommendedProductCard[]>([])
+  const [productsLoading, setProductsLoading] = useState(false)
 
   useEffect(() => {
     const load = async () => {
@@ -511,6 +417,26 @@ export default function ResultsPage() {
     }
     load()
   }, [router])
+
+  // Charger les produits de manière asynchrone
+  useEffect(() => {
+    if (!analysis) return
+    
+    const loadProducts = async () => {
+      setProductsLoading(true)
+      try {
+        const recommendedProducts = await getProductRecommendations(analysis)
+        setProducts(recommendedProducts)
+      } catch (error) {
+        console.error('❌ Erreur chargement produits:', error)
+        setProducts([])
+      } finally {
+        setProductsLoading(false)
+      }
+    }
+
+    loadProducts()
+  }, [analysis])
 
   const skinAgeYears = useMemo(() => {
     if (!analysis || userAge == null) return null
@@ -988,11 +914,17 @@ export default function ResultsPage() {
              </div>
            </div>
 
-           <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory">
-             {getProductRecommendations(analysis).map((product, index) => (
-               <ProductCard key={index} {...product} />
-             ))}
-           </div>
+                     <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory">
+            {productsLoading ? (
+              <div className="flex items-center justify-center w-full py-8">
+                <div className="text-gray-500">Chargement des produits...</div>
+              </div>
+            ) : (
+              products.map((product, index) => (
+                <ProductCard key={index} {...product} />
+              ))
+            )}
+          </div>
          </motion.div>
 
         {/* Chat CTA */}
