@@ -15,6 +15,7 @@ import {
   Lightbulb
 } from 'lucide-react'
 
+// Ancienne interface pour compatibilité
 interface RoutineStep {
   title: string
   description: string
@@ -28,11 +29,21 @@ interface RoutineStep {
   applicationTips: string[]
 }
 
+// Nouvelle interface avec catalogId
+interface NewRoutineStep {
+  name: string
+  frequency: 'quotidien' | 'hebdomadaire' | 'ponctuel'
+  timing: 'matin' | 'soir' | 'matin_et_soir'
+  catalogId: string
+  application: string
+  startDate: string
+}
+
 interface AdvancedRoutineProps {
   routine: {
-    immediate: RoutineStep[]
-    adaptation: RoutineStep[]
-    maintenance: RoutineStep[]
+    immediate: RoutineStep[] | NewRoutineStep[]
+    adaptation: RoutineStep[] | NewRoutineStep[]
+    maintenance: RoutineStep[] | NewRoutineStep[]
   }
 }
 
@@ -74,13 +85,32 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
   const [activePhase, setActivePhase] = useState<'immediate' | 'adaptation' | 'maintenance'>('immediate')
   const [viewMode, setViewMode] = useState<'phases' | 'schedule'>('phases')
 
+  // Helper pour déterminer si c'est la nouvelle structure
+  const isNewStructure = (step: any): step is NewRoutineStep => {
+    return 'catalogId' in step && 'timing' in step
+  }
+
+  // Helper pour normaliser une étape avant filtrage
+  const normalizeStep = (step: RoutineStep | NewRoutineStep) => {
+    if (isNewStructure(step)) {
+      return {
+        ...step,
+        timeOfDay: step.timing === 'matin' ? 'morning' as const :
+                  step.timing === 'soir' ? 'evening' as const : 'both' as const,
+        frequency: step.frequency === 'quotidien' ? 'daily' as const : 
+                  step.frequency === 'hebdomadaire' ? 'weekly' as const : 'as-needed' as const,
+      }
+    }
+    return step
+  }
+
   // Organiser par moment de la journée
   const organizeBySchedule = () => {
     const allSteps = [
       ...routine.immediate,
       ...routine.adaptation,
       ...routine.maintenance
-    ]
+    ].map(normalizeStep)
 
     return {
       morning: allSteps.filter(step => step.timeOfDay === 'morning' || step.timeOfDay === 'both'),
@@ -92,9 +122,28 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
 
   const scheduleData = organizeBySchedule()
 
-  const renderStep = (step: RoutineStep, index: number) => (
+  const renderStep = (step: RoutineStep | NewRoutineStep, index: number) => {
+    // Normaliser la structure pour l'affichage
+    const normalizedStep = isNewStructure(step) ? {
+      title: step.name,
+      description: '',
+      frequency: step.frequency === 'quotidien' ? 'daily' as const : 
+                 step.frequency === 'hebdomadaire' ? 'weekly' as const : 'as-needed' as const,
+      timeOfDay: step.timing === 'matin' ? 'morning' as const :
+                step.timing === 'soir' ? 'evening' as const : 'both' as const,
+      phase: 'immediate' as const,
+      category: 'treatment' as const,
+      productSuggestion: `Produit ${step.catalogId}`,
+      catalogId: step.catalogId,
+      applicationTips: [step.application],
+      startDate: step.startDate,
+      frequencyDetails: undefined,
+      startAfterDays: undefined
+    } : step
+
+    return (
     <motion.div
-      key={`${step.title}-${index}`}
+      key={`${normalizedStep.title}-${index}`}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
@@ -103,53 +152,66 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
       <div className="flex items-start space-x-3">
         <div className="flex-shrink-0">
           <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-sm">
-            {categoryIcons[step.category]}
+            {categoryIcons[normalizedStep.category]}
           </div>
         </div>
         
         <div className="flex-1">
           <div className="flex items-center space-x-2 mb-1">
-            <h4 className="font-medium text-gray-900">{step.title}</h4>
+            <h4 className="font-medium text-gray-900">{normalizedStep.title}</h4>
             <div className="flex items-center space-x-1 text-xs text-gray-500">
-              {timeIcons[step.timeOfDay]}
-              <span>{frequencyLabels[step.frequency]}</span>
+              {timeIcons[normalizedStep.timeOfDay]}
+              <span>{frequencyLabels[normalizedStep.frequency]}</span>
             </div>
           </div>
           
-          <p className="text-sm text-gray-600 mb-2">{step.description}</p>
+          <p className="text-sm text-gray-600 mb-2">{normalizedStep.description}</p>
           
-          {step.frequencyDetails && (
+          {normalizedStep.frequencyDetails && (
             <div className="flex items-center space-x-1 text-xs text-blue-600 mb-2">
               <Repeat className="w-3 h-3" />
-              <span>{step.frequencyDetails}</span>
+              <span>{normalizedStep.frequencyDetails}</span>
             </div>
           )}
           
-          {step.startAfterDays && (
+          {normalizedStep.startAfterDays && (
             <div className="flex items-center space-x-1 text-xs text-orange-600 mb-2">
               <Calendar className="w-3 h-3" />
-              <span>À introduire dans {step.startAfterDays} jours</span>
+              <span>À introduire dans {normalizedStep.startAfterDays} jours</span>
             </div>
           )}
           
-          {step.productSuggestion && (
+          {/* Nouvelle structure avec catalogId */}
+          {isNewStructure(step) && (
+            <div className="bg-blue-50 rounded-lg p-2 mb-2 border border-blue-200">
+              <div className="flex items-center space-x-1 text-xs text-blue-700 mb-1">
+                <Target className="w-3 h-3" />
+                <span className="font-medium">Produit catalogue</span>
+              </div>
+              <p className="text-xs text-blue-600 font-mono">{step.catalogId}</p>
+              <p className="text-xs text-gray-600 mt-1">Commencer: {step.startDate}</p>
+            </div>
+          )}
+          
+          {/* Ancienne structure avec productSuggestion */}
+          {!isNewStructure(step) && normalizedStep.productSuggestion && (
             <div className="bg-gray-50 rounded-lg p-2 mb-2">
               <div className="flex items-center space-x-1 text-xs text-gray-700 mb-1">
                 <Target className="w-3 h-3" />
                 <span className="font-medium">Produit recommandé</span>
               </div>
-              <p className="text-xs text-gray-600">{step.productSuggestion}</p>
+              <p className="text-xs text-gray-600">{normalizedStep.productSuggestion}</p>
             </div>
           )}
           
-          {step.applicationTips.length > 0 && (
+          {normalizedStep.applicationTips.length > 0 && (
             <div className="space-y-1">
               <div className="flex items-center space-x-1 text-xs text-green-700">
                 <Lightbulb className="w-3 h-3" />
                 <span className="font-medium">Conseils d&apos;application</span>
               </div>
               <ul className="text-xs text-gray-600 space-y-0.5">
-                {step.applicationTips.map((tip, tipIndex) => (
+                {normalizedStep.applicationTips.map((tip, tipIndex) => (
                   <li key={tipIndex} className="flex items-start space-x-1">
                     <span className="text-green-500 mt-0.5">•</span>
                     <span>{tip}</span>
@@ -162,6 +224,7 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
       </div>
     </motion.div>
   )
+  }
 
   return (
     <div className="bg-white rounded-3xl shadow-xl p-8">

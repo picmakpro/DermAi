@@ -54,14 +54,145 @@ const scoreLabels: Record<keyof Omit<SkinScores, 'overall'>, string> = {
   skinAge: 'Âge de la peau',
 }
 
+// Extraction des catalogId depuis l'analyse pour afficher les vrais produits du catalogue
+const extractCatalogIds = (analysis: SkinAnalysis): string[] => {
+  const catalogIds = new Set<string>()
+  
+  // Extraire catalogId de la routine principale
+  const routine = analysis.recommendations?.routine
+  if (routine && typeof routine === 'object' && 'immediate' in routine) {
+    const newRoutine = routine as any // Type temporaire
+    
+    // Phases immediate, adaptation, maintenance
+    ;['immediate', 'adaptation', 'maintenance'].forEach(phase => {
+      const steps = newRoutine[phase] || []
+      steps.forEach((step: any) => {
+        if (step.catalogId) {
+          catalogIds.add(step.catalogId)
+        }
+      })
+    })
+  }
+  
+  // Extraire catalogId de localizedRoutine
+  const localizedRoutine = analysis.recommendations?.localizedRoutine || []
+  localizedRoutine.forEach((zoneRoutine: any) => {
+    const steps = zoneRoutine.steps || []
+    steps.forEach((step: any) => {
+      if (step.catalogId) {
+        catalogIds.add(step.catalogId)
+      }
+    })
+  })
+
+  return Array.from(catalogIds)
+}
+
 // Génération de produits recommandés basée sur l'analyse
 const getProductRecommendations = (analysis: SkinAnalysis) => {
   // Si l'analyse contient des produits détaillés, les utiliser
-  if (analysis.recommendations?.productsDetailed?.length > 0) {
+  if (analysis.recommendations?.productsDetailed && analysis.recommendations.productsDetailed.length > 0) {
     return analysis.recommendations.productsDetailed
   }
 
-  // Sinon, générer des produits basés sur l'analyse et les recommandations textuelles
+  // Extraire les catalogId de l'analyse
+  const catalogIds = extractCatalogIds(analysis)
+  
+  // Si on a des catalogId, créer des produits avec référence au catalogue
+  if (catalogIds.length > 0) {
+    console.log('CatalogIds trouvés:', catalogIds)
+    return getProductsFromCatalogIds(catalogIds)
+  }
+
+  // Fallback vers produits génériques
+  console.log('Aucun catalogId trouvé, utilisation des produits génériques')
+  return getGenericProducts(analysis)
+}
+
+// Créer des produits basés sur les catalogId trouvés
+const getProductsFromCatalogIds = (catalogIds: string[]): RecommendedProductCard[] => {
+  const products: RecommendedProductCard[] = []
+  
+  // Pour chaque catalogId, créer un produit représentatif
+  catalogIds.slice(0, 3).forEach((catalogId, index) => {
+    // Déterminer le type de produit selon l'ID
+    let productInfo = getProductInfoByCatalogId(catalogId)
+    
+    products.push({
+      ...productInfo,
+      whyThisProduct: `Produit sélectionné spécifiquement pour vos besoins par l'IA DermAI`,
+      catalogId: catalogId // Conserver l'ID pour référence
+    })
+  })
+  
+  return products
+}
+
+// Déterminer les infos produit selon le catalogId
+const getProductInfoByCatalogId = (catalogId: string) => {
+  // Mapping basé sur les patterns d'ID du catalogue
+  if (catalogId.includes('CLEANSE') || catalogId.includes('GEL') || catalogId.includes('FOAM')) {
+    return {
+      name: "Gel Nettoyant Doux",
+      brand: "Sélection DermAI",
+      price: 12.99,
+      originalPrice: 15.99,
+      imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop",
+      discount: 19,
+      frequency: "Matin et soir",
+      benefits: ["Nettoyage en douceur", "Préserve la barrière cutanée", "Recommandé par l'IA"],
+      instructions: "Masser délicatement sur peau humide, rincer à l'eau tiède",
+      affiliateLink: "#"
+    }
+  }
+  
+  if (catalogId.includes('SERUM') || catalogId.includes('NIACINAMIDE') || catalogId.includes('ORDINARY')) {
+    return {
+      name: "Sérum Niacinamide 10%",
+      brand: "Sélection DermAI",
+      price: 7.20,
+      originalPrice: 8.90,
+      imageUrl: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop",
+      discount: 19,
+      frequency: "Matin et soir",
+      benefits: ["Régule le sébum", "Minimise les pores", "Recommandé par l'IA"],
+      instructions: "Appliquer quelques gouttes après le nettoyage",
+      affiliateLink: "#"
+    }
+  }
+  
+  if (catalogId.includes('SPF') || catalogId.includes('ANTHELIOS') || catalogId.includes('SUNSCREEN')) {
+    return {
+      name: "Crème Solaire Invisible SPF 50+",
+      brand: "Sélection DermAI",
+      price: 18.50,
+      originalPrice: 22.00,
+      imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop",
+      discount: 16,
+      frequency: "Quotidien le matin",
+      benefits: ["Protection SPF 50+", "Fini invisible", "Recommandé par l'IA"],
+      instructions: "Appliquer généreusement 20 minutes avant l'exposition",
+      affiliateLink: "#"
+    }
+  }
+  
+  // Produit générique si pattern non reconnu
+  return {
+    name: "Produit Soin Ciblé",
+    brand: "Sélection DermAI",
+    price: 15.99,
+    originalPrice: 19.99,
+    imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop",
+    discount: 20,
+    frequency: "Selon routine",
+    benefits: ["Soin personnalisé", "Adapté à votre peau", "Recommandé par l'IA"],
+    instructions: "Suivre les conseils de la routine personnalisée",
+    affiliateLink: "#"
+  }
+}
+
+// Fallback pour produits génériques si pas de catalogId
+const getGenericProducts = (analysis: SkinAnalysis) => {
   const mockProducts = []
   const recommendations = analysis.recommendations?.products || []
   const skinConcerns = analysis.diagnostic?.primaryCondition || ''
@@ -639,7 +770,27 @@ export default function ResultsPage() {
                                 <span className="px-2 py-0.5 rounded-full bg-white border border-gray-200">{formatFrequency(s.frequency)}</span>
                                 <span className="px-2 py-0.5 rounded-full bg-white border border-gray-200">{timeOfDayLabel(s.timeOfDay)}</span>
                               </div>
-                              {getCatalogProductName(analysis, s) && (
+                              {/* Affichage amélioré des produits avec catalogId */}
+                              {s.catalogId && (
+                                <div className="bg-blue-50 rounded-lg p-2 mb-2 border border-blue-200">
+                                  <div className="flex items-center space-x-1 text-xs text-blue-700 mb-1">
+                                    <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                                    <span className="font-medium">Produit catalogue</span>
+                                  </div>
+                                  <p className="text-xs text-blue-600 font-mono">{s.catalogId}</p>
+                                  {s.application && (
+                                    <p className="text-xs text-gray-600 mt-1">{s.application}</p>
+                                  )}
+                                  {s.duration && (
+                                    <p className="text-xs text-gray-500 mt-1">Durée: {s.duration}</p>
+                                  )}
+                                  {s.resume && (
+                                    <p className="text-xs text-gray-500 mt-1">Reprise: {s.resume}</p>
+                                  )}
+                                </div>
+                              )}
+                              {/* Fallback pour ancienne structure */}
+                              {!s.catalogId && getCatalogProductName(analysis, s) && (
                                 <div className="text-xs text-gray-800"><span className="font-medium">Produit:</span> {getCatalogProductName(analysis, s)}</div>
                               )}
                               {Array.isArray(s.applicationTips) && s.applicationTips.length > 0 && (

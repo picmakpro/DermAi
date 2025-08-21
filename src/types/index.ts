@@ -55,13 +55,30 @@ export interface SkinDiagnostic {
   affectedAreas: string[]
   observations: string[]
   prognosis: string
+  // Nouvelle structure pour diagnostic global + localisé
+  skinType?: string
+  estimatedSkinAge?: number
+  overview?: string[]
+  localized?: LocalizedIssue[]
+}
+
+export interface LocalizedIssue {
+  zone: string
+  severity: 'légère' | 'modérée' | 'sévère'
+  issues: string[]
+  description: string
 }
 
 export interface ProductRecommendations {
   immediate: string[]
-  routine: string[] | AdvancedRoutine // Support ancien + nouveau format
+  routine: NewRoutineStructure | AdvancedRoutine // Nouvelle structure avec catalogId
   products: string[]
   lifestyle: string[]
+  // Nouvelle structure pour recommandations globales/localisées
+  overview?: string
+  localized?: string
+  restrictions?: string
+  localizedRoutine?: LocalizedRoutineStep[]
   // Optionnel: données enrichies pour l'UI produit
   productsDetailed?: RecommendedProductCard[]
   // Optionnel: routine structurée (obsolète, remplacé par AdvancedRoutine)
@@ -70,6 +87,38 @@ export interface ProductRecommendations {
     evening: string[]
     weekly: string[]
   }
+}
+
+// Nouvelle structure de routine avec catalogId obligatoire
+export interface NewRoutineStructure {
+  immediate: NewRoutineStep[]
+  adaptation: NewRoutineStep[]
+  maintenance: NewRoutineStep[]
+}
+
+export interface NewRoutineStep {
+  name: string
+  frequency: 'quotidien' | 'hebdomadaire' | 'ponctuel'
+  timing: 'matin' | 'soir' | 'matin_et_soir'
+  catalogId: string // ID obligatoire du catalogue
+  application: string
+  startDate: string
+}
+
+export interface LocalizedRoutineStep {
+  zone: string
+  priority: 'haute' | 'moyenne' | 'basse'
+  steps: LocalizedStep[]
+}
+
+export interface LocalizedStep {
+  name: string
+  frequency: 'quotidien' | 'hebdomadaire' | 'ponctuel'
+  timing: 'matin' | 'soir' | 'selon_besoin'
+  catalogId: string // ID obligatoire du catalogue
+  application: string
+  duration: string
+  resume: string
 }
 
 // Import du nouveau système de routine

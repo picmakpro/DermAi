@@ -1,0 +1,41 @@
+[
+  {
+    "id": "cerave_gel_moussant",
+    "name": "Gel Moussant Nettoyant",
+    "brand": "CeraVe",
+    "category": "cleanser",
+    "price": 12.99,
+    "currency": "EUR",
+    "imageUrl": "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop",
+    "affiliateLink": "https://www.amazon.fr/dp/B07CG2Q5V2?tag=dermai-21",
+    "activeIngredients": ["Niacinamide", "Ceramides"],
+    "skinTypes": ["Sèche", "Mixte", "Grasse", "Sensible"],
+    "benefits": ["Nettoie sans décaper", "Préserve la barrière cutanée"]
+  },
+  {
+    "id": "ordinary_niacinamide_10",
+    "name": "Sérum Niacinamide 10% + Zinc",
+    "brand": "The Ordinary",
+    "category": "serum",
+    "price": 7.20,
+    "currency": "EUR",
+    "imageUrl": "https://images.unsplash.com/photo-1570194065650-d99fb4bedf0a?w=400&h=400&fit=crop",
+    "affiliateLink": "https://www.amazon.fr/dp/B01MZ3LN6S?tag=dermai-21",
+    "activeIngredients": ["Niacinamide", "Zinc"],
+    "skinTypes": ["Mixte", "Grasse", "Sensible"],
+    "benefits": ["Régule le sébum", "Diminue les imperfections"]
+  },
+  {
+    "id": "lrp_anthelios_spf50",
+    "name": "Anthelios UVMune 400 SPF 50+ Invisible",
+    "brand": "La Roche-Posay",
+    "category": "sunscreen",
+    "price": 18.50,
+    "currency": "EUR",
+    "imageUrl": "https://images.unsplash.com/photo-1556228578-dd97c4d84df2?w=400&h=400&fit=crop",
+    "affiliateLink": "https://www.amazon.fr/dp/B09X1S9J5X?tag=dermai-21",
+    "activeIngredients": ["Filtres UVA/UVB"],
+    "skinTypes": ["Sèche", "Mixte", "Grasse", "Sensible"],
+    "benefits": ["SPF 50+", "Fini invisible"]
+  }
+]
