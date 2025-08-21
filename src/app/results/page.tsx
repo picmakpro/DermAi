@@ -244,10 +244,11 @@ const getLocalizedRoutine = (analysis: any) => {
   }
 
   console.log('🔄 Création fallback depuis diagnostic.localized:', localized.length, 'zones')
+  console.log('📊 Zones trouvées dans localized:', localized.map((l: any) => `${l.zone} (${l.severity})`))
   
   // Fallback amélioré: pour chaque zone, créer une routine appropriée
   const results = localized.map((loc: any, i: number) => {
-    console.log(`  Zone ${i + 1}:`, loc.zone, loc.issues || loc.issue, loc.severity)
+    console.log(`  📍 Zone ${i + 1}:`, loc.zone, loc.issues || loc.issue, loc.severity)
     
     const issues = Array.isArray(loc.issues) ? loc.issues : [loc.issue].filter(Boolean)
     const issueText = issues.join(' ').toLowerCase()
@@ -308,7 +309,8 @@ const getLocalizedRoutine = (analysis: any) => {
     }
   })
 
-  console.log('📋 Zones créées:', results.length, results.map(r => r.zone))
+  console.log('✅ Zones créées pour ciblage:', results.length, 'zones:', results.map(r => `${r.zone} (${r.steps?.length || 0} étapes)`))
+  console.log('🔍 Détail des zones créées:', results.map(r => ({ zone: r.zone, severity: r.severity, issues: r.issues, stepsCount: r.steps?.length || 0 })))
   return results
 }
 
@@ -811,40 +813,30 @@ export default function ResultsPage() {
            >
              <div className="flex items-center space-x-3 mb-6">
                <Target className="w-6 h-6 text-rose-500" />
-               <h2 className="text-2xl font-bold text-gray-900">Ciblage par zones</h2>
+               <h2 className="text-2xl font-bold text-gray-900">Traitement des zones à surveiller</h2>
              </div>
 
-             <div className="grid md:grid-cols-2 gap-6">
-               {getLocalizedRoutine(analysis)
-                 .sort((a: any, b: any) => (a.priority || 99) - (b.priority || 99))
-                 .map((loc: any, idx: number) => {
-                  const sev = String(loc.severity || '').toLowerCase()
-                  const color = sev.includes('sévère') || sev.includes('severe')
-                    ? 'bg-red-500'
-                    : sev.includes('modérée') || sev.includes('moderate')
-                    ? 'bg-orange-400'
-                    : 'bg-yellow-300'
-                  const fill = sev.includes('sévère') || sev.includes('severe') ? 90 : sev.includes('modérée') || sev.includes('moderate') ? 65 : 35
-                  return (
-                    <div key={idx} className="rounded-2xl border border-gray-100 p-6">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center space-x-3">
-                          <div className={`w-4 h-4 rounded-full ring-2 ring-offset-2 ${color} ring-yellow-200`} />
-                          <div>
-                            <div className="font-semibold text-gray-900 capitalize">{loc.zone}</div>
-                            {Array.isArray(loc.issues) && (
-                              <div className="text-xs text-gray-600">{loc.issues.join(' • ')}</div>
-                            )}
-                          </div>
-                        </div>
-                        {loc.severity && (
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-gray-50 border border-gray-200 text-gray-600">{loc.severity}</span>
-                        )}
-                      </div>
-
-                      <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden mb-4">
-                        <div className={`${color} h-2 rounded-full`} style={{ width: `${fill}%` }} />
-                      </div>
+                         <div className="space-y-6">
+              {getLocalizedRoutine(analysis)
+                .sort((a: any, b: any) => (a.priority || 99) - (b.priority || 99))
+                .map((loc: any, idx: number) => {
+                 // Utiliser la même fonction severityBadge pour la cohérence
+                 const severityClass = severityBadge(loc.severity)
+                 
+                 return (
+                   <div key={idx} className="rounded-2xl border border-gray-100 p-6 bg-gray-50">
+                     {/* En-tête de zone avec badge de sévérité cohérent */}
+                     <div className="flex items-center justify-between mb-4">
+                       <div className="flex items-center space-x-3">
+                         <h4 className="text-lg font-bold text-gray-900 capitalize">{loc.zone}</h4>
+                         <span className={`text-xs px-3 py-1 rounded-full border ${severityClass}`}>
+                           {loc.severity || 'Modérée'}
+                         </span>
+                       </div>
+                       {Array.isArray(loc.issues) && (
+                         <div className="text-sm text-gray-600">{loc.issues.join(' • ')}</div>
+                       )}
+                     </div>
 
                       {Array.isArray(loc.restrictions) && loc.restrictions.length > 0 && (
                         <div className="mb-3">
@@ -864,15 +856,22 @@ export default function ResultsPage() {
                       {Array.isArray(loc.steps) && loc.steps.length > 0 && (
                         <div className="space-y-3">
                           {loc.steps.map((s: any, si: number) => (
-                            <div key={si} className={`p-3 rounded-xl bg-gray-50 ${categoryAccent(s.category)}`}>
-                              <div className="flex items-center justify-between mb-1">
-                                <div className="text-sm font-semibold text-gray-900">{s.title}</div>
-                                <span className="text-[10px] uppercase tracking-wide text-gray-500">Étape {si + 1}</span>
-                              </div>
-                              <div className="flex flex-wrap items-center gap-2 text-xs text-gray-700 mb-1">
-                                <span className="px-2 py-0.5 rounded-full bg-white border border-gray-200 capitalize">{s.category || 'soin'}</span>
-                                <span className="px-2 py-0.5 rounded-full bg-white border border-gray-200">{formatFrequency(s.frequency)}</span>
-                                <span className="px-2 py-0.5 rounded-full bg-white border border-gray-200">{timeOfDayLabel(s.timeOfDay)}</span>
+                            <div key={si} className="bg-white rounded-xl p-4 border border-gray-200">
+                              {/* En-tête avec numérotation claire */}
+                              <div className="flex items-start space-x-3 mb-3">
+                                <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                                  {si + 1}
+                                </div>
+                                <div className="flex-1">
+                                  <div className="text-sm font-semibold text-gray-900 mb-1">{s.name || s.title}</div>
+                                  <div className="flex flex-wrap items-center gap-2 text-xs">
+                                    <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full font-medium">
+                                      {s.category === 'treatment' ? '🩹 Traitement' : '💧 Soin'} • 
+                                      {s.frequency === 'quotidien' ? ' Quotidien' : ` ${s.frequency}`}
+                                      {s.timing && ` • ${s.timing === 'soir' ? 'Soir' : s.timing === 'matin' ? 'Matin' : s.timing}`}
+                                    </span>
+                                  </div>
+                                </div>
                               </div>
                               {/* Affichage amélioré des produits avec catalogId */}
                               {s.catalogId && (
