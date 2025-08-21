@@ -221,7 +221,7 @@ const getGenericProducts = (analysis: SkinAnalysis) => {
   return mockProducts.slice(0, 3) // Limiter à 3 produits
 }
 
-// Routine localisée – helper avec fallback à partir du diagnostic si l'IA n'a pas produit localizedRoutine
+// Routine localisée – fusionne la réponse IA et le diagnostic, avec fallback
 const getLocalizedRoutine = (analysis: any) => {
   console.log('🎯 getLocalizedRoutine - analyse structure:', {
     hasLocalizedRoutine: !!analysis?.recommendations?.localizedRoutine,
@@ -231,11 +231,9 @@ const getLocalizedRoutine = (analysis: any) => {
     localizedData: analysis?.diagnostic?.localized
   })
 
-  const lr = analysis?.recommendations?.localizedRoutine
-  if (Array.isArray(lr) && lr.length > 0) {
-    console.log('✅ Utilisation localizedRoutine de l\'IA:', lr.length, 'zones')
-    return lr
-  }
+  const aiZones = Array.isArray(analysis?.recommendations?.localizedRoutine)
+    ? analysis.recommendations.localizedRoutine
+    : []
 
   const localized = analysis?.diagnostic?.localized
   if (!Array.isArray(localized) || localized.length === 0) {
@@ -246,8 +244,8 @@ const getLocalizedRoutine = (analysis: any) => {
   console.log('🔄 Création fallback depuis diagnostic.localized:', localized.length, 'zones')
   console.log('📊 Zones trouvées dans localized:', localized.map((l: any) => `${l.zone} (${l.severity})`))
   
-  // Fallback amélioré: pour chaque zone, créer une routine appropriée
-  const results = localized.map((loc: any, i: number) => {
+  // Fonction utilitaire pour générer une zone à partir du diagnostic (fallback)
+  const buildZoneFromDiagnostic = (loc: any, i: number) => {
     console.log(`  📍 Zone ${i + 1}:`, loc.zone, loc.issues || loc.issue, loc.severity)
     
     const issues = Array.isArray(loc.issues) ? loc.issues : [loc.issue].filter(Boolean)
@@ -326,7 +324,8 @@ const getLocalizedRoutine = (analysis: any) => {
     return {
       zone: loc.zone || `zone ${i + 1}`,
       priority: isIrritated ? 1 : 3,
-      severity: loc.severity,
+      // Forcer une sévérité par défaut pour cohérence couleur
+      severity: loc.severity || 'Modérée',
       issues: issues,
       restrictions,
       resumeCondition,
@@ -343,7 +342,40 @@ const getLocalizedRoutine = (analysis: any) => {
         }
       ]
     }
+  }
+
+  // 1) Normaliser les zones issues de l'IA (et appliquer une sévérité par défaut)
+  const aiByZone = new Map<string, any>()
+  aiZones.forEach((z: any) => {
+    if (!z || !z.zone) return
+    aiByZone.set(String(z.zone).toLowerCase(), {
+      ...z,
+      severity: z.severity || 'Modérée',
+      steps: Array.isArray(z.steps) ? z.steps : []
+    })
   })
+
+  // 2) Générer les zones depuis le diagnostic
+  const diagZones = localized.map((loc: any, i: number) => buildZoneFromDiagnostic(loc, i))
+
+  // 3) Fusionner: conserver les zones IA et compléter avec les zones manquantes du diagnostic
+  const mergedByZone = new Map<string, any>(aiByZone)
+  diagZones.forEach((dz) => {
+    const key = String(dz.zone).toLowerCase()
+    if (!mergedByZone.has(key)) {
+      mergedByZone.set(key, dz)
+    } else {
+      // Si la zone existe déjà côté IA mais sans sévérité, compléter
+      const existing = mergedByZone.get(key)
+      mergedByZone.set(key, {
+        ...existing,
+        severity: existing.severity || dz.severity || 'Modérée',
+        issues: existing.issues?.length ? existing.issues : dz.issues,
+      })
+    }
+  })
+
+  const results = Array.from(mergedByZone.values())
 
   console.log('✅ Zones créées pour ciblage:', results.length, 'zones:', results.map(r => `${r.zone} (${r.steps?.length || 0} étapes)`))
   console.log('🔍 Détail des zones créées:', results.map(r => ({ zone: r.zone, severity: r.severity, issues: r.issues, stepsCount: r.steps?.length || 0 })))
