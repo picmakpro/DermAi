@@ -34,20 +34,46 @@ export default function PhotoUploadZone({
     // Convertir si nécessaire puis valider chaque fichier
     for (let i = 0; i < fileArray.length; i++) {
       const original = fileArray[i]
-      const { file } = await ensureCompatibleImage(original)
-      const validation = await validateImage(file)
       
-      if (validation.valid) {
-        const photoUpload: PhotoUpload = {
-          id: `photo_${Date.now()}_${i}`,
-          file,
-          preview: URL.createObjectURL(file),
-          type: 'face-frontal', // Default type
-          quality: 'good'
+      try {
+        console.log('📁 Traitement fichier:', original.name, original.type, original.size)
+        
+        // Détection améliorée du type HEIC (par extension si type manquant)
+        let detectedType = original.type
+        if (!detectedType && original.name.toLowerCase().match(/\.(heic|heif)$/)) {
+          detectedType = original.name.toLowerCase().endsWith('.heic') ? 'image/heic' : 'image/heif'
+          console.log('🔍 Type détecté par extension:', detectedType)
         }
-        validPhotos.push(photoUpload)
-      } else {
-        newErrors.push(`${file.name}: ${validation.error}`)
+        
+        // Créer un nouveau fichier avec le bon type MIME si nécessaire
+        const fileWithCorrectType = detectedType !== original.type 
+          ? new File([original], original.name, { type: detectedType, lastModified: original.lastModified })
+          : original
+        
+        // Conversion si nécessaire
+        const { file, converted, originalType } = await ensureCompatibleImage(fileWithCorrectType)
+        console.log('🔄 Conversion:', converted ? 'effectuée' : 'non nécessaire', `(${originalType} → ${file.type})`)
+        
+        // Validation du fichier final
+        const validation = await validateImage(file)
+        
+        if (validation.valid) {
+          const photoUpload: PhotoUpload = {
+            id: `photo_${Date.now()}_${i}`,
+            file,
+            preview: URL.createObjectURL(file),
+            type: 'face-frontal', // Default type
+            quality: 'good'
+          }
+          validPhotos.push(photoUpload)
+          console.log('✅ Photo validée:', file.name)
+        } else {
+          console.error('❌ Validation échouée:', validation.error)
+          newErrors.push(`${original.name}: ${validation.error}`)
+        }
+      } catch (error) {
+        console.error('💥 Erreur traitement fichier:', error)
+        newErrors.push(`${original.name}: Erreur de traitement du fichier`)
       }
     }
 

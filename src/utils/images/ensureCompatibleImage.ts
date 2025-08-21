@@ -30,9 +30,27 @@ export async function ensureCompatibleImage(inputFile: File): Promise<Compatible
 
   try {
     if (originalType === 'image/heic' || originalType === 'image/heif') {
+      console.log('🔄 Conversion HEIC/HEIF vers JPEG...')
+      
       const heic2any = (await import('heic2any')).default as any
-      const blob = await heic2any({ blob: inputFile, toType: 'image/jpeg', quality: 0.92 })
-      let file = new File([blob as BlobPart], changeExtension(inputFile.name, 'jpg'), { type: 'image/jpeg' })
+      const blob = await heic2any({ 
+        blob: inputFile, 
+        toType: 'image/jpeg', 
+        quality: 0.95 // Qualité légèrement augmentée
+      })
+      
+      // S'assurer que nous avons un blob valide
+      const finalBlob = Array.isArray(blob) ? blob[0] : blob
+      if (!finalBlob || !(finalBlob instanceof Blob)) {
+        throw new Error('Conversion HEIC échouée: blob invalide')
+      }
+      
+      let file = new File([finalBlob], changeExtension(inputFile.name, 'jpg'), { 
+        type: 'image/jpeg',
+        lastModified: Date.now()
+      })
+      
+      console.log('✅ Conversion HEIC réussie:', file.size, 'bytes')
       file = await compressJpegIfNeeded(file)
       return { file, converted: true, originalType }
     }
