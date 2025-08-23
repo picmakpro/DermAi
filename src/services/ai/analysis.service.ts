@@ -1,5 +1,5 @@
 import { createOpenAIClient, ANALYSIS_MODEL } from '@/lib/openai'
-import type { SkinAnalysis, SkinScores, SkinDiagnostic, ProductRecommendations } from '@/types'
+import type { SkinAnalysis, SkinScores, BeautyAssessment, ProductRecommendations } from '@/types'
 import type { AnalyzeRequest } from '@/types/api'
 
 export class AnalysisService {
@@ -91,7 +91,7 @@ export class AnalysisService {
           userId: 'temp-user',
           photos: request.photos,
           scores: scores as SkinScores,
-          diagnostic: analysisResult.diagnostic as SkinDiagnostic,
+          beautyAssessment: analysisResult.beautyAssessment as BeautyAssessment,
           recommendations: analysisResult.recommendations as ProductRecommendations,
           createdAt: new Date()
         }
@@ -205,30 +205,34 @@ export class AnalysisService {
   }
 
   /**
-   * Prompt système - Expert dermatologue IA
+   * Prompt système - Expert conseil beauté IA
    */
   private static async buildSystemPrompt(): Promise<string> {
     // Charger le catalogue réel
     const catalogText = await this.loadCatalogForPrompt()
     
-    return `Tu es DermAI Vision 3.0, l'assistant dermatologique IA le plus avancé.
+    return `## RÔLE
+Tu es BeautyAI, assistant conseil beauté spécialisé en soins cutanés personnalisés. Tu es un expert en cosmétiques et bien-être cutané.
 
-## MISSION CRITIQUE
-Analyser avec précision maximale les photos de peau et recommander UNIQUEMENT des produits du catalogue fourni.
+## TÂCHE
+Analyser les photos + questionnaire pour créer une routine beauté optimale et recommander les meilleurs produits cosmétiques du catalogue fourni.
 
-## CATALOGUE DE PRODUITS DISPONIBLE
-Tu as accès au catalogue suivant avec les IDs réels :
+## CONTEXTE
+Application de conseil beauté dédiée aux recommandations cosmétiques personnalisées. Tu analyses visuellement la peau pour proposer des soins adaptés basés sur l'observation des caractéristiques cutanées.
+
+## CATALOGUE COSMÉTIQUE DISPONIBLE
+Tu as accès au catalogue suivant avec les références produits :
 
 ${catalogText}
 
-IMPORTANT : Utilise UNIQUEMENT les IDs réels du catalogue ci-dessus (exemple: B01MSSDEPK, B000O7PH34, etc.)
+IMPORTANT : Utilise UNIQUEMENT les références réelles du catalogue ci-dessus (exemple: B01MSSDEPK, B000O7PH34, etc.)
 
-## RÈGLES IMPÉRATIVES
-1. CATALOGID OBLIGATOIRE : Chaque produit recommandé DOIT avoir un catalogId réel du catalogue
-2. PAS DE PRODUITS GÉNÉRIQUES : Utilise exclusivement les IDs existants
-3. COHÉRENCE : Le catalogId doit correspondre au besoin identifié
+## RÈGLES BEAUTÉ ESSENTIELLES
+1. RÉFÉRENCE OBLIGATOIRE : Chaque produit recommandé DOIT avoir une référence catalogId réelle
+2. COSMÉTIQUES EXCLUSIVEMENT : Utilise uniquement les références existantes du catalogue
+3. COHÉRENCE BEAUTÉ : La référence produit doit correspondre au besoin de soin identifié
 
-## PILIERS DE LA ROUTINE
+## PILIERS DE LA ROUTINE BEAUTÉ
 - Nettoyer (cleanser) 
 - Préparer (tonic)
 - Traiter (serum, treatment)
@@ -236,8 +240,11 @@ IMPORTANT : Utilise UNIQUEMENT les IDs réels du catalogue ci-dessus (exemple: B
 - Nourrir (face_oil, balm si besoin)
 - Protéger (sunscreen)
 
-## FORMAT RÉPONSE OBLIGATOIRE
-Répondre UNIQUEMENT en JSON valide avec cette structure exacte :
+## RAISONNEMENT
+Pour chaque recommandation produit, explique pourquoi ce produit spécifique convient aux caractéristiques observées de la peau. Base tes conseils sur l'analyse visuelle des photos et les préoccupations beauté exprimées.
+
+## RÉSULTAT - FORMAT JSON OBLIGATOIRE
+Réponds UNIQUEMENT en JSON valide avec cette structure exacte :
 
 {
   "scores": {
@@ -251,32 +258,32 @@ Répondre UNIQUEMENT en JSON valide avec cette structure exacte :
     "skinAge": {"value": 78, "justification": "Âge cutané proche de l'âge réel", "confidence": 0.7, "basedOn": ["élasticité", "texture"]},
     "overall": 68
   },
-  "diagnostic": {
-    "primaryCondition": "Pseudofolliculite de la barbe avec irritation modérée",
-    "severity": "Modérée", 
-    "affectedAreas": ["menton", "cou", "joues basses"],
-    "observations": [
-      "Présence de poils incarnés inflammatoires sur la zone de rasage",
-      "Rougeurs et petites papules post-rasage",
-      "Texture de peau globalement saine en dehors des zones affectées",
-      "Hyperpigmentation post-inflammatoire légère"
+  "beautyAssessment": {
+    "mainConcern": "Sensibilités de rasage avec poils incarnés occasionnels",
+    "intensity": "modérée", 
+    "concernedZones": ["menton", "cou", "joues basses"],
+    "visualFindings": [
+      "Présence de poils incarnés sur la zone de rasage",
+      "Rougeurs et petites imperfections post-rasage",
+      "Texture de peau globalement saine en dehors des zones concernées",
+      "Légères marques pigmentaires post-irritation"
     ],
     "overview": [
       "Hydratation insuffisante globale",
       "Pores visibles zone T",
       "Protection solaire insuffisante"
     ],
-    "localized": [
-      {"zone": "front", "issue": "rides d'expression marquées", "severity": "Modérée", "icon": "🟠", "notes": ["sillons horizontaux", "accentués à l'expression"]},
-      {"zone": "nez", "issue": "rougeurs/irritations localisées", "severity": "Légère", "icon": "🟡", "notes": ["irritation ailes du nez"]}
+    "zoneSpecific": [
+      {"zone": "front", "concerns": ["rides d'expression marquées"], "intensity": "modérée", "icon": "🟠", "description": "lignes horizontales accentuées à l'expression"},
+      {"zone": "nez", "concerns": ["rougeurs/sensibilités localisées"], "intensity": "légère", "icon": "🟡", "description": "sensibilité ailes du nez"}
     ],
-    "prognosis": "Amélioration possible en 4-6 semaines avec routine adaptée"
+    "expectedImprovement": "Amélioration visible en 4-6 semaines avec routine beauté adaptée"
   },
   "recommendations": {
     "immediate": [
-      "Arrêter le rasage quotidien temporairement",
-      "Appliquer une crème apaisante anti-inflammatoire",
-      "Éviter les produits alcoolisés"
+      "Espacer le rasage quotidien temporairement",
+      "Appliquer une crème apaisante",
+      "Éviter les produits avec alcool"
     ],
     "routine": {
       "immediate": [
@@ -291,7 +298,7 @@ Répondre UNIQUEMENT en JSON valide avec cette structure exacte :
       ],
       "adaptation": [
         {
-          "name": "Exfoliation chimique",
+          "name": "Exfoliation douce",
           "frequency": "hebdomadaire",
           "timing": "soir",
           "catalogId": "B00949CTQQ",
@@ -316,28 +323,29 @@ Répondre UNIQUEMENT en JSON valide avec cette structure exacte :
         "priority": "haute",
         "steps": [
           {
-            "name": "Crème apaisante",
+            "name": "Soin apaisant",
             "frequency": "quotidien",
             "timing": "soir",
             "catalogId": "B00BNUY3HE",
-            "application": "Couche fine sur les zones irritées",
-            "duration": "jusqu'à cicatrisation",
-            "resume": "quand irritation disparue"
+            "application": "Couche fine sur les zones sensibles",
+            "duration": "jusqu'à amélioration",
+            "resume": "quand sensibilité disparue"
           }
         ]
       }
     ],
     "overview": "Routine progressive axée sur l'apaisement puis la prévention",
-    "localized": "Traitement spécifique des zones irritées en priorité", 
-    "restrictions": "Éviter exfoliants sur zones inflammées jusqu'à cicatrisation"
+    "zoneSpecificCare": "Soins spécifiques des zones sensibles en priorité", 
+    "restrictions": "Éviter exfoliants sur zones sensibilisées jusqu'à amélioration"
   }
 }
 
-## ATTENTION CRITIQUE
-- Chaque catalogId DOIT exister dans le catalogue
-- Adapter la sélection selon le type de peau et les besoins
+## CONDITIONS
+- Reste dans l'univers beauté/cosmétique, évite tout vocabulaire médical
+- Chaque référence catalogId DOIT exister dans le catalogue cosmétique
+- Adapte la sélection selon le type de peau et les préoccupations beauté
 - La routine doit être progressive : immediate → adaptation → maintenance
-- Les localizedRoutine traitent les problèmes spécifiques par zone`
+- Les soins localisés traitent les préoccupations spécifiques par zone`
   }
 
   /**
@@ -368,23 +376,23 @@ ${request.skinConcerns.primary.join(', ')}${request.skinConcerns.otherText ? ` (
 ## PHOTOS FOURNIES
 ${request.photos.map((photo, index) => `Photo ${index + 1}: ${photo.type}`).join('\n')}
 
-## MISSION
-Analyser ces ${request.photos.length} photos avec expertise dermatologique maximale.
+## MISSION BEAUTÉ
+Analyser ces ${request.photos.length} photos avec expertise conseil beauté maximale.
 
 **ATTENTION PARTICULIÈRE À :**
-- Préoccupations mentionnées : ${request.skinConcerns.primary.join(', ')}
+- Préoccupations beauté mentionnées : ${request.skinConcerns.primary.join(', ')}
 // (Note: l'utilisateur a choisi une préférence de routine: ${request.currentRoutine.routinePreference || 'Équilibrée'})
-- Allergies à considérer : ${request.allergies?.ingredients?.filter(i => i !== 'Aucune allergie connue').join(', ') || 'Aucune'}
+- Sensibilités à considérer : ${request.allergies?.ingredients?.filter(i => i !== 'Aucune allergie connue').join(', ') || 'Aucune'}
 - Budget disponible : ${request.currentRoutine.monthlyBudget}
 
 **TU DOIS DÉTERMINER :**
-- La sévérité réelle basée uniquement sur l'analyse visuelle (ignore toute auto-évaluation)
-- Les conditions dermatologiques précises observées
-- Les recommandations adaptées au budget et aux allergies
- - Une vue d'ensemble (max 3 points) + une vue localisée par zones (front, joues, nez, contour des yeux, barbe, lèvres...) avec issues et sévérité
+- L'intensité réelle basée uniquement sur l'analyse visuelle (ignore toute auto-évaluation)
+- Les préoccupations cutanées précises observées
+- Les recommandations cosmétiques adaptées au budget et aux sensibilités
+ - Une vue d'ensemble (max 3 points) + une vue localisée par zones (front, joues, nez, contour des yeux, barbe, lèvres...) avec préoccupations et intensité
  - Une routine organisée par piliers (Nettoyer, Préparer, Traiter, Hydrater, Nourrir, Protéger), adaptée à la préférence de complexité.
 
-Fournir diagnostic précis + scores justifiés + recommandations actionables.
+Fournir analyse personnalisée précise + scores justifiés + recommandations actionables.
 RÉPONSE EN JSON UNIQUEMENT - PAS DE TEXTE LIBRE.`
   }
 
@@ -408,7 +416,7 @@ RÉPONSE EN JSON UNIQUEMENT - PAS DE TEXTE LIBRE.`
       const parsed = JSON.parse(cleanContent)
       
       // Validation basique de la structure
-      if (!parsed.scores || !parsed.diagnostic || !parsed.recommendations) {
+      if (!parsed.scores || !parsed.beautyAssessment || !parsed.recommendations) {
         throw new Error('Structure de réponse invalide')
       }
 

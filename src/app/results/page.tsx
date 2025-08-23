@@ -191,7 +191,7 @@ const getProductsFromCatalogIds = async (catalogIds: string[]): Promise<CatalogR
 const getGenericProducts = (analysis: SkinAnalysis): CatalogRecommendedProductCard[] => {
   const mockProducts: CatalogRecommendedProductCard[] = []
   const recommendations = analysis.recommendations?.products || []
-  const skinConcerns = analysis.diagnostic?.primaryCondition || ''
+  const skinConcerns = analysis.beautyAssessment?.mainConcern || ''
   const scores = analysis.scores
 
   // Produit 1: Nettoyant (toujours recommandé)
@@ -263,29 +263,31 @@ const getLocalizedRoutine = (analysis: any) => {
   console.log('🎯 getLocalizedRoutine - analyse structure:', {
     hasLocalizedRoutine: !!analysis?.recommendations?.localizedRoutine,
     localizedRoutineLength: analysis?.recommendations?.localizedRoutine?.length || 0,
-    hasLocalized: !!analysis?.diagnostic?.localized,
-    localizedLength: analysis?.diagnostic?.localized?.length || 0,
-    localizedData: analysis?.diagnostic?.localized
+    hasZoneSpecific: !!analysis?.beautyAssessment?.zoneSpecific,
+    zoneSpecificLength: analysis?.beautyAssessment?.zoneSpecific?.length || 0,
+    zoneSpecificData: analysis?.beautyAssessment?.zoneSpecific
   })
 
   const aiZones = Array.isArray(analysis?.recommendations?.localizedRoutine)
     ? analysis.recommendations.localizedRoutine
     : []
 
-  const localized = analysis?.diagnostic?.localized
+  const localized = analysis?.beautyAssessment?.zoneSpecific
   if (!Array.isArray(localized) || localized.length === 0) {
     console.log('❌ Aucune zone localisée trouvée')
     return []
   }
 
-  console.log('🔄 Création fallback depuis diagnostic.localized:', localized.length, 'zones')
-  console.log('📊 Zones trouvées dans localized:', localized.map((l: any) => `${l.zone} (${l.severity})`))
+  console.log('🔄 Création fallback depuis beautyAssessment.zoneSpecific:', localized.length, 'zones')
+  console.log('📊 Zones trouvées dans zoneSpecific:', localized.map((l: any) => `${l.zone} (${l.intensity})`))
   
   // Fonction utilitaire pour générer une zone à partir du diagnostic (fallback)
   const buildZoneFromDiagnostic = (loc: any, i: number) => {
-    console.log(`  📍 Zone ${i + 1}:`, loc.zone, loc.issues || loc.issue, loc.severity)
+    console.log(`  📍 Zone ${i + 1}:`, loc.zone, loc.concerns || loc.issue, loc.intensity)
     
-    const issues = Array.isArray(loc.issues) ? loc.issues : [loc.issue].filter(Boolean)
+    const issues = Array.isArray(loc.concerns) ? loc.concerns : 
+                   Array.isArray(loc.issues) ? loc.issues : 
+                   [loc.issue].filter(Boolean)
     const issueText = issues.join(' ').toLowerCase()
     const isIrritated = issueText.includes('irrit') || issueText.includes('rougeur') || issueText.includes('inflam')
     const hasPores = issueText.includes('pore') || issueText.includes('sébum')
@@ -361,9 +363,10 @@ const getLocalizedRoutine = (analysis: any) => {
     return {
       zone: loc.zone || `zone ${i + 1}`,
       priority: isIrritated ? 1 : 3,
-      // Forcer une sévérité par défaut pour cohérence couleur
-      severity: loc.severity || 'Modérée',
+      // Forcer une intensité par défaut pour cohérence couleur
+      intensity: loc.intensity || 'Modérée',
       issues: issues,
+      concerns: issues, // Compatibilité avec le nouveau nom
       restrictions,
       resumeCondition,
       steps: steps.length > 0 ? steps : [
@@ -381,13 +384,13 @@ const getLocalizedRoutine = (analysis: any) => {
     }
   }
 
-  // 1) Normaliser les zones issues de l'IA (et appliquer une sévérité par défaut)
+  // 1) Normaliser les zones issues de l'IA (et appliquer une intensité par défaut)
   const aiByZone = new Map<string, any>()
   aiZones.forEach((z: any) => {
     if (!z || !z.zone) return
     aiByZone.set(String(z.zone).toLowerCase(), {
       ...z,
-      severity: z.severity || 'Modérée',
+      intensity: z.intensity || 'Modérée',
       steps: Array.isArray(z.steps) ? z.steps : []
     })
   })
@@ -402,11 +405,11 @@ const getLocalizedRoutine = (analysis: any) => {
     if (!mergedByZone.has(key)) {
       mergedByZone.set(key, dz)
     } else {
-      // Si la zone existe déjà côté IA mais sans sévérité, compléter
+      // Si la zone existe déjà côté IA mais sans intensité, compléter
       const existing = mergedByZone.get(key)
       mergedByZone.set(key, {
         ...existing,
-        severity: existing.severity || dz.severity || 'Modérée',
+        intensity: existing.intensity || dz.intensity || 'Modérée',
         issues: existing.issues?.length ? existing.issues : dz.issues,
       })
     }
@@ -415,7 +418,7 @@ const getLocalizedRoutine = (analysis: any) => {
   const results = Array.from(mergedByZone.values())
 
   console.log('✅ Zones créées pour ciblage:', results.length, 'zones:', results.map(r => `${r.zone} (${r.steps?.length || 0} étapes)`))
-  console.log('🔍 Détail des zones créées:', results.map(r => ({ zone: r.zone, severity: r.severity, issues: r.issues, stepsCount: r.steps?.length || 0 })))
+  console.log('🔍 Détail des zones créées:', results.map(r => ({ zone: r.zone, intensity: r.intensity, issues: r.issues, stepsCount: r.steps?.length || 0 })))
   return results
 }
 
@@ -526,9 +529,9 @@ const categoryAccent = (category?: string) => {
   return 'border-l-4 border-gray-300'
 }
 
-const severityBadge = (sev?: string) => {
-  const s = (sev || '').toLowerCase()
-  if (s.includes('sévère') || s.includes('severe')) return 'bg-red-50 text-red-700 border-red-200'
+const intensityBadge = (intensity?: string) => {
+  const s = (intensity || '').toLowerCase()
+  if (s.includes('intense') || s.includes('sévère') || s.includes('severe')) return 'bg-red-50 text-red-700 border-red-200'
   if (s.includes('modérée') || s.includes('moderate')) return 'bg-orange-50 text-orange-700 border-orange-200'
   if (s.includes('légère') || s.includes('mild')) return 'bg-yellow-50 text-yellow-700 border-yellow-200'
   return 'bg-gray-50 text-gray-600 border-gray-200'
@@ -754,10 +757,10 @@ export default function ResultsPage() {
                   <span className="font-semibold">Type de Peau Identifié</span>
                 </div>
                 <div className="text-xl font-bold mb-2">
-                  {analysis.diagnostic.primaryCondition}
+                  {analysis.beautyAssessment.mainConcern}
                 </div>
                 <div className="text-sm opacity-90">
-                  Sévérité: {analysis.diagnostic.severity}
+                  Intensité: {analysis.beautyAssessment.intensity}
                 </div>
               </div>
 
@@ -838,11 +841,11 @@ export default function ResultsPage() {
            </div>
 
           {/* Vue d'ensemble (overview) si disponible, sinon fallback sur observations classiques */}
-          {Array.isArray((analysis as any).diagnostic?.overview) && (analysis as any).diagnostic.overview.length > 0 ? (
+          {Array.isArray((analysis as any).beautyAssessment?.overview) && (analysis as any).beautyAssessment.overview.length > 0 ? (
             <div className="mb-6">
               <h4 className="text-sm font-semibold text-gray-700 mb-2">Vue d’ensemble</h4>
               <div className="grid md:grid-cols-3 gap-3">
-                {(analysis as any).diagnostic.overview.slice(0, 3).map((item: string, idx: number) => (
+                {(analysis as any).beautyAssessment.overview.slice(0, 3).map((item: string, idx: number) => (
                   <div key={idx} className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-4 border border-blue-100">
                     <div className="flex items-start space-x-3">
                       <div className="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">{idx + 1}</div>
@@ -854,7 +857,7 @@ export default function ResultsPage() {
             </div>
           ) : (
            <div className="grid md:grid-cols-3 gap-4">
-             {analysis.diagnostic.observations.slice(0, 3).map((observation, index) => (
+             {analysis.beautyAssessment.visualFindings.slice(0, 3).map((observation: string, index: number) => (
                <div key={index} className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-4 border border-blue-100">
                  <div className="flex items-start space-x-3">
                    <div className="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
@@ -868,20 +871,20 @@ export default function ResultsPage() {
           )}
 
           {/* Observations localisées par zones */}
-          {Array.isArray((analysis as any).diagnostic?.localized) && (analysis as any).diagnostic.localized.length > 0 && (
+          {getLocalizedRoutine(analysis).length > 0 && (
             <div className="mt-4">
               <h4 className="text-sm font-semibold text-gray-700 mb-2">Zones à surveiller</h4>
               <div className="grid md:grid-cols-2 gap-3">
-                {(analysis as any).diagnostic.localized.map((loc: any, idx: number) => {
-                  const severity = String(loc.severity || '').toLowerCase()
-                  const severityColor = severity.includes('sévère') || severity.includes('severe')
+                {getLocalizedRoutine(analysis).map((loc: any, idx: number) => {
+                  const intensity = String(loc.intensity || '').toLowerCase()
+                  const intensityColor = intensity.includes('intense') || intensity.includes('sévère')
                     ? 'bg-red-500'
-                    : severity.includes('modérée') || severity.includes('moderate')
+                    : intensity.includes('modérée') || intensity.includes('moderate')
                     ? 'bg-orange-400'
                     : 'bg-yellow-300'
-                  const fillPercent = severity.includes('sévère') || severity.includes('severe')
+                  const fillPercent = intensity.includes('intense') || intensity.includes('sévère')
                     ? 90
-                    : severity.includes('modérée') || severity.includes('moderate')
+                    : intensity.includes('modérée') || intensity.includes('moderate')
                     ? 65
                     : 35
                   return (
@@ -889,18 +892,23 @@ export default function ResultsPage() {
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center space-x-3">
                           {/* Voyant de sévérité */}
-                          <div className={`w-4 h-4 rounded-full ring-2 ring-offset-2 ${severityColor} ring-${severity.includes('sévère') ? 'red' : severity.includes('modérée') ? 'orange' : 'yellow'}-200`} />
-                          <span className="font-medium text-gray-900 capitalize">{loc.zone}</span>
+                          <div className={`w-4 h-4 rounded-full ring-2 ring-offset-2 ${intensityColor} ring-${intensity.includes('intense') ? 'red' : intensity.includes('modérée') ? 'orange' : 'yellow'}-200`} />
+                          <span className="font-medium text-gray-900 capitalize">
+                            {loc.zone}
+                            {(Array.isArray(loc.concerns) && loc.concerns.length > 0) || (Array.isArray(loc.issues) && loc.issues.length > 0) ? (
+                              <span className="ml-1 text-xs font-normal text-gray-600">({(loc.concerns && loc.concerns[0]) || (loc.issues && loc.issues[0])})</span>
+                            ) : null}
+                          </span>
                         </div>
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-gray-50 border border-gray-200 text-gray-600">{loc.severity || '—'}</span>
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-gray-50 border border-gray-200 text-gray-600">{loc.intensity || '—'}</span>
                       </div>
 
-                      <div className="text-sm text-gray-800 mb-3">{loc.issue}</div>
+                      <div className="text-sm text-gray-800 mb-3">{loc.concerns?.[0] || loc.description}</div>
 
                       {/* Barre de remplissage visuelle */}
                       <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
                         <div
-                          className={`${severityColor} h-2 rounded-full`}
+                          className={`${intensityColor} h-2 rounded-full`}
                           style={{ width: `${fillPercent}%` }}
                         />
                       </div>
@@ -997,12 +1005,12 @@ export default function ResultsPage() {
               {getLocalizedRoutine(analysis)
                 .sort((a: any, b: any) => (a.priority || 99) - (b.priority || 99))
                 .map((loc: any, idx: number) => {
-                 // Utiliser la même fonction severityBadge pour la cohérence
-                 const severityClass = severityBadge(loc.severity)
+                 // Utiliser la même fonction intensityBadge pour la cohérence
+                 const intensityClass = intensityBadge(loc.intensity)
                  
-                 // Background coloré selon la sévérité
-                 const sev = String(loc.severity || '').toLowerCase()
-                 const backgroundClass = sev.includes('sévère') || sev.includes('severe')
+                 // Background coloré selon l'intensité
+                 const sev = String(loc.intensity || '').toLowerCase()
+                 const backgroundClass = sev.includes('intense') || sev.includes('sévère') || sev.includes('severe')
                    ? 'bg-red-50 border-red-200'
                    : sev.includes('modérée') || sev.includes('moderate')
                    ? 'bg-orange-50 border-orange-200'
@@ -1014,12 +1022,12 @@ export default function ResultsPage() {
                      <div className="flex items-start justify-between mb-4">
                        <h4 className="text-lg font-bold text-gray-900 capitalize">
                          {loc.zone}
-                         {Array.isArray(loc.issues) && loc.issues.length > 0 && (
-                           <span className="ml-2 text-sm font-normal text-gray-700">({loc.issues[0]})</span>
-                         )}
+                         {(Array.isArray(loc.concerns) && loc.concerns.length > 0) || (Array.isArray(loc.issues) && loc.issues.length > 0) ? (
+                           <span className="ml-2 text-sm font-normal text-gray-700">({(loc.concerns && loc.concerns[0]) || (loc.issues && loc.issues[0])})</span>
+                         ) : null}
                        </h4>
-                       <span className={`text-xs px-3 py-1 rounded-full border ${severityClass}`}>
-                         {loc.severity || 'Modérée'}
+                       <span className={`text-xs px-3 py-1 rounded-full border ${intensityClass}`}>
+                         {loc.intensity || 'Modérée'}
                        </span>
                </div>
 
@@ -1063,7 +1071,7 @@ export default function ResultsPage() {
                                 <div className="bg-blue-50 rounded-lg p-2 mb-2 border border-blue-200">
                                   <div className="flex items-center space-x-1 text-xs text-blue-700 mb-1">
                                     <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                                    <span className="font-medium">Produit recommandé</span>
+                                    <span className="font-medium">{catalogMap[s.catalogId]?.name || getProductNameFromCatalogId(s.catalogId) || 'Produit recommandé'}</span>
                                   </div>
                                   <a
                                     href={catalogMap[s.catalogId]?.affiliateLink || '#'}

@@ -25,7 +25,7 @@ export interface SkinAnalysis {
   userId: string
   photos: PhotoUpload[]
   scores: SkinScores
-  diagnostic: SkinDiagnostic
+  beautyAssessment: BeautyAssessment
   recommendations: ProductRecommendations
   createdAt: Date
 }
@@ -49,23 +49,23 @@ export interface ScoreDetail {
   basedOn: string[]
 }
 
-export interface SkinDiagnostic {
-  primaryCondition: string
-  severity: 'Légère' | 'Modérée' | 'Sévère'
-  affectedAreas: string[]
-  observations: string[]
-  prognosis: string
-  // Nouvelle structure pour diagnostic global + localisé
+export interface BeautyAssessment {
+  mainConcern: string
+  intensity: 'légère' | 'modérée' | 'intense'
+  concernedZones: string[]
+  visualFindings: string[]
+  expectedImprovement: string
+  // Nouvelle structure pour évaluation beauté globale + par zones
   skinType?: string
   estimatedSkinAge?: number
   overview?: string[]
-  localized?: LocalizedIssue[]
+  zoneSpecific?: ZoneSpecificIssue[]
 }
 
-export interface LocalizedIssue {
+export interface ZoneSpecificIssue {
   zone: string
-  severity: 'légère' | 'modérée' | 'sévère'
-  issues: string[]
+  intensity: 'légère' | 'modérée' | 'intense'
+  concerns: string[]
   description: string
 }
 
@@ -76,7 +76,7 @@ export interface ProductRecommendations {
   lifestyle: string[]
   // Nouvelle structure pour recommandations globales/localisées
   overview?: string
-  localized?: string
+  zoneSpecificCare?: string
   restrictions?: string
   localizedRoutine?: LocalizedRoutineStep[]
   // Optionnel: données enrichies pour l'UI produit
