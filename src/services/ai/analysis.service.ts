@@ -5,7 +5,7 @@ import type { AnalyzeRequest } from '@/types/api'
 export class AnalysisService {
   
   /**
-   * Analyse complète des photos avec GPT-4o Vision
+   * Analyse complète des photos avec GPT-4o Vision - NOUVELLE LOGIQUE EN 2 ÉTAPES
    */
   static async analyzeSkin(request: AnalyzeRequest): Promise<SkinAnalysis> {
     try {
@@ -28,83 +28,41 @@ export class AnalysisService {
         return base64Data
       }).filter(base64 => base64.length > 0)
 
-      // Prompt principal optimisé
-      const systemPrompt = await this.buildSystemPrompt()
-      const userPrompt = this.buildUserPrompt(request)
-
       // Validation des images
       if (imageContents.length === 0) {
         throw new Error('Aucune image valide trouvée pour l\'analyse')
       }
 
-      console.log('Envoi à OpenAI:', {
-        imagesCount: imageContents.length,
-        systemPromptLength: systemPrompt.length,
-        userPromptLength: userPrompt.length
+      console.log('🔍 ÉTAPE 1: Analyse diagnostique pure (sans catalogue)')
+
+      // ÉTAPE 1: Analyse diagnostique pure SANS catalogue
+      const diagnosticResult = await this.performDiagnosticAnalysis(openai, imageContents, request)
+      
+      console.log('✅ Diagnostic établi:', {
+        mainConcern: diagnosticResult.beautyAssessment?.mainConcern,
+        overallScore: diagnosticResult.scores?.overall,
+        concernedZones: diagnosticResult.beautyAssessment?.concernedZones
       })
 
-      // Appel GPT-4o Vision avec timeout
-      const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 120000) // 2 minutes timeout
+      console.log('🛍️ ÉTAPE 2: Sélection produits basée sur le diagnostic')
 
-      try {
-        const response = await openai.chat.completions.create({
-          model: ANALYSIS_MODEL,
-          messages: [
-            { role: 'system', content: systemPrompt },
-            {
-              role: 'user',
-              content: [
-                { type: 'text', text: userPrompt },
-                ...imageContents.map(image => ({
-                  type: 'image_url' as const,
-                  image_url: {
-                    url: `data:image/jpeg;base64,${image}`,
-                    detail: 'high' as const
-                  }
-                }))
-              ]
-            }
-          ],
-          max_tokens: 4000,
-          temperature: 0.3,
-        }, {
-          signal: controller.signal
-        })
+      // ÉTAPE 2: Sélection des produits basée sur le diagnostic établi
+      const productRecommendations = await this.selectProductsBasedOnDiagnosis(openai, diagnosticResult, request)
 
-        clearTimeout(timeoutId)
+      console.log('✅ Produits sélectionnés:', productRecommendations)
 
-        console.log('Réponse OpenAI reçue:', {
-          usage: response.usage,
-          model: response.model
-        })
-
-        // Parser la réponse en JSON structuré
-        const analysisResult = this.parseAnalysisResponse(response.choices[0]?.message?.content)
-
-        // Calcul du score global (moyenne pondérée) basé sur les 8 sous-scores
-        const scores = analysisResult.scores as any
-        scores.overall = this.computeWeightedOverall(scores)
-
-        return {
-          id: this.generateId(),
-          userId: 'temp-user',
-          photos: request.photos,
-          scores: scores as SkinScores,
-          beautyAssessment: analysisResult.beautyAssessment as BeautyAssessment,
-          recommendations: analysisResult.recommendations as ProductRecommendations,
-          createdAt: new Date()
-        }
-
-      } catch (apiError) {
-        clearTimeout(timeoutId)
-        
-        if (apiError instanceof Error && apiError.name === 'AbortError') {
-          throw new Error('Timeout: L\'analyse a pris trop de temps')
-        }
-        
-        throw apiError
+      // Fusionner les résultats
+      const finalAnalysis: SkinAnalysis = {
+        id: this.generateId(),
+        userId: 'temp-user',
+        photos: request.photos,
+        scores: diagnosticResult.scores,
+        beautyAssessment: diagnosticResult.beautyAssessment,
+        recommendations: productRecommendations,
+        createdAt: new Date()
       }
+
+      return finalAnalysis
 
     } catch (error) {
       console.error('Erreur analyse IA:', error)
@@ -168,6 +126,136 @@ export class AnalysisService {
   }
 
   /**
+   * ÉTAPE 1: Analyse diagnostique pure SANS catalogue
+   */
+  private static async performDiagnosticAnalysis(
+    openai: any, 
+    imageContents: string[], 
+    request: AnalyzeRequest
+  ): Promise<{ scores: SkinScores; beautyAssessment: BeautyAssessment }> {
+    const systemPrompt = this.buildDiagnosticSystemPrompt()
+    const userPrompt = this.buildUserPrompt(request)
+
+    console.log('Envoi à OpenAI (Étape 1 - Diagnostic):', {
+      imagesCount: imageContents.length,
+      systemPromptLength: systemPrompt.length,
+      userPromptLength: userPrompt.length
+    })
+
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 120000)
+
+    try {
+      const response = await openai.chat.completions.create({
+        model: ANALYSIS_MODEL,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          {
+            role: 'user',
+            content: [
+              { type: 'text', text: userPrompt },
+              ...imageContents.map(image => ({
+                type: 'image_url' as const,
+                image_url: {
+                  url: `data:image/jpeg;base64,${image}`,
+                  detail: 'high' as const
+                }
+              }))
+            ]
+          }
+        ],
+        max_tokens: 3000,
+        temperature: 0.3,
+      }, {
+        signal: controller.signal
+      })
+
+      clearTimeout(timeoutId)
+
+      console.log('Réponse OpenAI reçue (Diagnostic):', {
+        usage: response.usage,
+        model: response.model
+      })
+
+      const diagnosticResult = this.parseDiagnosticResponse(response.choices[0]?.message?.content)
+      
+      // Calcul du score global
+      const scores = diagnosticResult.scores as any
+      scores.overall = this.computeWeightedOverall(scores)
+
+      return {
+        scores: scores as SkinScores,
+        beautyAssessment: diagnosticResult.beautyAssessment as BeautyAssessment
+      }
+
+    } catch (apiError) {
+      clearTimeout(timeoutId)
+      
+      if (apiError instanceof Error && apiError.name === 'AbortError') {
+        throw new Error('Timeout: L\'analyse diagnostique a pris trop de temps')
+      }
+      
+      throw apiError
+    }
+  }
+
+  /**
+   * ÉTAPE 2: Sélection des produits basée sur le diagnostic établi
+   */
+  private static async selectProductsBasedOnDiagnosis(
+    openai: any,
+    diagnostic: { scores: SkinScores; beautyAssessment: BeautyAssessment },
+    request: AnalyzeRequest
+  ): Promise<ProductRecommendations> {
+    // Charger le catalogue complet
+    const catalogText = await this.loadCatalogForPrompt()
+    
+    const systemPrompt = this.buildProductSelectionSystemPrompt(catalogText)
+    const userPrompt = this.buildProductSelectionUserPrompt(diagnostic, request)
+
+    console.log('Envoi à OpenAI (Étape 2 - Sélection produits):', {
+      catalogProductsCount: catalogText.split('\n').length,
+      systemPromptLength: systemPrompt.length,
+      userPromptLength: userPrompt.length
+    })
+
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 90000)
+
+    try {
+      const response = await openai.chat.completions.create({
+        model: ANALYSIS_MODEL,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt }
+        ],
+        max_tokens: 2000,
+        temperature: 0.2, // Plus déterministe pour la sélection
+      }, {
+        signal: controller.signal
+      })
+
+      clearTimeout(timeoutId)
+
+      console.log('Réponse OpenAI reçue (Sélection produits):', {
+        usage: response.usage,
+        model: response.model
+      })
+
+      return this.parseProductSelectionResponse(response.choices[0]?.message?.content)
+
+    } catch (apiError) {
+      clearTimeout(timeoutId)
+      
+      if (apiError instanceof Error && apiError.name === 'AbortError') {
+        throw new Error('Timeout: La sélection des produits a pris trop de temps')
+      }
+      
+      throw apiError
+    }
+  }
+
+  /**
    * Calcule un score global pondéré à partir des sous-scores
    * Pondérations choisies pour être parlantes grand public (somme = 1)
    */
@@ -205,43 +293,24 @@ export class AnalysisService {
   }
 
   /**
-   * Prompt système - Expert conseil beauté IA
+   * Prompt système pour l'analyse diagnostique pure (ÉTAPE 1)
    */
-  private static async buildSystemPrompt(): Promise<string> {
-    // Charger le catalogue réel
-    const catalogText = await this.loadCatalogForPrompt()
-    
+  private static buildDiagnosticSystemPrompt(): string {
     return `## RÔLE
-Tu es BeautyAI, assistant conseil beauté spécialisé en soins cutanés personnalisés. Tu es un expert en cosmétiques et bien-être cutané.
+Tu es BeautyAI, expert dermatologue IA spécialisé en analyse cutanée. Tu es un expert en diagnostic visuel de la peau.
 
-## TÂCHE
-Analyser les photos + questionnaire pour créer une routine beauté optimale et recommander les meilleurs produits cosmétiques du catalogue fourni.
+## TÂCHE - ÉTAPE 1: DIAGNOSTIC PUR
+Analyser UNIQUEMENT les photos pour établir un diagnostic précis de l'état de la peau. 
+NE PAS recommander de produits à cette étape - focus 100% sur l'analyse diagnostique.
 
 ## CONTEXTE
-Application de conseil beauté dédiée aux recommandations cosmétiques personnalisées. Tu analyses visuellement la peau pour proposer des soins adaptés basés sur l'observation des caractéristiques cutanées.
+Application d'analyse cutanée professionnelle. Tu analyses visuellement la peau pour établir un diagnostic objectif basé sur l'observation des caractéristiques cutanées.
 
-## CATALOGUE COSMÉTIQUE DISPONIBLE
-Tu as accès au catalogue suivant avec les références produits :
-
-${catalogText}
-
-IMPORTANT : Utilise UNIQUEMENT les références réelles du catalogue ci-dessus (exemple: B01MSSDEPK, B000O7PH34, etc.)
-
-## RÈGLES BEAUTÉ ESSENTIELLES
-1. RÉFÉRENCE OBLIGATOIRE : Chaque produit recommandé DOIT avoir une référence catalogId réelle
-2. COSMÉTIQUES EXCLUSIVEMENT : Utilise uniquement les références existantes du catalogue
-3. COHÉRENCE BEAUTÉ : La référence produit doit correspondre au besoin de soin identifié
-
-## PILIERS DE LA ROUTINE BEAUTÉ
-- Nettoyer (cleanser) 
-- Préparer (tonic)
-- Traiter (serum, treatment)
-- Hydrater (moisturizer)
-- Nourrir (face_oil, balm si besoin)
-- Protéger (sunscreen)
-
-## RAISONNEMENT
-Pour chaque recommandation produit, explique pourquoi ce produit spécifique convient aux caractéristiques observées de la peau. Base tes conseils sur l'analyse visuelle des photos et les préoccupations beauté exprimées.
+## ANALYSE REQUISE
+1. **SCORES DÉTAILLÉS** : Évaluer chaque critère sur 100
+2. **DIAGNOSTIC PRINCIPAL** : Identifier la préoccupation majeure
+3. **ZONES CONCERNÉES** : Localiser précisément les problèmes
+4. **OBSERVATIONS VISUELLES** : Décrire ce que tu vois objectivement
 
 ## RÉSULTAT - FORMAT JSON OBLIGATOIRE
 Réponds UNIQUEMENT en JSON valide avec cette structure exacte :
@@ -255,8 +324,7 @@ Réponds UNIQUEMENT en JSON valide avec cette structure exacte :
     "pores": {"value": 58, "justification": "Pores visibles dans la zone T", "confidence": 0.8, "basedOn": ["texture irrégulière", "reflets localisés"]},
     "spots": {"value": 62, "justification": "Taches pigmentaires légères et localisées", "confidence": 0.75, "basedOn": ["macules discrètes", "différence de teint"]},
     "darkCircles": {"value": 55, "justification": "Cernes pigmentaires légers", "confidence": 0.7, "basedOn": ["teinte sous-orbitaire", "légère dépression"]},
-    "skinAge": {"value": 78, "justification": "Âge cutané proche de l'âge réel", "confidence": 0.7, "basedOn": ["élasticité", "texture"]},
-    "overall": 68
+    "skinAge": {"value": 78, "justification": "Âge cutané proche de l'âge réel", "confidence": 0.7, "basedOn": ["élasticité", "texture"]}
   },
   "beautyAssessment": {
     "mainConcern": "Sensibilités de rasage avec poils incarnés occasionnels",
@@ -278,72 +346,113 @@ Réponds UNIQUEMENT en JSON valide avec cette structure exacte :
       {"zone": "nez", "concerns": ["rougeurs/sensibilités localisées"], "intensity": "légère", "icon": "🟡", "description": "sensibilité ailes du nez"}
     ],
     "expectedImprovement": "Amélioration visible en 4-6 semaines avec routine beauté adaptée"
-  },
-  "recommendations": {
-    "immediate": [
-      "Espacer le rasage quotidien temporairement",
-      "Appliquer une crème apaisante",
-      "Éviter les produits avec alcool"
-    ],
-    "routine": {
-      "immediate": [
-        {
-          "name": "Nettoyage doux",
-          "frequency": "quotidien",
-          "timing": "matin_et_soir",
-          "catalogId": "B01MSSDEPK",
-          "application": "Masser délicatement, rincer à l'eau tiède",
-          "startDate": "maintenant"
-        }
-      ],
-      "adaptation": [
-        {
-          "name": "Exfoliation douce",
-          "frequency": "hebdomadaire",
-          "timing": "soir",
-          "catalogId": "B00949CTQQ",
-          "application": "Commencer 1x/semaine, augmenter progressivement",
-          "startDate": "après_2_semaines"
-        }
-      ],
-      "maintenance": [
-        {
-          "name": "Protection solaire",
-          "frequency": "quotidien",
-          "timing": "matin",
-          "catalogId": "B004W55086",
-          "application": "Renouveler toutes les 2h si exposition",
-          "startDate": "maintenant"
-        }
-      ]
-    },
-    "localizedRoutine": [
-      {
-        "zone": "menton",
-        "priority": "haute",
-        "steps": [
-          {
-            "name": "Soin apaisant",
-            "frequency": "quotidien",
-            "timing": "soir",
-            "catalogId": "B00BNUY3HE",
-            "application": "Couche fine sur les zones sensibles",
-            "duration": "jusqu'à amélioration",
-            "resume": "quand sensibilité disparue"
-          }
-        ]
-      }
-    ],
-    "overview": "Routine progressive axée sur l'apaisement puis la prévention",
-    "zoneSpecificCare": "Soins spécifiques des zones sensibles en priorité", 
-    "restrictions": "Éviter exfoliants sur zones sensibilisées jusqu'à amélioration"
   }
 }
 
 ## CONDITIONS
-- Reste dans l'univers beauté/cosmétique, évite tout vocabulaire médical
+- Focus 100% sur l'analyse diagnostique visuelle
+- Sois précis et objectif dans tes observations
+- Base-toi uniquement sur ce que tu vois dans les photos
+- Évite tout vocabulaire médical, reste dans l'univers beauté/cosmétique`
+  }
+
+  /**
+   * Prompt système pour la sélection des produits (ÉTAPE 2)
+   */
+  private static buildProductSelectionSystemPrompt(catalogText: string): string {
+    return `## RÔLE
+Tu es BeautyAI, expert conseil beauté spécialisé en sélection de produits cosmétiques personnalisés.
+
+## TÂCHE - ÉTAPE 2: SÉLECTION PRODUITS
+Basé sur le diagnostic établi, sélectionner les meilleurs produits du catalogue pour créer une routine beauté optimale.
+
+## CATALOGUE COSMÉTIQUE DISPONIBLE
+Tu as accès au catalogue suivant avec les références produits :
+
+${catalogText}
+
+IMPORTANT : Utilise UNIQUEMENT les références réelles du catalogue ci-dessus (exemple: B01MSSDEPK, B000O7PH34, etc.)
+
+## RÈGLES BEAUTÉ ESSENTIELLES
+1. RÉFÉRENCE OBLIGATOIRE : Chaque produit recommandé DOIT avoir une référence catalogId réelle
+2. COSMÉTIQUES EXCLUSIVEMENT : Utilise uniquement les références existantes du catalogue
+3. COHÉRENCE BEAUTÉ : La référence produit doit correspondre au besoin de soin identifié
+4. DIAGNOSTIC FIRST : Base tes choix sur le diagnostic fourni, pas sur des suppositions
+
+## PILIERS DE LA ROUTINE BEAUTÉ
+- Nettoyer (cleanser) 
+- Préparer (tonic)
+- Traiter (serum, treatment)
+- Hydrater (moisturizer)
+- Nourrir (face_oil, balm si besoin)
+- Protéger (sunscreen)
+
+## RÉSULTAT - FORMAT JSON OBLIGATOIRE
+Réponds UNIQUEMENT en JSON valide avec cette structure exacte :
+
+{
+  "immediate": [
+    "Espacer le rasage quotidien temporairement",
+    "Appliquer une crème apaisante",
+    "Éviter les produits avec alcool"
+  ],
+  "routine": {
+    "immediate": [
+      {
+        "name": "Nettoyage doux",
+        "frequency": "quotidien",
+        "timing": "matin_et_soir",
+        "catalogId": "B01MSSDEPK",
+        "application": "Masser délicatement, rincer à l'eau tiède",
+        "startDate": "maintenant"
+      }
+    ],
+    "adaptation": [
+      {
+        "name": "Exfoliation douce",
+        "frequency": "hebdomadaire",
+        "timing": "soir",
+        "catalogId": "B00949CTQQ",
+        "application": "Commencer 1x/semaine, augmenter progressivement",
+        "startDate": "après_2_semaines"
+      }
+    ],
+    "maintenance": [
+      {
+        "name": "Protection solaire",
+        "frequency": "quotidien",
+        "timing": "matin",
+        "catalogId": "B004W55086",
+        "application": "Renouveler toutes les 2h si exposition",
+        "startDate": "maintenant"
+      }
+    ]
+  },
+  "localizedRoutine": [
+    {
+      "zone": "menton",
+      "priority": "haute",
+      "steps": [
+        {
+          "name": "Soin apaisant",
+          "frequency": "quotidien",
+          "timing": "soir",
+          "catalogId": "B00BNUY3HE",
+          "application": "Couche fine sur les zones sensibles",
+          "duration": "jusqu'à amélioration",
+          "resume": "quand sensibilité disparue"
+        }
+      ]
+    }
+  ],
+  "overview": "Routine progressive axée sur l'apaisement puis la prévention",
+  "zoneSpecificCare": "Soins spécifiques des zones sensibles en priorité", 
+  "restrictions": "Éviter exfoliants sur zones sensibilisées jusqu'à amélioration"
+}
+
+## CONDITIONS
 - Chaque référence catalogId DOIT exister dans le catalogue cosmétique
-- Adapte la sélection selon le type de peau et les préoccupations beauté
+- Adapte la sélection selon le diagnostic fourni
 - La routine doit être progressive : immediate → adaptation → maintenance
 - Les soins localisés traitent les préoccupations spécifiques par zone`
   }
@@ -397,11 +506,62 @@ RÉPONSE EN JSON UNIQUEMENT - PAS DE TEXTE LIBRE.`
   }
 
   /**
-   * Parser la réponse JSON de GPT-4o
+   * Prompt utilisateur pour la sélection des produits (ÉTAPE 2)
    */
-  private static parseAnalysisResponse(content: string | null): Record<string, unknown> {
+  private static buildProductSelectionUserPrompt(
+    diagnostic: { scores: SkinScores; beautyAssessment: BeautyAssessment },
+    request: AnalyzeRequest
+  ): string {
+    return `## DIAGNOSTIC ÉTABLI
+**Préoccupation principale :** ${diagnostic.beautyAssessment.mainConcern}
+**Intensité :** ${diagnostic.beautyAssessment.intensity}
+**Zones concernées :** ${diagnostic.beautyAssessment.concernedZones?.join(', ') || 'Non spécifiées'}
+
+**Scores détaillés :**
+- Hydratation: ${diagnostic.scores.hydration?.value || 'N/A'}/100
+- Rides: ${diagnostic.scores.wrinkles?.value || 'N/A'}/100
+- Fermeté: ${diagnostic.scores.firmness?.value || 'N/A'}/100
+- Éclat: ${diagnostic.scores.radiance?.value || 'N/A'}/100
+- Pores: ${diagnostic.scores.pores?.value || 'N/A'}/100
+- Taches: ${diagnostic.scores.spots?.value || 'N/A'}/100
+- Cernes: ${diagnostic.scores.darkCircles?.value || 'N/A'}/100
+- Score global: ${diagnostic.scores.overall || 'N/A'}/100
+
+**Observations visuelles :**
+${diagnostic.beautyAssessment.visualFindings?.map(finding => `- ${finding}`).join('\n') || 'Aucune observation spécifique'}
+
+**Vue d'ensemble :**
+${diagnostic.beautyAssessment.overview?.map(item => `- ${item}`).join('\n') || 'Aucune vue d\'ensemble'}
+
+**Zones spécifiques :**
+${diagnostic.beautyAssessment.zoneSpecific?.map(zone => `- ${zone.zone}: ${zone.concerns?.join(', ')} (${zone.intensity})`).join('\n') || 'Aucune zone spécifique'}
+
+## PROFIL UTILISATEUR
+**Profil :** ${request.userProfile.gender}, ${request.userProfile.age} ans
+**Type de peau déclaré :** ${request.userProfile.skinType}
+**Budget mensuel :** ${request.currentRoutine.monthlyBudget}
+**Préférence routine :** ${request.currentRoutine.routinePreference || 'Équilibrée'}
+
+## ALLERGIES ET SENSIBILITÉS
+**Ingrédients à éviter :** ${request.allergies?.ingredients?.join(', ') || 'Aucune allergie connue'}
+**Réactions passées :** ${request.allergies?.pastReactions || 'Aucune réaction signalée'}
+
+## MISSION
+Basé sur ce diagnostic précis, sélectionne les produits les plus pertinents du catalogue pour :
+1. Traiter la préoccupation principale (${diagnostic.beautyAssessment.mainConcern})
+2. Améliorer les scores les plus faibles
+3. Cibler les zones concernées (${diagnostic.beautyAssessment.concernedZones?.join(', ')})
+4. Respecter le budget et les préférences
+
+RÉPONSE EN JSON UNIQUEMENT - PAS DE TEXTE LIBRE.`
+  }
+
+  /**
+   * Parser la réponse diagnostique (ÉTAPE 1)
+   */
+  private static parseDiagnosticResponse(content: string | null): Record<string, unknown> {
     if (!content) {
-      throw new Error('Réponse vide de l\'IA')
+      throw new Error('Réponse diagnostique vide de l\'IA')
     }
 
     try {
@@ -411,20 +571,52 @@ RÉPONSE EN JSON UNIQUEMENT - PAS DE TEXTE LIBRE.`
         .replace(/```\n?/g, '')
         .trim()
 
-      console.log('Contenu à parser:', cleanContent.substring(0, 200) + '...')
+      console.log('Contenu diagnostic à parser:', cleanContent.substring(0, 200) + '...')
 
       const parsed = JSON.parse(cleanContent)
       
-      // Validation basique de la structure
-      if (!parsed.scores || !parsed.beautyAssessment || !parsed.recommendations) {
-        throw new Error('Structure de réponse invalide')
+      // Validation basique de la structure diagnostique
+      if (!parsed.scores || !parsed.beautyAssessment) {
+        throw new Error('Structure de réponse diagnostique invalide')
       }
 
       return parsed
     } catch (error) {
-      console.error('Erreur parsing JSON:', error)
+      console.error('Erreur parsing JSON diagnostic:', error)
       console.error('Contenu reçu:', content)
-      throw new Error('Format de réponse invalide de l\'IA')
+      throw new Error('Format de réponse diagnostique invalide de l\'IA')
+    }
+  }
+
+  /**
+   * Parser la réponse de sélection des produits (ÉTAPE 2)
+   */
+  private static parseProductSelectionResponse(content: string | null): ProductRecommendations {
+    if (!content) {
+      throw new Error('Réponse sélection produits vide de l\'IA')
+    }
+
+    try {
+      // Nettoyer la réponse (enlever markdown si présent)
+      const cleanContent = content
+        .replace(/```json\n?/g, '')
+        .replace(/```\n?/g, '')
+        .trim()
+
+      console.log('Contenu sélection produits à parser:', cleanContent.substring(0, 200) + '...')
+
+      const parsed = JSON.parse(cleanContent)
+      
+      // Validation basique de la structure des recommandations
+      if (!parsed.routine) {
+        throw new Error('Structure de réponse sélection produits invalide')
+      }
+
+      return parsed as ProductRecommendations
+    } catch (error) {
+      console.error('Erreur parsing JSON sélection produits:', error)
+      console.error('Contenu reçu:', content)
+      throw new Error('Format de réponse sélection produits invalide de l\'IA')
     }
   }
 
