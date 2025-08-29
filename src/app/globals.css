@@ -8,20 +8,134 @@
   }
   
   body {
-    @apply text-gray-900 bg-white;
+    @apply text-dermai-neutral-900 bg-dermai-pure font-sans;
+  }
+
+  /* Variables CSS pour les polices selon la DA */
+  :root {
+    --font-inter: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;
+    
+    /* Tokens CSS pour espacements harmonisés du héros Upload */
+    --hero-gap-target: clamp(24px, 6vh, 48px);
+    --hero-overlap: clamp(32px, 8vh, 68px);
+  }
+
+  /* Media query pour desktop - espacements plus larges */
+  @media (min-width: 1024px) {
+    :root {
+      --hero-gap-target: clamp(32px, 7vh, 56px);
+      --hero-overlap: clamp(36px, 9vh, 72px);
+    }
   }
 }
 
 @layer components {
+  /* Boutons premium selon la nouvelle DA */
   .btn-primary {
-    @apply bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+    @apply bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 hover:from-dermai-ai-600 hover:to-dermai-ai-500 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-premium hover:shadow-glow;
   }
   
   .btn-secondary {
-    @apply bg-gray-100 hover:bg-gray-200 text-gray-900 font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+    @apply bg-dermai-nude-100 hover:bg-dermai-nude-200 text-dermai-neutral-800 font-medium py-3 px-6 rounded-full transition-all duration-300 border border-dermai-nude-200;
   }
   
+  .btn-outline {
+    @apply bg-transparent border-2 border-dermai-ai-400 text-dermai-ai-600 hover:bg-dermai-ai-400 hover:text-white font-semibold py-3 px-6 rounded-full transition-all duration-300;
+  }
+  
+  /* Cards premium avec glassmorphism */
   .card {
-    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-6;
+    @apply bg-dermai-pure/95 backdrop-blur-md rounded-3xl shadow-premium border border-dermai-nude-200/50 p-8 hover:shadow-premium-lg transition-all duration-500;
+  }
+  
+  .card-glass {
+    @apply bg-dermai-pure/80 backdrop-blur-xl rounded-3xl border border-dermai-nude-200/30 p-8 shadow-premium;
+  }
+  
+  /* Sections */
+  .section-clean {
+    @apply py-24 bg-dermai-pure;
+  }
+  
+  .section-light {
+    @apply py-24 bg-dermai-light;
+  }
+  
+  /* Typography utilities */
+  .text-display {
+    @apply font-display font-bold;
+  }
+  
+  .text-mono-accent {
+    @apply font-mono text-sm text-dermai-neutral-500 tracking-wide;
+  }
+  
+  /* Glow effects pour les éléments IA */
+  .glow-ai {
+    @apply shadow-glow;
+  }
+  
+  .glow-ai-lg {
+    @apply shadow-glow-lg;
+  }
+  
+  /* Animations douces */
+  .hover-lift {
+    @apply transition-all duration-300 transform hover:scale-105 hover:shadow-premium;
+  }
+  
+  .hover-glow {
+    @apply transition-all duration-300 hover:shadow-glow;
+  }
+  
+  /* Containers responsifs */
+  .container-dermai {
+    @apply max-w-6xl mx-auto px-6;
+  }
+  
+  /* Gradients de texte pour les titres */
+  .text-gradient-ai {
+    @apply bg-gradient-to-r from-dermai-ai-600 to-dermai-ai-400 bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-nude {
+    @apply bg-gradient-to-r from-dermai-nude-600 to-dermai-nude-400 bg-clip-text text-transparent;
+  }
+}
+
+@layer utilities {
+  /* Scrollbar personnalisée pour un look premium */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Animation scan holographique */
+  .scan-effect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(90, 74, 227, 0.2), transparent);
+    animation: scan 3s ease-in-out infinite;
+  }
+  
+  @keyframes scan {
+    0% { left: -100%; }
+    50% { left: 100%; }
+    100% { left: -100%; }
+  }
+  
+  /* États de focus accessibles avec la palette DermAI */
+  .focus-dermai {
+    @apply focus:outline-none focus:ring-2 focus:ring-dermai-ai-400 focus:ring-opacity-50;
   }
 }

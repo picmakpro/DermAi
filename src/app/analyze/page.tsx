@@ -4,16 +4,27 @@ import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { useAnalysis } from '@/hooks/useAnalysis'
-import type { AnalyzeRequest, PhotoUpload } from '@/types'
+import type { PhotoUpload } from '@/types'
+
+// Type temporaire pour la requête d'analyse
+interface AnalyzeRequest {
+  photos: any[]
+  userProfile?: any
+  skinConcerns?: any
+  currentRoutine?: any
+  allergies?: any
+}
 import { getPhotoDataUrl } from '@/utils/storage/photoStore'
 import { saveAnalysis } from '@/utils/storage/analysisStore'
 import { AlertCircle, Brain, Camera, CheckCircle2, Loader2 } from 'lucide-react'
 
 interface SessionData {
-  photos: PhotoUpload[]
+  photos: any[]
   questionnaire: {
     userProfile?: { skinType?: string }
     skinConcerns?: { primary?: string[] }
+    currentRoutine?: any
+    allergies?: any
   }
 }
 
@@ -46,8 +57,8 @@ export default function AnalyzePage() {
         const questionnaireData = JSON.parse(questionnaire)
 
         // Reconstituer les photos avec dataURL depuis IndexedDB (pas de quota)
-        const rebuiltPhotos: PhotoUpload[] = await Promise.all(
-          photosData.map(async (p) => ({
+        const rebuiltPhotos: any[] = await Promise.all(
+          photosData.map(async (p: any) => ({
             id: p.id,
             file: (await getPhotoDataUrl(p.id)) || '',
             preview: p.preview,
@@ -140,42 +151,40 @@ export default function AnalyzePage() {
 
   if (!sessionData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600"></div>
+      <div className="min-h-screen bg-dermai-pure flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-dermai-ai-500"></div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+    <div className="min-h-screen bg-dermai-pure">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-purple-100 sticky top-0 z-40">
+      <div className="bg-dermai-pure/80 backdrop-blur-sm border-b border-dermai-nude-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-lg">D</span>
-              </div>
-              <div>
-                <h1 className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-                  DermAI
-                </h1>
-                <p className="text-sm text-gray-600">Diagnostic personnalisé par IA</p>
-              </div>
+            <div className="flex items-center">
+              <a href="/" className="cursor-pointer transition-opacity hover:opacity-80">
+                <img 
+                  src="/DERMAI-logo.svg" 
+                  alt="DermAI" 
+                  className="h-8 md:h-10 w-auto"
+                />
+              </a>
             </div>
 
             {/* Progress dots */}
             <div className="hidden md:flex items-center space-x-2">
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-purple-500 rounded-full animate-pulse"></div>
-              <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
+              <div className="w-3 h-3 bg-dermai-ai-500 rounded-full shadow-glow"></div>
+              <div className="w-3 h-3 bg-dermai-ai-500 rounded-full shadow-glow"></div>
+              <div className="w-3 h-3 bg-dermai-ai-500 rounded-full animate-pulse shadow-glow"></div>
+              <div className="w-3 h-3 bg-dermai-neutral-300 rounded-full"></div>
             </div>
 
             <div className="text-right">
-              <div className="text-sm text-gray-500">Étape 3 sur 4</div>
-              <div className="text-sm text-purple-600 font-medium">Analyse en cours...</div>
+              <div className="text-sm text-dermai-neutral-500">Étape 3 sur 4</div>
+              <div className="text-sm text-dermai-ai-600 font-medium font-display">Analyse en cours...</div>
             </div>
           </div>
         </div>
@@ -191,17 +200,17 @@ export default function AnalyzePage() {
               transition={{ type: "spring", duration: 0.8 }}
               className="relative w-24 h-24 mx-auto mb-6"
             >
-              <div className="w-24 h-24 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 rounded-full flex items-center justify-center">
+              <div className="w-24 h-24 bg-gradient-to-r from-dermai-ai-500 via-dermai-ai-400 to-dermai-ai-600 rounded-full flex items-center justify-center shadow-glow">
                 <Brain className="w-12 h-12 text-white" />
               </div>
-              <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 rounded-full animate-ping opacity-20"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-dermai-ai-500 via-dermai-ai-400 to-dermai-ai-600 rounded-full animate-ping opacity-20"></div>
             </motion.div>
             
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-4xl font-bold text-gray-900 mb-4"
+              className="text-4xl font-bold font-display text-dermai-neutral-900 mb-4"
             >
               DermAI analyse votre peau
             </motion.h1>
@@ -210,10 +219,10 @@ export default function AnalyzePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-xl text-gray-600 leading-relaxed"
+              className="text-xl text-dermai-neutral-600 leading-relaxed"
             >
               DermAI examine vos photos avec une 
-              <strong className="text-purple-600"> précision dermatologique</strong>
+              <strong className="text-dermai-ai-600 font-display"> précision dermatologique</strong>
             </motion.p>
           </div>
 
@@ -222,7 +231,7 @@ export default function AnalyzePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="bg-white rounded-3xl shadow-xl border border-purple-100 p-8"
+            className="card bg-dermai-pure rounded-3xl shadow-premium border border-dermai-nude-200 p-8"
           >
             {error ? (
               // État d'erreur
@@ -234,22 +243,22 @@ export default function AnalyzePage() {
                 <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <AlertCircle className="w-8 h-8 text-red-600" />
                 </div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                <h2 className="text-xl font-semibold font-display text-dermai-neutral-900 mb-2">
                   Erreur d&apos;analyse
                 </h2>
-                <p className="text-gray-600 mb-6">
+                <p className="text-dermai-neutral-600 mb-6">
                   {error}
                 </p>
-                <div className="flex gap-4 justify-center">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <button
                     onClick={handleRetry}
-                    className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-6 py-3 rounded-2xl font-medium transition-all transform hover:scale-105"
+                    className="btn-primary px-6 py-3 rounded-2xl font-medium transition-all transform hover:scale-105"
                   >
                     Réessayer
                   </button>
                   <button
                     onClick={handleGoBack}
-                    className="bg-gray-100 text-gray-700 px-6 py-3 rounded-2xl font-medium hover:bg-gray-200 transition-colors"
+                    className="btn-outline px-6 py-3 rounded-2xl font-medium transition-colors"
                   >
                     Retour
                   </button>
@@ -261,16 +270,16 @@ export default function AnalyzePage() {
                 {/* Barre de progression */}
                 <div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-medium text-gray-700">
+                    <span className="text-sm font-medium font-display text-dermai-neutral-700">
                       Progression
                     </span>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm text-dermai-neutral-500">
                       {Math.round(progress)}%
                     </span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-4">
+                  <div className="w-full bg-dermai-neutral-200 rounded-full h-4">
                     <motion.div
-                      className="bg-gradient-to-r from-pink-500 to-purple-600 h-4 rounded-full shadow-sm"
+                      className="bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 h-4 rounded-full shadow-glow"
                       initial={{ width: 0 }}
                       animate={{ width: `${progress}%` }}
                       transition={{ duration: 0.5 }}
@@ -293,18 +302,18 @@ export default function AnalyzePage() {
                         transition={{ delay: index * 0.1 }}
                         className={`flex items-center p-6 rounded-2xl border-2 transition-all ${
                           isActive
-                            ? 'border-purple-300 bg-purple-50 shadow-lg'
+                            ? 'border-dermai-ai-300 bg-dermai-ai-50 shadow-premium'
                             : isCompleted
-                            ? 'border-green-300 bg-green-50 shadow-md'
-                            : 'border-gray-200 bg-gray-50'
+                            ? 'border-dermai-ai-400 bg-dermai-ai-100 shadow-premium'
+                            : 'border-dermai-nude-200 bg-dermai-nude-50'
                         }`}
                       >
-                        <div className={`w-14 h-14 rounded-full flex items-center justify-center mr-4 shadow-sm ${
+                        <div className={`w-14 h-14 rounded-full flex items-center justify-center mr-4 shadow-glow ${
                           isActive
-                            ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white'
+                            ? 'bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 text-white'
                             : isCompleted
-                            ? 'bg-green-600 text-white'
-                            : 'bg-gray-300 text-gray-600'
+                            ? 'bg-dermai-ai-600 text-white'
+                            : 'bg-dermai-neutral-300 text-dermai-neutral-600'
                         }`}>
                           {isActive ? (
                             <IconComponent className="w-6 h-6 animate-pulse" />

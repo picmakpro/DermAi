@@ -654,8 +654,8 @@ export default function ResultsPage() {
 
   if (!analysis) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-pink-500"></div>
+      <div className="min-h-screen bg-dermai-pure flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-dermai-ai-500"></div>
       </div>
     )
   }
@@ -665,63 +665,61 @@ export default function ResultsPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+    <div className="min-h-screen bg-dermai-pure">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-purple-100 sticky top-0 z-40">
+      <div className="bg-dermai-pure/80 backdrop-blur-sm border-b border-dermai-nude-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-                         <div className="flex items-center space-x-3">
-               <div className="w-10 h-10 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
-                 <span className="text-white font-bold text-lg">D</span>
-               </div>
-               <div>
-                 <h1 className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-                   DermAI
-                 </h1>
-                 <p className="text-sm text-gray-600">Diagnostic personnalisé par IA</p>
-               </div>
-             </div>
+            <div className="flex items-center">
+              <a href="/" className="cursor-pointer transition-opacity hover:opacity-80">
+                <img 
+                  src="/DERMAI-logo.svg" 
+                  alt="DermAI" 
+                  className="h-8 md:h-10 w-auto"
+                />
+              </a>
+            </div>
 
             {/* Progress dots */}
             <div className="hidden md:flex items-center space-x-2">
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-pink-500 rounded-full"></div>
+              <div className="w-3 h-3 bg-dermai-ai-500 rounded-full shadow-glow"></div>
+              <div className="w-3 h-3 bg-dermai-ai-500 rounded-full shadow-glow"></div>
+              <div className="w-3 h-3 bg-dermai-ai-500 rounded-full shadow-glow"></div>
+              <div className="w-3 h-3 bg-dermai-ai-500 rounded-full shadow-glow"></div>
             </div>
 
             {/* Actions header */}
             <div className="flex items-center space-x-2">
             <button
               onClick={handleNewAnalysis}
-              className="flex items-center space-x-2 bg-white text-gray-700 px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-shadow border border-gray-200"
+              className="flex items-center space-x-2 bg-dermai-pure text-dermai-neutral-700 px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-shadow border border-dermai-nude-200 hover-lift"
             >
               <RotateCcw className="w-4 h-4" />
               <span className="hidden sm:inline">Nouvelle analyse</span>
             </button>
-              <button
-                onClick={() => {
-                  try {
-                    if (!analysis) return
-                    const json = JSON.stringify(analysis)
-                    const encoded = LZString.compressToEncodedURIComponent(json)
-                    const shareUrl = `${window.location.origin}/results?d=${encoded}`
-                    navigator.clipboard.writeText(shareUrl)
-                  } catch (e) { console.warn('Copie du lien impossible', e) }
-                }}
-                className="flex items-center space-x-2 bg-purple-600 text-white px-4 py-2 rounded-full shadow-sm hover:bg-purple-700 transition-colors"
-                title="Copier le lien du diagnostic"
-              >
-                <span>Partager</span>
-              </button>
-              <button
-                disabled
-                className="flex items-center space-x-2 bg-white text-gray-400 px-4 py-2 rounded-full shadow-sm border border-gray-200 cursor-not-allowed"
-                title="Export PDF bientôt disponible"
-              >
-                <span>Enregistrer (PDF bientôt)</span>
-              </button>
+            <button
+              onClick={() => {
+                try {
+                  if (!analysis) return
+                  const json = JSON.stringify(analysis)
+                  const encoded = LZString.compressToEncodedURIComponent(json)
+                  const shareUrl = `${window.location.origin}/results?d=${encoded}`
+                  navigator.clipboard.writeText(shareUrl)
+                } catch (e) { console.warn('Copie du lien impossible', e) }
+              }}
+              className="btn-primary flex items-center space-x-2 px-4 py-2 rounded-full shadow-sm transition-colors"
+              title="Copier le lien du diagnostic"
+            >
+              <span>Partager</span>
+            </button>
+            <button
+              disabled
+              className="flex items-center space-x-2 bg-dermai-pure text-dermai-neutral-400 px-4 py-2 rounded-full shadow-sm border border-dermai-nude-200 cursor-not-allowed"
+              title="Export PDF bientôt disponible"
+            >
+              <span>Enregistrer (PDF bientôt)</span>
+            </button>
             </div>
           </div>
         </div>
@@ -729,25 +727,25 @@ export default function ResultsPage() {
 
       <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
                  {/* Hero Section - Diagnostic */}
-         <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           animate={{ opacity: 1, y: 0 }}
-           className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 rounded-3xl p-8 text-white relative overflow-hidden"
-         >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-gradient-to-r from-dermai-ai-500 via-dermai-ai-400 to-dermai-ai-600 rounded-3xl p-8 text-white relative overflow-hidden"
+        >
            <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-10 translate-x-10 animate-pulse"></div>
            <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full translate-y-10 -translate-x-10 animate-pulse delay-1000"></div>
            <div className="absolute top-1/2 left-1/2 w-20 h-20 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2 animate-ping"></div>
           
           <div className="relative z-10">
-                       <div className="flex items-center space-x-3 mb-6">
-             <div className="p-2 bg-white/20 rounded-full">
-               <Award className="w-8 h-8" />
-             </div>
-             <div>
-               <h2 className="text-2xl font-bold">Diagnostic Personnalisé</h2>
-               <p className="text-purple-100 text-sm">Analyse complétée avec succès</p>
-             </div>
-           </div>
+          <div className="flex items-center space-x-3 mb-6">
+            <div className="p-2 bg-white/20 rounded-full">
+              <Award className="w-8 h-8" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold font-display">Diagnostic Personnalisé</h2>
+              <p className="text-dermai-ai-100 text-sm">Analyse complétée avec succès</p>
+            </div>
+          </div>
             
             <div className="grid md:grid-cols-3 gap-6">
               {/* Skin type */}
@@ -756,7 +754,7 @@ export default function ResultsPage() {
                   <Sparkles className="w-6 h-6" />
                   <span className="font-semibold">Type de Peau Identifié</span>
                 </div>
-                <div className="text-xl font-bold mb-2">
+                <div className="text-xl font-bold font-display mb-2">
                   {analysis.beautyAssessment.mainConcern}
                 </div>
                 <div className="text-sm opacity-90">
@@ -771,7 +769,7 @@ export default function ResultsPage() {
                     <TrendingUp className="w-6 h-6" />
                     <span className="font-semibold">Âge de peau estimé</span>
                   </div>
-                  <div className="text-3xl font-bold text-purple-200">{skinAgeYears} ans</div>
+                  <div className="text-3xl font-bold font-display text-dermai-ai-200">{skinAgeYears} ans</div>
                   <div className="text-xs opacity-80 mt-1">Estimation basée sur votre analyse DermAI</div>
                 </div>
               )}
@@ -787,25 +785,25 @@ export default function ResultsPage() {
         </motion.div>
 
                  {/* Scores Section */}
-         <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ delay: 0.1 }}
-           className="bg-white rounded-3xl shadow-xl p-8 hover:shadow-2xl transition-shadow"
-         >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="card bg-dermai-pure rounded-3xl shadow-premium p-8 hover:shadow-premium-lg transition-shadow"
+        >
            <div className="flex items-center justify-between mb-6">
              <div className="flex items-center space-x-3">
-               <div className="p-2 bg-pink-100 rounded-full">
-                 <Award className="w-6 h-6 text-pink-500" />
+               <div className="p-2 bg-dermai-ai-100 rounded-full">
+                 <Award className="w-6 h-6 text-dermai-ai-500" />
                </div>
                <div>
-                 <h2 className="text-2xl font-bold text-gray-900">Vos Scores Peau</h2>
-                 <p className="text-gray-600">Analyse sur 5 piliers essentiels</p>
+                 <h2 className="text-2xl font-bold font-display text-dermai-neutral-900">Vos Scores Peau</h2>
+                 <p className="text-dermai-neutral-600">Analyse sur 5 piliers essentiels</p>
                </div>
              </div>
              <div className="text-right">
-               <div className="text-sm text-gray-500">Score global</div>
-               <div className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
+               <div className="text-sm text-dermai-neutral-500">Score global</div>
+               <div className="text-3xl font-bold font-display text-gradient-ai">
                  {analysis.scores.overall}/100
                </div>
              </div>

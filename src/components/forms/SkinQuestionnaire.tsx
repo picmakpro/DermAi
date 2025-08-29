@@ -3,7 +3,24 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { SKIN_TYPES, GENDER_OPTIONS, BUDGET_RANGES } from '@/constants'
-import type { UserProfile, SkinConcerns, CurrentRoutine } from '@/types'
+
+// Types simplifiés pour le questionnaire
+interface UserProfile {
+  age: number
+  gender: string
+  skinType: string
+}
+
+interface SkinConcerns {
+  primary: string[]
+}
+
+interface CurrentRoutine {
+  morningProducts: string[]
+  eveningProducts: string[]
+  monthlyBudget: string
+  routinePreference?: string
+}
 
 interface QuestionnaireData {
   userProfile: UserProfile
@@ -269,9 +286,9 @@ export default function SkinQuestionnaire() {
 
   // Récapitulatif dynamique
   const renderSummary = () => (
-    <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
-      <h3 className="font-semibold text-gray-800 mb-4 flex items-center">
-        <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center mr-3">
+    <div className="card bg-dermai-pure border border-dermai-nude-200 rounded-2xl p-5 shadow-premium">
+      <h3 className="font-semibold font-display text-dermai-neutral-800 mb-4 flex items-center">
+        <div className="w-8 h-8 bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 rounded-full flex items-center justify-center mr-3 shadow-glow">
           <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
           </svg>
@@ -374,9 +391,9 @@ export default function SkinQuestionnaire() {
         <button
           onClick={handleSubmit}
           disabled={!isFormComplete()}
-                            className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                >
-                  {isFormComplete() ? '🚀 Lancer l\'analyse DermAI' : '⏳ Compléter le formulaire'}
+          className="btn-primary w-full font-semibold py-3 px-6 rounded-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+        >
+          {isFormComplete() ? '🚀 Lancer l\'analyse DermAI' : '⏳ Compléter le formulaire'}
         </button>
       </div>
     </div>
@@ -388,23 +405,23 @@ export default function SkinQuestionnaire() {
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Profil personnel</h2>
-              <p className="text-gray-600">Informations de base pour personnaliser votre analyse</p>
+              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Profil personnel</h2>
+              <p className="text-dermai-neutral-600">Informations de base pour personnaliser votre analyse</p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div>
-                <label className="block text-sm font-semibold text-gray-800 mb-3">Âge *</label>
+                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Âge *</label>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                   {AGE_RANGES.map((range) => (
                     <button
                       key={range.range}
                       type="button"
                       onClick={() => handleAgeRangeSelect(range)}
-                      className={`p-3 text-sm font-medium rounded-xl border-2 transition-all ${
+                      className={`p-3 text-sm font-medium rounded-xl border-2 transition-all hover-lift ${
                         selectedAgeRange === range.range
-                          ? 'border-purple-500 bg-purple-50 text-purple-700'
-                          : 'border-gray-200 bg-white text-gray-700 hover:border-purple-300 hover:bg-purple-50'
+                          ? 'border-dermai-ai-500 bg-dermai-ai-50 text-dermai-ai-700 shadow-glow'
+                          : 'border-dermai-nude-200 bg-dermai-pure text-dermai-neutral-700 hover:border-dermai-ai-300 hover:bg-dermai-ai-50'
                       }`}
                     >
                       {range.label}
@@ -414,17 +431,17 @@ export default function SkinQuestionnaire() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-800 mb-2">Genre</label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Genre</label>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {GENDER_OPTIONS.map(option => (
                     <button
                       key={option}
                       type="button"
                       onClick={() => updateData('userProfile', { gender: option as any })}
-                      className={`p-2 text-sm rounded-lg border transition-all ${
+                      className={`p-3 text-sm rounded-lg border-2 transition-all hover-lift ${
                         data.userProfile.gender === option
-                          ? 'border-blue-500 bg-blue-50 text-blue-700'
-                          : 'border-gray-200 hover:border-gray-300'
+                          ? 'border-dermai-nude-500 bg-dermai-nude-50 text-dermai-nude-700'
+                          : 'border-dermai-nude-200 bg-dermai-pure text-dermai-neutral-700 hover:border-dermai-nude-300 hover:bg-dermai-nude-50'
                       }`}
                     >
                       {option}
@@ -434,17 +451,17 @@ export default function SkinQuestionnaire() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-800 mb-2">Type de peau (si vous le connaissez)</label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Type de peau (si vous le connaissez)</label>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {SKIN_TYPES.map(type => (
                     <button
                       key={type}
                       type="button"
                       onClick={() => updateData('userProfile', { skinType: type as any })}
-                      className={`p-2 text-sm rounded-lg border transition-all ${
+                      className={`p-3 text-sm rounded-lg border-2 transition-all hover-lift ${
                         data.userProfile.skinType === type
-                          ? 'border-purple-500 bg-purple-50 text-purple-700'
-                          : 'border-gray-200 hover:border-gray-300'
+                          ? 'border-dermai-ai-500 bg-dermai-ai-50 text-dermai-ai-700 shadow-glow'
+                          : 'border-dermai-nude-200 bg-dermai-pure text-dermai-neutral-700 hover:border-dermai-ai-300 hover:bg-dermai-ai-50'
                       }`}
                     >
                       {type}
@@ -460,8 +477,8 @@ export default function SkinQuestionnaire() {
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Préoccupations cutanées</h2>
-              <p className="text-gray-600">Quels sont vos principaux soucis de peau ? (max 3) *</p>
+              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Préoccupations cutanées</h2>
+              <p className="text-dermai-neutral-600">Quels sont vos principaux soucis de peau ? (max 3) *</p>
             </div>
 
             <div>
@@ -531,8 +548,8 @@ export default function SkinQuestionnaire() {
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Routine actuelle</h2>
-              <p className="text-gray-600">Quels produits utilisez-vous ? (optionnel)</p>
+              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Routine actuelle</h2>
+              <p className="text-dermai-neutral-600">Quels produits utilisez-vous ? (optionnel)</p>
             </div>
 
             <div className="space-y-6">
@@ -589,8 +606,8 @@ export default function SkinQuestionnaire() {
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Type de routine souhaitée</h2>
-              <p className="text-gray-600">Choisissez votre style préféré. Cela influencera la complexité des recommandations.</p>
+              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Type de routine souhaitée</h2>
+              <p className="text-dermai-neutral-600">Choisissez votre style préféré. Cela influencera la complexité des recommandations.</p>
             </div>
 
             {/* Préférence de routine déplacée ici */}
@@ -670,38 +687,36 @@ export default function SkinQuestionnaire() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+    <div className="min-h-screen bg-dermai-pure">
       {/* Header avec progression */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-purple-100 sticky top-0 z-40">
+      <div className="bg-dermai-pure/80 backdrop-blur-sm border-b border-dermai-nude-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-lg">D</span>
-              </div>
-              <div>
-                <h1 className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-                  DermAI
-                </h1>
-                <p className="text-sm text-gray-600">Diagnostic personnalisé par IA</p>
-              </div>
+            <div className="flex items-center">
+              <a href="/" className="cursor-pointer transition-opacity hover:opacity-80">
+                <img 
+                  src="/DERMAI-logo.svg" 
+                  alt="DermAI" 
+                  className="h-8 md:h-10 w-auto"
+                />
+              </a>
             </div>
 
             {/* Progress dots */}
             <div className="hidden md:flex items-center space-x-2">
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
-              <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
+              <div className="w-3 h-3 bg-dermai-ai-500 rounded-full shadow-glow"></div>
+              <div className="w-3 h-3 bg-dermai-ai-500 rounded-full shadow-glow"></div>
+              <div className="w-3 h-3 bg-dermai-neutral-300 rounded-full"></div>
+              <div className="w-3 h-3 bg-dermai-neutral-300 rounded-full"></div>
             </div>
 
             <div className="text-right">
-              <div className="text-sm text-gray-500">Étape 2 sur 4</div>
-              <div className="text-sm text-gray-500">Question {currentStep}/{totalSteps}</div>
-              <div className="w-32 bg-gray-200 rounded-full h-2 mt-1">
+              <div className="text-sm text-dermai-neutral-500">Étape 2 sur 4</div>
+              <div className="text-sm text-dermai-neutral-500">Question {currentStep}/{totalSteps}</div>
+              <div className="w-32 bg-dermai-neutral-200 rounded-full h-2 mt-1">
                 <div 
-                  className="bg-gradient-to-r from-pink-500 to-purple-600 h-2 rounded-full transition-all duration-300"
+                  className="bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 h-2 rounded-full transition-all duration-300 shadow-glow"
                   style={{ width: `${(currentStep / totalSteps) * 100}%` }}
                 ></div>
               </div>
@@ -716,15 +731,15 @@ export default function SkinQuestionnaire() {
           
           {/* Contenu principal */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-3xl shadow-xl border border-purple-100 p-8 hover:shadow-2xl transition-shadow">
+            <div className="card bg-dermai-pure rounded-3xl shadow-premium border border-dermai-nude-200 p-8 lg:p-10 hover:shadow-premium-lg transition-shadow">
               {renderStep()}
 
               {/* Navigation */}
-              <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
+              <div className="flex flex-col sm:flex-row justify-between items-center mt-8 pt-6 border-t border-dermai-nude-200 gap-4">
                 <button
                   onClick={handlePrevious}
                   disabled={currentStep === 1}
-                  className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center space-x-2 text-dermai-neutral-600 hover:text-dermai-neutral-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus-dermai"
                 >
                   <span>←</span>
                   <span>Précédent</span>
@@ -733,7 +748,7 @@ export default function SkinQuestionnaire() {
                 <button
                   onClick={handleNext}
                   disabled={!canProceed()}
-                  className="flex items-center space-x-3 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-8 rounded-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                  className="btn-primary flex items-center space-x-3 font-semibold py-3 px-6 sm:px-8 rounded-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none w-full sm:w-auto justify-center"
                 >
                   <span>
                     {currentStep === totalSteps ? (
@@ -760,7 +775,7 @@ export default function SkinQuestionnaire() {
                 <button
                   onClick={handleSubmit}
                   disabled={!isFormComplete()}
-                  className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                  className="btn-primary w-full font-semibold py-3 px-6 rounded-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                 >
                   {isFormComplete() ? '🚀 Lancer l\'analyse DermAI' : '⏳ Compléter le formulaire'}
                 </button>
