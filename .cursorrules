@@ -44,10 +44,33 @@
 - Implémenter des `Error Boundaries` pour une meilleure gestion des erreurs UI.
 - Mettre en place des mécanismes de retry pour les appels réseau.
 
+# Déploiement Vercel (CRITIQUE)
+- TOUJOURS inclure un fichier `vercel.json` avec la configuration Next.js explicite.
+- Le framework doit être défini comme "nextjs" pour éviter les erreurs 404 en production.
+- Configuration requise :
+  ```json
+  {
+    "framework": "nextjs",
+    "buildCommand": "npm run build",
+    "outputDirectory": ".next",
+    "installCommand": "npm install",
+    "devCommand": "npm run dev",
+    "rewrites": [{ "source": "/(.*)", "destination": "/$1" }]
+  }
+  ```
+- Augmenter le buffer Git si images volumineuses : `git config http.postBuffer 524288000`
+- Toujours tester avec `vercel build` localement avant déploiement production.
+- En cas d'erreur 404 persistante : vérifier que le framework n'est pas `null` dans les settings.
+
 # Fonctionnalités Futures (Roadmap)
 - Prévoir des structures pour l'authentification utilisateur et les dashboards (`/dashboard`).
 - Anticiper l'intégration d'un coach IA conversationnel (`src/services/chat.ts`).
 - Préparer l'architecture pour une marketplace intégrée.
 - Penser à l'export PDF des diagnostics.
+
+# Historique des Corrections Critiques
+- **30/08/2025** : Erreur 404 Vercel résolue par ajout de `vercel.json` avec framework "nextjs"
+- **30/08/2025** : 3 nouveaux écrans plein écran intégrés dans le parcours formulaire
+- **30/08/2025** : Harmonisation couleurs sélection et récapitulatif avec miniatures photos IndexedDB
 ```
 
