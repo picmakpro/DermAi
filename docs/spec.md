@@ -51,7 +51,15 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 
 1.  **Landing Page (`/`)**: Présentation de l'application, de ses avantages et un appel à l'action pour commencer le diagnostic.
 2.  **Upload de Photos (`/upload`)**: Interface pour téléverser plusieurs photos du visage sous différents angles.
-3.  **Questionnaire (`/questionnaire`)**: Série de questions pour affiner le profil de l'utilisateur (type de peau, préoccupations, routine actuelle, budget).
+3.  **Questionnaire (`/questionnaire`)**: Parcours interactif en 7 étapes incluant 3 écrans plein écran :
+    - **Écran d'introduction avant/après** : Présentation des bénéfices avec visuel de comparaison 30 jours
+    - **Profil personnel** : Âge, genre, type de peau
+    - **Préoccupations cutanées** : Sélection des problèmes principaux (max 3)
+    - **Écran de preuve sociale** : Rassurance avec statistiques d'utilisateurs similaires
+    - **Routine actuelle** : Produits utilisés matin/soir (optionnel)
+    - **Allergies et sensibilités** : Ingrédients à éviter (optionnel)
+    - **Écran d'économies** : Visualisation des économies potentielles avec progression
+    - **Finalisation** : Type de routine souhaitée et budget
 4.  **Analyse (`/analyze`)**: Page de chargement pendant que l'IA analyse les données.
 5.  **Résultats (`/results`)**: Affichage détaillé du diagnostic, des scores, de la routine de soins et des produits recommandés.
 
@@ -60,10 +68,16 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 - **Diagnostic en 2 étapes**: 
     1.  Analyse visuelle par GPT-4o pour un diagnostic objectif.
     2.  Sélection de produits et création de routine basées sur le diagnostic et le catalogue de produits.
+- **Parcours utilisateur optimisé** :
+    - **Écrans plein écran immersifs** : 3 écrans dédiés pour l'engagement et la réassurance
+    - **Preuve sociale intégrée** : Statistiques d'utilisateurs similaires pour rassurer
+    - **Visualisation des économies** : Comparaison avant/après des dépenses cosmétiques
+    - **Progression claire** : Indicateur visuel et numérique du progrès
 - **Scores Détaillés**: Notation sur 100 pour 8 critères de santé de la peau (hydratation, rides, etc.).
 - **Routine Personnalisée**: Routine de soins évolutive en 3 phases (immédiate, adaptation, maintenance).
 - **Catalogue de Produits**: Intégration d'un catalogue de produits d'affiliation avec des liens d'achat.
 - **Assistant IA**: Un chatbot pour répondre aux questions de l'utilisateur sur son diagnostic.
+- **Analytics intégrées** : Suivi des interactions utilisateur sur les nouveaux écrans.
 
 ## 4. IA et Machine Learning
 
