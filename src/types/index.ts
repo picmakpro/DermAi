@@ -72,6 +72,19 @@ export interface SkinSpecificity {
 
 export interface ZoneSpecificIssue {
   zone: string
+  problems: ZoneProblem[] // Nouveau: plusieurs problèmes par zone
+  description?: string // Optionnel maintenant
+}
+
+export interface ZoneProblem {
+  name: string // Nom du problème (ex: "Poils incarnés", "Rougeurs")
+  intensity: 'légère' | 'modérée' | 'intense'
+  description?: string // Description optionnelle du problème
+}
+
+// Garder l'ancienne interface pour compatibilité
+export interface ZoneSpecificIssueLegacy {
+  zone: string
   intensity: 'légère' | 'modérée' | 'intense'
   concerns: string[]
   description: string

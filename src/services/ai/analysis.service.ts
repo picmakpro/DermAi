@@ -349,8 +349,22 @@ Réponds UNIQUEMENT en JSON valide avec cette structure exacte :
       "Protection solaire insuffisante"
     ],
     "zoneSpecific": [
-      {"zone": "front", "concerns": ["rides d'expression marquées"], "intensity": "modérée", "icon": "🟠", "description": "lignes horizontales accentuées à l'expression"},
-      {"zone": "nez", "concerns": ["rougeurs/sensibilités localisées"], "intensity": "légère", "icon": "🟡", "description": "sensibilité ailes du nez"}
+      {
+        "zone": "menton", 
+        "problems": [
+          {"name": "Poils incarnés", "intensity": "modérée"},
+          {"name": "Rougeurs post-rasage", "intensity": "sévère"}
+        ],
+        "description": "Zone de rasage sensible avec problèmes multiples"
+      },
+      {
+        "zone": "joues", 
+        "problems": [
+          {"name": "Pores dilatés", "intensity": "légère"},
+          {"name": "Taches pigmentaires", "intensity": "modérée"}
+        ],
+        "description": "Texture irrégulière avec hyperpigmentation"
+      }
     ],
     "expectedImprovement": "Amélioration visible en 4-6 semaines avec routine beauté adaptée",
     "improvementTimeEstimate": "3-4 mois"
@@ -557,7 +571,7 @@ ${diagnostic.beautyAssessment.visualFindings?.map(finding => `- ${finding}`).joi
 ${diagnostic.beautyAssessment.overview?.map(item => `- ${item}`).join('\n') || 'Aucune vue d\'ensemble'}
 
 **Zones spécifiques :**
-${diagnostic.beautyAssessment.zoneSpecific?.map(zone => `- ${zone.zone}: ${zone.concerns?.join(', ')} (${zone.intensity})`).join('\n') || 'Aucune zone spécifique'}
+${diagnostic.beautyAssessment.zoneSpecific?.map(zone => `- ${zone.zone}: ${zone.problems?.map(p => `${p.name} (${p.intensity})`).join(', ')}`).join('\n') || 'Aucune zone spécifique'}
 
 ## PROFIL UTILISATEUR
 **Profil :** ${request.userProfile.gender}, ${request.userProfile.age} ans
