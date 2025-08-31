@@ -311,6 +311,7 @@ Application d'analyse cutanée professionnelle. Tu analyses visuellement la peau
 2. **DIAGNOSTIC PRINCIPAL** : Identifier la préoccupation majeure
 3. **ZONES CONCERNÉES** : Localiser précisément les problèmes
 4. **OBSERVATIONS VISUELLES** : Décrire ce que tu vois objectivement
+5. **ESTIMATION D'AMÉLIORATION** : Calculer le temps réaliste pour atteindre 90/100 selon l'état actuel
 
 ## RÉSULTAT - FORMAT JSON OBLIGATOIRE
 Réponds UNIQUEMENT en JSON valide avec cette structure exacte :
@@ -327,9 +328,15 @@ Réponds UNIQUEMENT en JSON valide avec cette structure exacte :
     "skinAge": {"value": 78, "justification": "Âge cutané proche de l'âge réel", "confidence": 0.7, "basedOn": ["élasticité", "texture"]}
   },
   "beautyAssessment": {
+    "skinType": "Peau mixte à tendance sensible",
     "mainConcern": "Sensibilités de rasage avec poils incarnés occasionnels",
     "intensity": "modérée", 
     "concernedZones": ["menton", "cou", "joues basses"],
+    "specificities": [
+      {"name": "Poils incarnés post-rasage", "intensity": "modérée", "zones": ["menton", "cou"]},
+      {"name": "Rougeurs localisées", "intensity": "légère", "zones": ["ailes du nez", "joues"]},
+      {"name": "Imperfections pigmentaires", "intensity": "légère", "zones": ["front", "joues"]}
+    ],
     "visualFindings": [
       "Présence de poils incarnés sur la zone de rasage",
       "Rougeurs et petites imperfections post-rasage",
@@ -345,7 +352,8 @@ Réponds UNIQUEMENT en JSON valide avec cette structure exacte :
       {"zone": "front", "concerns": ["rides d'expression marquées"], "intensity": "modérée", "icon": "🟠", "description": "lignes horizontales accentuées à l'expression"},
       {"zone": "nez", "concerns": ["rougeurs/sensibilités localisées"], "intensity": "légère", "icon": "🟡", "description": "sensibilité ailes du nez"}
     ],
-    "expectedImprovement": "Amélioration visible en 4-6 semaines avec routine beauté adaptée"
+    "expectedImprovement": "Amélioration visible en 4-6 semaines avec routine beauté adaptée",
+    "improvementTimeEstimate": "3-4 mois"
   }
 }
 
@@ -353,7 +361,22 @@ Réponds UNIQUEMENT en JSON valide avec cette structure exacte :
 - Focus 100% sur l'analyse diagnostique visuelle
 - Sois précis et objectif dans tes observations
 - Base-toi uniquement sur ce que tu vois dans les photos
-- Évite tout vocabulaire médical, reste dans l'univers beauté/cosmétique`
+- Évite tout vocabulaire médical, reste dans l'univers beauté/cosmétique
+
+## LOGIQUE ESTIMATION D'AMÉLIORATION
+Pour improvementTimeEstimate, calcule selon cette logique :
+- Score global 80-100 : "4-6 semaines"
+- Score global 60-79 : "2-3 mois" 
+- Score global 40-59 : "3-4 mois"
+- Score global 20-39 : "4-6 mois"
+- Score global 0-19 : "6-8 mois"
+
+Ajuste selon les préoccupations spécifiques :
+- Hydratation/sécheresse : -2 semaines
+- Rides profondes/vieillissement : +1-2 mois
+- Acné active/inflammation : +2-4 semaines
+- Taches pigmentaires : +1-2 mois
+- Sensibilité/irritation : +2-6 semaines`
   }
 
   /**

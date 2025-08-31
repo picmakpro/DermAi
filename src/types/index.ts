@@ -50,16 +50,24 @@ export interface ScoreDetail {
 }
 
 export interface BeautyAssessment {
+  skinType?: string // Type de peau global (ex: "Peau mixte", "Peau grasse")
   mainConcern: string
   intensity: 'légère' | 'modérée' | 'intense'
   concernedZones: string[]
+  specificities?: SkinSpecificity[] // Nouvelles spécificités détaillées avec intensité
   visualFindings: string[]
   expectedImprovement: string
+  improvementTimeEstimate?: string // Nouveau: temps pour atteindre 90/100
   // Nouvelle structure pour évaluation beauté globale + par zones
-  skinType?: string
   estimatedSkinAge?: number
   overview?: string[]
   zoneSpecific?: ZoneSpecificIssue[]
+}
+
+export interface SkinSpecificity {
+  name: string // ex: "Poils incarnés post-rasage"
+  intensity: 'légère' | 'modérée' | 'intense'
+  zones: string[] // ex: ["menton", "cou"]
 }
 
 export interface ZoneSpecificIssue {

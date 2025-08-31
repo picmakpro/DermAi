@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useRef } from 'react'
 import LZString from 'lz-string'
 import { useRouter } from 'next/navigation'
 import { getProductInfoByCatalogId, RecommendedProductCard as CatalogRecommendedProductCard, findAlternativeProduct } from '@/services/catalog/catalogService'
@@ -25,7 +25,9 @@ import {
   MessageCircle,
   ChevronRight,
   Calendar,
-  Target
+  Target,
+  Share2,
+  Download
 } from 'lucide-react'
 import type { SkinAnalysis, SkinScores, ScoreDetail } from '@/types'
 import { getAnalysis } from '@/utils/storage/analysisStore'
@@ -33,6 +35,7 @@ import ChatWidget from './ChatWidget'
 import ScoreCircle from './components/ScoreCircle'
 import ProductCard from './components/ProductCard'
 import AdvancedRoutineDisplay from '@/components/routine/AdvancedRoutineDisplay'
+import ShareableCard from '@/components/shared/ShareableCard'
 
 const scoreIcons = {
   hydration: <Droplets className="w-6 h-6" />,
@@ -545,6 +548,8 @@ export default function ResultsPage() {
   const [products, setProducts] = useState<CatalogRecommendedProductCard[]>([])
   const [productsLoading, setProductsLoading] = useState(false)
   const [catalogMap, setCatalogMap] = useState<Record<string, { name: string; affiliateLink: string }>>({})
+  const [isExportingImage, setIsExportingImage] = useState(false)
+  const shareableCardRef = useRef<HTMLDivElement>(null)
   const handleAlternative = async (index: number) => {
     try {
       const current = products[index]
@@ -640,9 +645,32 @@ export default function ResultsPage() {
     const score = (analysis.scores as any)?.skinAge as ScoreDetail | undefined
     if (!score || typeof score.value !== 'number') return null
     
+    // Calculer l'âge de peau basé sur l'analyse photo
     const ageDelta = (75 - score.value) / 10
-    const computed = Math.round(userAge + ageDelta)
-    return Math.max(15, Math.min(80, computed))
+    const computedAge = Math.round(userAge + ageDelta)
+    
+    // Règle de cohérence : ne jamais afficher un âge inférieur à la borne minimale déclarée
+    // Extraire la borne minimale de la tranche d'âge (ex: "25-34" -> 25)
+    const questionnaireData = sessionStorage.getItem('dermai_questionnaire')
+    let minDeclaredAge = userAge
+    if (questionnaireData) {
+      try {
+        const questionnaire = JSON.parse(questionnaireData)
+        const ageRange = questionnaire?.userProfile?.ageRange
+        if (typeof ageRange === 'string' && ageRange.includes('-')) {
+          const minAge = parseInt(ageRange.split('-')[0])
+          if (!isNaN(minAge)) {
+            minDeclaredAge = minAge
+          }
+        }
+      } catch (e) {
+        console.warn('Impossible de parser la tranche d\'âge:', e)
+      }
+    }
+    
+    // Appliquer la règle de cohérence et bornes générales
+    const finalAge = Math.max(minDeclaredAge, Math.min(80, computedAge))
+    return Math.max(15, finalAge)
   }, [analysis, userAge])
 
   const handleNewAnalysis = () => {
@@ -650,6 +678,72 @@ export default function ResultsPage() {
     sessionStorage.removeItem('dermai_questionnaire')
     sessionStorage.removeItem('dermai_analysis_id')
     router.push('/upload')
+  }
+
+  // Fonction pour exporter la carte de diagnostic en image
+  const handleExportImage = async () => {
+    if (!shareableCardRef.current || !analysis) return
+    
+    setIsExportingImage(true)
+    
+    // Rendre temporairement visible le composant
+    const container = shareableCardRef.current.parentElement
+    if (container) {
+      container.style.opacity = '1'
+      container.style.position = 'fixed'
+      container.style.top = '0px'
+      container.style.left = '0px'
+      container.style.zIndex = '9999'
+    }
+    
+    try {
+      // Attendre que le rendu soit complet
+      await new Promise(resolve => setTimeout(resolve, 100))
+      
+      // Utiliser html2canvas pour capturer l'élément
+      const html2canvas = (await import('html2canvas')).default
+      
+      const canvas = await html2canvas(shareableCardRef.current, {
+        backgroundColor: null,
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        width: 512,
+        height: 512,
+        logging: false
+      })
+      
+      // Remettre invisible
+      if (container) {
+        container.style.opacity = '0'
+        container.style.zIndex = '-1'
+      }
+      
+      // Convertir en blob et télécharger
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const url = URL.createObjectURL(blob)
+          const link = document.createElement('a')
+          link.href = url
+          link.download = `diagnostic-dermai-${Date.now()}.png`
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+          URL.revokeObjectURL(url)
+        }
+      }, 'image/png')
+    } catch (error) {
+      console.error('Erreur lors de l\'export d\'image:', error)
+      alert('Erreur lors de la génération de l\'image. Veuillez réessayer.')
+      
+      // Remettre invisible en cas d'erreur
+      if (container) {
+        container.style.opacity = '0'
+        container.style.zIndex = '-1'
+      }
+    } finally {
+      setIsExportingImage(false)
+    }
   }
 
   if (!analysis) {
@@ -711,14 +805,19 @@ export default function ResultsPage() {
               className="btn-primary flex items-center space-x-2 px-4 py-2 rounded-full shadow-sm transition-colors"
               title="Copier le lien du diagnostic"
             >
-              <span>Partager</span>
+              <Share2 className="w-4 h-4" />
+              <span className="hidden sm:inline">Partager</span>
             </button>
             <button
-              disabled
-              className="flex items-center space-x-2 bg-dermai-pure text-dermai-neutral-400 px-4 py-2 rounded-full shadow-sm border border-dermai-nude-200 cursor-not-allowed"
-              title="Export PDF bientôt disponible"
+              onClick={handleExportImage}
+              disabled={isExportingImage}
+              className="flex items-center space-x-2 bg-dermai-ai-500 text-white px-4 py-2 rounded-full shadow-sm hover:bg-dermai-ai-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Télécharger carte de diagnostic"
             >
-              <span>Enregistrer (PDF bientôt)</span>
+              <Download className="w-4 h-4" />
+              <span className="hidden sm:inline">
+                {isExportingImage ? 'Export...' : 'Image'}
+              </span>
             </button>
             </div>
           </div>
@@ -726,59 +825,116 @@ export default function ResultsPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-                 {/* Hero Section - Diagnostic */}
+                 {/* Nouvelle Section - Diagnostic Personnalisé */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-r from-dermai-ai-500 via-dermai-ai-400 to-dermai-ai-600 rounded-3xl p-8 text-white relative overflow-hidden"
+          className="bg-gradient-to-br from-dermai-ai-500 via-dermai-ai-400 to-dermai-ai-600 rounded-3xl p-6 md:p-8 text-white relative overflow-hidden"
         >
-           <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-10 translate-x-10 animate-pulse"></div>
-           <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full translate-y-10 -translate-x-10 animate-pulse delay-1000"></div>
-           <div className="absolute top-1/2 left-1/2 w-20 h-20 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2 animate-ping"></div>
+          {/* Éléments décoratifs animés */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-8 translate-x-8 animate-pulse"></div>
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-6 -translate-x-6 animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 w-16 h-16 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2 animate-ping"></div>
           
           <div className="relative z-10">
-          <div className="flex items-center space-x-3 mb-6">
-            <div className="p-2 bg-white/20 rounded-full">
-              <Award className="w-8 h-8" />
+            {/* En-tête */}
+            <div className="flex items-center space-x-3 mb-8">
+              <div className="p-3 bg-white/20 rounded-2xl">
+                <Award className="w-7 h-7" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold font-display">Diagnostic Personnalisé</h2>
-              <p className="text-dermai-ai-100 text-sm">Analyse complétée avec succès</p>
+                <h2 className="text-2xl md:text-3xl font-bold font-display">Diagnostic Personnalisé</h2>
+                <p className="text-dermai-ai-100 text-sm md:text-base">Analyse IA complétée avec succès</p>
             </div>
           </div>
             
-            <div className="grid md:grid-cols-3 gap-6">
-              {/* Skin type */}
-              <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6">
-                <div className="flex items-center space-x-3 mb-3">
-                  <Sparkles className="w-6 h-6" />
-                  <span className="font-semibold">Type de Peau Identifié</span>
+            {/* Grille mobile-first - Nouvel ordre */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+              
+              {/* 1. Type de peau global */}
+              <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-5">
+                <div className="flex items-center space-x-2 mb-3">
+                  <Sparkles className="w-5 h-5" />
+                  <span className="font-semibold text-sm">Type de Peau</span>
                 </div>
-                <div className="text-xl font-bold font-display mb-2">
-                  {analysis.beautyAssessment.mainConcern}
-                </div>
-                <div className="text-sm opacity-90">
-                  Intensité: {analysis.beautyAssessment.intensity}
+                <div className="text-lg md:text-xl font-bold font-display mb-1">
+                  {analysis.beautyAssessment.skinType || analysis.beautyAssessment.mainConcern}
                 </div>
               </div>
 
-              {/* Skin age */}
-              {skinAgeYears && (
-                <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6 text-center">
-                  <div className="flex items-center justify-center space-x-3 mb-3">
-                    <TrendingUp className="w-6 h-6" />
-                    <span className="font-semibold">Âge de peau estimé</span>
+              {/* 2. Spécificités détectées */}
+              <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-5">
+                <div className="flex items-center space-x-2 mb-3">
+                  <Target className="w-5 h-5" />
+                  <span className="font-semibold text-sm">Spécificités</span>
+                </div>
+                {analysis.beautyAssessment.specificities && analysis.beautyAssessment.specificities.length > 0 ? (
+                  <div className="space-y-2">
+                    {analysis.beautyAssessment.specificities.slice(0, 2).map((spec, idx) => (
+                      <div key={idx} className="text-sm">
+                        <div className="font-medium">{spec.name}</div>
+                        <div className="text-xs opacity-80 capitalize">{spec.intensity}</div>
+                      </div>
+                    ))}
+                    {analysis.beautyAssessment.specificities.length > 2 && (
+                      <button
+                        onClick={() => {
+                          const observationsSection = document.getElementById('observations-specificities')
+                          if (observationsSection) {
+                            observationsSection.scrollIntoView({ behavior: 'smooth' })
+                          }
+                        }}
+                        className="text-xs opacity-75 hover:opacity-100 underline cursor-pointer transition-opacity"
+                      >
+                        +{analysis.beautyAssessment.specificities.length - 2} autres
+                      </button>
+                    )}
                   </div>
-                  <div className="text-3xl font-bold font-display text-dermai-ai-200">{skinAgeYears} ans</div>
-                  <div className="text-xs opacity-80 mt-1">Estimation basée sur votre analyse DermAI</div>
+                ) : (
+                <div className="text-sm opacity-90">
+                    {analysis.beautyAssessment.mainConcern}
+                    <div className="text-xs opacity-75 mt-1 capitalize">
+                      {analysis.beautyAssessment.intensity}
+                </div>
+                  </div>
+                )}
+              </div>
+
+              {/* 3. Score global - maintenant en 3ème position */}
+              <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-5 text-center">
+                <div className="flex items-center justify-center space-x-2 mb-3">
+                  <Award className="w-5 h-5" />
+                  <span className="font-semibold text-sm">Score Global</span>
+                </div>
+                <div className="text-2xl md:text-3xl font-bold font-display">{analysis.scores.overall}/100</div>
+                <div className="text-xs opacity-75 mt-1">8 critères évalués</div>
+              </div>
+            </div>
+
+            {/* Ligne séparée pour Âge de peau et Amélioration */}
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+              {/* 4. Âge de peau estimé */}
+              {skinAgeYears && (
+                <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-5 text-center">
+                  <div className="flex items-center justify-center space-x-2 mb-3">
+                    <TrendingUp className="w-5 h-5" />
+                    <span className="font-semibold text-sm">Âge de peau estimé</span>
+                  </div>
+                  <div className="text-2xl md:text-3xl font-bold font-display text-dermai-ai-200">{skinAgeYears} ans</div>
+                  <div className="text-xs opacity-75 mt-1">Basé sur analyse photo</div>
                 </div>
               )}
 
-              {/* Overall score */}
-              <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6 text-center">
-                <div className="text-sm opacity-90 mb-2">Score Global</div>
-                <div className="text-4xl font-bold mb-2">{analysis.scores.overall}</div>
-                <div className="text-sm opacity-90">Analyse sur 8 critères</div>
+              {/* 5. Estimation d'amélioration - en dernier */}
+              <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-5 text-center">
+                <div className="flex items-center justify-center space-x-2 mb-3">
+                  <Clock className="w-5 h-5" />
+                  <span className="font-semibold text-sm">Estimation d'amélioration</span>
+              </div>
+                <div className="text-lg font-bold font-display mb-1">
+                  {analysis.beautyAssessment.improvementTimeEstimate || "3-4 mois"} pour atteindre 90/100
+                </div>
+                <div className="text-xs opacity-60">Basé sur l'état de votre peau actuel</div>
               </div>
             </div>
           </div>
@@ -826,8 +982,9 @@ export default function ResultsPage() {
           </div>
         </motion.div>
 
-                 {/* Key Observations */}
+                 {/* Observations liées aux spécificités */}
          <motion.div
+           id="observations-specificities"
            initial={{ opacity: 0, y: 20 }}
            animate={{ opacity: 1, y: 0 }}
            transition={{ delay: 0.2 }}
@@ -835,7 +992,7 @@ export default function ResultsPage() {
          >
            <div className="flex items-center space-x-3 mb-6">
              <Star className="w-6 h-6 text-blue-500" />
-             <h2 className="text-2xl font-bold text-gray-900">Observations Détaillées</h2>
+             <h2 className="text-2xl font-bold text-gray-900">Observations liées aux spécificités</h2>
            </div>
 
           {/* Vue d'ensemble (overview) si disponible, sinon fallback sur observations classiques */}
@@ -1230,6 +1387,15 @@ export default function ResultsPage() {
          </div>
        </motion.button>
        )}
+
+       {/* Carte partageable pour export d'image */}
+       <div className="fixed top-0 left-0 opacity-0 pointer-events-none z-[-1]">
+         <ShareableCard 
+           ref={shareableCardRef}
+           analysis={analysis}
+           skinAgeYears={skinAgeYears}
+         />
+       </div>
 
        {/* Chat Widget */}
        {isChatOpen && (
