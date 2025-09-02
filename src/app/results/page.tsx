@@ -37,6 +37,7 @@ import ScoreCircle from './components/ScoreCircle'
 import ProductCard from './components/ProductCard'
 import AdvancedRoutineDisplay from '@/components/routine/AdvancedRoutineDisplay'
 import ShareableCard from '@/components/shared/ShareableCard'
+import { UnifiedRoutineSection } from '@/components/results/UnifiedRoutineSection'
 
 // Fonction utilitaire pour extraire les problèmes d'une zone
 const extractProblems = (zone: any) => {
@@ -1313,6 +1314,15 @@ export default function ResultsPage() {
           )}
          </motion.div>
 
+         {/* NOUVELLE SECTION ROUTINE UNIFIÉE */}
+         {analysis.recommendations.unifiedRoutine && analysis.recommendations.unifiedRoutine.length > 0 ? (
+           <UnifiedRoutineSection 
+             routine={analysis.recommendations.unifiedRoutine} 
+             beautyAssessment={analysis.beautyAssessment || undefined}
+           />
+         ) : (
+           // Fallback vers ancienne structure si routine unifiée non disponible
+           <>
          {/* Routine Section */}
         {analysis.recommendations.routine && typeof analysis.recommendations.routine === 'object' && analysis.recommendations.routine.immediate ? (
           <AdvancedRoutineDisplay routine={analysis.recommendations.routine} />
@@ -1374,141 +1384,10 @@ export default function ResultsPage() {
            </div>
          </motion.div>
         )}
-
-         {/* Routine localisée par zones (si disponible) */}
-         {getLocalizedRoutine(analysis).length > 0 && (
-         <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           animate={{ opacity: 1, y: 0 }}
-             transition={{ delay: 0.3 }}
-             className="bg-white rounded-3xl shadow-xl p-8"
-           >
-             <div className="flex items-center space-x-3 mb-6">
-               <div className="p-2 bg-gradient-to-br from-dermai-ai-100 to-dermai-ai-200 rounded-xl">
-                 <Target className="w-5 h-5 text-dermai-ai-600" />
-               </div>
-               <div>
-                 <h2 className="text-xl md:text-2xl font-bold text-gray-900">Traitement des zones à surveiller</h2>
-                 <p className="text-sm text-dermai-neutral-600">Plan d'action personnalisé</p>
-               </div>
-             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {getLocalizedRoutine(analysis)
-                .filter((loc: any) => {
-                  const problems = extractProblems(loc)
-                  return problems.length > 0 && problems.some((p: any) => p.name && p.name !== 'Problème détecté')
-                })
-                .map((loc: any, idx: number) => {
-                 // Utiliser la même fonction intensityBadge pour la cohérence
-                 const intensityClass = intensityBadge(loc.intensity)
-                 
-                 // Background coloré selon l'intensité
-                 const sev = String(loc.intensity || '').toLowerCase()
-                 const backgroundClass = sev.includes('intense') || sev.includes('sévère') || sev.includes('severe')
-                   ? 'bg-red-50 border-red-200'
-                   : sev.includes('modérée') || sev.includes('moderate')
-                   ? 'bg-orange-50 border-orange-200'
-                   : 'bg-yellow-50 border-yellow-200'
-                 
-                 return (
-                   <div key={idx} className={`rounded-2xl border p-6 ${backgroundClass}`}>
-                     {/* En-tête: Zone (problème) à gauche, Sévérité à droite */}
-                     <div className="flex items-start justify-between mb-4">
-                       <h4 className="text-lg font-bold text-gray-900 capitalize">
-                         {loc.zone}
-                         {(Array.isArray(loc.concerns) && loc.concerns.length > 0) || (Array.isArray(loc.issues) && loc.issues.length > 0) ? (
-                           <span className="ml-2 text-sm font-normal text-gray-700">({(loc.concerns && loc.concerns[0]) || (loc.issues && loc.issues[0])})</span>
-                         ) : null}
-                       </h4>
-                       <span className={`text-xs px-3 py-1 rounded-full border ${intensityClass}`}>
-                         {loc.intensity || 'Modérée'}
-                       </span>
-               </div>
-
-                      {Array.isArray(loc.restrictions) && loc.restrictions.length > 0 && (
-                        <div className="mb-3">
-                          <div className="text-xs font-medium text-gray-700 mb-1">Restrictions temporaires</div>
-                          <ul className="text-xs text-gray-600 list-disc pl-4 space-y-0.5">
-                            {loc.restrictions.map((r: string, i: number) => (<li key={i}>{r}</li>))}
-                          </ul>
-             </div>
-                      )}
-
-                      {loc.resumeCondition && (
-                        <div className="text-xs text-gray-600 mb-3">
-                          <span className="font-medium">Reprise progressive:</span> {loc.resumeCondition}
-             </div>
-                      )}
-
-                      {Array.isArray(loc.steps) && loc.steps.length > 0 && (
-                        <div className="space-y-3">
-                          {loc.steps.map((s: any, si: number) => (
-                            <div key={si} className="bg-white rounded-xl p-4 border border-gray-200">
-                              {/* En-tête avec numérotation claire */}
-                              <div className="flex items-start space-x-3 mb-3">
-                                <div className="w-8 h-8 bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                                  {si + 1}
-                                </div>
-                                <div className="flex-1">
-                                  <div className="text-sm font-semibold text-gray-900 mb-1">{s.name || s.title}</div>
-                                  <div className="flex flex-wrap items-center gap-2 text-xs">
-                                    <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full font-medium">
-                                      {s.category === 'treatment' ? '🩹 Traitement' : '💧 Soin'} • 
-                                      {s.frequency === 'quotidien' ? ' Quotidien' : ` ${s.frequency}`}
-                                      {s.timing && ` • ${s.timing === 'soir' ? 'Soir' : s.timing === 'matin' ? 'Matin' : s.timing}`}
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                              {/* Affichage amélioré des produits avec catalogId */}
-                              {s.catalogId && (
-                                <div className="bg-dermai-ai-50 rounded-lg p-2 mb-2 border border-dermai-ai-200">
-                                  <div className="flex items-center space-x-1 text-xs text-dermai-ai-700 mb-1">
-                                    <span className="w-2 h-2 bg-dermai-ai-500 rounded-full"></span>
-                                    <span className="font-medium">{catalogMap[s.catalogId]?.name || getProductNameFromCatalogId(s.catalogId) || 'Produit recommandé'}</span>
-                                  </div>
-                                  <a
-                                    href={catalogMap[s.catalogId]?.affiliateLink || '#'}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-xs text-dermai-ai-800 font-medium hover:underline"
-                                  >
-                                    {catalogMap[s.catalogId]?.name || getProductNameFromCatalogId(s.catalogId)}
-                                  </a>
-                                  {s.application && (
-                                    <p className="text-xs text-gray-600 mt-1">{s.application}</p>
-                                  )}
-                                  {s.duration && (
-                                    <p className="text-xs text-gray-500 mt-1">Durée: {s.duration}</p>
-                                  )}
-                                  {s.resume && (
-                                    <p className="text-xs text-gray-500 mt-1">Reprise: {s.resume}</p>
-                                  )}
-                                </div>
-                              )}
-                              {/* Fallback pour ancienne structure */}
-                              {!s.catalogId && getCatalogProductName(analysis, s) && (
-                                <div className="text-xs text-gray-800"><span className="font-medium">Produit:</span> {getCatalogProductName(analysis, s)}</div>
-                              )}
-                              {Array.isArray(s.applicationTips) && s.applicationTips.length > 0 && (
-                                <div className="mt-1">
-                                  <div className="text-[11px] text-gray-600 font-medium mb-0.5">Conseils d'application</div>
-                                  <ul className="text-xs text-gray-600 list-disc pl-4 space-y-0.5">
-                                    {s.applicationTips.map((t: string, ti: number) => (<li key={ti}>{t}</li>))}
-                                  </ul>
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )
-                })}
-             </div>
-           </motion.div>
+           </>
          )}
+
+         {/* SUPPRIMÉ: Routine localisée par zones - remplacée par routine unifiée */}
 
          {/* Products Section */}
          <motion.div

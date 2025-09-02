@@ -108,6 +108,8 @@ export interface ProductRecommendations {
     evening: string[]
     weekly: string[]
   }
+  // NOUVELLE ROUTINE UNIFIÉE (remplace zones à surveiller + routine)
+  unifiedRoutine?: UnifiedRoutineStep[]
 }
 
 // Nouvelle structure de routine avec catalogId obligatoire
@@ -199,4 +201,57 @@ export interface ProductBundle {
   totalPrice: number
   savings: number
   description: string
+}
+
+// Nouvelle structure pour routine unifiée (intégration zones + traitements + phases/timing)
+export interface UnifiedRoutineStep {
+  stepNumber: number
+  title: string // "Traitement des rougeurs — Zones : joues, front"
+  targetArea: 'global' | 'specific' // Global = visage entier, Specific = zones ciblées
+  zones?: string[] // ["menton", "joues"] si targetArea = 'specific'
+  
+  // Blocs conservés identiques
+  recommendedProducts: RecommendedProduct[]
+  applicationAdvice: string
+  restrictions?: string[]
+  
+  // Métadonnées pour l'IA + nouvelles données phases/timing
+  treatmentType: 'cleansing' | 'treatment' | 'moisturizing' | 'protection'
+  priority: number
+  phase: 'immediate' | 'adaptation' | 'maintenance'
+  
+  // Nouvelles propriétés pour l'UI phases/temporelle
+  frequency: 'daily' | 'weekly' | 'monthly' | 'as-needed' | 'progressive'
+  timeOfDay: 'morning' | 'evening' | 'both'
+  frequencyDetails?: string
+  startAfterDays?: number
+  category: 'cleansing' | 'treatment' | 'hydration' | 'protection' | 'exfoliation'
+  
+  // NOUVEAUX CHAMPS pour amélioration UX
+  applicationDuration?: string // "Jusqu'à teint plus homogène (1-2 semaines)" | "En continu"
+  timingBadge?: string // "Quotidien 🌙" | "Hebdomadaire 🌙" | "Progressif"
+  timingDetails?: string // "1x/semaine, soir sans rétinol" | "tous les 2 jours"
+  
+  // NOUVEAUX CHAMPS pour déduplication vue horaires
+  isEvolutive?: boolean // Marque si cette étape est le résultat d'une fusion de plusieurs phases
+  evolutivePhases?: ('immediate' | 'adaptation' | 'maintenance')[] // Les phases fusionnées
+}
+
+// Interface pour produit recommandé dans la routine unifiée
+export interface RecommendedProduct {
+  id: string
+  name: string
+  brand: string
+  category: string
+  price?: number
+  affiliateLink?: string
+  catalogId?: string
+}
+
+// Interface pour timing badges
+export interface TimingBadgeInfo {
+  badge: string // Le texte du badge principal
+  icon: string // Icône(s) matin/soir 
+  details?: string // Détails comme "1x/semaine, soir sans rétinol"
+  color: 'blue' | 'purple' | 'green' | 'orange' // Couleur du badge
 }

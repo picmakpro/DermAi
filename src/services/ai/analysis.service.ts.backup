@@ -686,10 +686,10 @@ RÉPONSE EN JSON UNIQUEMENT - PAS DE TEXTE LIBRE.`
       routine: productRecommendations.routine ? 'présente' : 'absente'
     })
 
-    // Générer les 3 phases complètes avec transition intelligente
+    // Générer les 3 phases complètes
     const immediateSteps = this.generateImmediatePhase(beautyAssessment, productRecommendations)
-    const adaptationSteps = this.generateAdaptationPhase(beautyAssessment, productRecommendations, immediateSteps)
-    const maintenanceSteps = this.generateMaintenancePhase(beautyAssessment, productRecommendations, adaptationSteps)
+    const adaptationSteps = this.generateAdaptationPhase(beautyAssessment, productRecommendations)
+    const maintenanceSteps = this.generateMaintenancePhase(beautyAssessment, productRecommendations)
     
     // Combiner toutes les phases
     const allSteps = [...immediateSteps, ...adaptationSteps, ...maintenanceSteps]
@@ -736,13 +736,11 @@ RÉPONSE EN JSON UNIQUEMENT - PAS DE TEXTE LIBRE.`
       steps.push(this.createSunProtectionStep(stepCounter++, beautyAssessment, productRecommendations))
     }
     
-    // Filtrer les étapes vides, ajouter critères visuels et marquer comme phase immédiate
-    return this.filterRedundantSteps(steps)
-      .map(step => this.addVisualCriteria(step))
-      .map(step => ({
-        ...step,
-        phase: 'immediate' as const
-      }))
+    // Filtrer les étapes vides et marquer comme phase immédiate
+    return this.filterRedundantSteps(steps).map(step => ({
+      ...step,
+      phase: 'immediate' as const
+    }))
   }
 
   /**
@@ -750,40 +748,106 @@ RÉPONSE EN JSON UNIQUEMENT - PAS DE TEXTE LIBRE.`
    */
   private static generateAdaptationPhase(
     beautyAssessment: BeautyAssessment,
-    productRecommendations: ProductRecommendations,
-    immediatePhase: UnifiedRoutineStep[]
+    productRecommendations: ProductRecommendations
   ): UnifiedRoutineStep[] {
     const steps: UnifiedRoutineStep[] = []
-    let stepCounter = 1 // CORRECTION: Numérotation 1,2,3 par phase
+    let stepCounter = 100 // Numérotation différente pour éviter conflits
 
-    // NOUVELLE LOGIQUE DERMATOLOGIQUE: Transition intelligente des produits
+    // Analyser les problèmes détectés pour introduire des actifs plus puissants
+    const hasAging = this.hasAgingConcerns(beautyAssessment)
+    const hasAcne = this.hasAcneConcerns(beautyAssessment)
+    const hasPigmentation = this.hasPigmentationConcerns(beautyAssessment)
     
-    // 1. Identifier la base durable de la phase immédiate
-    const baseDurable = this.identifyLongTermBase(immediatePhase)
-    console.log('📊 Base durable identifiée:', baseDurable.map(b => `${b.title} (${b.category})`).join(', '))
-    
-    // 2. Évoluer la base selon les besoins de l'IA
-    const evolvedBase = this.evolveBaseProducts(baseDurable, beautyAssessment)
-    
-    // 3. Ajouter nouveaux actifs progressifs selon diagnostic IA
-    const progressiveActives = this.generateProgressiveActives(beautyAssessment, evolvedBase.length + 1)
-    
-    // 4. Combiner et ordonner logiquement (nettoyage → traitements → hydratation → protection)
-    const allSteps = [...evolvedBase, ...progressiveActives]
-    const orderedSteps = this.orderStepsLogically(allSteps)
-    
-    // 5. Renuméroter correctement
-    const finalSteps = orderedSteps.map((step, index) => ({
-      ...step,
-      stepNumber: index + 1
-    }))
-    
-    steps.push(...finalSteps)
-    
-    console.log('✨ Phase adaptation générée:', {
-      baseEvolved: evolvedBase.length,
-      newActives: progressiveActives.length,
-      total: steps.length
+    // 1. Nettoyage identique mais avec note progression
+    steps.push({
+      stepNumber: stepCounter++,
+      title: "Nettoyage doux",
+      targetArea: 'global',
+      recommendedProducts: [{
+        id: "B01MSSDEPK",
+        name: "CeraVe Nettoyant Hydratant",
+        brand: "CeraVe", 
+        category: "cleanser",
+        catalogId: "B01MSSDEPK"
+      }],
+      applicationAdvice: "Routine maintenant établie. Masser délicatement 30 secondes pour optimiser l'efficacité.",
+      treatmentType: 'cleansing',
+      priority: 10,
+      phase: 'adaptation',
+      frequency: 'daily',
+      timeOfDay: 'both',
+      category: 'cleansing'
+    })
+
+    // 2. Introduction progressive d'actifs selon les besoins
+    if (hasAging) {
+      steps.push({
+        stepNumber: stepCounter++,
+        title: "Sérum anti-âge renforcé",
+        targetArea: 'global',
+        recommendedProducts: [{
+          id: "B08KGXQY2R",
+          name: "The Ordinary Retinol 0.2% in Squalane",
+          brand: "The Ordinary",
+          category: "serum",
+          catalogId: "B08KGXQY2R"
+        }],
+        applicationAdvice: "Introduire progressivement, 2 soirs par semaine puis augmenter selon tolérance.",
+        restrictions: ["Utiliser protection solaire obligatoire", "Commencer progressivement"],
+        treatmentType: 'treatment',
+        priority: 8,
+        phase: 'adaptation',
+        frequency: 'progressive',
+        timeOfDay: 'evening',
+        category: 'treatment',
+        startAfterDays: 14,
+        frequencyDetails: "2x/semaine puis augmenter"
+      })
+    }
+
+    if (hasAcne || hasPigmentation) {
+      steps.push({
+        stepNumber: stepCounter++,
+        title: "Traitement actif ciblé",
+        targetArea: 'specific',
+        zones: beautyAssessment.concernedZones || [],
+        recommendedProducts: [{
+          id: "B077RZ5LPG", 
+          name: "The Ordinary Niacinamide 10% + Zinc 1%",
+          brand: "The Ordinary",
+          category: "serum",
+          catalogId: "B077RZ5LPG"
+        }],
+        applicationAdvice: "Appliquer après 2 semaines d'adaptation, le soir uniquement.",
+        treatmentType: 'treatment',
+        priority: 7,
+        phase: 'adaptation',
+        frequency: 'daily',
+        timeOfDay: 'evening', 
+        category: 'treatment',
+        startAfterDays: 14
+      })
+    }
+
+    // 3. Hydratation renforcée
+    steps.push({
+      stepNumber: stepCounter++,
+      title: "Hydratation renforcée",
+      targetArea: 'global',
+      recommendedProducts: [{
+        id: "3337875588378",
+        name: "La Roche-Posay Toleriane Ultra Fluide",
+        brand: "La Roche-Posay",
+        category: "moisturizer",
+        catalogId: "3337875588378"
+      }],
+      applicationAdvice: "Appliquer généreusement pour contrebalancer l'introduction des actifs.",
+      treatmentType: 'moisturizing',
+      priority: 9,
+      phase: 'adaptation',
+      frequency: 'daily',
+      timeOfDay: 'both',
+      category: 'hydration'
     })
 
     return steps
@@ -794,36 +858,82 @@ RÉPONSE EN JSON UNIQUEMENT - PAS DE TEXTE LIBRE.`
    */
   private static generateMaintenancePhase(
     beautyAssessment: BeautyAssessment,
-    productRecommendations: ProductRecommendations,
-    adaptationPhase: UnifiedRoutineStep[]
+    productRecommendations: ProductRecommendations
   ): UnifiedRoutineStep[] {
     const steps: UnifiedRoutineStep[] = []
-    let stepCounter = 1 // CORRECTION: Numérotation 1,2,3 par phase
+    let stepCounter = 200 // Numérotation différente
 
-    // NOUVELLE LOGIQUE DERMATOLOGIQUE: Continuité base évoluée + soins préventifs
-    
-    // 1. Transférer et optimiser la base évoluée de la phase adaptation
-    const finalBase = this.transferAndOptimizeBase(adaptationPhase)
-    
-    // 2. Ajouter soins préventifs/optimisation selon besoins
-    const preventiveCare = this.generatePreventiveCare(beautyAssessment, finalBase.length + 1)
-    
-    // 3. Combiner et ordonner logiquement
-    const allSteps = [...finalBase, ...preventiveCare]
-    const orderedSteps = this.orderStepsLogically(allSteps)
-    
-    // 4. Renuméroter correctement
-    const finalSteps = orderedSteps.map((step, index) => ({
-      ...step,
-      stepNumber: index + 1
-    }))
-    
-    steps.push(...finalSteps)
-    
-    console.log('🏥 Phase maintenance générée:', {
-      finalBase: finalBase.length,
-      preventiveCare: preventiveCare.length,
-      total: steps.length
+    // 1. Exfoliation hebdomadaire (si appropriée)
+    if (this.needsExfoliation(beautyAssessment)) {
+      steps.push({
+        stepNumber: stepCounter++,
+        title: "Exfoliation douce",
+        targetArea: 'global',
+        recommendedProducts: [{
+          id: "B07XDQJV2P",
+          name: "The Ordinary Lactic Acid 5% + HA",
+          brand: "The Ordinary",
+          category: "exfoliant",
+          catalogId: "B07XDQJV2P"
+        }],
+        applicationAdvice: "1 fois par semaine le soir, après adaptation complète aux autres actifs.",
+        restrictions: ["Ne pas combiner avec rétinol le même soir", "Protection solaire indispensable"],
+        treatmentType: 'treatment',
+        priority: 6,
+        phase: 'maintenance',
+        frequency: 'weekly',
+        timeOfDay: 'evening',
+        category: 'exfoliation',
+        startAfterDays: 30,
+        frequencyDetails: "1x/semaine"
+      })
+    }
+
+    // 2. Masque hebdomadaire selon les besoins
+    const needsHydration = beautyAssessment.mainConcern?.includes('sécheresse') || beautyAssessment.mainConcern?.includes('déshydratation')
+    if (needsHydration) {
+      steps.push({
+        stepNumber: stepCounter++,
+        title: "Masque hydratant intensif",
+        targetArea: 'global',
+        recommendedProducts: [{
+          id: "masque-hydratant",
+          name: "Masque Hydratant Intensif",
+          brand: "Sélection DermAI",
+          category: "mask",
+          catalogId: "masque-hydratant"
+        }],
+        applicationAdvice: "Appliquer en couche épaisse, laisser poser 15-20 minutes, rincer à l'eau tiède.",
+        treatmentType: 'treatment',
+        priority: 5,
+        phase: 'maintenance',
+        frequency: 'weekly',
+        timeOfDay: 'evening',
+        category: 'treatment',
+        startAfterDays: 30,
+        frequencyDetails: "1x/semaine"
+      })
+    }
+
+    // 3. Protection solaire renforcée (maintenance)
+    steps.push({
+      stepNumber: stepCounter++,
+      title: "Protection solaire quotidienne",
+      targetArea: 'global',
+      recommendedProducts: [{
+        id: "3337875588600",
+        name: "La Roche-Posay Anthelios Ultra Fluide SPF 60",
+        brand: "La Roche-Posay",
+        category: "sunscreen",
+        catalogId: "3337875588600"
+      }],
+      applicationAdvice: "Application quotidienne indispensable, renouveler toutes les 2h si exposition.",
+      treatmentType: 'protection',
+      priority: 10,
+      phase: 'maintenance',
+      frequency: 'daily',
+      timeOfDay: 'morning',
+      category: 'protection'
     })
 
     return steps
@@ -888,22 +998,6 @@ RÉPONSE EN JSON UNIQUEMENT - PAS DE TEXTE LIBRE.`
         return false
       }
       
-      // Filtrer les étapes avec produits génériques/fallback
-      if (step.treatmentType === "treatment" && step.recommendedProducts.length > 0) {
-        const hasGenericProducts = step.recommendedProducts.some(product => {
-          const isGeneric = product.name.includes("Soin ciblé adapté") || 
-                           product.name.includes("Sélection DermAI") ||
-                           product.brand === "Sélection DermAI" ||
-                           !product.catalogId ||
-                           product.catalogId === "fallback"
-          return isGeneric
-        })
-        
-        if (hasGenericProducts) {
-          console.log(`🚫 Étape filtrée (produits génériques): ${step.title} - ${step.recommendedProducts.map(p => p.name).join(", ")}`)
-          return false
-        }
-      }
       // Garder toutes les autres étapes avec produits
       return true
     })
@@ -1524,591 +1618,6 @@ RÉPONSE EN JSON UNIQUEMENT - PAS DE TEXTE LIBRE.`
 
     return restrictions.size > 0 ? Array.from(restrictions) : undefined
   }
-
-  /**
-   * NOUVELLE LOGIQUE: Identifier la base durable en phase immédiate
-   */
-  private static identifyLongTermBase(immediatePhase: UnifiedRoutineStep[]): LongTermBaseProduct[] {
-    console.log('🔍 Analyse phase immédiate pour base durable:', immediatePhase.map(s => `${s.stepNumber}. ${s.title} (${s.category})`).join(', '))
-    
-    const longTermBase = immediatePhase
-      .filter(step => {
-        // Critères de base durable selon logique dermatologique
-        const isDurable = step.frequency === 'daily' &&
-               ['cleansing', 'hydration', 'protection'].includes(step.category) &&
-               !this.isTemporaryTreatment(step)
-               
-        console.log(`  - ${step.title}: ${isDurable ? '✓ Base durable' : '✗ Temporaire'} (${step.category}, ${step.frequency})`)
-        return isDurable
-      })
-      .map(step => ({
-        stepNumber: step.stepNumber,
-        title: step.title,
-        catalogId: step.recommendedProducts[0]?.catalogId || step.recommendedProducts[0]?.id || '',
-        productName: step.recommendedProducts[0]?.name || step.title,
-        productBrand: step.recommendedProducts[0]?.brand || 'Sélection DermAI',
-        canBeMaintainedMonths: true,
-        isTemporaryTreatment: false,
-        frequency: step.frequency,
-        category: step.category,
-        phase: step.phase
-      }))
-      
-    console.log('📊 Base durable finale:', longTermBase.map(b => `${b.title} - ${b.productName} (${b.catalogId})`).join(', '))
-    return longTermBase
-  }
-
-  /**
-   * Déterminer si un traitement est temporaire
-   */
-  private static isTemporaryTreatment(step: UnifiedRoutineStep): boolean {
-    const temporaryKeywords = [
-      'poils incarnés', 'cicatrisation', 'réparation barriere',
-      'inflammation', 'irritation aigu', 'urgence'
-    ]
-    
-    return temporaryKeywords.some(keyword => 
-      step.title.toLowerCase().includes(keyword) ||
-      step.applicationAdvice.toLowerCase().includes(keyword)
-    )
-  }
-
-  /**
-   * Évoluer les produits de base selon les besoins de l'IA
-   */
-  private static evolveBaseProducts(
-    baseDurable: LongTermBaseProduct[],
-    beautyAssessment: BeautyAssessment
-  ): UnifiedRoutineStep[] {
-    // Créer un mapping des produits originaux pour récupérer les vrais noms
-    const originalProductMapping: Record<string, RecommendedProduct> = {
-      'B01MSSDEPK': {
-        id: "B01MSSDEPK",
-        name: "CeraVe Nettoyant Hydratant",
-        brand: "CeraVe",
-        category: "cleanser",
-        catalogId: "B01MSSDEPK"
-      },
-      'B00BNUY3HE': {
-        id: "B00BNUY3HE",
-        name: "Tolériane Sensitive",
-        brand: "La Roche-Posay",
-        category: "moisturizer",
-        catalogId: "B00BNUY3HE"
-      },
-      'B004W55086': {
-        id: "B004W55086",
-        name: "La Roche-Posay Anthelios Fluid SPF 50",
-        brand: "La Roche-Posay",
-        category: "sunscreen",
-        catalogId: "B004W55086"
-      }
-    }
-    
-    return baseDurable.map((baseProduct, index) => {
-      // CORRECTION: Renuméroter à partir de 1
-      const newStepNumber = index + 1
-      
-      if (baseProduct.category === 'hydration') {
-        // Évolution vers hydratation renforcée si peau sèche/mature
-        if (this.needsReinforcedHydration(beautyAssessment)) {
-                return {
-        stepNumber: newStepNumber,
-        title: baseProduct.title.replace('globale', 'renforcée'),
-        targetArea: 'global' as const,
-        recommendedProducts: this.getReinforcedHydrationProducts(),
-        applicationAdvice: "Appliquer généreusement pour contrebalancer l'introduction des actifs plus forts.",
-        treatmentType: 'moisturizing' as const,
-        priority: 9,
-        phase: 'adaptation' as const,
-        frequency: 'daily' as const,
-        timeOfDay: 'both' as const,
-        category: 'hydration' as const,
-        // NOUVEAUX CHAMPS
-        applicationDuration: 'En continu',
-        timingBadge: 'Quotidien ☀️🌙',
-        timingDetails: 'Matin et soir'
-      }
-        }
-      }
-      
-      if (baseProduct.category === 'protection') {
-        // Évolution vers SPF plus élevé si exposition/actifs
-        if (this.hasProgressiveActives(beautyAssessment) || this.hasHighExposure(beautyAssessment)) {
-          return {
-            stepNumber: newStepNumber,
-            title: "Protection solaire renforcée",
-            targetArea: 'global' as const,
-            recommendedProducts: this.getHigherSPFProducts(),
-            applicationAdvice: "Application quotidienne indispensable avec actifs. Renouveler toutes les 2h si exposition.",
-            treatmentType: 'protection' as const,
-            priority: 10,
-            phase: 'adaptation' as const,
-            frequency: 'daily' as const,
-            timeOfDay: 'morning' as const,
-            category: 'protection' as const,
-            // NOUVEAUX CHAMPS
-            applicationDuration: 'En continu',
-            timingBadge: 'Quotidien ☀️',
-            timingDetails: 'Matin uniquement'
-          }
-        }
-      }
-      
-      // Base conservée par défaut - CORRECTION: utiliser le vrai produit de la base durable
-      const originalProduct = originalProductMapping[baseProduct.catalogId] || {
-        id: baseProduct.catalogId,
-        name: baseProduct.productName, // Utiliser le vrai nom du produit
-        brand: baseProduct.productBrand, // Utiliser la vraie marque
-        category: baseProduct.category,
-        catalogId: baseProduct.catalogId
-      }
-      
-      return {
-        stepNumber: newStepNumber,
-        title: baseProduct.title,
-        targetArea: 'global' as const,
-        recommendedProducts: [originalProduct],
-        applicationAdvice: "Routine maintenant établie. Continuer l'application selon les instructions précédentes.",
-        treatmentType: this.mapCategoryToTreatmentType(baseProduct.category),
-        priority: 9,
-        phase: 'adaptation' as const,
-        frequency: baseProduct.frequency as any,
-        timeOfDay: 'both' as const,
-        category: baseProduct.category as any,
-        // NOUVEAUX CHAMPS
-        applicationDuration: 'En continu',
-        timingBadge: 'Quotidien ☀️🌙',
-        timingDetails: 'Matin et soir'
-      }
-    })
-  }
-
-  /**
-   * Générer actifs progressifs selon diagnostic
-   */
-  private static generateProgressiveActives(
-    beautyAssessment: BeautyAssessment,
-    stepCounter: number
-  ): UnifiedRoutineStep[] {
-    const actives: UnifiedRoutineStep[] = []
-    
-    // Analyser les besoins pour actifs progressifs
-    const hasAging = this.hasAgingConcerns(beautyAssessment)
-    const hasAcne = this.hasAcneConcerns(beautyAssessment)
-    const hasPigmentation = this.hasPigmentationConcerns(beautyAssessment)
-    
-    if (hasAging) {
-      actives.push({
-        stepNumber: stepCounter++,
-        title: "Sérum anti-âge progressif",
-        targetArea: 'global',
-        recommendedProducts: [{
-          id: "B08KGXQY2R",
-          name: "The Ordinary Retinol 0.2% in Squalane",
-          brand: "The Ordinary",
-          category: "serum",
-          catalogId: "B08KGXQY2R"
-        }],
-        applicationAdvice: "Commencer 1 soir sur 3, puis augmenter selon tolérance. Appliquer sur peau sèche.",
-        restrictions: ["Protection solaire obligatoire le lendemain", "Commencer très progressivement"],
-        treatmentType: 'treatment',
-        priority: 8,
-        phase: 'adaptation',
-        frequency: 'progressive',
-        timeOfDay: 'evening',
-        category: 'treatment',
-        startAfterDays: 14,
-        frequencyDetails: "1x tous les 3 soirs, puis augmenter",
-        // NOUVEAUX CHAMPS UX
-        applicationDuration: 'Introduction progressive selon tolérance',
-        timingBadge: 'Progressif 📈',
-        timingDetails: '1x tous les 3 soirs, puis augmenter'
-      })
-    }
-    
-    if (hasAcne || hasPigmentation) {
-      actives.push({
-        stepNumber: stepCounter++,
-        title: "Traitement actif ciblé (Niacinamide)",
-        targetArea: 'specific',
-        zones: beautyAssessment.concernedZones || [],
-        recommendedProducts: [{
-          id: "B077RZ5LPG",
-          name: "The Ordinary Niacinamide 10% + Zinc 1%",
-          brand: "The Ordinary",
-          category: "serum",
-          catalogId: "B077RZ5LPG"
-        }],
-        applicationAdvice: "2-3 gouttes le soir uniquement sur zones concernées.",
-        treatmentType: 'treatment',
-        priority: 7,
-        phase: 'adaptation',
-        frequency: 'daily',
-        timeOfDay: 'evening',
-        category: 'treatment',
-        startAfterDays: 14,
-        // NOUVEAUX CHAMPS UX
-        applicationDuration: 'En continu pour maintenir les résultats',
-        timingBadge: 'Quotidien 🌙',
-        timingDetails: 'Soir uniquement'
-      })
-    }
-    
-    return actives
-  }
-
-  /**
-   * Ajouter critères visuels d'observation ET timing/durée séparés
-   */
-  private static addVisualCriteria(step: UnifiedRoutineStep): UnifiedRoutineStep {
-    const visualCriteria = this.getVisualCriteriaForTreatment(step.title)
-    const timingInfo = this.generateTimingBadge(step)
-    
-    // Séparer les informations au lieu de les mélanger dans applicationAdvice
-    const enhancedStep = {
-      ...step,
-      // NOUVEAU: Durée d'application séparée
-      applicationDuration: this.generateApplicationDuration(step, visualCriteria),
-      // NOUVEAU: Badge timing avec icônes
-      timingBadge: timingInfo.badge,
-      timingDetails: timingInfo.details,
-    }
-    
-    return enhancedStep
-  }
-
-  /**
-   * Obtenir critères visuels selon type de traitement
-   */
-  private static getVisualCriteriaForTreatment(title: string): VisualCriteria | null {
-    const criteriaMapping: Record<string, VisualCriteria> = {
-      'poils incarnés': {
-        goal: 'disparition des inflammations',
-        observation: 'Vérifier absence de rougeurs et gonflements',
-        estimatedDays: '1-2 semaines',
-        nextStep: 'Continuer prévention rasage puis phase suivante'
-      },
-      'imperfections': {
-        goal: 'réduction visible des lésions',
-        observation: 'Compter diminution nombre boutons actifs',
-        estimatedDays: '2-3 semaines',
-        nextStep: 'Introduire prévention récidive'
-      },
-      'rougeurs': {
-        goal: 'apaisement et uniformisation',
-        observation: 'Teint plus homogène, moins de réactivité',
-        estimatedDays: '1-2 semaines',
-        nextStep: 'Renforcer barrière cutanée'
-      },
-      'cicatrisation': {
-        goal: 'fermeture complète plaies',
-        observation: 'Peau lisse, couleur normalisée',
-        estimatedDays: '1-3 semaines',
-        nextStep: 'Prévention cicatrices'
-      }
-    }
-    
-    const lowerTitle = title.toLowerCase()
-    for (const [keyword, criteria] of Object.entries(criteriaMapping)) {
-      if (lowerTitle.includes(keyword)) {
-        return criteria
-      }
-    }
-    
-    return null
-  }
-
-  /**
-   * Méthodes d'aide pour évaluer les besoins
-   */
-  private static needsReinforcedHydration(beautyAssessment: BeautyAssessment): boolean {
-    return beautyAssessment.mainConcern?.toLowerCase().includes('sécheresse') ||
-           beautyAssessment.mainConcern?.toLowerCase().includes('déshydratation') ||
-           (beautyAssessment.zoneSpecific?.some(zone => 
-             zone.problems?.some(p => p.name.toLowerCase().includes('sécheresse'))
-           ) ?? false)
-  }
-
-  private static hasProgressiveActives(beautyAssessment: BeautyAssessment): boolean {
-    return this.hasAgingConcerns(beautyAssessment) || this.hasAcneConcerns(beautyAssessment)
-  }
-
-  private static hasHighExposure(beautyAssessment: BeautyAssessment): boolean {
-    // Suppose exposition élevée si taches pigmentaires ou photovieillissement
-    return beautyAssessment.mainConcern?.toLowerCase().includes('tache') ||
-           beautyAssessment.mainConcern?.toLowerCase().includes('photovieillissement')
-  }
-
-  private static getReinforcedHydrationProducts(): RecommendedProduct[] {
-    return [{
-      id: "3337875588378",
-      name: "La Roche-Posay Toleriane Ultra Fluide",
-      brand: "La Roche-Posay",
-      category: "moisturizer",
-      catalogId: "3337875588378"
-    }]
-  }
-
-  private static getHigherSPFProducts(): RecommendedProduct[] {
-    return [{
-      id: "3337875588600",
-      name: "La Roche-Posay Anthelios Ultra Fluide SPF 60",
-      brand: "La Roche-Posay",
-      category: "sunscreen",
-      catalogId: "3337875588600"
-    }]
-  }
-
-  private static mapCategoryToTreatmentType(category: string): 'cleansing' | 'treatment' | 'moisturizing' | 'protection' {
-    const mapping: Record<string, any> = {
-      'cleansing': 'cleansing',
-      'hydration': 'moisturizing',
-      'protection': 'protection',
-      'treatment': 'treatment'
-    }
-    return mapping[category] || 'treatment'
-  }
-
-  /**
-   * Ordonner les étapes selon la logique dermatologique
-   */
-  private static orderStepsLogically(steps: UnifiedRoutineStep[]): UnifiedRoutineStep[] {
-    const categoryOrder = {
-      'cleansing': 1,
-      'treatment': 2,
-      'hydration': 3,
-      'protection': 4
-    }
-    
-    return steps.sort((a, b) => {
-      const orderA = categoryOrder[a.category as keyof typeof categoryOrder] || 5
-      const orderB = categoryOrder[b.category as keyof typeof categoryOrder] || 5
-      
-      if (orderA !== orderB) {
-        return orderA - orderB
-      }
-      
-      // Si même catégorie, trier par priorité
-      return b.priority - a.priority
-    })
-  }
-
-  /**
-   * Transférer et optimiser la base de la phase adaptation vers maintenance
-   */
-  private static transferAndOptimizeBase(adaptationPhase: UnifiedRoutineStep[]): UnifiedRoutineStep[] {
-    console.log('🔄 Transfert base adaptation vers maintenance:', adaptationPhase.map(s => `${s.stepNumber}. ${s.title}`).join(', '))
-    
-    // Identifier la base établie en adaptation (produits quotidiens, base)
-    const baseProducts = adaptationPhase.filter(step => 
-      step.frequency === 'daily' &&
-      ['cleansing', 'hydration', 'protection'].includes(step.category)
-    )
-    
-    console.log('🏠 Base à transférer:', baseProducts.map(s => s.title).join(', '))
-    
-    // Optimiser pour maintenance (même efficacité, geste plus fluide) - SANS renuméroter ici
-    return baseProducts.map(step => ({
-      ...step,
-      phase: 'maintenance' as const,
-      title: step.title.includes('renforcé') ? step.title : `${step.title} optimisée`,
-      applicationAdvice: `Routine établie et maîtrisée. ${step.applicationAdvice.replace('Routine maintenant établie. ', '')}`
-    }))
-  }
-
-  /**
-   * Générer soins préventifs selon besoins long terme
-   */
-  private static generatePreventiveCare(
-    beautyAssessment: BeautyAssessment, 
-    stepCounter: number
-  ): UnifiedRoutineStep[] {
-    const preventiveCare: UnifiedRoutineStep[] = []
-    
-    // Exfoliation préventive si nécessaire
-    if (this.needsExfoliation(beautyAssessment)) {
-      preventiveCare.push({
-        stepNumber: stepCounter++,
-        title: "Exfoliation préventive",
-        targetArea: 'global',
-        recommendedProducts: [{
-          id: "B07XDQJV2P",
-          name: "The Ordinary Lactic Acid 5% + HA",
-          brand: "The Ordinary",
-          category: "exfoliant",
-          catalogId: "B07XDQJV2P"
-        }],
-        applicationAdvice: "Appliquer pour maintenir le renouvellement cellulaire et prévenir l'accumulation de cellules mortes.",
-        restrictions: ["Ne pas combiner avec rétinol le même soir", "Protection solaire indispensable"],
-        treatmentType: 'treatment',
-        priority: 6,
-        phase: 'maintenance',
-        frequency: 'weekly',
-        timeOfDay: 'evening',
-        category: 'exfoliation',
-        startAfterDays: 42, // Après adaptation complète
-        frequencyDetails: "1x/semaine, soir sans rétinol",
-        // NOUVEAUX CHAMPS UX
-        applicationDuration: 'Entretien hebdomadaire',
-        timingBadge: 'Hebdomadaire 🌙',
-        timingDetails: '1x/semaine, soir sans rétinol'
-      })
-    }
-    
-    // Soin ciblé préventif selon préoccupation principale
-    const mainConcern = beautyAssessment.mainConcern?.toLowerCase() || ''
-    
-    if (mainConcern.includes('tache') || mainConcern.includes('pigment')) {
-      preventiveCare.push({
-        stepNumber: stepCounter++,
-        title: "Prévention taches pigmentaires",
-        targetArea: 'specific',
-        zones: beautyAssessment.concernedZones || [],
-        recommendedProducts: [{
-          id: "B077RZ5LPG",
-          name: "The Ordinary Niacinamide 10% + Zinc 1%",
-          brand: "The Ordinary",
-          category: "serum",
-          catalogId: "B077RZ5LPG"
-        }],
-        applicationAdvice: "Application continue pour maintenir l'uniformité du teint et prévenir nouvelles taches.",
-        treatmentType: 'treatment',
-        priority: 7,
-        phase: 'maintenance',
-        frequency: 'daily',
-        timeOfDay: 'evening',
-        category: 'treatment',
-        // NOUVEAUX CHAMPS UX
-        applicationDuration: 'En continu pour prévention',
-        timingBadge: 'Quotidien 🌙',
-        timingDetails: 'Soir uniquement'
-      })
-    }
-    
-    if (mainConcern.includes('ride') || mainConcern.includes('âge')) {
-      preventiveCare.push({
-        stepNumber: stepCounter++,
-        title: "Prévention vieillissement",
-        targetArea: 'global',
-        recommendedProducts: [{
-          id: "B08KGXQY2R",
-          name: "The Ordinary Retinol 0.2% in Squalane",
-          brand: "The Ordinary",
-          category: "serum",
-          catalogId: "B08KGXQY2R"
-        }],
-        applicationAdvice: "Maintenir 3-4 applications par semaine pour prévenir nouveaux signes de vieillissement.",
-        restrictions: ["Protection solaire obligatoire"],
-        treatmentType: 'treatment',
-        priority: 8,
-        phase: 'maintenance',
-        frequency: 'weekly',
-        timeOfDay: 'evening',
-        category: 'treatment',
-        frequencyDetails: "3-4x/semaine",
-        // NOUVEAUX CHAMPS UX
-        applicationDuration: 'En continu pour prévention',
-        timingBadge: 'Varié ⚡',
-        timingDetails: '3-4x/semaine'
-      })
-    }
-    
-    return preventiveCare
-  }
-
-  /**
-   * Générer la durée d'application selon le type de traitement
-   */
-  private static generateApplicationDuration(
-    step: UnifiedRoutineStep, 
-    visualCriteria: VisualCriteria | null
-  ): string {
-    // Traitements temporaires avec critères visuels
-    if (visualCriteria) {
-      return `Jusqu'à ${visualCriteria.observation.toLowerCase()} (${visualCriteria.estimatedDays})`
-    }
-    
-    // Traitements permanents selon la catégorie
-    if (['cleansing', 'hydration', 'protection'].includes(step.category)) {
-      return 'En continu'
-    }
-    
-    // Exfoliation et soins hebdomadaires
-    if (step.frequency === 'weekly') {
-      return 'Entretien hebdomadaire'
-    }
-    
-    // Traitements progressifs
-    if (step.frequency === 'progressive') {
-      return 'Introduction progressive selon tolérance'
-    }
-    
-    // Par défaut
-    return 'Selon besoin'
-  }
-
-  /**
-   * Générer le badge timing avec icônes matin/soir
-   */
-  private static generateTimingBadge(step: UnifiedRoutineStep): TimingBadgeResult {
-    const { frequency, timeOfDay, frequencyDetails } = step
-    
-    // Icônes pour timing
-    const icons = {
-      morning: '☀️',
-      evening: '🌙',
-      both: '☀️🌙'
-    }
-    
-    // Badge principal selon fréquence
-    if (frequency === 'daily') {
-      const icon = icons[timeOfDay] || ''
-      return {
-        badge: `Quotidien ${icon}`,
-        details: timeOfDay === 'evening' ? 'Soir uniquement' : 
-                timeOfDay === 'morning' ? 'Matin uniquement' : 
-                'Matin et soir'
-      }
-    }
-    
-    if (frequency === 'weekly') {
-      const icon = icons[timeOfDay] || '🌙'
-      let details = '1x/semaine'
-      
-      // Ajouter détails spéciaux pour certains produits
-      if (step.title.toLowerCase().includes('exfoliation')) {
-        details = '1x/semaine, soir sans rétinol'
-      } else if (frequencyDetails) {
-        details = frequencyDetails
-      }
-      
-      return {
-        badge: `Hebdomadaire ${icon}`,
-        details
-      }
-    }
-    
-    if (frequency === 'progressive') {
-      return {
-        badge: 'Progressif 📈',
-        details: frequencyDetails || 'Commencer 1x tous les 3 jours, puis augmenter'
-      }
-    }
-    
-    if (frequency === 'as-needed') {
-      return {
-        badge: 'Au besoin 🎯',
-        details: 'Selon apparition des problèmes'
-      }
-    }
-    
-    // Par défaut
-    return {
-      badge: 'Varié ⚡',
-      details: frequencyDetails || 'Fréquence variable'
-    }
-  }
 }
 
 // Interface pour traitement optimisé
@@ -2117,32 +1626,4 @@ interface OptimizedTreatment {
   zones: string[]
   catalogId: string
   priority: number
-}
-
-// Interface pour base durable
-interface LongTermBaseProduct {
-  stepNumber: number
-  title: string
-  catalogId: string
-  productName: string
-  productBrand: string
-  canBeMaintainedMonths: boolean
-  isTemporaryTreatment: boolean
-  frequency: string
-  category: string
-  phase: 'immediate' | 'adaptation' | 'maintenance'
-}
-
-// Interface pour critères visuels
-interface VisualCriteria {
-  goal: string
-  observation: string
-  estimatedDays: string
-  nextStep: string
-}
-
-// Interface locale pour timing badges
-interface TimingBadgeResult {
-  badge: string
-  details?: string
 }

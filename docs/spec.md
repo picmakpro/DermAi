@@ -8,13 +8,29 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 
 ### 2.1. Stack Technologique
 
-- **Frontend:** Next.js 15 (avec App Router), React 19, TypeScript
+**Frontend**
+- **Framework:** Next.js 15 (avec App Router), React 19, TypeScript
 - **Styling:** Tailwind CSS avec un thème personnalisé
 - **Animations:** Framer Motion
-- **IA:** OpenAI GPT-4o Vision API
-- **Stockage local:** IndexedDB pour les données volumineuses (photos, résultats d'analyse), SessionStorage pour les métadonnées de session.
 - **Validation de données:** Zod
 - **Gestion de formulaires:** React Hook Form
+
+**Backend & Authentification**
+- **Authentification:** NextAuth.js (email/password + OAuth Google/Apple)
+- **Base de données:** Supabase (PostgreSQL avec Row Level Security)
+- **Stockage fichiers:** Supabase Storage (photos utilisateurs)
+- **Cache:** Redis Cloud (cache des recherches produits)
+
+**IA & APIs Externes**
+- **IA:** OpenAI GPT-4o Vision API
+- **Affiliation:** APIs Sephora, Amazon Associates, Douglas
+- **Analytics:** Google Analytics 4 + Enhanced Ecommerce
+- **Monitoring:** Sentry (error tracking), Vercel Analytics
+
+**Stockage & Données**
+- **Stockage cloud:** Supabase (analyses, profils utilisateurs)
+- **Stockage local:** IndexedDB (cache offline), SessionStorage (session)
+- **Compression:** LZ-String (partage de résultats)
 
 ### 2.2. Structure du Projet
 
@@ -22,6 +38,18 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 /src
 |-- /app
 |   |-- /api
+|   |   |-- /auth/[...nextauth]/route.ts
+|   |   |-- /analyze/route.ts
+|   |   |-- /analyses/route.ts (CRUD utilisateur)
+|   |   |-- /affiliate/route.ts (tracking)
+|   |-- /auth (signin/signup)
+|   |-- /dashboard
+|   |   |-- layout.tsx (sidebar navigation)
+|   |   |-- page.tsx (vue d'ensemble)
+|   |   |-- /analyses (historique)
+|   |   |-- /progress (évolution)
+|   |   |-- /settings (paramètres)
+|   |-- /admin (analytics, métriques)
 |   |-- /analyze
 |   |-- /questionnaire
 |   |-- /results
@@ -29,15 +57,25 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 |   |-- layout.tsx
 |   |-- page.tsx
 |-- /components
-|   |-- /ui
-|   |-- /shared
+|   |-- /ui (composants de base)
+|   |-- /shared (composants réutilisables)
+|   |-- /dashboard (composants dashboard)
+|   |-- /auth (formulaires authentification)
 |-- /constants
 |-- /data
 |-- /hooks
+|   |-- useAuth.ts
+|   |-- useAnalysis.ts
+|   |-- useAnalytics.ts
 |-- /lib
+|   |-- auth.ts (NextAuth config)
+|   |-- supabase.ts (client)
+|   |-- analytics.ts (GA4)
 |-- /services
-|   |-- ai.ts
-|   |-- catalog.ts
+|   |-- /ai (analysis.service.ts)
+|   |-- /affiliate (product APIs)
+|   |-- /storage (cloud storage)
+|   |-- /analytics (tracking)
 |-- /types
 |-- /utils
 ```
@@ -65,19 +103,34 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 
 ### 3.2. Fonctionnalités Détaillées
 
-- **Diagnostic en 2 étapes**: 
-    1.  Analyse visuelle par GPT-4o pour un diagnostic objectif.
-    2.  Sélection de produits et création de routine basées sur le diagnostic et le catalogue de produits.
+- **Diagnostic en 2 étapes optimisé**: 
+    1.  Analyse visuelle par GPT-4o pour un diagnostic objectif et détaillé.
+    2.  Sélection intelligente de produits via moteur interne (zéro fallback générique).
 - **Parcours utilisateur optimisé** :
     - **Écrans plein écran immersifs** : 3 écrans dédiés pour l'engagement et la réassurance
     - **Preuve sociale intégrée** : Statistiques d'utilisateurs similaires pour rassurer
     - **Visualisation des économies** : Comparaison avant/après des dépenses cosmétiques
     - **Progression claire** : Indicateur visuel et numérique du progrès
 - **Scores Détaillés**: Notation sur 100 pour 8 critères de santé de la peau (hydratation, rides, etc.).
-- **Routine Personnalisée**: Routine de soins évolutive en 3 phases (immédiate, adaptation, maintenance).
-- **Catalogue de Produits**: Intégration d'un catalogue de produits d'affiliation avec des liens d'achat.
+- **🔬 Routine 3 Phases Dermatologique** (NOUVEAU):
+    - **Phase Immédiate (1-3 sem)** : Stabiliser + traiter urgent, respecter barrière cutanée
+    - **Phase Adaptation (3-8 sem)** : Introduction progressive actifs puissants
+    - **Phase Maintenance (continu)** : Maintenir acquis + prévention rechutes
+    - **Transition intelligente** : Base durable vs traitements temporaires
+    - **Durées personnalisées** : Calcul selon âge, type peau, gravité problèmes
+    - **Critères visuels** : "Jusqu'à cicatrisation" remplace timing arbitraire
+- **🎓 Interface Éducative Intégrée** (NOUVEAU):
+    - **Objectifs par phase** : Explication "pourquoi" chaque étape
+    - **Info-bulles dermatologiques** : Cycle cellulaire 28 jours vulgarisé
+    - **Badges temporels enrichis** : Observation + durée + objectif
+    - **Autonomisation utilisateur** : Compréhension logique progression
+- **Catalogue Interne Curatifé**: Base de données produits soigneusement sélectionnés par qualité et efficacité
+- **Moteur de Recommandations Avancé**: 
+    - Algorithme intelligent sans recommandations "vides"
+    - Filtrage automatique produits génériques/fallback
+    - Regroupement intelligent par catalogId
 - **Assistant IA**: Un chatbot pour répondre aux questions de l'utilisateur sur son diagnostic.
-- **Analytics intégrées** : Suivi des interactions utilisateur sur les nouveaux écrans.
+- **Analytics intégrées** : Suivi des interactions utilisateur et performance des recommandations.
 
 ## 4. IA et Machine Learning
 
@@ -87,9 +140,39 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 
 ## 5. Gestion des Données
 
-- **Stockage des photos**: Les photos sont stockées localement dans IndexedDB pour garantir la confidentialité et éviter les limitations de quota.
-- **Métadonnées**: Les réponses au questionnaire et autres métadonnées de session sont stockées dans SessionStorage.
-- **Partage de résultats**: Les résultats peuvent être partagés via une URL unique grâce à la compression des données avec LZ-String.
+### 5.1. Architecture de Stockage Hybride
+
+**Stockage Cloud (Utilisateurs Connectés)**
+- **Photos utilisateurs**: Supabase Storage avec compression et chiffrement
+- **Analyses et diagnostics**: Base de données Supabase avec Row Level Security
+- **Profils utilisateurs**: Métadonnées et préférences en base sécurisée
+- **Historique et évolution**: Tracking des progrès avec comparaisons temporelles
+
+**Stockage Local (Mode Invité + Cache)**
+- **Cache offline**: IndexedDB pour fonctionnement hors ligne
+- **Session temporaire**: SessionStorage pour utilisateurs non connectés
+- **Optimisation performance**: Cache local des résultats d'API
+
+### 5.2. Sécurité et Confidentialité
+
+**Protection des Données Sensibles**
+- Row Level Security (RLS) Supabase pour isolation des données utilisateur
+- Chiffrement des photos avant stockage cloud
+- Tokens JWT sécurisés pour l'authentification
+- Audit trail des accès aux données personnelles
+
+**Conformité RGPD**
+- Consentement explicite pour stockage cloud
+- Droit à l'effacement (suppression complète des données)
+- Export des données personnelles en format portable
+- Anonymisation des analytics et métriques
+
+### 5.3. Partage et Interopérabilité
+
+- **Partage sécurisé**: URLs temporaires avec tokens d'accès limités
+- **Export PDF**: Rapports complets avec branding professionnel
+- **Compression intelligente**: LZ-String pour optimiser les partages
+- **APIs futures**: Endpoints pour intégration avec systèmes tiers
 
 ## 6. UI/UX
 
@@ -97,12 +180,84 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 - **Palette de couleurs**: Dominance de blanc et de beige avec des accents de bleu/violet pour l'IA.
 - **Responsive**: L'application est conçue pour être entièrement fonctionnelle et esthétique sur mobile et sur ordinateur.
 
-## 7. Roadmap et Évolutions Futures
+## 7. Roadmap et Planning Détaillé
 
-- **Suivi de l'évolution**: Permettre aux utilisateurs de suivre les progrès de leur peau en comparant les photos au fil du temps.
-- **Authentification**: Créer des comptes utilisateurs pour sauvegarder l'historique des diagnostics.
-- **Marketplace**: Développer une marketplace intégrée avec des partenariats de marques.
-- **Export PDF**: Permettre aux utilisateurs d'exporter leur diagnostic complet au format PDF.
+### 7.1. État Actuel (Janvier 2025)
+- ✅ Architecture Next.js 15 + TypeScript + Tailwind CSS
+- ✅ Interface d'upload professionnel avec validation
+- ✅ Questionnaire interactif en 7 étapes (3 écrans plein écran)
+- ✅ Intégration GPT-4o Vision pour diagnostic IA
+- ✅ Page de résultats avec scores détaillés (8 paramètres)
+- ✅ **Routine 3 Phases Dermatologique** : Logique complète respectant cycle cellulaire
+- ✅ **Interface Éducative** : Durées personnalisées + info-bulles + badges temporels
+- ✅ **Filtrage Intelligent** : Suppression automatique produits génériques
+- ✅ **Numérotation Cohérente** : 1,2,3 par phase au lieu de 100,200
+- ✅ **Transition Produits** : Base durable vs traitements temporaires
+- ✅ **Critères Visuels** : "Jusqu'à cicatrisation" remplace timing arbitraire
+- ✅ Système de partage viral avec export d'images
+- ✅ Stockage local : IndexedDB + SessionStorage
+- ✅ Catalogue d'affiliation basique (JSON statique)
+- ⚠️ NextAuth.js et Supabase installés mais non configurés
+
+### 7.2. Planning de Développement (6-10 semaines)
+
+**PHASE 1 : Authentification & Cloud Storage (1-2 semaines)**
+- Configuration Supabase avec tables utilisateurs et analyses
+- Implémentation NextAuth.js (email/password + OAuth Google)
+- Migration du stockage local vers cloud sécurisé
+- Protection des routes et gestion des sessions
+
+**PHASE 2 : Dashboard Utilisateur (2-3 semaines)**
+- Architecture dashboard avec sidebar responsive
+- Historique des analyses avec pagination et filtres
+- Système de comparaison et suivi d'évolution
+- Paramètres utilisateur et gestion du profil
+
+**PHASE 3 : Catalogue Produits Interne & Monétisation (2-3 semaines)**
+- Base de données produits interne soigneusement curatée
+- Moteur de sélection IA intelligent avec zéro fallback générique
+- Logique d'optimisation budgétaire et alternatives économiques
+- Interface admin de gestion et analytics de performance produits
+
+**PHASE 4 : Analytics & Optimisation (1-2 semaines)**
+- Configuration Google Analytics 4 complète
+- Dashboard admin avec métriques de conversion
+- Optimisation PWA et performances (Lighthouse >90)
+- Heatmaps et analyse de parcours utilisateur
+
+**PHASE 5 : Sécurité & Tests (1 semaine)**
+- Audit sécurité et headers de protection
+- Suite de tests automatisés (Jest + Playwright)
+- Pipeline CI/CD avec GitHub Actions
+- Monitoring erreurs avec Sentry
+
+**PHASE 6 : Lancement Production (1 semaine)**
+- Optimisation SEO et pages légales
+- Déploiement Vercel Pro avec domaine personnalisé
+- Onboarding utilisateur et support
+- Monitoring intensif post-lancement
+
+### 7.3. Fonctionnalités Futures Prioritaires
+
+**Coach IA Personnel (post-lancement)**
+- Chatbot conversationnel intégré au dashboard
+- Conseils personnalisés basés sur l'évolution
+- Rappels intelligents et notifications
+
+**Système de Gamification**
+- Points de fidélité et badges de progression
+- Récompenses sous forme de réductions
+- Classements communautaires (optionnels)
+
+**Export PDF Avancé**
+- Rapports détaillés avec graphiques d'évolution
+- Branding professionnel pour partage médical
+- Historique complet sur 6-12 mois
+
+**Marketplace Intégrée**
+- Vente directe avec marges élevées
+- Partenariats exclusifs avec marques
+- Programme de fidélité avancé
 
 
 
