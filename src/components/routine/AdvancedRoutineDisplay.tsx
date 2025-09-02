@@ -41,9 +41,9 @@ interface NewRoutineStep {
 
 interface AdvancedRoutineProps {
   routine: {
-    immediate: RoutineStep[] | NewRoutineStep[]
-    adaptation: RoutineStep[] | NewRoutineStep[]
-    maintenance: RoutineStep[] | NewRoutineStep[]
+    immediate: any[]
+    adaptation: any[]
+    maintenance: any[]
   }
 }
 
@@ -171,7 +171,7 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
 
   const scheduleData = organizeBySchedule()
 
-  const renderStep = (step: RoutineStep | NewRoutineStep, index: number) => {
+  const renderStep = (step: any, index: number) => {
     // Normaliser la structure pour l'affichage
     const normalizedStep = isNewStructure(step) ? {
       title: step.name,
@@ -201,7 +201,7 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
       <div className="flex items-start space-x-3">
         <div className="flex-shrink-0">
           <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-sm">
-            {categoryIcons[normalizedStep.category]}
+            {categoryIcons[normalizedStep.category as keyof typeof categoryIcons] || '🎯'}
           </div>
         </div>
         
@@ -209,8 +209,8 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
           <div className="flex items-center space-x-2 mb-1">
             <h4 className="font-medium text-gray-900">{normalizedStep.title}</h4>
             <div className="flex items-center space-x-1 text-xs text-gray-500">
-              {timeIcons[normalizedStep.timeOfDay]}
-              <span>{frequencyLabels[normalizedStep.frequency]}</span>
+              {timeIcons[normalizedStep.timeOfDay as keyof typeof timeIcons]}
+              <span>{frequencyLabels[normalizedStep.frequency as keyof typeof frequencyLabels]}</span>
             </div>
           </div>
           
@@ -232,15 +232,15 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
           
           {/* Nouvelle structure avec catalogId */}
           {isNewStructure(step) && (
-            <div className="bg-blue-50 rounded-lg p-2 mb-2 border border-blue-200">
-              <div className="flex items-center space-x-1 text-xs text-blue-700 mb-1">
-                <Target className="w-3 h-3" />
-                <span className="font-medium">Produit recommandé</span>
+            <div className="bg-dermai-ai-50 rounded-lg p-2 mb-2 border border-dermai-ai-200">
+              <div className="flex items-center space-x-1 text-xs text-dermai-ai-700 mb-1">
+                <span className="w-2 h-2 bg-dermai-ai-500 rounded-full"></span>
+                <span className="font-medium">{getProductNameFromCatalogId(step.catalogId)}</span>
               </div>
               <a
                 href={typeof (step as any).affiliateLink === 'string' ? (step as any).affiliateLink : '#'}
                 target="_blank" rel="noopener noreferrer"
-                className="text-xs text-blue-800 font-medium hover:underline"
+                className="text-xs text-dermai-ai-800 font-medium hover:underline"
               >
                 {getProductNameFromCatalogId(step.catalogId)}
               </a>
@@ -265,14 +265,12 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
                 <Lightbulb className="w-3 h-3" />
                 <span className="font-medium">Conseils d&apos;application</span>
               </div>
-              <ul className="text-xs text-gray-600 space-y-0.5">
-                {normalizedStep.applicationTips.map((tip, tipIndex) => (
-                  <li key={tipIndex} className="flex items-start space-x-1">
-                    <span className="text-green-500 mt-0.5">•</span>
+              {normalizedStep.applicationTips?.map((tip: string, tipIndex: number) => (
+                  <div key={tipIndex} className="flex items-start space-x-2 text-xs text-gray-600">
+                    <Lightbulb className="w-3 h-3 text-yellow-500 mt-0.5 flex-shrink-0" />
                     <span>{tip}</span>
-                  </li>
+                  </div>
                 ))}
-              </ul>
             </div>
           )}
         </div>
@@ -283,18 +281,23 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
 
   return (
     <div className="bg-white rounded-3xl shadow-xl p-8">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-3">
-          <Calendar className="w-6 h-6 text-purple-500" />
-          <h2 className="text-2xl font-bold text-gray-900">Routine Dermatologique Personnalisée</h2>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+        <div className="flex items-center space-x-3 mb-4 md:mb-0">
+          <div className="p-2 bg-gradient-to-br from-dermai-ai-100 to-dermai-ai-200 rounded-xl">
+            <Calendar className="w-5 h-5 text-dermai-ai-600" />
+          </div>
+          <div>
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900">Routines Personnalisées</h2>
+            <p className="text-sm text-dermai-neutral-600">Propulsé par DermAI</p>
+          </div>
         </div>
         
-        <div className="flex bg-gray-100 rounded-lg p-1">
+        <div className="flex bg-gray-100 rounded-lg p-1 w-fit">
           <button
             onClick={() => setViewMode('phases')}
-            className={`px-3 py-1 text-sm rounded-md transition-all ${
+            className={`px-4 py-2 text-sm rounded-md transition-all font-medium ${
               viewMode === 'phases' 
-                ? 'bg-white text-purple-600 shadow-sm' 
+                ? 'bg-white text-dermai-ai-400 shadow-sm' 
                 : 'text-gray-600 hover:text-gray-800'
             }`}
           >
@@ -302,9 +305,9 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
           </button>
           <button
             onClick={() => setViewMode('schedule')}
-            className={`px-3 py-1 text-sm rounded-md transition-all ${
+            className={`px-4 py-2 text-sm rounded-md transition-all font-medium ${
               viewMode === 'schedule' 
-                ? 'bg-white text-purple-600 shadow-sm' 
+                ? 'bg-white text-dermai-ai-400 shadow-sm' 
                 : 'text-gray-600 hover:text-gray-800'
             }`}
           >
@@ -316,18 +319,20 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
       {viewMode === 'phases' ? (
         <>
           {/* Navigation des phases */}
-          <div className="flex space-x-2 mb-6">
+          <div className="flex flex-wrap gap-2 mb-6">
             {Object.keys(routine).map((phase) => (
               <button
                 key={phase}
                 onClick={() => setActivePhase(phase as any)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                className={`px-3 md:px-4 py-2 rounded-lg text-sm font-medium transition-all flex-shrink-0 ${
                   activePhase === phase
-                    ? 'bg-purple-500 text-white shadow-md'
+                    ? 'bg-gradient-to-r from-dermai-ai-400 to-dermai-ai-500 text-white shadow-md'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
-                {phaseLabels[phase as keyof typeof phaseLabels]}
+                <span className="whitespace-nowrap">
+                  {phaseLabels[phase as keyof typeof phaseLabels]}
+                </span>
                 <span className="ml-1 text-xs opacity-70">
                   ({routine[phase as keyof typeof routine].length})
                 </span>

@@ -120,13 +120,13 @@ export default function PhotoUploadZone({
   }
 
   return (
-    <div className="space-y-6">
-      {/* Zone de drop */}
+    <div className="space-y-4 md:space-y-6">
+      {/* Zone de drop - Optimisée pour mobile */}
       <div
-        className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300 ${
+        className={`relative border-2 border-dashed rounded-xl p-4 md:p-8 text-center transition-all duration-300 ${
           dragActive 
-            ? 'border-blue-500 bg-blue-50' 
-            : 'border-gray-300 hover:border-gray-400'
+            ? 'border-dermai-ai-500 bg-dermai-ai-50' 
+            : 'border-dermai-nude-300 hover:border-dermai-nude-400'
         } ${photos.length >= maxPhotos ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
         onDragEnter={(e) => { e.preventDefault(); setDragActive(true) }}
         onDragLeave={(e) => { e.preventDefault(); setDragActive(false) }}
@@ -149,25 +149,25 @@ export default function PhotoUploadZone({
           disabled={photos.length >= maxPhotos}
         />
         
-        <div className="space-y-4">
-          <div className="w-16 h-16 mx-auto bg-blue-100 rounded-full flex items-center justify-center">
-            <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="space-y-3 md:space-y-4">
+          <div className="w-12 h-12 md:w-16 md:h-16 mx-auto bg-dermai-ai-100 rounded-full flex items-center justify-center">
+            <svg className="w-6 h-6 md:w-8 md:h-8 text-dermai-ai-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
           </div>
           
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-base md:text-lg font-semibold text-dermai-neutral-900">
               {photos.length >= maxPhotos ? 'Limite atteinte' : 'Ajoutez vos photos'}
             </h3>
-            <p className="text-gray-600 mt-2">
+            <p className="text-dermai-neutral-600 mt-1 md:mt-2 text-sm md:text-base">
               {photos.length >= maxPhotos 
                 ? `Maximum ${maxPhotos} photos atteint`
                 : `Glissez-déposez ou cliquez pour sélectionner (${photos.length}/${maxPhotos})`
               }
             </p>
-            <p className="text-sm text-gray-500 mt-2">
-              Formats acceptés: JPG, PNG, WebP, HEIC/HEIF, AVIF. Les photos non supportées sont converties automatiquement en JPEG. • Max {(MAX_FILE_SIZE / (1024 * 1024)).toFixed(0)}MB par photo
+            <p className="text-xs md:text-sm text-dermai-neutral-500 mt-1 md:mt-2">
+              JPG, PNG, WebP, HEIC/HEIF, AVIF • Max {(MAX_FILE_SIZE / (1024 * 1024)).toFixed(0)}MB par photo
             </p>
           </div>
         </div>
@@ -185,16 +185,16 @@ export default function PhotoUploadZone({
         </div>
       )}
 
-      {/* Aperçu des photos */}
+      {/* Aperçu des photos - Optimisé pour mobile */}
       {photos.length > 0 && (
-        <div className="space-y-4">
-          <h4 className="font-semibold text-gray-900">Photos sélectionnées :</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-3 md:space-y-4">
+          <h4 className="font-semibold text-dermai-neutral-900 text-sm md:text-base">Photos sélectionnées :</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
             {photos.map((photo) => (
-              <div key={photo.id} className="bg-white border border-gray-200 rounded-lg p-4">
-                <div className="flex items-start space-x-4">
+              <div key={photo.id} className="bg-white border border-dermai-nude-200 rounded-lg p-3 md:p-4">
+                <div className="flex items-start space-x-3 md:space-x-4">
                   {/* Miniature */}
-                  <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                  <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden bg-dermai-nude-100 flex-shrink-0">
                     <img 
                       src={photo.preview} 
                       alt="Preview" 
@@ -205,14 +205,14 @@ export default function PhotoUploadZone({
                   {/* Informations */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-900 truncate">
+                      <span className="text-xs md:text-sm font-medium text-dermai-neutral-900 truncate">
                         Photo {photos.indexOf(photo) + 1}
                       </span>
                       <button
                         onClick={() => removePhoto(photo.id)}
-                        className="text-red-500 hover:text-red-700 transition-colors"
+                        className="text-red-500 hover:text-red-700 transition-colors p-1"
                       >
-                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                         </svg>
                       </button>
@@ -222,14 +222,14 @@ export default function PhotoUploadZone({
                     <select
                       value={photo.type}
                       onChange={(e) => updatePhotoType(photo.id, e.target.value as PhotoType)}
-                      className="w-full text-sm border border-gray-300 rounded-md px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full text-xs md:text-sm border border-dermai-nude-300 rounded-md px-2 py-1 focus:ring-2 focus:ring-dermai-ai-500 focus:border-transparent"
                     >
                       {Object.entries(PHOTO_TYPES).map(([key, label]) => (
                         <option key={key} value={key}>{label}</option>
                       ))}
                     </select>
                     
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-dermai-neutral-500 mt-1">
                       {(photo.file.size / (1024 * 1024)).toFixed(1)}MB
                     </p>
                   </div>
@@ -240,16 +240,7 @@ export default function PhotoUploadZone({
         </div>
       )}
 
-      {/* Guide des types de photos */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h4 className="font-semibold text-blue-900 mb-2">📸 Guide des photos recommandées :</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-blue-800">
-          <div>• <strong>Face frontale :</strong> Vue d'ensemble du visage</div>
-          <div>• <strong>Close-up zone :</strong> Zoom sur la zone problématique</div>
-          <div>• <strong>Profils :</strong> Vues latérales gauche/droite</div>
-          <div>• <strong>Texture macro :</strong> Très gros plan sur la texture</div>
-        </div>
-      </div>
+
     </div>
   )
 }

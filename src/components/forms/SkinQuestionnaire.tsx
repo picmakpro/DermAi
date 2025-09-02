@@ -3,7 +3,28 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { SKIN_TYPES, GENDER_OPTIONS, BUDGET_RANGES } from '@/constants'
-import type { UserProfile, SkinConcerns, CurrentRoutine } from '@/types'
+import IntroBeforeAfterScreen from './IntroBeforeAfterScreen'
+import SimilarConcernsProofScreen from './SimilarConcernsProofScreen'
+import SavingsProgressScreen from './SavingsProgressScreen'
+import ImprovedSummary from './ImprovedSummary'
+
+// Types simplifiés pour le questionnaire
+interface UserProfile {
+  age: number
+  gender: string
+  skinType: string
+}
+
+interface SkinConcerns {
+  primary: string[]
+}
+
+interface CurrentRoutine {
+  morningProducts: string[]
+  eveningProducts: string[]
+  monthlyBudget: string
+  routinePreference?: string
+}
 
 interface QuestionnaireData {
   userProfile: UserProfile
@@ -69,7 +90,7 @@ const AGE_RANGES = [
 
 export default function SkinQuestionnaire() {
   const router = useRouter()
-  const [currentStep, setCurrentStep] = useState(1)
+  const [currentStep, setCurrentStep] = useState(0) // Commencer à 0 pour l'écran intro
   const [showAiMessage, setShowAiMessage] = useState(false)
   const [photosCount, setPhotosCount] = useState(0)
   const [selectedAgeRange, setSelectedAgeRange] = useState<string>('')
@@ -96,7 +117,7 @@ export default function SkinQuestionnaire() {
     }
   })
 
-  const totalSteps = 4
+  const totalSteps = 8 // 3 nouveaux écrans + 5 étapes questionnaire (0-7)
 
   useEffect(() => {
     // Récupérer le nombre de photos
@@ -115,15 +136,39 @@ export default function SkinQuestionnaire() {
   }
 
   const handleNext = () => {
-    if (currentStep < totalSteps) {
+    // Analytics pour les nouveaux écrans
+    if (currentStep === 0) {
+      // intro_before_after_cta_click
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'intro_before_after_cta_click');
+      }
+    } else if (currentStep === 3) {
+      // similar_concerns_cta_click
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'similar_concerns_cta_click');
+      }
+    } else if (currentStep === 6) {
+      // savings_progress_cta_click
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'savings_progress_cta_click');
+      }
+    }
+
+    if (currentStep < totalSteps - 1) {
       setCurrentStep(currentStep + 1)
+      // Scroll automatique vers le haut de la page
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }, 100)
     } else {
+      // Dernière étape atteinte, soumettre le formulaire
+      console.log('Tentative de soumission, étape:', currentStep, 'total:', totalSteps)
       handleSubmit()
     }
   }
 
   const handlePrevious = () => {
-    if (currentStep > 1) {
+    if (currentStep > 0) {
       setCurrentStep(currentStep - 1)
     }
   }
@@ -195,22 +240,31 @@ export default function SkinQuestionnaire() {
     // Étape 2: Préoccupations (au moins une sélection requise)
     const step2Valid = data.skinConcerns.primary.length > 0
 
-    // Étape 4: Préférence de routine choisie
-    const step4Valid = !!data.currentRoutine.routinePreference
+    // Étape 7: Préférence de routine choisie (dernière étape)
+    const step7Valid = !!data.currentRoutine.routinePreference
 
-    return step1Valid && step2Valid && step4Valid
+    console.log('Validation formulaire:', { step1Valid, step2Valid, step7Valid, currentStep })
+    return step1Valid && step2Valid && step7Valid
   }
 
   // Validation de l'étape actuelle
   const canProceed = () => {
     switch (currentStep) {
-      case 1:
+      case 0: // IntroBeforeAfterScreen
+        return true
+      case 1: // Profil
         return selectedAgeRange !== ''
-      case 2:
+      case 2: // Préoccupations
         return data.skinConcerns.primary.length > 0
-      case 3:
+      case 3: // SimilarConcernsProofScreen
+        return true
+      case 4: // Routine actuelle
         return true // Routine optionnelle
-      case 4:
+      case 5: // Allergies
+        return true // Allergies optionnelles
+      case 6: // SavingsProgressScreen
+        return true
+      case 7: // Type de routine + Budget (dernière étape)
         return !!data.currentRoutine.routinePreference // Doit choisir un type de routine
       default:
         return true
@@ -269,9 +323,9 @@ export default function SkinQuestionnaire() {
 
   // Récapitulatif dynamique
   const renderSummary = () => (
-    <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
-      <h3 className="font-semibold text-gray-800 mb-4 flex items-center">
-        <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center mr-3">
+    <div className="card bg-dermai-pure border border-dermai-nude-200 rounded-2xl p-5 shadow-premium">
+      <h3 className="font-semibold font-display text-dermai-neutral-800 mb-4 flex items-center">
+        <div className="w-8 h-8 bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 rounded-full flex items-center justify-center mr-3 shadow-glow">
           <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
           </svg>
@@ -374,37 +428,57 @@ export default function SkinQuestionnaire() {
         <button
           onClick={handleSubmit}
           disabled={!isFormComplete()}
-                            className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                >
-                  {isFormComplete() ? '🚀 Lancer l\'analyse DermAI' : '⏳ Compléter le formulaire'}
+          className="btn-primary w-full font-semibold py-3 px-6 rounded-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+        >
+          {isFormComplete() ? '🚀 Lancer l\'analyse DermAI' : '⏳ Compléter le formulaire'}
         </button>
       </div>
     </div>
   )
 
   const renderStep = () => {
+    // Analytics pour les nouveaux écrans
+    useEffect(() => {
+      if (currentStep === 0 && typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'intro_before_after_view');
+      } else if (currentStep === 3 && typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'similar_concerns_view');
+      } else if (currentStep === 6 && typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'savings_progress_view');
+      }
+    }, [currentStep]);
+
     switch (currentStep) {
+      case 0:
+        return (
+          <IntroBeforeAfterScreen 
+            onContinue={handleNext}
+            currentStep={currentStep}
+            totalSteps={totalSteps}
+          />
+        )
+        
       case 1:
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Profil personnel</h2>
-              <p className="text-gray-600">Informations de base pour personnaliser votre analyse</p>
+              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Profil personnel</h2>
+              <p className="text-dermai-neutral-600">Informations de base pour personnaliser votre analyse</p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div>
-                <label className="block text-sm font-semibold text-gray-800 mb-3">Âge *</label>
+                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Âge *</label>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                   {AGE_RANGES.map((range) => (
                     <button
                       key={range.range}
                       type="button"
                       onClick={() => handleAgeRangeSelect(range)}
-                      className={`p-3 text-sm font-medium rounded-xl border-2 transition-all ${
+                      className={`p-3 text-sm font-medium rounded-xl border-2 transition-all hover-lift ${
                         selectedAgeRange === range.range
-                          ? 'border-purple-500 bg-purple-50 text-purple-700'
-                          : 'border-gray-200 bg-white text-gray-700 hover:border-purple-300 hover:bg-purple-50'
+                          ? 'border-dermai-ai-500 bg-dermai-ai-50 text-dermai-ai-700 shadow-glow'
+                          : 'border-dermai-nude-200 bg-dermai-pure text-dermai-neutral-700 hover:border-dermai-ai-300 hover:bg-dermai-ai-50'
                       }`}
                     >
                       {range.label}
@@ -414,17 +488,17 @@ export default function SkinQuestionnaire() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-800 mb-2">Genre</label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Genre</label>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {GENDER_OPTIONS.map(option => (
                     <button
                       key={option}
                       type="button"
                       onClick={() => updateData('userProfile', { gender: option as any })}
-                      className={`p-2 text-sm rounded-lg border transition-all ${
+                      className={`p-3 text-sm rounded-xl border-2 transition-all hover-lift ${
                         data.userProfile.gender === option
-                          ? 'border-blue-500 bg-blue-50 text-blue-700'
-                          : 'border-gray-200 hover:border-gray-300'
+                          ? 'border-dermai-ai-500 bg-dermai-ai-50 text-dermai-ai-700 shadow-glow'
+                          : 'border-dermai-nude-200 bg-dermai-pure text-dermai-neutral-700 hover:border-dermai-ai-300 hover:bg-dermai-ai-50'
                       }`}
                     >
                       {option}
@@ -434,17 +508,17 @@ export default function SkinQuestionnaire() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-800 mb-2">Type de peau (si vous le connaissez)</label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Type de peau (si vous le connaissez)</label>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {SKIN_TYPES.map(type => (
                     <button
                       key={type}
                       type="button"
                       onClick={() => updateData('userProfile', { skinType: type as any })}
-                      className={`p-2 text-sm rounded-lg border transition-all ${
+                      className={`p-3 text-sm rounded-lg border-2 transition-all hover-lift ${
                         data.userProfile.skinType === type
-                          ? 'border-purple-500 bg-purple-50 text-purple-700'
-                          : 'border-gray-200 hover:border-gray-300'
+                          ? 'border-dermai-ai-500 bg-dermai-ai-50 text-dermai-ai-700 shadow-glow'
+                          : 'border-dermai-nude-200 bg-dermai-pure text-dermai-neutral-700 hover:border-dermai-ai-300 hover:bg-dermai-ai-50'
                       }`}
                     >
                       {type}
@@ -460,8 +534,8 @@ export default function SkinQuestionnaire() {
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Préoccupations cutanées</h2>
-              <p className="text-gray-600">Quels sont vos principaux soucis de peau ? (max 3) *</p>
+              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Préoccupations cutanées</h2>
+              <p className="text-dermai-neutral-600">Quels sont vos principaux soucis de peau ? (max 3) *</p>
             </div>
 
             <div>
@@ -472,27 +546,27 @@ export default function SkinQuestionnaire() {
                     onClick={() => updateData('skinConcerns', { 
                       primary: toggleArrayItem(data.skinConcerns.primary, concern, 3) 
                     })}
-                    className={`p-3 text-sm font-medium rounded-lg border-2 transition-all ${
+                    className={`p-3 text-sm font-medium rounded-xl border-2 transition-all hover-lift ${
                       data.skinConcerns.primary.includes(concern)
                         ? concern === 'Je ne sais pas'
-                          ? 'border-blue-500 bg-blue-50 text-blue-700'
-                          : 'border-orange-500 bg-orange-50 text-orange-700'
-                        : 'border-gray-200 hover:border-gray-300 text-gray-700'
+                          ? 'border-dermai-ai-500 bg-dermai-ai-50 text-dermai-ai-700 shadow-glow'
+                          : 'border-dermai-ai-500 bg-dermai-ai-50 text-dermai-ai-700 shadow-glow'
+                        : 'border-dermai-nude-200 bg-dermai-pure text-dermai-neutral-700 hover:border-dermai-ai-300 hover:bg-dermai-ai-50'
                     }`}
                   >
                     {concern}
                   </button>
                 ))}
               </div>
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-dermai-neutral-500 mt-2">
                 {data.skinConcerns.primary.length}/3 sélectionnés
               </p>
             </div>
 
             {/* Champ texte pour "Autres" */}
             {data.skinConcerns.primary.includes('Autres') && (
-              <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                <label className="block text-sm font-medium text-orange-700 mb-2">
+              <div className="bg-dermai-ai-50 border border-dermai-ai-200 rounded-xl p-4">
+                <label className="block text-sm font-medium text-dermai-ai-700 mb-2">
                   Précisez vos autres préoccupations :
                 </label>
                 <input
@@ -500,7 +574,7 @@ export default function SkinQuestionnaire() {
                   value={data.skinConcerns.otherText}
                   onChange={(e) => updateData('skinConcerns', { otherText: e.target.value })}
                   placeholder="Ex: Hyperpigmentation, pores dilatés, texture rugueuse..."
-                  className="w-full px-3 py-2 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white"
+                  className="w-full px-3 py-2 border border-dermai-ai-300 rounded-lg focus:ring-2 focus:ring-dermai-ai-500 focus:border-transparent bg-white"
                 />
                 <p className="text-xs text-orange-600 mt-1">
                   Ces informations aideront l'IA à mieux cibler son analyse
@@ -529,26 +603,35 @@ export default function SkinQuestionnaire() {
 
       case 3:
         return (
+          <SimilarConcernsProofScreen 
+            onContinue={handleNext}
+            onBack={handlePrevious}
+            userConcerns={data.skinConcerns.primary}
+          />
+        )
+        
+      case 4:
+        return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Routine actuelle</h2>
-              <p className="text-gray-600">Quels produits utilisez-vous ? (optionnel)</p>
+              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Routine actuelle</h2>
+              <p className="text-dermai-neutral-600">Quels produits utilisez-vous ? (optionnel)</p>
             </div>
 
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-semibold text-gray-800 mb-3">Routine du matin</label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Routine du matin</label>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {COMMON_PRODUCTS.map(product => (
                     <button
                       key={`morning-${product}`}
                       onClick={() => updateData('currentRoutine', { 
                         morningProducts: toggleArrayItem(data.currentRoutine.morningProducts, product) 
                       })}
-                      className={`p-2 text-sm rounded-lg border transition-all ${
+                      className={`p-3 text-sm rounded-xl border-2 transition-all hover-lift ${
                         data.currentRoutine.morningProducts.includes(product)
-                          ? 'border-blue-500 bg-blue-50 text-blue-700'
-                          : 'border-gray-200 hover:border-gray-300'
+                          ? 'border-dermai-ai-500 bg-dermai-ai-50 text-dermai-ai-700 shadow-glow'
+                          : 'border-dermai-nude-200 bg-dermai-pure text-dermai-neutral-700 hover:border-dermai-ai-300 hover:bg-dermai-ai-50'
                       }`}
                     >
                       {product}
@@ -558,18 +641,18 @@ export default function SkinQuestionnaire() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-800 mb-3">Routine du soir</label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Routine du soir</label>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {COMMON_PRODUCTS.map(product => (
                     <button
                       key={`evening-${product}`}
                       onClick={() => updateData('currentRoutine', { 
                         eveningProducts: toggleArrayItem(data.currentRoutine.eveningProducts, product) 
                       })}
-                      className={`p-2 text-sm rounded-lg border transition-all ${
+                      className={`p-3 text-sm rounded-xl border-2 transition-all hover-lift ${
                         data.currentRoutine.eveningProducts.includes(product)
-                          ? 'border-blue-500 bg-blue-50 text-blue-700'
-                          : 'border-gray-200 hover:border-gray-300'
+                          ? 'border-dermai-ai-500 bg-dermai-ai-50 text-dermai-ai-700 shadow-glow'
+                          : 'border-dermai-nude-200 bg-dermai-pure text-dermai-neutral-700 hover:border-dermai-ai-300 hover:bg-dermai-ai-50'
                       }`}
                     >
                       {product}
@@ -585,16 +668,71 @@ export default function SkinQuestionnaire() {
           </div>
         )
 
-      case 4:
+      case 5:
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Type de routine souhaitée</h2>
-              <p className="text-gray-600">Choisissez votre style préféré. Cela influencera la complexité des recommandations.</p>
+              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Allergies et sensibilités</h2>
+              <p className="text-dermai-neutral-600">Avez-vous des ingrédients à éviter ? (optionnel)</p>
             </div>
 
-            {/* Préférence de routine déplacée ici */}
             <div>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {ALLERGENIC_INGREDIENTS.map(ingredient => (
+                  <button
+                    key={ingredient}
+                    onClick={() => updateData('allergies', { 
+                      ingredients: toggleArrayItem(data.allergies.ingredients, ingredient) 
+                    })}
+                    className={`p-3 text-sm rounded-xl border-2 transition-all hover-lift ${
+                      data.allergies.ingredients.includes(ingredient)
+                        ? 'border-red-500 bg-red-50 text-red-700'
+                        : 'border-dermai-nude-200 bg-dermai-pure text-dermai-neutral-700 hover:border-red-300 hover:bg-red-50'
+                    }`}
+                  >
+                    {ingredient}
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-dermai-neutral-500 mt-3">
+                Ces informations nous aident à éviter les produits qui pourraient ne pas vous convenir.
+              </p>
+            </div>
+
+            {data.allergies.ingredients.length > 0 && !data.allergies.ingredients.includes('Aucune allergie connue') && (
+              <div>
+                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-2">Réactions passées (optionnel)</label>
+                <textarea
+                  value={data.allergies.pastReactions}
+                  onChange={(e) => updateData('allergies', { pastReactions: e.target.value })}
+                  placeholder="Décrivez brièvement vos réactions passées..."
+                  className="w-full p-3 border-2 border-dermai-nude-200 rounded-xl focus:border-dermai-ai-500 focus:outline-none transition-colors resize-none"
+                  rows={3}
+                />
+              </div>
+            )}
+          </div>
+        )
+
+      case 6:
+        return (
+          <SavingsProgressScreen 
+            onContinue={handleNext}
+            onBack={handlePrevious}
+            currentProgress={95}
+          />
+        )
+        
+      case 7:
+        return (
+          <div className="space-y-6">
+            <div className="text-center">
+              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Finalisation</h2>
+              <p className="text-dermai-neutral-600">Dernières préférences pour personnaliser vos recommandations</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Type de routine souhaitée *</label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {[
                   { label: 'Minimaliste', help: '2-3 étapes essentielles' },
@@ -605,59 +743,38 @@ export default function SkinQuestionnaire() {
                   <button
                     key={opt.label}
                     onClick={() => updateData('currentRoutine', { routinePreference: opt.label as any })}
-                    className={`p-3 text-left rounded-xl border-2 transition-all ${
+                    className={`p-3 text-left rounded-xl border-2 transition-all hover-lift ${
                       data.currentRoutine.routinePreference === opt.label
-                        ? 'border-purple-500 bg-purple-50'
-                        : 'border-gray-200 hover:border-purple-300 hover:bg-purple-50'
+                        ? 'border-dermai-ai-500 bg-dermai-ai-50 text-dermai-ai-700 shadow-glow'
+                        : 'border-dermai-nude-200 bg-dermai-pure text-dermai-neutral-700 hover:border-dermai-ai-300 hover:bg-dermai-ai-50'
                     }`}
                   >
-                    <div className="font-semibold text-gray-900">{opt.label}</div>
-                    <div className="text-xs text-gray-600 mt-1">{opt.help}</div>
+                    <div className="font-semibold text-dermai-neutral-900">{opt.label}</div>
+                    <div className="text-xs text-dermai-neutral-600 mt-1">{opt.help}</div>
                   </button>
                 ))}
               </div>
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-gray-800 mb-2">Allergies et sensibilités (optionnel)</h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                {ALLERGENIC_INGREDIENTS.map(ingredient => (
-                  <button
-                    key={ingredient}
-                    onClick={() => updateData('allergies', { 
-                      ingredients: toggleArrayItem(data.allergies.ingredients, ingredient) 
-                    })}
-                    className={`p-2 text-sm rounded-lg border transition-all ${
-                      data.allergies.ingredients.includes(ingredient)
-                        ? 'border-red-500 bg-red-50 text-red-700'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                  >
-                    {ingredient}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-gray-800 mb-2">Budget mensuel souhaité</label>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+              <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Budget mensuel souhaité</label>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {BUDGET_RANGES.map(range => (
                   <button
                     key={range}
                     type="button"
                     onClick={() => updateData('currentRoutine', { monthlyBudget: range as any })}
-                    className={`p-2 text-sm rounded-lg border transition-all ${
+                    className={`p-3 text-sm rounded-xl border-2 transition-all hover-lift ${
                       data.currentRoutine.monthlyBudget === range
-                        ? 'border-green-500 bg-green-50 text-green-700'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-dermai-ai-500 bg-dermai-ai-50 text-dermai-ai-700 shadow-glow'
+                        : 'border-dermai-nude-200 bg-dermai-pure text-dermai-neutral-700 hover:border-dermai-ai-300 hover:bg-dermai-ai-50'
                     }`}
                   >
                     {range}
                   </button>
                 ))}
               </div>
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-dermai-neutral-500 mt-2">
                 Cela nous aide à recommander des produits adaptés à votre fourchette de prix.
               </p>
             </div>
@@ -669,39 +786,47 @@ export default function SkinQuestionnaire() {
     }
   }
 
+  // Rendu direct pour les écrans plein écran
+  if (currentStep === 0 || currentStep === 3 || currentStep === 6) {
+    return renderStep()
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+    <div className="min-h-screen bg-dermai-pure">
       {/* Header avec progression */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-purple-100 sticky top-0 z-40">
+      <div className="bg-dermai-pure/80 backdrop-blur-sm border-b border-dermai-nude-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-lg">D</span>
-              </div>
-              <div>
-                <h1 className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-                  DermAI
-                </h1>
-                <p className="text-sm text-gray-600">Diagnostic personnalisé par IA</p>
-              </div>
+            <div className="flex items-center">
+              <a href="/" className="cursor-pointer transition-opacity hover:opacity-80">
+                <img 
+                  src="/DERMAI-logo.svg" 
+                  alt="DermAI" 
+                  className="h-8 md:h-10 w-auto"
+                />
+              </a>
             </div>
 
-            {/* Progress dots */}
+            {/* Progress dots - ajusté pour 7 étapes */}
             <div className="hidden md:flex items-center space-x-2">
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
-              <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
+              {[...Array(7)].map((_, i) => (
+                <div 
+                  key={i}
+                  className={`w-2.5 h-2.5 rounded-full transition-all ${
+                    i <= currentStep 
+                      ? 'bg-dermai-ai-500 shadow-glow' 
+                      : 'bg-dermai-neutral-300'
+                  }`}
+                />
+              ))}
             </div>
 
             <div className="text-right">
-              <div className="text-sm text-gray-500">Étape 2 sur 4</div>
-              <div className="text-sm text-gray-500">Question {currentStep}/{totalSteps}</div>
-              <div className="w-32 bg-gray-200 rounded-full h-2 mt-1">
+              <div className="text-sm text-dermai-neutral-500">Question {Math.max(1, currentStep)}/{totalSteps}</div>
+              <div className="w-32 bg-dermai-neutral-200 rounded-full h-2 mt-1">
                 <div 
-                  className="bg-gradient-to-r from-pink-500 to-purple-600 h-2 rounded-full transition-all duration-300"
+                  className="bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 h-2 rounded-full transition-all duration-300 shadow-glow"
                   style={{ width: `${(currentStep / totalSteps) * 100}%` }}
                 ></div>
               </div>
@@ -716,15 +841,15 @@ export default function SkinQuestionnaire() {
           
           {/* Contenu principal */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-3xl shadow-xl border border-purple-100 p-8 hover:shadow-2xl transition-shadow">
+            <div className="card bg-dermai-pure rounded-3xl shadow-premium border border-dermai-nude-200 p-8 lg:p-10 hover:shadow-premium-lg transition-shadow">
               {renderStep()}
 
               {/* Navigation */}
-              <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
+              <div className="flex flex-col sm:flex-row justify-between items-center mt-8 pt-6 border-t border-dermai-nude-200 gap-4">
                 <button
                   onClick={handlePrevious}
-                  disabled={currentStep === 1}
-                  className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={currentStep === 0}
+                  className="flex items-center space-x-2 text-dermai-neutral-600 hover:text-dermai-neutral-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus-dermai"
                 >
                   <span>←</span>
                   <span>Précédent</span>
@@ -733,14 +858,14 @@ export default function SkinQuestionnaire() {
                 <button
                   onClick={handleNext}
                   disabled={!canProceed()}
-                  className="flex items-center space-x-3 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-8 rounded-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                  className="btn-primary flex items-center space-x-3 font-semibold py-3 px-6 sm:px-8 rounded-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none w-full sm:w-auto justify-center"
                 >
                   <span>
-                    {currentStep === totalSteps ? (
+                    {currentStep === totalSteps - 1 ? (
                       isFormComplete() ? '🚀 Lancer l\'analyse DermAI' : '⏳ Compléter le formulaire'
                     ) : 'Suivant'}
                   </span>
-                  {currentStep !== totalSteps && (
+                  {currentStep !== totalSteps - 1 && (
                     <div className="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center">
                       <span className="text-xs">→</span>
                     </div>
@@ -753,25 +878,32 @@ export default function SkinQuestionnaire() {
           {/* Panneau latéral récapitulatif - Desktop */}
           <div className="hidden lg:block">
             <div className="sticky top-8">
-              {renderSummary()}
-              
-              {/* Bouton d'analyse - Desktop */}
-              <div className="mt-4">
-                <button
-                  onClick={handleSubmit}
-                  disabled={!isFormComplete()}
-                  className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                >
-                  {isFormComplete() ? '🚀 Lancer l\'analyse DermAI' : '⏳ Compléter le formulaire'}
-                </button>
-              </div>
+              <ImprovedSummary
+                photosCount={photosCount}
+                selectedAgeRange={selectedAgeRange}
+                data={data}
+                getConcernsDisplay={getConcernsDisplay}
+                hasRoutineProducts={hasRoutineProducts}
+                getRoutineDisplay={getRoutineDisplay}
+                isFormComplete={isFormComplete}
+                handleSubmit={handleSubmit}
+              />
             </div>
           </div>
         </div>
 
         {/* Récapitulatif mobile - bas de page */}
         <div className="lg:hidden mt-8">
-          {renderSummary()}
+          <ImprovedSummary
+            photosCount={photosCount}
+            selectedAgeRange={selectedAgeRange}
+            data={data}
+            getConcernsDisplay={getConcernsDisplay}
+            hasRoutineProducts={hasRoutineProducts}
+            getRoutineDisplay={getRoutineDisplay}
+            isFormComplete={isFormComplete}
+            handleSubmit={handleSubmit}
+          />
         </div>
       </div>
     </div>

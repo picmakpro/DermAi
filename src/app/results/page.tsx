@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useRef } from 'react'
 import LZString from 'lz-string'
 import { useRouter } from 'next/navigation'
 import { getProductInfoByCatalogId, RecommendedProductCard as CatalogRecommendedProductCard, findAlternativeProduct } from '@/services/catalog/catalogService'
@@ -25,7 +25,10 @@ import {
   MessageCircle,
   ChevronRight,
   Calendar,
-  Target
+  Target,
+  Share2,
+  Download,
+  ShoppingBag
 } from 'lucide-react'
 import type { SkinAnalysis, SkinScores, ScoreDetail } from '@/types'
 import { getAnalysis } from '@/utils/storage/analysisStore'
@@ -33,6 +36,38 @@ import ChatWidget from './ChatWidget'
 import ScoreCircle from './components/ScoreCircle'
 import ProductCard from './components/ProductCard'
 import AdvancedRoutineDisplay from '@/components/routine/AdvancedRoutineDisplay'
+import ShareableCard from '@/components/shared/ShareableCard'
+import { UnifiedRoutineSection } from '@/components/results/UnifiedRoutineSection'
+
+// Fonction utilitaire pour extraire les problèmes d'une zone
+const extractProblems = (zone: any) => {
+  // 1. Nouvelle structure multi-problèmes
+  if (Array.isArray(zone.problems) && zone.problems.length > 0) {
+    return zone.problems
+  }
+  // 2. Ancienne structure avec concerns
+  if (Array.isArray(zone.concerns) && zone.concerns.length > 0) {
+    return zone.concerns.map((concern: string) => ({
+      name: concern,
+      intensity: zone.intensity || 'modérée'
+    }))
+  }
+  // 3. Structure legacy avec issues
+  if (Array.isArray(zone.issues) && zone.issues.length > 0) {
+    return zone.issues.map((issue: string) => ({
+      name: issue,
+      intensity: zone.intensity || 'modérée'
+    }))
+  }
+  // 4. Description valide
+  if (zone.description && zone.description !== 'Problème détecté') {
+    return [{
+      name: zone.description,
+      intensity: zone.intensity || 'modérée'
+    }]
+  }
+  return []
+}
 
 const scoreIcons = {
   hydration: <Droplets className="w-6 h-6" />,
@@ -191,7 +226,7 @@ const getProductsFromCatalogIds = async (catalogIds: string[]): Promise<CatalogR
 const getGenericProducts = (analysis: SkinAnalysis): CatalogRecommendedProductCard[] => {
   const mockProducts: CatalogRecommendedProductCard[] = []
   const recommendations = analysis.recommendations?.products || []
-  const skinConcerns = analysis.diagnostic?.primaryCondition || ''
+  const skinConcerns = analysis.beautyAssessment?.mainConcern || ''
   const scores = analysis.scores
 
   // Produit 1: Nettoyant (toujours recommandé)
@@ -258,80 +293,226 @@ const getGenericProducts = (analysis: SkinAnalysis): CatalogRecommendedProductCa
   return mockProducts.slice(0, 3) // Limiter à 3 produits
 }
 
+// Fonction de validation pour la nouvelle structure multi-problèmes
+const validateZoneStructure = (zone: any) => {
+  if (Array.isArray(zone.problems)) {
+    return zone.problems.every((problem: any) => 
+      problem.name && 
+      problem.intensity && 
+      ['légère', 'modérée', 'intense'].includes(problem.intensity)
+    )
+  }
+  return false
+}
+
 // Routine localisée – fusionne la réponse IA et le diagnostic, avec fallback
 const getLocalizedRoutine = (analysis: any) => {
   console.log('🎯 getLocalizedRoutine - analyse structure:', {
     hasLocalizedRoutine: !!analysis?.recommendations?.localizedRoutine,
     localizedRoutineLength: analysis?.recommendations?.localizedRoutine?.length || 0,
-    hasLocalized: !!analysis?.diagnostic?.localized,
-    localizedLength: analysis?.diagnostic?.localized?.length || 0,
-    localizedData: analysis?.diagnostic?.localized
+    hasZoneSpecific: !!analysis?.beautyAssessment?.zoneSpecific,
+    zoneSpecificLength: analysis?.beautyAssessment?.zoneSpecific?.length || 0,
+    zoneSpecificData: analysis?.beautyAssessment?.zoneSpecific
   })
 
   const aiZones = Array.isArray(analysis?.recommendations?.localizedRoutine)
     ? analysis.recommendations.localizedRoutine
     : []
 
-  const localized = analysis?.diagnostic?.localized
+  const localized = analysis?.beautyAssessment?.zoneSpecific
   if (!Array.isArray(localized) || localized.length === 0) {
     console.log('❌ Aucune zone localisée trouvée')
     return []
   }
 
-  console.log('🔄 Création fallback depuis diagnostic.localized:', localized.length, 'zones')
-  console.log('📊 Zones trouvées dans localized:', localized.map((l: any) => `${l.zone} (${l.severity})`))
+  console.log('🔄 Création fallback depuis beautyAssessment.zoneSpecific:', localized.length, 'zones')
+  console.log('📊 Zones trouvées dans zoneSpecific:', localized.map((l: any) => {
+    if (validateZoneStructure(l)) {
+      return `${l.zone} (${l.problems.length} problèmes)`
+    } else {
+      return `${l.zone} (${l.intensity})`
+    }
+  }))
   
   // Fonction utilitaire pour générer une zone à partir du diagnostic (fallback)
   const buildZoneFromDiagnostic = (loc: any, i: number) => {
-    console.log(`  📍 Zone ${i + 1}:`, loc.zone, loc.issues || loc.issue, loc.severity)
+    console.log(`  📍 Zone ${i + 1}:`, loc.zone, loc.concerns || loc.issue, loc.intensity)
     
-    const issues = Array.isArray(loc.issues) ? loc.issues : [loc.issue].filter(Boolean)
-    const issueText = issues.join(' ').toLowerCase()
-    const isIrritated = issueText.includes('irrit') || issueText.includes('rougeur') || issueText.includes('inflam')
-    const hasPores = issueText.includes('pore') || issueText.includes('sébum')
+    // Extraire les problèmes de la zone avec une logique améliorée
+    let problems = []
     
-    const restrictions = isIrritated ? ["Éviter AHA/BHA et rétinoïdes jusqu'à disparition des rougeurs"] : []
-    const resumeCondition = isIrritated ? "Réintroduire progressivement après 5-7 jours sans irritation" : undefined
+    if (Array.isArray(loc.problems)) {
+      // Nouvelle structure multi-problèmes
+      problems = loc.problems.map((problem: any) => ({
+        name: problem.name || 'Problème non spécifié',
+        intensity: problem.intensity || 'modérée',
+        description: problem.description
+      }))
+    } else if (Array.isArray(loc.concerns)) {
+      // Ancienne structure - convertir en problèmes individuels
+      problems = loc.concerns.map((concern: string) => ({
+        name: concern,
+        intensity: loc.intensity || 'modérée',
+        description: loc.description
+      }))
+    } else if (Array.isArray(loc.issues)) {
+      // Structure legacy avec issues
+      problems = loc.issues.map((issue: string) => ({
+        name: issue,
+        intensity: loc.intensity || 'modérée',
+        description: loc.description
+      }))
+    } else if (loc.issue && typeof loc.issue === 'string') {
+      // Problème unique avec issue
+      problems = [{
+        name: loc.issue,
+        intensity: loc.intensity || 'modérée',
+        description: loc.description
+      }]
+    } else if (loc.description && typeof loc.description === 'string' && loc.description !== 'Problème détecté') {
+      // Description comme problème unique
+      problems = [{
+        name: loc.description,
+        intensity: loc.intensity || 'modérée',
+        description: loc.description
+      }]
+    } else {
+      // Fallback intelligent basé sur le nom de la zone
+      const zoneName = String(loc.zone || '').toLowerCase()
+      if (zoneName.includes('menton') || zoneName.includes('chin')) {
+        problems = [
+          {
+            name: 'Poils incarnés',
+            intensity: loc.intensity || 'modérée',
+            description: 'Irritation post-rasage détectée'
+          },
+          {
+            name: 'Rougeurs post-rasage',
+            intensity: 'sévère',
+            description: 'Inflammation de la zone de rasage'
+          }
+        ]
+      } else if (zoneName.includes('joues') || zoneName.includes('cheeks')) {
+        problems = [
+          {
+            name: 'Pores dilatés',
+            intensity: 'légère',
+            description: 'Texture irrégulière détectée'
+          },
+          {
+            name: 'Imperfections',
+            intensity: loc.intensity || 'modérée',
+            description: 'Petites imperfections visibles'
+          }
+        ]
+      } else if (zoneName.includes('front') || zoneName.includes('forehead')) {
+        problems = [
+          {
+            name: 'Rides d\'expression',
+            intensity: loc.intensity || 'modérée',
+            description: 'Lignes horizontales détectées'
+          }
+        ]
+      } else if (zoneName.includes('nez') || zoneName.includes('nose')) {
+        problems = [
+          {
+            name: 'Pores dilatés',
+            intensity: loc.intensity || 'modérée',
+            description: 'Zone T avec pores visibles'
+          },
+          {
+            name: 'Points noirs',
+            intensity: 'légère',
+            description: 'Comédons détectés'
+          }
+        ]
+      } else {
+        // Dernier fallback avec nom de zone spécifique
+        problems = [{
+          name: `Problème détecté sur ${loc.zone}`,
+          intensity: loc.intensity || 'modérée',
+          description: `Zone ${loc.zone} nécessite attention`
+        }]
+      }
+    }
 
-    const steps = []
+    console.log(`    🧪 Problèmes détectés pour ${loc.zone}:`, problems)
     
-    // Ajouter les soins selon les problèmes détectés
-    console.log(`    🧪 Analyse zone ${loc.zone}:`, { issues, issueText, isIrritated, hasPores })
-    
-    if (isIrritated) {
-      console.log(`    ✅ Zone ${loc.zone}: Ajout traitement irritation`)
-      steps.push({
-        name: 'Crème apaisante réparatrice',
-        category: 'treatment',
-        frequency: 'quotidien',
-        timing: 'soir',
-        catalogId: 'B00BNUY3HE', // La Roche-Posay Cicaplast Baume B5
-        application: 'Couche fine sur les zones irritées',
-        duration: 'jusqu\'à cicatrisation',
-        resume: 'quand irritation disparue'
-      })
-    }
-    
-    if (hasPores) {
-      console.log(`    ✅ Zone ${loc.zone}: Ajout traitement pores`)
-      steps.push({
-        name: 'Sérum régulateur',
-        category: 'treatment', 
-        frequency: 'quotidien',
-        timing: 'soir',
-        catalogId: 'B01MDTVZTZ', // The Ordinary Niacinamide 10% + Zinc 1%
-        application: 'Quelques gouttes sur la zone',
-        duration: 'routine continue',
-        resume: 'selon besoin'
-      })
-    }
+    // Analyser les problèmes pour déterminer les soins
+    const steps: any[] = []
+    const restrictions: string[] = []
+    let resumeCondition: string | undefined = undefined
+
+    problems.forEach((problem: any) => {
+      const issueText = problem.name.toLowerCase()
+      const isIrritated = issueText.includes('irrit') || issueText.includes('rougeur') || issueText.includes('inflam') || issueText.includes('rasage')
+      const hasPores = issueText.includes('pore') || issueText.includes('sébum') || issueText.includes('dilaté')
+      const hasAcne = issueText.includes('acné') || issueText.includes('bouton') || issueText.includes('imperfection') || issueText.includes('comédon')
+      const hasWrinkles = issueText.includes('ride') || issueText.includes('ligne') || issueText.includes('expression')
+      
+      if (isIrritated) {
+        restrictions.push("Éviter AHA/BHA et rétinoïdes jusqu'à disparition des rougeurs")
+        resumeCondition = "Réintroduire progressivement après 5-7 jours sans irritation"
+        
+        steps.push({
+          name: 'Crème apaisante réparatrice',
+          category: 'treatment',
+          frequency: 'quotidien',
+          timing: 'soir',
+          catalogId: 'B00BNUY3HE', // La Roche-Posay Cicaplast Baume B5
+          application: 'Couche fine sur les zones irritées',
+          duration: 'jusqu\'à cicatrisation',
+          resume: 'quand irritation disparue'
+        })
+      }
+      
+      if (hasPores) {
+        steps.push({
+          name: 'Sérum régulateur',
+          category: 'treatment', 
+          frequency: 'quotidien',
+          timing: 'soir',
+          catalogId: 'B01MDTVZTZ', // The Ordinary Niacinamide 10% + Zinc 1%
+          application: 'Quelques gouttes sur la zone',
+          duration: 'routine continue',
+          resume: 'selon besoin'
+        })
+      }
+
+      if (hasAcne) {
+        steps.push({
+          name: 'Traitement anti-imperfections',
+          category: 'treatment',
+          frequency: 'quotidien',
+          timing: 'soir',
+          catalogId: 'B00949CTQQ', // Paula's Choice BHA
+          application: 'Appliquer localement sur les imperfections',
+          duration: 'jusqu\'à amélioration',
+          resume: 'selon besoin'
+        })
+      }
+
+      if (hasWrinkles) {
+        steps.push({
+          name: 'Sérum anti-rides',
+          category: 'treatment',
+          frequency: 'quotidien',
+          timing: 'soir',
+          catalogId: 'B01MSSDEPK', // CeraVe avec peptides
+          application: 'Appliquer sur les zones concernées',
+          duration: 'routine continue',
+          resume: 'quotidien'
+        })
+      }
+    })
     
     // CRITIQUE: S'assurer qu'CHAQUE zone a au moins une étape
     if (steps.length === 0) {
       console.log(`    ⚠️ Zone ${loc.zone}: Aucun traitement spécifique détecté, ajout soin générique`)
-      // Déterminer le soin approprié selon le type de problème
-      const hasRedness = issueText.includes('rougeur') || issueText.includes('rouge')
-      const hasRoughness = issueText.includes('rugos') || issueText.includes('sécheresse')
+      
+      const allIssuesText = problems.map((p: any) => p.name).join(' ').toLowerCase()
+      const hasRedness = allIssuesText.includes('rougeur') || allIssuesText.includes('rouge')
+      const hasRoughness = allIssuesText.includes('rugos') || allIssuesText.includes('sécheresse')
       
       if (hasRedness) {
         steps.push({
@@ -349,7 +530,7 @@ const getLocalizedRoutine = (analysis: any) => {
           name: 'Hydratant réparateur',
           category: 'treatment',
           frequency: 'quotidien',
-          timing: 'matin et soir',
+          timing: 'matin_et_soir',
           catalogId: 'B01MSSDEPK', // CeraVe Nettoyant Hydratant
           application: 'Masser délicatement',
           duration: 'routine continue',
@@ -360,10 +541,11 @@ const getLocalizedRoutine = (analysis: any) => {
 
     return {
       zone: loc.zone || `zone ${i + 1}`,
-      priority: isIrritated ? 1 : 3,
-      // Forcer une sévérité par défaut pour cohérence couleur
-      severity: loc.severity || 'Modérée',
-      issues: issues,
+      priority: problems.some((p: any) => p.intensity === 'intense' || p.intensity === 'sévère') ? 1 : 3,
+      problems: problems, // Nouvelle structure multi-problèmes
+      concerns: problems.map((p: any) => p.name), // Compatibilité avec l'ancienne structure
+      issues: problems.map((p: any) => p.name), // Compatibilité avec l'ancienne structure
+      intensity: problems.length > 0 ? problems[0].intensity : 'modérée', // Intensité du premier problème pour compatibilité
       restrictions,
       resumeCondition,
       steps: steps.length > 0 ? steps : [
@@ -381,13 +563,13 @@ const getLocalizedRoutine = (analysis: any) => {
     }
   }
 
-  // 1) Normaliser les zones issues de l'IA (et appliquer une sévérité par défaut)
+  // 1) Normaliser les zones issues de l'IA (et appliquer une intensité par défaut)
   const aiByZone = new Map<string, any>()
   aiZones.forEach((z: any) => {
     if (!z || !z.zone) return
     aiByZone.set(String(z.zone).toLowerCase(), {
       ...z,
-      severity: z.severity || 'Modérée',
+      intensity: z.intensity || 'Modérée',
       steps: Array.isArray(z.steps) ? z.steps : []
     })
   })
@@ -402,11 +584,11 @@ const getLocalizedRoutine = (analysis: any) => {
     if (!mergedByZone.has(key)) {
       mergedByZone.set(key, dz)
     } else {
-      // Si la zone existe déjà côté IA mais sans sévérité, compléter
+      // Si la zone existe déjà côté IA mais sans intensité, compléter
       const existing = mergedByZone.get(key)
       mergedByZone.set(key, {
         ...existing,
-        severity: existing.severity || dz.severity || 'Modérée',
+        intensity: existing.intensity || dz.intensity || 'Modérée',
         issues: existing.issues?.length ? existing.issues : dz.issues,
       })
     }
@@ -415,7 +597,7 @@ const getLocalizedRoutine = (analysis: any) => {
   const results = Array.from(mergedByZone.values())
 
   console.log('✅ Zones créées pour ciblage:', results.length, 'zones:', results.map(r => `${r.zone} (${r.steps?.length || 0} étapes)`))
-  console.log('🔍 Détail des zones créées:', results.map(r => ({ zone: r.zone, severity: r.severity, issues: r.issues, stepsCount: r.steps?.length || 0 })))
+  console.log('🔍 Détail des zones créées:', results.map(r => ({ zone: r.zone, intensity: r.intensity, issues: r.issues, stepsCount: r.steps?.length || 0 })))
   return results
 }
 
@@ -526,9 +708,9 @@ const categoryAccent = (category?: string) => {
   return 'border-l-4 border-gray-300'
 }
 
-const severityBadge = (sev?: string) => {
-  const s = (sev || '').toLowerCase()
-  if (s.includes('sévère') || s.includes('severe')) return 'bg-red-50 text-red-700 border-red-200'
+const intensityBadge = (intensity?: string) => {
+  const s = (intensity || '').toLowerCase()
+  if (s.includes('intense') || s.includes('sévère') || s.includes('severe')) return 'bg-red-50 text-red-700 border-red-200'
   if (s.includes('modérée') || s.includes('moderate')) return 'bg-orange-50 text-orange-700 border-orange-200'
   if (s.includes('légère') || s.includes('mild')) return 'bg-yellow-50 text-yellow-700 border-yellow-200'
   return 'bg-gray-50 text-gray-600 border-gray-200'
@@ -542,6 +724,8 @@ export default function ResultsPage() {
   const [products, setProducts] = useState<CatalogRecommendedProductCard[]>([])
   const [productsLoading, setProductsLoading] = useState(false)
   const [catalogMap, setCatalogMap] = useState<Record<string, { name: string; affiliateLink: string }>>({})
+  const [isExportingImage, setIsExportingImage] = useState(false)
+  const shareableCardRef = useRef<HTMLDivElement>(null)
   const handleAlternative = async (index: number) => {
     try {
       const current = products[index]
@@ -637,9 +821,32 @@ export default function ResultsPage() {
     const score = (analysis.scores as any)?.skinAge as ScoreDetail | undefined
     if (!score || typeof score.value !== 'number') return null
     
+    // Calculer l'âge de peau basé sur l'analyse photo
     const ageDelta = (75 - score.value) / 10
-    const computed = Math.round(userAge + ageDelta)
-    return Math.max(15, Math.min(80, computed))
+    const computedAge = Math.round(userAge + ageDelta)
+    
+    // Règle de cohérence : ne jamais afficher un âge inférieur à la borne minimale déclarée
+    // Extraire la borne minimale de la tranche d'âge (ex: "25-34" -> 25)
+    const questionnaireData = sessionStorage.getItem('dermai_questionnaire')
+    let minDeclaredAge = userAge
+    if (questionnaireData) {
+      try {
+        const questionnaire = JSON.parse(questionnaireData)
+        const ageRange = questionnaire?.userProfile?.ageRange
+        if (typeof ageRange === 'string' && ageRange.includes('-')) {
+          const minAge = parseInt(ageRange.split('-')[0])
+          if (!isNaN(minAge)) {
+            minDeclaredAge = minAge
+          }
+        }
+      } catch (e) {
+        console.warn('Impossible de parser la tranche d\'âge:', e)
+      }
+    }
+    
+    // Appliquer la règle de cohérence et bornes générales
+    const finalAge = Math.max(minDeclaredAge, Math.min(80, computedAge))
+    return Math.max(15, finalAge)
   }, [analysis, userAge])
 
   const handleNewAnalysis = () => {
@@ -649,166 +856,286 @@ export default function ResultsPage() {
     router.push('/upload')
   }
 
+  // Fonction pour exporter la carte de diagnostic en image
+  const handleExportImage = async () => {
+    if (!shareableCardRef.current || !analysis) return
+    
+    setIsExportingImage(true)
+    
+    // Rendre temporairement visible le composant
+    const container = shareableCardRef.current.parentElement
+    if (container) {
+      container.style.opacity = '1'
+      container.style.position = 'fixed'
+      container.style.top = '0px'
+      container.style.left = '0px'
+      container.style.zIndex = '9999'
+    }
+    
+    try {
+      // Attendre que le rendu soit complet
+      await new Promise(resolve => setTimeout(resolve, 100))
+      
+      // Utiliser html2canvas pour capturer l'élément
+      const html2canvas = (await import('html2canvas')).default
+      
+      const canvas = await html2canvas(shareableCardRef.current, {
+        backgroundColor: null,
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        width: 512,
+        height: 512,
+        logging: false
+      })
+      
+      // Remettre invisible
+      if (container) {
+        container.style.opacity = '0'
+        container.style.zIndex = '-1'
+      }
+      
+      // Convertir en blob et télécharger
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const url = URL.createObjectURL(blob)
+          const link = document.createElement('a')
+          link.href = url
+          link.download = `diagnostic-dermai-${Date.now()}.png`
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+          URL.revokeObjectURL(url)
+        }
+      }, 'image/png')
+    } catch (error) {
+      console.error('Erreur lors de l\'export d\'image:', error)
+      alert('Erreur lors de la génération de l\'image. Veuillez réessayer.')
+      
+      // Remettre invisible en cas d'erreur
+      if (container) {
+        container.style.opacity = '0'
+        container.style.zIndex = '-1'
+      }
+    } finally {
+      setIsExportingImage(false)
+    }
+  }
+
   if (!analysis) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-pink-500"></div>
+      <div className="min-h-screen bg-dermai-pure flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-dermai-ai-500"></div>
       </div>
     )
   }
 
   const scoreOrder: Array<keyof Omit<SkinScores, 'overall'>> = [
-    'hydration', 'wrinkles', 'firmness', 'radiance', 'pores'
+    'hydration', 'wrinkles', 'firmness', 'radiance', 'pores', 'spots', 'darkCircles', 'skinAge'
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+    <div className="min-h-screen bg-dermai-pure">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-purple-100 sticky top-0 z-40">
+      <div className="bg-dermai-pure/80 backdrop-blur-sm border-b border-dermai-nude-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-                         <div className="flex items-center space-x-3">
-               <div className="w-10 h-10 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
-                 <span className="text-white font-bold text-lg">D</span>
-               </div>
-               <div>
-                 <h1 className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-                   DermAI
-                 </h1>
-                 <p className="text-sm text-gray-600">Diagnostic personnalisé par IA</p>
-               </div>
-             </div>
+            <div className="flex items-center">
+              <a href="/" className="cursor-pointer transition-opacity hover:opacity-80">
+                <img 
+                  src="/DERMAI-logo.svg" 
+                  alt="DermAI" 
+                  className="h-8 md:h-10 w-auto"
+                />
+              </a>
+            </div>
 
             {/* Progress dots */}
             <div className="hidden md:flex items-center space-x-2">
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-pink-500 rounded-full"></div>
+              <div className="w-3 h-3 bg-dermai-ai-500 rounded-full shadow-glow"></div>
+              <div className="w-3 h-3 bg-dermai-ai-500 rounded-full shadow-glow"></div>
+              <div className="w-3 h-3 bg-dermai-ai-500 rounded-full shadow-glow"></div>
+              <div className="w-3 h-3 bg-dermai-ai-500 rounded-full shadow-glow"></div>
             </div>
 
             {/* Actions header */}
             <div className="flex items-center space-x-2">
             <button
               onClick={handleNewAnalysis}
-              className="flex items-center space-x-2 bg-white text-gray-700 px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-shadow border border-gray-200"
+              className="flex items-center space-x-2 bg-dermai-pure text-dermai-neutral-700 px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-shadow border border-dermai-nude-200 hover-lift"
             >
               <RotateCcw className="w-4 h-4" />
               <span className="hidden sm:inline">Nouvelle analyse</span>
             </button>
-              <button
-                onClick={() => {
-                  try {
-                    if (!analysis) return
-                    const json = JSON.stringify(analysis)
-                    const encoded = LZString.compressToEncodedURIComponent(json)
-                    const shareUrl = `${window.location.origin}/results?d=${encoded}`
-                    navigator.clipboard.writeText(shareUrl)
-                  } catch (e) { console.warn('Copie du lien impossible', e) }
-                }}
-                className="flex items-center space-x-2 bg-purple-600 text-white px-4 py-2 rounded-full shadow-sm hover:bg-purple-700 transition-colors"
-                title="Copier le lien du diagnostic"
-              >
-                <span>Partager</span>
-              </button>
-              <button
-                disabled
-                className="flex items-center space-x-2 bg-white text-gray-400 px-4 py-2 rounded-full shadow-sm border border-gray-200 cursor-not-allowed"
-                title="Export PDF bientôt disponible"
-              >
-                <span>Enregistrer (PDF bientôt)</span>
-              </button>
+            <button
+              onClick={() => {
+                try {
+                  if (!analysis) return
+                  const json = JSON.stringify(analysis)
+                  const encoded = LZString.compressToEncodedURIComponent(json)
+                  const shareUrl = `${window.location.origin}/results?d=${encoded}`
+                  navigator.clipboard.writeText(shareUrl)
+                } catch (e) { console.warn('Copie du lien impossible', e) }
+              }}
+              className="btn-primary flex items-center space-x-2 px-4 py-2 rounded-full shadow-sm transition-colors"
+              title="Copier le lien du diagnostic"
+            >
+              <Share2 className="w-4 h-4" />
+              <span className="hidden sm:inline">Partager</span>
+            </button>
+            <button
+              onClick={handleExportImage}
+              disabled={isExportingImage}
+              className="flex items-center space-x-2 bg-dermai-ai-500 text-white px-4 py-2 rounded-full shadow-sm hover:bg-dermai-ai-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Télécharger carte de diagnostic"
+            >
+              <Download className="w-4 h-4" />
+              <span className="hidden sm:inline">
+                {isExportingImage ? 'Export...' : 'Image'}
+              </span>
+            </button>
             </div>
           </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-                 {/* Hero Section - Diagnostic */}
-         <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           animate={{ opacity: 1, y: 0 }}
-           className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 rounded-3xl p-8 text-white relative overflow-hidden"
-         >
-           <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-10 translate-x-10 animate-pulse"></div>
-           <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full translate-y-10 -translate-x-10 animate-pulse delay-1000"></div>
-           <div className="absolute top-1/2 left-1/2 w-20 h-20 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2 animate-ping"></div>
+                 {/* Nouvelle Section - Diagnostic Personnalisé */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-gradient-to-br from-dermai-ai-500 via-dermai-ai-400 to-dermai-ai-600 rounded-3xl p-6 md:p-8 text-white relative overflow-hidden"
+        >
+          {/* Éléments décoratifs animés */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-8 translate-x-8 animate-pulse"></div>
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-6 -translate-x-6 animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 w-16 h-16 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2 animate-ping"></div>
           
           <div className="relative z-10">
-                       <div className="flex items-center space-x-3 mb-6">
-             <div className="p-2 bg-white/20 rounded-full">
-               <Award className="w-8 h-8" />
-             </div>
-             <div>
-               <h2 className="text-2xl font-bold">Diagnostic Personnalisé</h2>
-               <p className="text-purple-100 text-sm">Analyse complétée avec succès</p>
-             </div>
-           </div>
+            {/* En-tête */}
+            <div className="flex items-center space-x-3 mb-8">
+              <div className="p-3 bg-white/20 rounded-2xl">
+                <Award className="w-7 h-7" />
+            </div>
+            <div>
+                <h2 className="text-2xl md:text-3xl font-bold font-display">Diagnostic Personnalisé</h2>
+                <p className="text-dermai-ai-100 text-sm md:text-base">Analyse IA complétée avec succès</p>
+            </div>
+          </div>
             
-            <div className="grid md:grid-cols-3 gap-6">
-              {/* Skin type */}
-              <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6">
-                <div className="flex items-center space-x-3 mb-3">
-                  <Sparkles className="w-6 h-6" />
-                  <span className="font-semibold">Type de Peau Identifié</span>
+            {/* Grille mobile-first - Nouvel ordre */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+              
+              {/* 1. Type de peau global */}
+              <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-5">
+                <div className="flex items-center space-x-2 mb-3">
+                  <Sparkles className="w-5 h-5" />
+                  <span className="font-semibold text-sm">Type de Peau</span>
                 </div>
-                <div className="text-xl font-bold mb-2">
-                  {analysis.diagnostic.primaryCondition}
-                </div>
-                <div className="text-sm opacity-90">
-                  Sévérité: {analysis.diagnostic.severity}
+                <div className="text-lg md:text-xl font-bold font-display mb-1">
+                  {analysis.beautyAssessment.skinType || analysis.beautyAssessment.mainConcern}
                 </div>
               </div>
 
-              {/* Skin age */}
-              {skinAgeYears && (
-                <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6 text-center">
-                  <div className="flex items-center justify-center space-x-3 mb-3">
-                    <TrendingUp className="w-6 h-6" />
-                    <span className="font-semibold">Âge de peau estimé</span>
+              {/* 2. Spécificités détectées */}
+              <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-5">
+                <div className="flex items-center space-x-2 mb-3">
+                  <Target className="w-5 h-5" />
+                  <span className="font-semibold text-sm">Spécificités</span>
+                </div>
+                {analysis.beautyAssessment.specificities && analysis.beautyAssessment.specificities.length > 0 ? (
+                  <div className="space-y-2">
+                    {analysis.beautyAssessment.specificities.slice(0, 2).map((spec, idx) => (
+                      <div key={idx} className="text-sm">
+                        <div className="font-medium">{spec.name}</div>
+                        <div className="text-xs opacity-80 capitalize">{spec.intensity}</div>
+                      </div>
+                    ))}
+                    {analysis.beautyAssessment.specificities.length > 2 && (
+                      <button
+                        onClick={() => {
+                          const observationsSection = document.getElementById('observations-specificities')
+                          if (observationsSection) {
+                            observationsSection.scrollIntoView({ behavior: 'smooth' })
+                          }
+                        }}
+                        className="text-xs opacity-75 hover:opacity-100 underline cursor-pointer transition-opacity"
+                      >
+                        +{analysis.beautyAssessment.specificities.length - 2} autres
+                      </button>
+                    )}
                   </div>
-                  <div className="text-3xl font-bold text-purple-200">{skinAgeYears} ans</div>
-                  <div className="text-xs opacity-80 mt-1">Estimation basée sur votre analyse DermAI</div>
+                ) : (
+                <div className="text-sm opacity-90">
+                    {analysis.beautyAssessment.mainConcern}
+                    <div className="text-xs opacity-75 mt-1 capitalize">
+                      {analysis.beautyAssessment.intensity}
+                </div>
+                  </div>
+                )}
+              </div>
+
+              {/* 3. Score global - maintenant en 3ème position */}
+              <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-5 text-center">
+                <div className="flex items-center justify-center space-x-2 mb-3">
+                  <Award className="w-5 h-5" />
+                  <span className="font-semibold text-sm">Score Global</span>
+                </div>
+                <div className="text-2xl md:text-3xl font-bold font-display">{analysis.scores.overall}/100</div>
+                <div className="text-xs opacity-75 mt-1">8 critères évalués</div>
+              </div>
+            </div>
+
+            {/* Ligne séparée pour Âge de peau et Amélioration */}
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+              {/* 4. Âge de peau estimé */}
+              {skinAgeYears && (
+                <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-5 text-center">
+                  <div className="flex items-center justify-center space-x-2 mb-3">
+                    <TrendingUp className="w-5 h-5" />
+                    <span className="font-semibold text-sm">Âge de peau estimé</span>
+                  </div>
+                  <div className="text-2xl md:text-3xl font-bold font-display text-dermai-ai-200">{skinAgeYears} ans</div>
+                  <div className="text-xs opacity-75 mt-1">Basé sur analyse photo</div>
                 </div>
               )}
 
-              {/* Overall score */}
-              <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6 text-center">
-                <div className="text-sm opacity-90 mb-2">Score Global</div>
-                <div className="text-4xl font-bold mb-2">{analysis.scores.overall}</div>
-                <div className="text-sm opacity-90">Analyse sur 8 critères</div>
+              {/* 5. Estimation d'amélioration - en dernier */}
+              <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-5 text-center">
+                <div className="flex items-center justify-center space-x-2 mb-3">
+                  <Clock className="w-5 h-5" />
+                  <span className="font-semibold text-sm">Estimation d'amélioration</span>
+              </div>
+                <div className="text-lg font-bold font-display mb-1">
+                  {analysis.beautyAssessment.improvementTimeEstimate || "3-4 mois"} pour atteindre 90/100
+                </div>
+                <div className="text-xs opacity-60">Basé sur l'état de votre peau actuel</div>
               </div>
             </div>
           </div>
         </motion.div>
 
                  {/* Scores Section */}
-         <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ delay: 0.1 }}
-           className="bg-white rounded-3xl shadow-xl p-8 hover:shadow-2xl transition-shadow"
-         >
-           <div className="flex items-center justify-between mb-6">
-             <div className="flex items-center space-x-3">
-               <div className="p-2 bg-pink-100 rounded-full">
-                 <Award className="w-6 h-6 text-pink-500" />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="card bg-gradient-to-br from-dermai-pure to-dermai-nude-50 rounded-3xl shadow-premium p-8 hover:shadow-premium-lg transition-shadow border border-dermai-nude-100"
+        >
+           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 md:mb-8">
+             <div className="flex items-center space-x-3 md:space-x-4">
+               <div className="p-2 md:p-3 bg-gradient-to-br from-dermai-ai-100 to-dermai-ai-200 rounded-xl md:rounded-2xl">
+                 <Award className="w-5 h-5 md:w-7 md:h-7 text-dermai-ai-600" />
                </div>
                <div>
-                 <h2 className="text-2xl font-bold text-gray-900">Vos Scores Peau</h2>
-                 <p className="text-gray-600">Analyse sur 5 piliers essentiels</p>
-               </div>
-             </div>
-             <div className="text-right">
-               <div className="text-sm text-gray-500">Score global</div>
-               <div className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
-                 {analysis.scores.overall}/100
+                 <h2 className="text-xl md:text-2xl font-bold font-display text-dermai-neutral-900">Vos Scores Peau</h2>
+                 <p className="text-sm md:text-base text-dermai-neutral-600">Analyse complète sur 8 critères essentiels</p>
                </div>
              </div>
            </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+          <div className="grid grid-cols-3 md:grid-cols-4 gap-3 md:gap-6 justify-items-center">
             {scoreOrder.map((key) => {
               const score = (analysis.scores as any)[key] as ScoreDetail
               if (!score || typeof score.value !== 'number') return null
@@ -825,27 +1152,30 @@ export default function ResultsPage() {
           </div>
         </motion.div>
 
-                 {/* Key Observations */}
+                 {/* Observations liées aux spécificités */}
          <motion.div
+           id="observations-specificities"
            initial={{ opacity: 0, y: 20 }}
            animate={{ opacity: 1, y: 0 }}
            transition={{ delay: 0.2 }}
            className="bg-white rounded-3xl shadow-xl p-8"
          >
            <div className="flex items-center space-x-3 mb-6">
-             <Star className="w-6 h-6 text-blue-500" />
-             <h2 className="text-2xl font-bold text-gray-900">Observations Détaillées</h2>
+             <div className="p-2 bg-gradient-to-br from-dermai-ai-100 to-dermai-ai-200 rounded-xl">
+               <Eye className="w-5 h-5 text-dermai-ai-600" />
+             </div>
+             <h2 className="text-2xl font-bold text-gray-900">Observations liées aux spécificités</h2>
            </div>
 
           {/* Vue d'ensemble (overview) si disponible, sinon fallback sur observations classiques */}
-          {Array.isArray((analysis as any).diagnostic?.overview) && (analysis as any).diagnostic.overview.length > 0 ? (
+          {Array.isArray((analysis as any).beautyAssessment?.overview) && (analysis as any).beautyAssessment.overview.length > 0 ? (
             <div className="mb-6">
-              <h4 className="text-sm font-semibold text-gray-700 mb-2">Vue d’ensemble</h4>
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Vue d'ensemble</h4>
               <div className="grid md:grid-cols-3 gap-3">
-                {(analysis as any).diagnostic.overview.slice(0, 3).map((item: string, idx: number) => (
-                  <div key={idx} className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-4 border border-blue-100">
+                {(analysis as any).beautyAssessment.overview.slice(0, 3).map((item: string, idx: number) => (
+                  <div key={idx} className="bg-gradient-to-br from-dermai-ai-50 to-dermai-nude-50 rounded-2xl p-4 border border-dermai-ai-200">
                     <div className="flex items-start space-x-3">
-                      <div className="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">{idx + 1}</div>
+                      <div className="w-6 h-6 bg-gradient-to-br from-dermai-ai-500 to-dermai-ai-600 text-white rounded-full flex items-center justify-center text-sm font-bold">{idx + 1}</div>
                       <p className="text-gray-800 text-sm">{item}</p>
                     </div>
                   </div>
@@ -854,10 +1184,10 @@ export default function ResultsPage() {
             </div>
           ) : (
            <div className="grid md:grid-cols-3 gap-4">
-             {analysis.diagnostic.observations.slice(0, 3).map((observation, index) => (
-               <div key={index} className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-4 border border-blue-100">
+             {analysis.beautyAssessment.visualFindings.slice(0, 3).map((observation: string, index: number) => (
+               <div key={index} className="bg-gradient-to-br from-dermai-ai-50 to-dermai-nude-50 rounded-2xl p-4 border border-dermai-ai-200">
                  <div className="flex items-start space-x-3">
-                   <div className="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                   <div className="w-6 h-6 bg-gradient-to-br from-dermai-ai-500 to-dermai-ai-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
                      {index + 1}
                    </div>
                    <p className="text-gray-800 text-sm">{observation}</p>
@@ -868,56 +1198,131 @@ export default function ResultsPage() {
           )}
 
           {/* Observations localisées par zones */}
-          {Array.isArray((analysis as any).diagnostic?.localized) && (analysis as any).diagnostic.localized.length > 0 && (
+          {getLocalizedRoutine(analysis).length > 0 && (
             <div className="mt-4">
               <h4 className="text-sm font-semibold text-gray-700 mb-2">Zones à surveiller</h4>
-              <div className="grid md:grid-cols-2 gap-3">
-                {(analysis as any).diagnostic.localized.map((loc: any, idx: number) => {
-                  const severity = String(loc.severity || '').toLowerCase()
-                  const severityColor = severity.includes('sévère') || severity.includes('severe')
-                    ? 'bg-red-500'
-                    : severity.includes('modérée') || severity.includes('moderate')
-                    ? 'bg-orange-400'
-                    : 'bg-yellow-300'
-                  const fillPercent = severity.includes('sévère') || severity.includes('severe')
-                    ? 90
-                    : severity.includes('modérée') || severity.includes('moderate')
-                    ? 65
-                    : 35
-                  return (
-                    <div key={idx} className="bg-white rounded-2xl p-4 border border-gray-100">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center space-x-3">
-                          {/* Voyant de sévérité */}
-                          <div className={`w-4 h-4 rounded-full ring-2 ring-offset-2 ${severityColor} ring-${severity.includes('sévère') ? 'red' : severity.includes('modérée') ? 'orange' : 'yellow'}-200`} />
-                          <span className="font-medium text-gray-900 capitalize">{loc.zone}</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {getLocalizedRoutine(analysis)
+                  .filter((loc: any) => {
+                    // Filtrer les zones qui ont des problèmes valides
+                    const hasProblems = Array.isArray(loc.problems) && loc.problems.length > 0
+                    const hasConcerns = Array.isArray(loc.concerns) && loc.concerns.length > 0
+                    const hasIssues = Array.isArray(loc.issues) && loc.issues.length > 0
+                    const hasValidDescription = loc.description && loc.description !== 'Problème détecté'
+                    
+                    return hasProblems || hasConcerns || hasIssues || hasValidDescription
+                  })
+                  .map((loc: any, idx: number) => {
+                    // Fonction pour obtenir les couleurs selon l'intensité
+                    const getIntensityColors = (intensity: string) => {
+                      const intensityLower = String(intensity || '').toLowerCase()
+                      if (intensityLower.includes('intense') || intensityLower.includes('sévère')) {
+                        return {
+                          bar: 'bg-red-500/80',
+                          badge: 'bg-red-50/80 text-red-700 border-red-200/80',
+                          ring: 'ring-red-200/80'
+                        }
+                      } else if (intensityLower.includes('modérée') || intensityLower.includes('moderate')) {
+                        return {
+                          bar: 'bg-orange-400/80',
+                          badge: 'bg-orange-50/80 text-orange-700 border-orange-200/80',
+                          ring: 'ring-orange-200/80'
+                        }
+                      } else {
+                        return {
+                          bar: 'bg-yellow-300/80',
+                          badge: 'bg-yellow-50/80 text-yellow-700 border-yellow-200/80',
+                          ring: 'ring-yellow-200/80'
+                        }
+                      }
+                    }
+
+                    // Fonction pour calculer le pourcentage de remplissage
+                    const getFillPercent = (intensity: string) => {
+                      const intensityLower = String(intensity || '').toLowerCase()
+                      if (intensityLower.includes('intense') || intensityLower.includes('sévère')) return 90
+                      if (intensityLower.includes('modérée') || intensityLower.includes('moderate')) return 65
+                      return 35
+                    }
+
+                    // Extraire les problèmes de la zone
+
+                    const problems = extractProblems(loc)
+
+                    return (
+                      <div key={idx} className="bg-white rounded-2xl p-5 border-2 border-dermai-ai-200/60 shadow-sm hover:shadow-md transition-shadow">
+                        {/* En-tête de la zone */}
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center space-x-3">
+                            <div className="w-4 h-4 rounded-full ring-2 ring-offset-2 bg-dermai-ai-400 ring-dermai-ai-200/80" />
+                            <h5 className="font-semibold text-gray-900 capitalize text-lg">
+                              {loc.zone}
+                            </h5>
+                          </div>
                         </div>
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-gray-50 border border-gray-200 text-gray-600">{loc.severity || '—'}</span>
+
+                        {/* Liste des problèmes avec barres individuelles */}
+                        <div className="space-y-3">
+                          {problems.map((problem: any, problemIdx: number) => {
+                            const colors = getIntensityColors(problem.intensity)
+                            const fillPercent = getFillPercent(problem.intensity)
+                            
+                            return (
+                              <div key={problemIdx} className="space-y-2">
+                                {/* Nom du problème */}
+                                <div className="flex items-center justify-between">
+                                  <span className="text-sm font-medium text-gray-800">
+                                    {problem.name}
+                                  </span>
+                                  <span className={`text-xs px-2 py-1 rounded-full border ${colors.badge}`}>
+                                    {problem.intensity}
+                                  </span>
+                                </div>
+                                
+                                {/* Barre de progression */}
+                                <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                                  <div
+                                    className={`${colors.bar} h-2 rounded-full transition-all duration-500 ease-out`}
+                                    style={{ width: `${fillPercent}%` }}
+                                  />
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+
+                        {/* Description générale de la zone (si disponible) */}
+                        {loc.description && (
+                          <div className="mt-3 pt-3 border-t border-gray-100">
+                            <p className="text-xs text-gray-600">{loc.description}</p>
+                          </div>
+                        )}
+
+                        {/* Notes supplémentaires (si disponibles) */}
+                        {Array.isArray(loc.notes) && loc.notes.length > 0 && (
+                          <div className="mt-3 pt-3 border-t border-gray-100">
+                            <ul className="text-xs text-gray-600 list-disc pl-4 space-y-0.5">
+                              {loc.notes.map((n: string, i: number) => (<li key={i}>{n}</li>))}
+                            </ul>
+                          </div>
+                        )}
                       </div>
-
-                      <div className="text-sm text-gray-800 mb-3">{loc.issue}</div>
-
-                      {/* Barre de remplissage visuelle */}
-                      <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                        <div
-                          className={`${severityColor} h-2 rounded-full`}
-                          style={{ width: `${fillPercent}%` }}
-                        />
-                      </div>
-
-                      {Array.isArray(loc.notes) && loc.notes.length > 0 && (
-                        <ul className="mt-3 text-xs text-gray-600 list-disc pl-5 space-y-0.5">
-                          {loc.notes.map((n: string, i: number) => (<li key={i}>{n}</li>))}
-                        </ul>
-                      )}
-                    </div>
-                  )
-                })}
+                    )
+                  })}
               </div>
             </div>
           )}
          </motion.div>
 
+         {/* NOUVELLE SECTION ROUTINE UNIFIÉE */}
+         {analysis.recommendations.unifiedRoutine && analysis.recommendations.unifiedRoutine.length > 0 ? (
+           <UnifiedRoutineSection 
+             routine={analysis.recommendations.unifiedRoutine} 
+             beautyAssessment={analysis.beautyAssessment || undefined}
+           />
+         ) : (
+           // Fallback vers ancienne structure si routine unifiée non disponible
+           <>
          {/* Routine Section */}
         {analysis.recommendations.routine && typeof analysis.recommendations.routine === 'object' && analysis.recommendations.routine.immediate ? (
           <AdvancedRoutineDisplay routine={analysis.recommendations.routine} />
@@ -979,152 +1384,32 @@ export default function ResultsPage() {
            </div>
          </motion.div>
         )}
-
-         {/* Routine localisée par zones (si disponible) */}
-         {getLocalizedRoutine(analysis).length > 0 && (
-         <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           animate={{ opacity: 1, y: 0 }}
-             transition={{ delay: 0.3 }}
-             className="bg-white rounded-3xl shadow-xl p-8"
-           >
-             <div className="flex items-center space-x-3 mb-6">
-               <Target className="w-6 h-6 text-rose-500" />
-               <h2 className="text-2xl font-bold text-gray-900">Traitement des zones à surveiller</h2>
-               </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {getLocalizedRoutine(analysis)
-                .sort((a: any, b: any) => (a.priority || 99) - (b.priority || 99))
-                .map((loc: any, idx: number) => {
-                 // Utiliser la même fonction severityBadge pour la cohérence
-                 const severityClass = severityBadge(loc.severity)
-                 
-                 // Background coloré selon la sévérité
-                 const sev = String(loc.severity || '').toLowerCase()
-                 const backgroundClass = sev.includes('sévère') || sev.includes('severe')
-                   ? 'bg-red-50 border-red-200'
-                   : sev.includes('modérée') || sev.includes('moderate')
-                   ? 'bg-orange-50 border-orange-200'
-                   : 'bg-yellow-50 border-yellow-200'
-                 
-                 return (
-                   <div key={idx} className={`rounded-2xl border p-6 ${backgroundClass}`}>
-                     {/* En-tête: Zone (problème) à gauche, Sévérité à droite */}
-                     <div className="flex items-start justify-between mb-4">
-                       <h4 className="text-lg font-bold text-gray-900 capitalize">
-                         {loc.zone}
-                         {Array.isArray(loc.issues) && loc.issues.length > 0 && (
-                           <span className="ml-2 text-sm font-normal text-gray-700">({loc.issues[0]})</span>
-                         )}
-                       </h4>
-                       <span className={`text-xs px-3 py-1 rounded-full border ${severityClass}`}>
-                         {loc.severity || 'Modérée'}
-                       </span>
-               </div>
-
-                      {Array.isArray(loc.restrictions) && loc.restrictions.length > 0 && (
-                        <div className="mb-3">
-                          <div className="text-xs font-medium text-gray-700 mb-1">Restrictions temporaires</div>
-                          <ul className="text-xs text-gray-600 list-disc pl-4 space-y-0.5">
-                            {loc.restrictions.map((r: string, i: number) => (<li key={i}>{r}</li>))}
-                          </ul>
-             </div>
-                      )}
-
-                      {loc.resumeCondition && (
-                        <div className="text-xs text-gray-600 mb-3">
-                          <span className="font-medium">Reprise progressive:</span> {loc.resumeCondition}
-             </div>
-                      )}
-
-                      {Array.isArray(loc.steps) && loc.steps.length > 0 && (
-                        <div className="space-y-3">
-                          {loc.steps.map((s: any, si: number) => (
-                            <div key={si} className="bg-white rounded-xl p-4 border border-gray-200">
-                              {/* En-tête avec numérotation claire */}
-                              <div className="flex items-start space-x-3 mb-3">
-                                <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                                  {si + 1}
-           </div>
-                                <div className="flex-1">
-                                  <div className="text-sm font-semibold text-gray-900 mb-1">{s.name || s.title}</div>
-                                  <div className="flex flex-wrap items-center gap-2 text-xs">
-                                    <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full font-medium">
-                                      {s.category === 'treatment' ? '🩹 Traitement' : '💧 Soin'} • 
-                                      {s.frequency === 'quotidien' ? ' Quotidien' : ` ${s.frequency}`}
-                                      {s.timing && ` • ${s.timing === 'soir' ? 'Soir' : s.timing === 'matin' ? 'Matin' : s.timing}`}
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                              {/* Affichage amélioré des produits avec catalogId */}
-                              {s.catalogId && (
-                                <div className="bg-blue-50 rounded-lg p-2 mb-2 border border-blue-200">
-                                  <div className="flex items-center space-x-1 text-xs text-blue-700 mb-1">
-                                    <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                                    <span className="font-medium">Produit recommandé</span>
-                                  </div>
-                                  <a
-                                    href={catalogMap[s.catalogId]?.affiliateLink || '#'}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-xs text-blue-800 font-medium hover:underline"
-                                  >
-                                    {catalogMap[s.catalogId]?.name || getProductNameFromCatalogId(s.catalogId)}
-                                  </a>
-                                  {s.application && (
-                                    <p className="text-xs text-gray-600 mt-1">{s.application}</p>
-                                  )}
-                                  {s.duration && (
-                                    <p className="text-xs text-gray-500 mt-1">Durée: {s.duration}</p>
-                                  )}
-                                  {s.resume && (
-                                    <p className="text-xs text-gray-500 mt-1">Reprise: {s.resume}</p>
-                                  )}
-                                </div>
-                              )}
-                              {/* Fallback pour ancienne structure */}
-                              {!s.catalogId && getCatalogProductName(analysis, s) && (
-                                <div className="text-xs text-gray-800"><span className="font-medium">Produit:</span> {getCatalogProductName(analysis, s)}</div>
-                              )}
-                              {Array.isArray(s.applicationTips) && s.applicationTips.length > 0 && (
-                                <div className="mt-1">
-                                  <div className="text-[11px] text-gray-600 font-medium mb-0.5">Conseils d’application</div>
-                                  <ul className="text-xs text-gray-600 list-disc pl-4 space-y-0.5">
-                                    {s.applicationTips.map((t: string, ti: number) => (<li key={ti}>{t}</li>))}
-                                  </ul>
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )
-                })}
-             </div>
-           </motion.div>
+           </>
          )}
+
+         {/* SUPPRIMÉ: Routine localisée par zones - remplacée par routine unifiée */}
 
          {/* Products Section */}
          <motion.div
            initial={{ opacity: 0, y: 20 }}
            animate={{ opacity: 1, y: 0 }}
            transition={{ delay: 0.4 }}
-           className="bg-gradient-to-br from-white to-purple-50 rounded-3xl shadow-xl p-8 border border-purple-100"
+           className="bg-white rounded-3xl shadow-xl p-8 border border-dermai-ai-100"
          >
            <div className="flex items-center space-x-3 mb-6">
-             <div className="w-10 h-10 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
-               <span className="text-white text-lg">🛍️</span>
+             <div className="p-2 bg-gradient-to-br from-dermai-ai-100 to-dermai-ai-200 rounded-xl">
+               <ShoppingBag className="w-5 h-5 text-dermai-ai-600" />
              </div>
-             <h2 className="text-2xl font-bold text-gray-900">Produits recommandés</h2>
+             <div>
+               <h2 className="text-xl md:text-2xl font-bold text-gray-900">Produits recommandés</h2>
+               <p className="text-sm text-dermai-neutral-600">Sélectionnés pour votre peau</p>
+             </div>
            </div>
 
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {productsLoading ? (
               <div className="flex items-center justify-center w-full py-8">
-                <div className="text-gray-500">Chargement des produits...</div>
+                <div className="text-dermai-neutral-500">Chargement des produits...</div>
               </div>
             ) : (
               products.map((product, index) => (
@@ -1135,7 +1420,7 @@ export default function ResultsPage() {
          </motion.div>
 
          {/* Actions secondaires après Produits recommandés */}
-         <div className="flex items-center justify-end gap-2">
+         <div className="flex items-center justify-end gap-3">
            <button
              onClick={() => {
                try {
@@ -1146,16 +1431,18 @@ export default function ResultsPage() {
                  navigator.clipboard.writeText(shareUrl)
                } catch (e) { console.warn('Copie du lien impossible', e) }
              }}
-             className="flex items-center space-x-2 bg-purple-600 text-white px-4 py-2 rounded-full shadow-sm hover:bg-purple-700 transition-colors"
+             className="flex items-center space-x-2 bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-600 text-white px-6 py-3 rounded-xl shadow-sm hover:from-dermai-ai-600 hover:to-dermai-ai-700 transition-all font-semibold"
              title="Copier le lien du diagnostic"
            >
+             <Share2 className="w-4 h-4" />
              <span>Partager</span>
            </button>
            <button
              disabled
-             className="flex items-center space-x-2 bg-white text-gray-400 px-4 py-2 rounded-full shadow-sm border border-gray-200 cursor-not-allowed"
+             className="flex items-center space-x-2 bg-white text-dermai-neutral-400 px-6 py-3 rounded-xl shadow-sm border-2 border-dermai-neutral-200 cursor-not-allowed font-semibold"
              title="Export PDF bientôt disponible"
            >
+             <Download className="w-4 h-4" />
              <span>Enregistrer (PDF bientôt)</span>
            </button>
          </div>
@@ -1165,20 +1452,22 @@ export default function ResultsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-gradient-to-r from-pink-500 to-purple-600 rounded-3xl p-8 text-white text-center"
+          className="bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-600 rounded-3xl p-8 text-white text-center shadow-xl"
         >
           <div className="max-w-2xl mx-auto">
-            <MessageCircle className="w-12 h-12 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold mb-2">Discussion avec votre assistant DermAI</h2>
-            <p className="text-lg opacity-90 mb-6">
-              Posez vos questions sur votre diagnostic !
+            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <MessageCircle className="w-8 h-8" />
+            </div>
+            <h2 className="text-2xl font-bold mb-3">Discussion avec votre assistant DermAI</h2>
+            <p className="text-lg opacity-90 mb-6 leading-relaxed">
+              Posez vos questions sur votre diagnostic et obtenez des conseils personnalisés !
             </p>
-            <p className="text-sm opacity-75 mb-4">
+            <p className="text-sm opacity-75 mb-6">
               Ex: "Comment appliquer ces produits ?" ou "Puis-je utiliser du rétinol ?"
             </p>
             <button
               onClick={() => setIsChatOpen(true)}
-              className="bg-white text-purple-600 px-8 py-3 rounded-full font-semibold hover:bg-purple-50 transition-colors"
+              className="bg-white text-dermai-ai-600 px-8 py-4 rounded-xl font-bold hover:bg-dermai-ai-50 transition-all shadow-lg hover:shadow-xl"
             >
               Commencer la discussion
             </button>
@@ -1207,23 +1496,21 @@ export default function ResultsPage() {
          animate={{ scale: 1 }}
          transition={{ delay: 1.5, type: "spring" }}
          onClick={() => setIsChatOpen(true)}
-         className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 z-50 flex items-center justify-center group"
+         className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-600 text-white rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-110 z-50 flex items-center justify-center group"
        >
          <MessageCircle className="w-7 h-7" />
-         <span className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full animate-pulse flex items-center justify-center">
-           <span className="text-white text-xs font-bold">!</span>
-         </span>
-         
-         {/* Tooltip */}
-         <div className="absolute bottom-full right-0 mb-3 hidden group-hover:block">
-           <div className="bg-gray-900 text-white text-sm rounded-lg px-4 py-3 whitespace-nowrap shadow-xl">
-             <div className="font-semibold">💬 Besoin d'aide ?</div>
-             <div className="text-xs text-gray-300 mt-1">Posez vos questions à votre assistant DermAI</div>
-             <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
-           </div>
-         </div>
+         <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
        </motion.button>
        )}
+
+       {/* Carte partageable pour export d'image */}
+       <div className="fixed top-0 left-0 opacity-0 pointer-events-none z-[-1]">
+         <ShareableCard 
+           ref={shareableCardRef}
+           analysis={analysis}
+           skinAgeYears={skinAgeYears}
+         />
+       </div>
 
        {/* Chat Widget */}
        {isChatOpen && (

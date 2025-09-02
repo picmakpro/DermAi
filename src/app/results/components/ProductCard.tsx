@@ -1,4 +1,4 @@
-import { ShoppingCart, Info, Clock, RefreshCcw } from 'lucide-react'
+import { ShoppingCart, Info, Clock, RefreshCcw, Sparkles, Star } from 'lucide-react'
 
 interface ProductCardProps {
   name: string
@@ -30,64 +30,35 @@ export default function ProductCard({
   onAlternativeClick
 }: ProductCardProps) {
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 min-w-[280px] snap-start relative group hover:shadow-md transition-shadow">
-      {/* Discount badge supprimé (pas de marketing) */}
-      
+    <div className="bg-white rounded-2xl shadow-sm border border-dermai-ai-100 hover:shadow-lg transition-all duration-300 group overflow-hidden">
       {/* Product image */}
-      <div className="w-full h-48 bg-gray-50 overflow-hidden">
+      <div className="w-full h-48 bg-gradient-to-br from-dermai-ai-50 to-dermai-nude-50 overflow-hidden relative">
         <img 
           src={imageUrl} 
           alt={name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
+        {/* Overlay avec badge IA */}
+        <div className="absolute top-3 left-3">
+          <div className="flex items-center space-x-1 bg-white/95 backdrop-blur-sm rounded-full px-3 py-1.5 shadow-md border border-dermai-ai-100">
+            <Sparkles className="w-3 h-3 text-dermai-ai-500" />
+            <span className="text-xs font-semibold text-dermai-ai-700">IA DermAI</span>
+          </div>
+        </div>
       </div>
       
       {/* Product info */}
-      <div className="p-4 space-y-3">
-        {/* Category badge */}
-        <div className="flex items-center justify-between">
-          <span className="text-xs bg-gradient-to-r from-pink-100 to-purple-100 text-pink-700 px-3 py-1.5 rounded-full font-semibold">
-            ✨ Recommandé par l&apos;IA
-          </span>
-          <div className="flex items-center space-x-2">
-            {/* Why this product tooltip */}
-            <div className="relative group/tooltip">
-              <Info className="w-4 h-4 text-blue-500 cursor-help" />
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover/tooltip:block z-50">
-                <div className="bg-blue-50 border border-blue-200 text-blue-800 text-xs rounded-lg p-3 w-64 shadow-lg">
-                  <div className="font-semibold mb-1">✨ Pourquoi ce produit ?</div>
-                  <div>{whyThisProduct}</div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Instructions tooltip */}
-            <div className="relative group/tooltip">
-              <Clock className="w-4 h-4 text-green-500 cursor-help" />
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover/tooltip:block z-50">
-                <div className="bg-green-50 border border-green-200 text-green-800 text-xs rounded-lg p-3 w-64 shadow-lg">
-                  <div className="font-semibold mb-1">📋 Mode d'emploi</div>
-                  <div>{instructions}</div>
-                  <div className="mt-2 flex items-center">
-                    <Clock className="w-3 h-3 mr-1" />
-                    <span className="font-medium">{frequency}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
+      <div className="p-5 space-y-4">
         {/* Product name and brand */}
         <div>
-          <h3 className="font-semibold text-gray-900 text-sm leading-tight">{name}</h3>
-          <p className="text-gray-600 text-sm">{brand}</p>
+          <h3 className="font-bold text-gray-900 text-base leading-tight mb-1">{name}</h3>
+          <p className="text-dermai-neutral-600 text-sm font-medium">{brand}</p>
         </div>
         
         {/* Benefits */}
-        <div className="flex flex-wrap gap-1">
-          {benefits.slice(0, 2).map((benefit, index) => (
-            <span key={index} className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">
+        <div className="flex flex-wrap gap-2">
+          {benefits.slice(0, 3).map((benefit, index) => (
+            <span key={index} className="text-xs bg-dermai-ai-50 text-dermai-ai-700 px-3 py-1.5 rounded-full font-medium border border-dermai-ai-100">
               {benefit}
             </span>
           ))}
@@ -97,39 +68,70 @@ export default function ProductCard({
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             {originalPrice && (
-              <span className="text-sm text-gray-400 line-through">
+              <span className="text-sm text-dermai-neutral-400 line-through">
                 {originalPrice.toFixed(2)}€
               </span>
             )}
-            <span className="text-lg font-bold text-gray-900">
+            <span className="text-xl font-bold text-gray-900">
               {price.toFixed(2)}€
             </span>
+          </div>
+          <div className="flex items-center space-x-2">
+            {/* Why this product tooltip */}
+            <div className="relative group/tooltip">
+              <Info className="w-4 h-4 text-dermai-ai-500 cursor-help hover:text-dermai-ai-600 transition-colors" />
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover/tooltip:block z-50">
+                <div className="bg-white border border-dermai-ai-200 text-gray-800 text-xs rounded-xl p-4 w-72 shadow-xl">
+                  <div className="font-bold mb-2 text-dermai-ai-700 flex items-center">
+                    <Sparkles className="w-3 h-3 mr-1" />
+                    Pourquoi ce produit ?
+                  </div>
+                  <div className="text-sm leading-relaxed">{whyThisProduct}</div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Instructions tooltip */}
+            <div className="relative group/tooltip">
+              <Clock className="w-4 h-4 text-dermai-ai-500 cursor-help hover:text-dermai-ai-600 transition-colors" />
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover/tooltip:block z-50">
+                <div className="bg-white border border-dermai-ai-200 text-gray-800 text-xs rounded-xl p-4 w-72 shadow-xl">
+                  <div className="font-bold mb-2 text-dermai-ai-700 flex items-center">
+                    <Clock className="w-3 h-3 mr-1" />
+                    Mode d'emploi
+                  </div>
+                  <div className="text-sm leading-relaxed mb-2">{instructions}</div>
+                  <div className="flex items-center text-dermai-ai-600 font-medium">
+                    <Clock className="w-3 h-3 mr-1" />
+                    {frequency}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         
         {/* CTA Buttons */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div className="space-y-3">
           <a
             href={affiliateLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-2.5 rounded-lg font-medium flex items-center justify-center space-x-2 hover:from-pink-600 hover:to-purple-700 transition-all"
+            className="w-full bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-600 text-white py-3 rounded-xl font-semibold flex items-center justify-center space-x-2 hover:from-dermai-ai-600 hover:to-dermai-ai-700 transition-all shadow-sm hover:shadow-md"
           >
             <ShoppingCart className="w-4 h-4" />
-            <span>Acheter</span>
+            <span>Acheter maintenant</span>
           </a>
 
           <button
             type="button"
             onClick={() => onAlternativeClick && onAlternativeClick()}
-            className="w-full bg-white text-purple-600 border border-purple-200 py-2.5 rounded-lg font-medium flex items-center justify-center space-x-2 hover:bg-purple-50 transition-all"
+            className="w-full bg-white text-dermai-ai-600 border-2 border-dermai-ai-200 py-3 rounded-xl font-semibold flex items-center justify-center space-x-2 hover:bg-dermai-ai-50 hover:border-dermai-ai-300 transition-all"
           >
             <RefreshCcw className="w-4 h-4" />
-            <span>Autre alternative</span>
+            <span>Voir une alternative</span>
           </button>
         </div>
-        
-        {/* Badge marketing supprimé */}
       </div>
     </div>
   )

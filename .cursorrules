@@ -1,0 +1,76 @@
+```
+# Règles de génération de code pour DermAI V2
+
+# Général
+- Utiliser TypeScript pour tous les nouveaux fichiers et composants.
+- Respecter les conventions de nommage CamelCase pour les variables et fonctions, PascalCase pour les composants React.
+- Privilégier les fonctions fléchées pour les callbacks et les fonctions anonymes.
+- Utiliser `const` par défaut, `let` si la variable doit être réassignée, `var` jamais.
+- Ajouter des commentaires JSDoc pour les fonctions et composants complexes.
+
+# Frontend (Next.js, React, Tailwind CSS)
+- Utiliser le `App Router` de Next.js pour la structure des routes.
+- Créer des composants réutilisables dans le dossier `src/components`.
+- Utiliser `Tailwind CSS` pour le stylisme, en privilégiant les classes utilitaires.
+- Définir les couleurs et polices personnalisées dans `tailwind.config.js`.
+- Pour les animations, utiliser `Framer Motion`.
+- Gérer l'état des formulaires avec `React Hook Form` et la validation avec `Zod`.
+- Stocker les données locales (photos, métadonnées) dans `IndexedDB` ou `SessionStorage` selon la persistance requise.
+- Optimiser les images et les chargements de composants pour la performance mobile.
+
+# Intelligence Artificielle (GPT-4o Vision)
+- Les appels à l'API GPT-4o Vision doivent être encapsulés dans `src/services/ai.ts`.
+- Utiliser des prompts structurés et détaillés pour le diagnostic et la sélection de produits.
+- Assurer la gestion des erreurs et des timeouts pour les appels API.
+- Les prompts système doivent être versionnés et documentés.
+
+# Catalogue Affilié
+- Le catalogue de produits doit être géré via `src/data/affiliateCatalog.json`.
+- Les fonctions de sélection de produits doivent être dans `src/services/catalog.ts`.
+- Implémenter une logique de fallback pour les produits non trouvés.
+- Gérer les liens d'affiliation de manière sécurisée.
+
+# Structure des routes (Next.js App Router)
+- `/`: Landing page
+- `/upload`: Page d'upload de photos
+- `/questionnaire`: Page du questionnaire intelligent
+- `/analyze`: Page d'analyse (traitement IA)
+- `/results`: Page des résultats du diagnostic
+- `/api/*`: Routes API pour les services backend (ex: `api/analyze`, `api/catalog`)
+
+# Sécurité et Performance
+- Ne jamais exposer directement les clés API côté client.
+- Compresser les données pour les partages via URL (ex: `LZ-String`).
+- Implémenter des `Error Boundaries` pour une meilleure gestion des erreurs UI.
+- Mettre en place des mécanismes de retry pour les appels réseau.
+
+# Déploiement Vercel (CRITIQUE)
+- TOUJOURS inclure un fichier `vercel.json` avec la configuration Next.js explicite.
+- Le framework doit être défini comme "nextjs" pour éviter les erreurs 404 en production.
+- Configuration requise :
+  ```json
+  {
+    "framework": "nextjs",
+    "buildCommand": "npm run build",
+    "outputDirectory": ".next",
+    "installCommand": "npm install",
+    "devCommand": "npm run dev",
+    "rewrites": [{ "source": "/(.*)", "destination": "/$1" }]
+  }
+  ```
+- Augmenter le buffer Git si images volumineuses : `git config http.postBuffer 524288000`
+- Toujours tester avec `vercel build` localement avant déploiement production.
+- En cas d'erreur 404 persistante : vérifier que le framework n'est pas `null` dans les settings.
+
+# Fonctionnalités Futures (Roadmap)
+- Prévoir des structures pour l'authentification utilisateur et les dashboards (`/dashboard`).
+- Anticiper l'intégration d'un coach IA conversationnel (`src/services/chat.ts`).
+- Préparer l'architecture pour une marketplace intégrée.
+- Penser à l'export PDF des diagnostics.
+
+# Historique des Corrections Critiques
+- **30/08/2025** : Erreur 404 Vercel résolue par ajout de `vercel.json` avec framework "nextjs"
+- **30/08/2025** : 3 nouveaux écrans plein écran intégrés dans le parcours formulaire
+- **30/08/2025** : Harmonisation couleurs sélection et récapitulatif avec miniatures photos IndexedDB
+```
+
