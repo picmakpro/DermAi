@@ -9,8 +9,16 @@ export class AnalysisService {
    */
   static async analyzeSkin(request: AnalyzeRequest): Promise<SkinAnalysis> {
     try {
+      console.log('🔧 Initialisation client OpenAI...')
+      
+      // Vérifier les variables d'environnement
+      if (!process.env.OPENAI_API_KEY) {
+        throw new Error('OPENAI_API_KEY manquante dans les variables d\'environnement Vercel')
+      }
+      
       // Créer le client OpenAI côté serveur
       const openai = createOpenAIClient()
+      console.log('✅ Client OpenAI initialisé avec succès')
 
       // Les images sont déjà en base64 depuis le client
       const imageContents = request.photos.map(photo => {
@@ -73,7 +81,33 @@ export class AnalysisService {
       return finalAnalysis
 
     } catch (error) {
-      console.error('Erreur analyse IA:', error)
+      console.error('❌ Erreur analyse IA complète:', error)
+      
+      // Diagnostics spécifiques pour Vercel
+      if (error instanceof Error) {
+        const errorMessage = error.message.toLowerCase()
+        
+        if (errorMessage.includes('api key') || errorMessage.includes('unauthorized')) {
+          throw new Error('Configuration OpenAI invalide - Vérifiez OPENAI_API_KEY dans Vercel')
+        }
+        
+        if (errorMessage.includes('rate limit') || errorMessage.includes('quota')) {
+          throw new Error('Limite OpenAI atteinte - Réessayez dans quelques minutes')
+        }
+        
+        if (errorMessage.includes('network') || errorMessage.includes('fetch')) {
+          throw new Error('Problème de connexion réseau depuis Vercel vers OpenAI')
+        }
+        
+        if (errorMessage.includes('timeout')) {
+          throw new Error('Timeout de l\'analyse - Image trop volumineuse ou connexion lente')
+        }
+        
+        if (errorMessage.includes('expected pattern') || errorMessage.includes('json')) {
+          throw new Error('Erreur de parsing de la réponse OpenAI - Format inattendu')
+        }
+      }
+      
       throw new Error(`Échec de l'analyse: ${error instanceof Error ? error.message : 'Erreur inconnue'}`)
     }
   }
