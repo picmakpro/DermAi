@@ -540,9 +540,15 @@ Réponds UNIQUEMENT en JSON valide avec cette structure exacte :
    * Prompt utilisateur contextuel
    */
   private static buildUserPrompt(request: AnalyzeRequest): string {
+    // Protection navigateur Samsung et autres
+    const userProfile = request.userProfile || {}
+    const gender = userProfile.gender || 'Non spécifié'
+    const age = userProfile.age || 'Non spécifié'
+    const skinType = userProfile.skinType || 'À déterminer'
+    
     return `## CONTEXTE UTILISATEUR
-**Profil :** ${request.userProfile.gender}, ${request.userProfile.age} ans
-**Type de peau déclaré :** ${request.userProfile.skinType}
+**Profil :** ${gender}, ${age} ans
+**Type de peau déclaré :** ${skinType}
 
 ## PRÉOCCUPATIONS PRINCIPALES
 ${request.skinConcerns.primary.join(', ')}${request.skinConcerns.otherText ? ` (Autres: ${request.skinConcerns.otherText})` : ''}
@@ -591,6 +597,9 @@ RÉPONSE EN JSON UNIQUEMENT - PAS DE TEXTE LIBRE.`
     diagnostic: { scores: SkinScores; beautyAssessment: BeautyAssessment },
     request: AnalyzeRequest
   ): string {
+    // Protection navigateur Samsung et autres
+    const userProfile = request.userProfile || {}
+    
     return `## DIAGNOSTIC ÉTABLI
 **Préoccupation principale :** ${diagnostic.beautyAssessment.mainConcern}
 **Intensité :** ${diagnostic.beautyAssessment.intensity}
@@ -616,9 +625,9 @@ ${diagnostic.beautyAssessment.overview?.map(item => `- ${item}`).join('\n') || '
 ${diagnostic.beautyAssessment.zoneSpecific?.map(zone => `- ${zone.zone}: ${zone.problems?.map(p => `${p.name} (${p.intensity})`).join(', ')}`).join('\n') || 'Aucune zone spécifique'}
 
 ## PROFIL UTILISATEUR
-**Profil :** ${request.userProfile.gender}, ${request.userProfile.age} ans
-**Type de peau déclaré :** ${request.userProfile.skinType}
-**Budget mensuel :** ${request.currentRoutine.monthlyBudget}
+**Profil :** ${userProfile.gender || 'Non spécifié'}, ${userProfile.age || 'Non spécifié'} ans
+**Type de peau déclaré :** ${userProfile.skinType || 'À déterminer'}
+**Budget mensuel :** ${request.currentRoutine?.monthlyBudget || 'Non spécifié'}
 **Préférence routine :** ${request.currentRoutine.routinePreference || 'Équilibrée'}
 
 ## ALLERGIES ET SENSIBILITÉS

@@ -67,8 +67,9 @@ export class PhaseTimingCalculator {
     ).length || 0
     baseDuration += severeProblemCount * 2 // Réduit de 3 à 2
     
-    // Facteur type de peau
-    if (assessment.skinType?.toLowerCase().includes('sensible')) baseDuration += 5
+    // Facteur type de peau (protection navigateur Samsung)
+    const skinType = assessment.skinType || assessment.mainConcern || ''
+    if (skinType.toLowerCase().includes('sensible')) baseDuration += 5
     
     return this.formatDurationRange(baseDuration)
   }

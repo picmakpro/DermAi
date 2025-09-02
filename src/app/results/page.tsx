@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState, useRef } from 'react'
 import LZString from 'lz-string'
 import { useRouter } from 'next/navigation'
+import { normalizeBeautyAssessment } from '@/utils/samsungBrowserFix'
 import { getProductInfoByCatalogId, RecommendedProductCard as CatalogRecommendedProductCard, findAlternativeProduct } from '@/services/catalog/catalogService'
 import { motion } from 'framer-motion'
 import { 
@@ -719,6 +720,12 @@ const intensityBadge = (intensity?: string) => {
 export default function ResultsPage() {
   const router = useRouter()
   const [analysis, setAnalysis] = useState<SkinAnalysis | null>(null)
+  
+  // Protection Samsung Browser pour beautyAssessment
+  const safeAssessment = useMemo(() => 
+    normalizeBeautyAssessment(analysis?.beautyAssessment), 
+    [analysis?.beautyAssessment]
+  )
   const [userAge, setUserAge] = useState<number | null>(null)
   const [isChatOpen, setIsChatOpen] = useState(false)
   const [products, setProducts] = useState<CatalogRecommendedProductCard[]>([])
@@ -1034,7 +1041,7 @@ export default function ResultsPage() {
                   <span className="font-semibold text-sm">Type de Peau</span>
                 </div>
                 <div className="text-lg md:text-xl font-bold font-display mb-1">
-                  {analysis.beautyAssessment.skinType || analysis.beautyAssessment.mainConcern}
+                  {safeAssessment.skinType || safeAssessment.mainConcern}
                 </div>
               </div>
 

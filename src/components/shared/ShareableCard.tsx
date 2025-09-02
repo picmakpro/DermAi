@@ -3,6 +3,7 @@
 import React, { forwardRef } from 'react'
 import { Award, TrendingUp, Target, Clock, Sparkles } from 'lucide-react'
 import type { SkinAnalysis, SkinSpecificity } from '@/types'
+import { normalizeBeautyAssessment } from '@/utils/samsungBrowserFix'
 
 interface ShareableCardProps {
   analysis: SkinAnalysis
@@ -16,6 +17,9 @@ interface ShareableCardProps {
  */
 const ShareableCard = forwardRef<HTMLDivElement, ShareableCardProps>(
   ({ analysis, skinAgeYears, className = '' }, ref) => {
+    // Protection navigateur Samsung
+    const safeAssessment = normalizeBeautyAssessment(analysis?.beautyAssessment)
+    
     return (
       <div
         ref={ref}
@@ -65,10 +69,10 @@ const ShareableCard = forwardRef<HTMLDivElement, ShareableCardProps>(
                 <span className="font-medium text-xs">Type de Peau</span>
               </div>
               <div className="text-sm font-bold font-display">
-                {analysis.beautyAssessment.skinType || 
-                 (analysis.beautyAssessment.mainConcern.length > 20 ? 
-                  analysis.beautyAssessment.mainConcern.substring(0, 20) + '...' : 
-                  analysis.beautyAssessment.mainConcern)}
+                {safeAssessment.skinType || 
+                 (safeAssessment.mainConcern.length > 20 ? 
+                  safeAssessment.mainConcern.substring(0, 20) + '...' : 
+                  safeAssessment.mainConcern)}
               </div>
             </div>
 
