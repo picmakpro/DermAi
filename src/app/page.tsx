@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { showCompatibilityWarningIfNeeded, detectBrowser } from '@/utils/browserCompatibility'
 import { 
   ArrowRight, 
   Shield, 
@@ -26,6 +27,15 @@ import {
 
 export default function HomePage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  useEffect(() => {
+    // Vérifier compatibilité navigateur
+    const isCompatible = showCompatibilityWarningIfNeeded()
+    const browser = detectBrowser()
+    
+    console.log(`🌐 Navigateur détecté: ${browser}`)
+    console.log(`✅ Compatible: ${isCompatible}`)
+  }, [])
 
   return (
     <div className="min-h-screen bg-dermai-pure">
