@@ -6,10 +6,12 @@
   "devCommand": "npm run dev",
   "functions": {
     "src/app/api/analyze/route.ts": {
-      "maxDuration": 30
+      "maxDuration": 30,
+      "memory": 1024
     },
     "src/app/api/chat/route.ts": {
-      "maxDuration": 15
+      "maxDuration": 15,
+      "memory": 512
     }
   },
   "rewrites": [

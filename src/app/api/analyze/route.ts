@@ -6,6 +6,20 @@ export async function POST(request: NextRequest) {
   try {
     console.log('API /analyze appelée')
 
+    // Vérifier la taille de la requête
+    const contentLength = request.headers.get('content-length')
+    if (contentLength) {
+      const sizeInMB = parseInt(contentLength) / (1024 * 1024)
+      console.log(`📊 Taille requête: ${sizeInMB.toFixed(2)}MB`)
+      
+      if (sizeInMB > 4.5) { // Limite Vercel ~5MB
+        return NextResponse.json(
+          { success: false, error: 'Images trop volumineuses. Réduisez le nombre ou la qualité des photos.' },
+          { status: 413 }
+        )
+      }
+    }
+
     // Parse et validation du body
     const body = await request.json() as AnalyzeRequest
 

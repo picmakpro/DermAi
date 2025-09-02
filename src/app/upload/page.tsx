@@ -7,6 +7,7 @@ import { ArrowLeft, Camera, CheckCircle2, Shield, Zap, Info } from 'lucide-react
 import PhotoUploadZone from '@/components/upload/PhotoUploadZone'
 import type { PhotoUpload } from '@/types'
 import { savePhotoDataUrl } from '@/utils/storage/photoStore'
+import { compressImageForAPI, getCompressionOptionsForCount } from '@/utils/images/compressForAPI'
 
 export default function UploadPage() {
   const [photos, setPhotos] = useState<PhotoUpload[]>([])
@@ -28,11 +29,15 @@ export default function UploadPage() {
     setIsUploading(true)
 
     try {
-      // Stocker les dataURL en IndexedDB pour éviter le quota sessionStorage
+      // Compression agressive selon le nombre de photos
+      const compressionOptions = getCompressionOptionsForCount(photos.length)
+      console.log(`📦 Compression ${photos.length} photos avec:`, compressionOptions)
+      
+      // Stocker les dataURL compressés en IndexedDB
       const meta = [] as Array<{ id: string; type: PhotoUpload['type']; quality: PhotoUpload['quality']; preview: string }>
       for (const photo of photos) {
-        const dataUrl = await convertFileToBase64(photo.file)
-        await savePhotoDataUrl(photo.id, dataUrl)
+        const compressedDataUrl = await compressImageForAPI(photo.file, compressionOptions)
+        await savePhotoDataUrl(photo.id, compressedDataUrl)
         meta.push({ id: photo.id, type: photo.type, quality: photo.quality, preview: photo.preview })
       }
       // Ne mettre que les métadonnées légères dans sessionStorage
