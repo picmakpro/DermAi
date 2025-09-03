@@ -395,3 +395,5 @@ const DesktopTooltip = () => (
 
 *Documentation Interface Éducative DermAI V2*  
 *Dernière mise à jour : 02 janvier 2025*
+
+

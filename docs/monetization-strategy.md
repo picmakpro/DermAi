@@ -434,3 +434,4 @@ interface ProductCurationSystem {
 - **8% taux de commission moyen** (mix partenaires)
 
 Cette stratégie garantit un contrôle total, une qualité constante et une monétisation optimisée sans dépendance externe, tout en éliminant les recommandations génériques au profit d'une intelligence réelle.
+

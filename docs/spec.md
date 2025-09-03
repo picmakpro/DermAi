@@ -357,3 +357,90 @@ La brand guide de DermAI V2 définit une identité visuelle et un ton éditorial
     -   "La science au service de votre éclat."
     -   "Un diagnostic, une routine, une peau transformée."
 
+## 10. Déploiement et Production
+
+### 10.1. Configuration Vercel
+
+**Variables d'environnement requises :**
+```env
+OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+NODE_ENV=production
+NEXT_PUBLIC_APP_URL=https://votre-app.vercel.app
+```
+
+**Configuration vercel.json optimisée :**
+```json
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
+  "devCommand": "npm run dev",
+  "functions": {
+    "src/app/api/analyze/route.ts": {
+      "maxDuration": 30,
+      "memory": 1024,
+      "regions": ["iad1"]
+    },
+    "src/app/api/chat/route.ts": {
+      "maxDuration": 15,
+      "regions": ["iad1"]
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/$1"
+    }
+  ]
+}
+```
+
+### 10.2. Optimisations Appliquées
+
+**Compression des images :**
+- Compression agressive selon nombre de photos
+- 1 photo : 1600x1600, 80% qualité
+- 3+ photos : 800x800, 50% qualité
+- Réduction payload de 85% pour éviter erreurs Vercel
+
+**Configuration Serverless :**
+- Timeout étendu à 30s pour l'analyse IA
+- Mémoire augmentée à 1024MB
+- Région US East pour latence optimale
+- Gestion gracieuse des erreurs de payload
+
+### 10.3. Monitoring et Tests
+
+**Endpoint de test :**
+`/api/test` - Validation configuration OpenAI et variables d'environnement
+
+**Métriques surveillées :**
+- Temps de réponse API analyse (<30s)
+- Taux d'erreur payload (<1%)
+- Performance compression images
+- Utilisation mémoire serverless
+
+### 10.4. Étapes de Déploiement
+
+```bash
+# 1. Build local pour vérifier
+npm run build
+
+# 2. Test avec Vercel CLI
+vercel dev
+
+# 3. Déploiement preview
+vercel
+
+# 4. Déploiement production  
+vercel --prod
+
+# 5. Test immédiat
+curl https://votre-app.vercel.app/api/test
+```
+
+## 11. Conclusion et Prochaines Étapes
+
+DermAI V2 représente une évolution majeure du diagnostic dermatologique IA. L'approche en deux étapes (questionnaire + photos), la routine en 3 phases et la monétisation via affiliation créent un produit différenciant sur le marché. Les choix techniques (Next.js 15, Supabase, GPT-4o Vision) assurent performance et scalabilité. La roadmap ambitieuse mais réaliste permet un développement itératif avec validation utilisateur à chaque étape.
+
