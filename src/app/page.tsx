@@ -557,14 +557,14 @@ export default function HomePage() {
               <div className="bg-gradient-to-br from-dermai-nude-50 to-dermai-light rounded-3xl p-8 border border-dermai-nude-200/50">
                 <div className="grid grid-cols-2 gap-6">
                   {[
-                    { label: "Hydratation", value: "85%", color: "bg-blue-500" },
-                    { label: "Sébum", value: "42%", color: "bg-yellow-500" },
+                    { label: "Hydration", value: "85%", color: "bg-blue-500" },
+                    { label: "Sebum", value: "42%", color: "bg-yellow-500" },
                     { label: "Texture", value: "78%", color: "bg-green-500" },
-                    { label: "Éclat", value: "91%", color: "bg-purple-500" },
+                    { label: "Radiance", value: "91%", color: "bg-purple-500" },
                     { label: "Pores", value: "67%", color: "bg-orange-500" },
-                    { label: "Sensibilité", value: "23%", color: "bg-red-500" },
-                    { label: "Rides", value: "12%", color: "bg-indigo-500" },
-                    { label: "Taches", value: "8%", color: "bg-pink-500" },
+                    { label: "Sensitivity", value: "23%", color: "bg-red-500" },
+                    { label: "Wrinkles", value: "12%", color: "bg-indigo-500" },
+                    { label: "Dark spots", value: "8%", color: "bg-pink-500" },
                   ].map((param, i) => (
                     <motion.div
                       key={i}
@@ -844,9 +844,9 @@ export default function HomePage() {
                     <div className="text-sm font-semibold text-dermai-neutral-800 mb-3">Progression 30 jours</div>
                     <div className="space-y-2">
                       {[
-                        { label: "Hydratation", progress: 75 },
+                        { label: "Hydration", progress: 75 },
                         { label: "Texture", progress: 60 },
-                        { label: "Éclat", progress: 85 }
+                        { label: "Radiance", progress: 85 }
                       ].map((item, i) => (
                         <div key={i} className="flex items-center space-x-3">
                           <div className="text-xs text-dermai-neutral-600 w-20">{item.label}</div>

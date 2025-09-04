@@ -1,3 +1,5 @@
+// affiliateCatalog expects FR values for mapping from questionnaire responses; keep catalog skinTypes in French to avoid breaking mappings.
+
 // Interface pour le catalogue
 interface CatalogProduct {
   id: string

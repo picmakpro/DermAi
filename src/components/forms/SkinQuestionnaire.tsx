@@ -205,7 +205,7 @@ export default function SkinQuestionnaire() {
 
   const toggleArrayItem = (array: string[], item: string, max?: number) => {
     if (array.includes(item)) {
-      // Si on désélectionne "Je ne sais pas", cacher le message
+      // value used in logic; keep as-is (French)
       if (item === 'Je ne sais pas') {
         setShowAiMessage(false)
       }
@@ -215,13 +215,13 @@ export default function SkinQuestionnaire() {
       }
       return array.filter(i => i !== item)
     } else {
-      // Si on sélectionne "Je ne sais pas", afficher le message et vider les autres
+      // value used in logic; keep as-is (French)
       if (item === 'Je ne sais pas') {
         setShowAiMessage(true)
         updateData('skinConcerns', { otherText: '' }) // Vider le texte "Autres"
         return [item]
       }
-      // Si on sélectionne autre chose et "Je ne sais pas" était sélectionné, le retirer
+      // value used in logic; keep as-is (French)
       const filteredArray = array.filter(i => i !== 'Je ne sais pas')
       setShowAiMessage(false)
       

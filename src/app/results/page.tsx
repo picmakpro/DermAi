@@ -49,6 +49,7 @@ const extractProblems = (zone: any) => {
   if (Array.isArray(zone.concerns) && zone.concerns.length > 0) {
     return zone.concerns.map((concern: string) => ({
       name: concern,
+      // value used in logic; keep as-is (French)
       intensity: zone.intensity || 'modérée'
     }))
   }
@@ -56,13 +57,15 @@ const extractProblems = (zone: any) => {
   if (Array.isArray(zone.issues) && zone.issues.length > 0) {
     return zone.issues.map((issue: string) => ({
       name: issue,
+      // value used in logic; keep as-is (French)
       intensity: zone.intensity || 'modérée'
     }))
   }
   // 4. Description valide
-  if (zone.description && zone.description !== 'Problème détecté') {
+  if (zone.description && zone.description !== 'Problem detected') {
     return [{
       name: zone.description,
+      // value used in logic; keep as-is (French)
       intensity: zone.intensity || 'modérée'
     }]
   }
@@ -296,6 +299,7 @@ const getGenericProducts = (analysis: SkinAnalysis): CatalogRecommendedProductCa
 // Fonction de validation pour la nouvelle structure multi-problèmes
 const validateZoneStructure = (zone: any) => {
   if (Array.isArray(zone.problems)) {
+    // value used in logic; keep as-is (French)
     return zone.problems.every((problem: any) => 
       problem.name && 
       problem.intensity && 
@@ -710,6 +714,7 @@ const categoryAccent = (category?: string) => {
 
 const intensityBadge = (intensity?: string) => {
   const s = (intensity || '').toLowerCase()
+  // value used in logic; keep as-is (French)
   if (s.includes('intense') || s.includes('sévère') || s.includes('severe')) return 'bg-red-50 text-red-700 border-red-200'
   if (s.includes('modérée') || s.includes('moderate')) return 'bg-orange-50 text-orange-700 border-orange-200'
   if (s.includes('légère') || s.includes('mild')) return 'bg-yellow-50 text-yellow-700 border-yellow-200'

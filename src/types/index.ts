@@ -50,8 +50,9 @@ export interface ScoreDetail {
 }
 
 export interface BeautyAssessment {
-  skinType?: string // Type de peau global (ex: "Peau mixte", "Peau grasse")
+  skinType?: string // Global skin type (ex: "Combination skin", "Oily skin")
   mainConcern: string
+  // value used in logic; keep as-is (French)
   intensity: 'légère' | 'modérée' | 'intense'
   concernedZones: string[]
   specificities?: SkinSpecificity[] // Nouvelles spécificités détaillées avec intensité
@@ -65,7 +66,8 @@ export interface BeautyAssessment {
 }
 
 export interface SkinSpecificity {
-  name: string // ex: "Poils incarnés post-rasage"
+  name: string // ex: "Ingrown hairs after shaving"
+  // value used in logic; keep as-is (French)
   intensity: 'légère' | 'modérée' | 'intense'
   zones: string[] // ex: ["menton", "cou"]
 }
@@ -77,7 +79,8 @@ export interface ZoneSpecificIssue {
 }
 
 export interface ZoneProblem {
-  name: string // Nom du problème (ex: "Poils incarnés", "Rougeurs")
+  name: string // Problem name (ex: "Ingrown hairs", "Redness")
+  // value used in logic; keep as-is (French)
   intensity: 'légère' | 'modérée' | 'intense'
   description?: string // Description optionnelle du problème
 }
@@ -85,6 +88,7 @@ export interface ZoneProblem {
 // Garder l'ancienne interface pour compatibilité
 export interface ZoneSpecificIssueLegacy {
   zone: string
+  // value used in logic; keep as-is (French)
   intensity: 'légère' | 'modérée' | 'intense'
   concerns: string[]
   description: string
