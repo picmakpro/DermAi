@@ -38,7 +38,7 @@ export default function ProductCard({
           alt={name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
-        {/* Overlay avec badge IA */}
+        {/* Overlay with AI badge */}
         <div className="absolute top-3 left-3">
           <div className="flex items-center space-x-1 bg-white/95 backdrop-blur-sm rounded-full px-3 py-1.5 shadow-md border border-dermai-ai-100">
             <Sparkles className="w-3 h-3 text-dermai-ai-500" />
@@ -84,7 +84,7 @@ export default function ProductCard({
                 <div className="bg-white border border-dermai-ai-200 text-gray-800 text-xs rounded-xl p-4 w-72 shadow-xl">
                   <div className="font-bold mb-2 text-dermai-ai-700 flex items-center">
                     <Sparkles className="w-3 h-3 mr-1" />
-                    Pourquoi ce produit ?
+                    Why this product?
                   </div>
                   <div className="text-sm leading-relaxed">{whyThisProduct}</div>
                 </div>
@@ -98,7 +98,7 @@ export default function ProductCard({
                 <div className="bg-white border border-dermai-ai-200 text-gray-800 text-xs rounded-xl p-4 w-72 shadow-xl">
                   <div className="font-bold mb-2 text-dermai-ai-700 flex items-center">
                     <Clock className="w-3 h-3 mr-1" />
-                    Mode d'emploi
+                    Instructions
                   </div>
                   <div className="text-sm leading-relaxed mb-2">{instructions}</div>
                   <div className="flex items-center text-dermai-ai-600 font-medium">
@@ -120,7 +120,7 @@ export default function ProductCard({
             className="w-full bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-600 text-white py-3 rounded-xl font-semibold flex items-center justify-center space-x-2 hover:from-dermai-ai-600 hover:to-dermai-ai-700 transition-all shadow-sm hover:shadow-md"
           >
             <ShoppingCart className="w-4 h-4" />
-            <span>Acheter maintenant</span>
+            <span>Buy now</span>
           </a>
 
           <button
@@ -129,7 +129,7 @@ export default function ProductCard({
             className="w-full bg-white text-dermai-ai-600 border-2 border-dermai-ai-200 py-3 rounded-xl font-semibold flex items-center justify-center space-x-2 hover:bg-dermai-ai-50 hover:border-dermai-ai-300 transition-all"
           >
             <RefreshCcw className="w-4 h-4" />
-            <span>Voir une alternative</span>
+            <span>See alternative</span>
           </button>
         </div>
       </div>

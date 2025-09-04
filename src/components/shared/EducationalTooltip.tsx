@@ -16,7 +16,7 @@ interface EducationalTooltipProps {
 
 export function EducationalTooltip({
   content,
-  title = "Le saviez-vous ?",
+  title = 'Did you know?',
   trigger = 'hover',
   position = 'auto',
   maxWidth = '320px',
@@ -28,7 +28,7 @@ export function EducationalTooltip({
   const triggerRef = useRef<HTMLButtonElement>(null)
   const tooltipRef = useRef<HTMLDivElement>(null)
   
-  // Détection automatique de la position optimale avec contraintes viewport
+  // Auto-detect best position within viewport constraints
   useEffect(() => {
     if (isVisible && position === 'auto' && triggerRef.current && tooltipRef.current) {
       const triggerRect = triggerRef.current.getBoundingClientRect()
@@ -38,28 +38,24 @@ export function EducationalTooltip({
         height: window.innerHeight
       }
       
-      // Marge de sécurité
+      // Safety margin
       const margin = 20
       
-      // Vérifier si tooltip sort à droite/gauche
+      // Check horizontal overflow
       const wouldOverflowRight = triggerRect.left + tooltipRect.width + margin > viewport.width
       const wouldOverflowLeft = triggerRect.right - tooltipRect.width - margin < 0
       
-      // Logique de positionnement améliorée
+      // Improved positioning logic
       if (triggerRect.top > tooltipRect.height + margin) {
-        // Au-dessus si assez de place
         setActualPosition('above')
       } else if (viewport.height - triggerRect.bottom > tooltipRect.height + margin) {
-        // En dessous si assez de place
         setActualPosition('below')
       } else if (!wouldOverflowLeft && triggerRect.left > tooltipRect.width + margin) {
-        // À gauche si pas de débordement
         setActualPosition('left')
       } else if (!wouldOverflowRight && viewport.width - triggerRect.right > tooltipRect.width + margin) {
-        // À droite si pas de débordement
         setActualPosition('right')
       } else {
-        // Fallback : en dessous avec scroll si nécessaire
+        // Fallback: below, with scroll if needed
         setActualPosition('below')
       }
     } else if (position !== 'auto') {
@@ -67,7 +63,7 @@ export function EducationalTooltip({
     }
   }, [isVisible, position])
   
-  // Fermeture au clic extérieur
+  // Close on outside click / ESC
   useEffect(() => {
     if (!isVisible) return
     
@@ -113,10 +109,9 @@ export function EducationalTooltip({
     }
   }
   
-  // Calcul des classes de positionnement avec contraintes viewport
+  // Positioning classes (kept for reference; using fixed positioning below)
   const getPositionClasses = () => {
-    const base = "fixed z-50" // Changé en fixed pour éviter débordement
-    
+    const base = 'fixed z-50'
     switch (actualPosition) {
       case 'above':
         return `${base} bottom-full left-1/2 transform -translate-x-1/2 mb-2`
@@ -131,25 +126,25 @@ export function EducationalTooltip({
     }
   }
   
-  // Calcul de la position absolue pour éviter débordement
+  // Absolute style to avoid viewport overflow
   const getTooltipStyle = () => {
     if (!isVisible || !triggerRef.current) return {}
     
     const triggerRect = triggerRef.current.getBoundingClientRect()
     const viewport = { width: window.innerWidth, height: window.innerHeight }
-    const tooltipWidth = 450 // Notre largeur max
+    const tooltipWidth = 450 // our max width
     const margin = 20
     
     let left = triggerRect.left + triggerRect.width / 2 - tooltipWidth / 2
     let top = triggerRect.bottom + 8
     
-    // Ajuster horizontalement si débordement
+    // Horizontal adjustment
     if (left < margin) left = margin
     if (left + tooltipWidth > viewport.width - margin) {
       left = viewport.width - tooltipWidth - margin
     }
     
-    // Ajuster verticalement si débordement
+    // Vertical adjustment
     if (actualPosition === 'above') {
       top = triggerRect.top - 8
     }
@@ -157,10 +152,9 @@ export function EducationalTooltip({
     return { left, top, position: 'fixed' as const }
   }
   
-  // Flèche de pointage
+  // Pointer arrow
   const Arrow = () => {
-    const arrowClass = "absolute w-3 h-3 bg-white border border-gray-200 rotate-45"
-    
+    const arrowClass = 'absolute w-3 h-3 bg-white border border-gray-200 rotate-45'
     switch (actualPosition) {
       case 'above':
         return <div className={`${arrowClass} top-full left-1/2 transform -translate-x-1/2 -mt-1.5 border-t-0 border-l-0`} />
@@ -191,7 +185,7 @@ export function EducationalTooltip({
           focus:outline-none focus:ring-2 focus:ring-dermai-ai-300 focus:ring-offset-1
           ${iconClassName}
         `}
-        aria-label="Informations éducatives"
+        aria-label="Educational information"
         type="button"
       >
         <Info className="w-3 h-3" />
@@ -205,7 +199,7 @@ export function EducationalTooltip({
             initial={{ opacity: 0, scale: 0.95, y: actualPosition === 'above' ? 5 : -5 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: actualPosition === 'above' ? 5 : -5 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
             className="fixed z-50"
             style={{ ...getTooltipStyle(), maxWidth }}
           >
@@ -222,7 +216,7 @@ export function EducationalTooltip({
                   <button
                     onClick={() => setIsVisible(false)}
                     className="ml-2 p-1 text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
-                    aria-label="Fermer"
+                    aria-label="Close"
                   >
                     <X className="w-3 h-3" />
                   </button>
@@ -234,14 +228,14 @@ export function EducationalTooltip({
                 {content}
               </div>
               
-              {/* Footer Button (pour mobile principalement) */}
+              {/* Footer Button (mostly for mobile) */}
               {trigger === 'click' && (
                 <div className="mt-3 pt-3 border-t border-gray-100">
                   <button
                     onClick={() => setIsVisible(false)}
                     className="w-full px-3 py-2 text-sm font-medium text-dermai-ai-600 hover:text-dermai-ai-700 hover:bg-dermai-ai-50 rounded-md transition-colors"
                   >
-                    Compris ✓
+                    Got it ✓
                   </button>
                 </div>
               )}
@@ -254,11 +248,11 @@ export function EducationalTooltip({
 }
 
 /**
- * Version mobile-optimized pour les écrans tactiles
+ * Mobile-optimized version for touch screens
  */
 export function MobileEducationalTooltip({
   content,
-  title = "Le saviez-vous ?",
+  title = 'Did you know?',
   iconClassName = ''
 }: Omit<EducationalTooltipProps, 'trigger' | 'position' | 'className'>) {
   const [isVisible, setIsVisible] = useState(false)
@@ -275,7 +269,7 @@ export function MobileEducationalTooltip({
           transition-all duration-200 active:scale-95
           ${iconClassName}
         `}
-        aria-label="Informations éducatives"
+        aria-label="Educational information"
         type="button"
       >
         <Info className="w-4 h-4" />
@@ -299,20 +293,20 @@ export function MobileEducationalTooltip({
               initial={{ opacity: 0, y: 100 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 100 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
               className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-2xl shadow-2xl max-h-[80vh] overflow-y-auto"
             >
               <div className="p-6">
                 {/* Header */}
                 <div className="flex items-start justify-between mb-4">
-                                  <h3 className="text-lg font-semibold text-dermai-ai-700 flex items-center">
-                  <Zap className="w-5 h-5 mr-2 text-dermai-ai-500" />
-                  {title}
-                </h3>
+                  <h3 className="text-lg font-semibold text-dermai-ai-700 flex items-center">
+                    <Zap className="w-5 h-5 mr-2 text-dermai-ai-500" />
+                    {title}
+                  </h3>
                   <button
                     onClick={() => setIsVisible(false)}
                     className="ml-2 p-2 text-gray-400 hover:text-gray-600 transition-colors"
-                    aria-label="Fermer"
+                    aria-label="Close"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -328,7 +322,7 @@ export function MobileEducationalTooltip({
                   onClick={() => setIsVisible(false)}
                   className="w-full py-3 px-4 bg-gradient-to-r from-dermai-ai-400 to-dermai-ai-500 text-white font-medium rounded-lg hover:from-dermai-ai-500 hover:to-dermai-ai-600 transition-all"
                 >
-                  Compris ✓
+                  Got it ✓
                 </button>
               </div>
             </motion.div>

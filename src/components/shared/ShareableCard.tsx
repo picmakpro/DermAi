@@ -11,8 +11,8 @@ interface ShareableCardProps {
 }
 
 /**
- * Composant ShareableCard - Format optimisé pour le partage sur réseaux sociaux
- * Design épuré, mobile-first, avec branding DermAI discret
+ * ShareableCard component – Social-friendly share format
+ * Clean, mobile-first design with subtle DermAI branding
  */
 const ShareableCard = forwardRef<HTMLDivElement, ShareableCardProps>(
   ({ analysis, skinAgeYears, className = '' }, ref) => {
@@ -27,25 +27,25 @@ const ShareableCard = forwardRef<HTMLDivElement, ShareableCardProps>(
           height: '512px',
           minWidth: '512px',
           minHeight: '512px'
-        }} // Format fixe pour export cohérent
+        }} // Fixed format for consistent exports
       >
-        {/* Éléments décoratifs subtils */}
+        {/* Subtle decorative elements */}
         <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full -translate-y-6 translate-x-6"></div>
         <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/5 rounded-full translate-y-4 -translate-x-4"></div>
         
         <div className="relative z-10 h-full flex flex-col">
-          {/* En-tête avec logo - toujours visible */}
+          {/* Header with logo – always visible */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-2">
               <div className="p-2 bg-white/20 rounded-xl">
                 <Award className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="text-lg font-bold font-display">Mon Diagnostic</h2>
+                <h2 className="text-lg font-bold font-display">My Diagnosis</h2>
                 <p className="text-dermai-ai-100 text-xs">DermAI</p>
               </div>
             </div>
-            {/* Logo DermAI blanc pour export */}
+            {/* White DermAI logo for export */}
             <div className="flex-shrink-0">
               <img 
                 src="/DERMAI-logo-white.svg" 
@@ -55,14 +55,14 @@ const ShareableCard = forwardRef<HTMLDivElement, ShareableCardProps>(
             </div>
           </div>
 
-          {/* Contenu principal - grille 2x2 compacte */}
+          {/* Main content – compact 2x2 grid */}
           <div className="grid grid-cols-2 gap-3 flex-1">
             
-            {/* Type de peau */}
+            {/* Skin Type */}
             <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
               <div className="flex items-center space-x-2 mb-2">
                 <Sparkles className="w-4 h-4" />
-                <span className="font-medium text-xs">Type de Peau</span>
+                <span className="font-medium text-xs">Skin Type</span>
               </div>
               <div className="text-sm font-bold font-display">
                 {analysis.beautyAssessment.skinType || 
@@ -72,41 +72,41 @@ const ShareableCard = forwardRef<HTMLDivElement, ShareableCardProps>(
               </div>
             </div>
 
-            {/* Âge de peau */}
+            {/* Skin Age */}
             {skinAgeYears && (
               <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-center">
                 <div className="flex items-center justify-center space-x-2 mb-2">
                   <TrendingUp className="w-4 h-4" />
-                  <span className="font-medium text-xs">Âge de peau</span>
+                  <span className="font-medium text-xs">Skin Age</span>
                 </div>
-                <div className="text-2xl font-bold font-display text-dermai-ai-200">{skinAgeYears} ans</div>
+                <div className="text-2xl font-bold font-display text-dermai-ai-200">{skinAgeYears} yrs</div>
               </div>
             )}
 
-            {/* Score global */}
+            {/* Overall Score */}
             <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-center">
-              <div className="text-xs opacity-90 mb-1">Score Global</div>
+              <div className="text-xs opacity-90 mb-1">Overall Score</div>
               <div className="text-2xl font-bold font-display">{analysis.scores.overall}/100</div>
             </div>
 
-            {/* Amélioration */}
+            {/* Improvement */}
             <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-center">
               <div className="flex items-center justify-center space-x-1 mb-2">
                 <Clock className="w-4 h-4" />
-                <span className="font-medium text-xs">Estimation d'amélioration</span>
+                <span className="font-medium text-xs">Improvement Estimate</span>
               </div>
               <div className="text-sm font-bold">
-                {analysis.beautyAssessment.improvementTimeEstimate || "3-4 mois"} pour atteindre 90/100
+                {analysis.beautyAssessment.improvementTimeEstimate || '3–4 months'} to reach 90/100
               </div>
             </div>
           </div>
 
-          {/* Spécificités en bas - largeur améliorée */}
+          {/* Specificities – bottom section */}
           {analysis.beautyAssessment.specificities && analysis.beautyAssessment.specificities.length > 0 && (
             <div className="mt-3 bg-white/15 backdrop-blur-sm rounded-2xl p-4">
               <div className="flex items-center space-x-2 mb-3">
                 <Target className="w-4 h-4" />
-                <span className="font-medium text-sm">Spécificités détectées</span>
+                <span className="font-medium text-sm">Detected Specificities</span>
               </div>
               <div className="grid grid-cols-2 gap-2">
                 {analysis.beautyAssessment.specificities.slice(0, 4).map((spec: SkinSpecificity, idx: number) => (
@@ -117,16 +117,16 @@ const ShareableCard = forwardRef<HTMLDivElement, ShareableCardProps>(
                 ))}
                 {analysis.beautyAssessment.specificities.length > 4 && (
                   <div className="bg-white/20 rounded-xl px-3 py-2 text-xs opacity-75 flex items-center justify-center">
-                    +{analysis.beautyAssessment.specificities.length - 4} autres
+                    +{analysis.beautyAssessment.specificities.length - 4} more
                   </div>
                 )}
               </div>
             </div>
           )}
 
-          {/* Footer avec branding subtil - toujours visible */}
+          {/* Footer – subtle branding */}
           <div className="mt-3 text-center">
-            <div className="text-xs opacity-75">Analyse dermatologique propulsée par IA • derm-ai.co</div>
+            <div className="text-xs opacity-75">AI-powered dermatology analysis • derm-ai.co</div>
           </div>
         </div>
       </div>

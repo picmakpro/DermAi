@@ -7,30 +7,30 @@ interface ScoreCircleProps {
 export default function ScoreCircle({ score, label, icon }: ScoreCircleProps) {
   const getColor = (score: number) => {
     if (score >= 70) return { 
-      stroke: 'rgba(34, 197, 94, 0.8)', // vert clair translucide
-      bg: 'rgba(220, 252, 231, 0.6)', // fond vert très clair
+      stroke: 'rgba(34, 197, 94, 0.8)', // light translucent green
+      bg: 'rgba(220, 252, 231, 0.6)', // very light green background
       text: 'text-emerald-700',
-      bgCircle: 'rgba(220, 252, 231, 0.3)' // fond cercle très clair
+      bgCircle: 'rgba(220, 252, 231, 0.3)' // very light circle background
     }
     if (score >= 50) return { 
-      stroke: 'rgba(251, 191, 36, 0.8)', // orange clair translucide
-      bg: 'rgba(254, 243, 199, 0.6)', // fond orange très clair
+      stroke: 'rgba(251, 191, 36, 0.8)', // light translucent orange
+      bg: 'rgba(254, 243, 199, 0.6)', // very light orange background
       text: 'text-amber-700',
-      bgCircle: 'rgba(254, 243, 199, 0.3)' // fond cercle très clair
+      bgCircle: 'rgba(254, 243, 199, 0.3)' // very light circle background
     }
     return { 
-      stroke: 'rgba(239, 68, 68, 0.8)', // rouge clair translucide
-      bg: 'rgba(254, 226, 226, 0.6)', // fond rouge très clair
+      stroke: 'rgba(239, 68, 68, 0.8)', // light translucent red
+      bg: 'rgba(254, 226, 226, 0.6)', // very light red background
       text: 'text-red-700',
-      bgCircle: 'rgba(254, 226, 226, 0.3)' // fond cercle très clair
+      bgCircle: 'rgba(254, 226, 226, 0.3)' // very light circle background
     }
   }
 
   const getQualifier = (score: number) => {
     if (score >= 80) return 'Excellent'
-    if (score >= 60) return 'Bon' 
-    if (score >= 40) return 'Moyen'
-    return 'Perfectible'
+    if (score >= 60) return 'Good' 
+    if (score >= 40) return 'Average'
+    return 'Needs improvement'
   }
 
   const color = getColor(score)

@@ -11,38 +11,38 @@ const NEEDS_CONVERSION = new Set([
 ])
 
 /**
- * Convertit HEIC/HEIF/AVIF en JPEG via canvas (heic2any pour HEIC/HEIF),
- * sinon renvoie le fichier tel quel.
+ * Converts HEIC/HEIF/AVIF to JPEG (uses heic2any for HEIC/HEIF); 
+ * otherwise returns the file as-is.
  */
 export async function ensureCompatibleImage(inputFile: File): Promise<CompatibleImageResult> {
   const originalType = inputFile.type || ''
 
-  // Si le type est déjà supporté largement par les navigateurs et notre pipeline
+  // If the type is already broadly supported by browsers and our pipeline
   if (!NEEDS_CONVERSION.has(originalType)) {
-    // Rien à convertir : renvoyer le fichier
+    // Nothing to convert: return the original file
     return { file: inputFile, converted: false, originalType }
   }
 
-  // Import dynamique côté client
+  // Dynamic import on the client only
   if (typeof window === 'undefined') {
     return { file: inputFile, converted: false, originalType }
   }
 
   try {
     if (originalType === 'image/heic' || originalType === 'image/heif') {
-      console.log('🔄 Conversion HEIC/HEIF vers JPEG...')
+      console.log('🔄 Converting HEIC/HEIF to JPEG...')
       
       const heic2any = (await import('heic2any')).default as any
       const blob = await heic2any({ 
         blob: inputFile, 
         toType: 'image/jpeg', 
-        quality: 0.95 // Qualité légèrement augmentée
+        quality: 0.95 // Slightly higher quality
       })
       
-      // S'assurer que nous avons un blob valide
+      // Ensure we have a valid blob
       const finalBlob = Array.isArray(blob) ? blob[0] : blob
       if (!finalBlob || !(finalBlob instanceof Blob)) {
-        throw new Error('Conversion HEIC échouée: blob invalide')
+        throw new Error('HEIC conversion failed: invalid blob')
       }
       
       let file = new File([finalBlob], changeExtension(inputFile.name, 'jpg'), { 
@@ -50,13 +50,13 @@ export async function ensureCompatibleImage(inputFile: File): Promise<Compatible
         lastModified: Date.now()
       })
       
-      console.log('✅ Conversion HEIC réussie:', file.size, 'bytes')
+      console.log('✅ HEIC conversion successful:', file.size, 'bytes')
       file = await compressJpegIfNeeded(file)
       return { file, converted: true, originalType }
     }
 
     if (originalType === 'image/avif') {
-      // Canvas decode; certains navigateurs décodent AVIF en <img> puis canvas -> jpeg
+      // Canvas decode: some browsers can decode AVIF into <img> then canvas -> jpeg
       const jpegBlob = await drawToJpegBlob(inputFile, 0.92)
       if (jpegBlob) {
         let file = new File([jpegBlob], changeExtension(inputFile.name, 'jpg'), { type: 'image/jpeg' })
@@ -67,7 +67,7 @@ export async function ensureCompatibleImage(inputFile: File): Promise<Compatible
 
     return { file: inputFile, converted: false, originalType }
   } catch (e) {
-    // En cas d'échec, renvoyer le fichier original pour ne pas bloquer
+    // On failure, return the original file to avoid blocking
     return { file: inputFile, converted: false, originalType }
   }
 }
@@ -106,7 +106,7 @@ async function compressJpegIfNeeded(file: File): Promise<File> {
     const { MAX_FILE_SIZE } = await import('@/constants')
     if (file.size <= MAX_FILE_SIZE) return file
 
-    // Compression progressive: 0.85 -> 0.75 -> 0.65
+    // Progressive compression: 0.85 -> 0.75 -> 0.65
     const qualities = [0.85, 0.75, 0.65]
     for (const q of qualities) {
       const blob = await drawToJpegBlob(file, q)
@@ -129,5 +129,3 @@ function loadImage(src: string): Promise<HTMLImageElement> {
     img.src = src
   })
 }
-
-

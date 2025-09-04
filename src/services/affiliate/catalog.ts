@@ -23,7 +23,8 @@ export const loadCatalog = (): AffiliateCatalogItem[] => {
   return catalog as unknown as AffiliateCatalogItem[]
 }
 
-// Normalisation helpers
+// Normalization helpers
+// Logic-bound normalization: includes French synonyms intentionally — keep as-is
 const normalizeCategory = (c?: string): CatalogCategory | undefined => {
   if (!c) return undefined
   const s = c.toLowerCase()
@@ -70,7 +71,7 @@ export const loadCatalogAsync = async (): Promise<AffiliateCatalogItem[]> => {
     const res = await fetch('/affiliateCatalog.json', { cache: 'no-store' })
     if (res.ok) {
       const text = await res.text()
-      // Supprimer commentaires // et virgules traînantes simples
+      // Remove // comments and simple trailing commas
       const cleaned = text
         .split('\n')
         .filter(line => !/^\s*\/\//.test(line))
@@ -79,7 +80,7 @@ export const loadCatalogAsync = async (): Promise<AffiliateCatalogItem[]> => {
         .replace(/,\s*}/g, '}')
       const data = JSON.parse(cleaned)
       const normalized: AffiliateCatalogItem[] = Array.isArray(data)
-        ? data.map(normalizeItem).filter(Boolean) as AffiliateCatalogItem[]
+        ? (data.map(normalizeItem).filter(Boolean) as AffiliateCatalogItem[])
         : []
       const embedded = loadCatalog()
       const idSet = new Set(normalized.map(i => i.id))
@@ -90,12 +91,15 @@ export const loadCatalogAsync = async (): Promise<AffiliateCatalogItem[]> => {
   return loadCatalog()
 }
 
-export const filterCatalog = (items: AffiliateCatalogItem[], params: {
-  category?: CatalogCategory
-  budgetMax?: number
-  skinType?: string
-  excludeIngredients?: string[]
-}) => {
+export const filterCatalog = (
+  items: AffiliateCatalogItem[],
+  params: {
+    category?: CatalogCategory
+    budgetMax?: number
+    skinType?: string
+    excludeIngredients?: string[]
+  }
+) => {
   return items.filter(it => {
     if (params.category && it.category !== params.category) return false
     if (typeof params.budgetMax === 'number' && it.price > params.budgetMax) return false

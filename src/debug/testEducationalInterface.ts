@@ -42,7 +42,7 @@ console.log('\n=== TEST AVEC ASSESSMENT VIDE ===')
 try {
   const emptyAssessment: BeautyAssessment = {
     mainConcern: '',
-    intensity: 'légère',
+    intensity: 'mild',
     concernedZones: [],
     visualFindings: [],
     expectedImprovement: ''
@@ -66,7 +66,7 @@ console.log('\n=== TEST AVEC ASSESSMENT COMPLET ===')
 try {
   const fullAssessment: BeautyAssessment = {
     mainConcern: 'Poils incarnés et rougeurs',
-    intensity: 'modérée',
+    intensity: 'moderate',
     concernedZones: ['menton', 'joues'],
     skinType: 'Peau mixte sensible',
     estimatedSkinAge: 32,
@@ -76,8 +76,8 @@ try {
       {
         zone: 'menton',
         problems: [
-          { name: 'Poils incarnés', intensity: 'intense' },
-          { name: 'Rougeurs', intensity: 'modérée' }
+          { name: 'Poils incarnés', intensity: 'severe' },
+          { name: 'Rougeurs', intensity: 'moderate' }
         ],
         description: 'Zone sensible'
       }

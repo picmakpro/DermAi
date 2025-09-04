@@ -48,7 +48,7 @@ export default function HomePage() {
               </a>
             </motion.div>
 
-            {/* Navigation Desktop */}
+            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-10">
               <a href="#how-it-works" className="text-dermai-neutral-600 hover:text-dermai-ai-600 transition-all duration-300 font-medium tracking-wide">
                 How it works
@@ -115,12 +115,12 @@ export default function HomePage() {
         </div>
       </nav>
 
-      {/* Hero Section - Effet "clean lab" avec scan holographique */}
+      {/* Hero Section - “clean lab” effect with holographic scan */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background subtil avec particules animées */}
+        {/* Subtle background with animated particles */}
         <div className="absolute inset-0 bg-gradient-to-br from-dermai-pure via-dermai-light to-dermai-nude-50"></div>
         
-        {/* Particules IA flottantes - Plus visibles et nombreuses */}
+        {/* Floating AI particles - more visible and numerous */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {[
             { left: '15%', top: '20%', duration: 4, delay: 0, size: 'w-2 h-2', opacity: 'bg-dermai-ai-400/60' },
@@ -138,7 +138,7 @@ export default function HomePage() {
             { left: '70%', top: '80%', duration: 3.9, delay: 0.6, size: 'w-1.5 h-1.5', opacity: 'bg-dermai-ai-400/60' },
             { left: '40%', top: '10%', duration: 4.6, delay: 1.1, size: 'w-2 h-2', opacity: 'bg-dermai-ai-300/70' },
             { left: '60%', top: '65%', duration: 3.4, delay: 1.6, size: 'w-1 h-1', opacity: 'bg-dermai-ai-500/50' },
-            // Nouvelles particules
+            // New particles
             { left: '5%', top: '35%', duration: 3.6, delay: 0.4, size: 'w-1.5 h-1.5', opacity: 'bg-dermai-ai-400/65' },
             { left: '95%', top: '55%', duration: 4.4, delay: 1.3, size: 'w-2 h-2', opacity: 'bg-dermai-ai-300/75' },
             { left: '30%', top: '5%', duration: 3.3, delay: 0.1, size: 'w-1 h-1', opacity: 'bg-dermai-ai-500/45' },
@@ -176,14 +176,14 @@ export default function HomePage() {
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             
-            {/* Contenu textuel - Typography moderne responsive */}
+            {/* Text content - Modern responsive typography */}
             <motion.div
               className="space-y-8 lg:space-y-10 text-center lg:text-left lg:order-1"
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              {/* Badge "Nouvelle tech" */}
+              {/* “New tech” badge */}
               <motion.div
                 className="inline-flex items-center space-x-2 sm:space-x-3 bg-dermai-nude-100/50 backdrop-blur-sm border border-dermai-nude-200 rounded-full px-3 sm:px-5 py-2 sm:py-2.5"
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -191,26 +191,26 @@ export default function HomePage() {
                 transition={{ delay: 0.2 }}
               >
                 <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-dermai-ai-500" />
-                <span className="text-xs sm:text-sm text-dermai-neutral-700 font-medium">Nouvelle génération d'analyse</span>
+                <span className="text-xs sm:text-sm text-dermai-neutral-700 font-medium">Next-generation analysis</span>
               </motion.div>
               
-              {/* Titre principal - Typography display responsive */}
+              {/* Main heading - Responsive display typography */}
               <div className="space-y-4 sm:space-y-6">
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold leading-tight text-dermai-neutral-900">
-                  Partenaire IA
+                  AI Partner
                   <span className="block bg-gradient-to-r from-dermai-ai-600 via-dermai-ai-500 to-dermai-ai-400 bg-clip-text text-transparent">
-                    Beauté Fondé en
+                    Beauty, grounded in
                   </span>
                   <span className="block text-dermai-neutral-600 text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl">Science</span>
                 </h1>
                 
                 <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-dermai-neutral-600 leading-relaxed max-w-2xl mx-auto lg:mx-0 font-light">
-                  Diagnostic précis. Confiance en vous. <br className="hidden sm:block" />
-                  <span className="text-dermai-neutral-800 font-medium">Approche scientifique personnalisée.</span>
+                  Accurate assessment. Confidence in yourself. <br className="hidden sm:block" />
+                  <span className="text-dermai-neutral-800 font-medium">A personalized, science-based approach.</span>
                 </p>
               </div>
 
-              {/* CTA Premium avec glassmorphism - Mobile optimized */}
+              {/* Premium CTA with glassmorphism - Mobile optimized */}
               <motion.div
                 className="space-y-6"
                 initial={{ opacity: 0, y: 20 }}
@@ -221,18 +221,18 @@ export default function HomePage() {
                   href="/upload"
                   className="group inline-flex items-center justify-center space-x-3 sm:space-x-4 bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 text-white font-semibold py-4 sm:py-5 px-8 sm:px-10 rounded-full text-base sm:text-lg transition-all duration-500 transform hover:scale-105 shadow-premium hover:shadow-glow-lg relative overflow-hidden w-full sm:w-auto"
                 >
-                  <span className="relative z-10">Démarrer l'analyse</span>
+                  <span className="relative z-10">Start analysis</span>
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform relative z-10" />
                   
-                  {/* Effet de glow animé */}
+                  {/* Animated glow effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-dermai-ai-400 to-dermai-ai-300 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 </Link>
                 
-                {/* Indicateurs de confiance - Alignés horizontalement */}
+                {/* Trust indicators - Horizontally aligned */}
                 <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 lg:gap-8 text-sm">
                   <div className="flex items-center space-x-2 text-dermai-neutral-500">
                     <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                    <span>Gratuit</span>
+                    <span>Free</span>
                   </div>
                   <div className="flex items-center space-x-2 text-dermai-neutral-500">
                     <Clock className="w-4 h-4 text-dermai-ai-500" />
@@ -240,13 +240,13 @@ export default function HomePage() {
                   </div>
                   <div className="flex items-center space-x-2 text-dermai-neutral-500">
                     <Shield className="w-4 h-4 text-dermai-nude-500" />
-                    <span>Sécurisé</span>
+                    <span>Secure</span>
                   </div>
                 </div>
               </motion.div>
             </motion.div>
 
-            {/* Bloc d'analyse d'interface - Repositionné à droite sur desktop */}
+            {/* Analysis UI block - Positioned right on desktop */}
             <motion.div
               className="relative w-full max-w-sm mx-auto lg:max-w-none lg:order-2"
               initial={{ opacity: 0, y: 40 }}
@@ -255,10 +255,10 @@ export default function HomePage() {
             >
               <div className="relative bg-gradient-to-br from-dermai-pure/95 to-dermai-nude-50/80 backdrop-blur-xl border border-dermai-nude-200/30 rounded-3xl p-4 lg:p-6 shadow-premium-lg">
                 
-                {/* Interface de scan avec vraie image de visage */}
+                {/* Scan interface with real face image */}
                 <div className="relative aspect-[4/5] bg-gradient-to-br from-dermai-nude-100 to-dermai-nude-200/50 rounded-2xl overflow-hidden">
                   
-                  {/* Image de visage clean et professionnelle */}
+                  {/* Clean, professional face image */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div 
                       className="w-full h-full bg-cover bg-center bg-no-repeat"
@@ -266,11 +266,11 @@ export default function HomePage() {
                         backgroundImage: `url("/images/face-model.png")`
                       }}
                     />
-                    {/* Overlay subtil pour intégration avec l'UI */}
+                    {/* Subtle overlay to blend with the UI */}
                     <div className="absolute inset-0 bg-dermai-nude-100/10"></div>
                   </div>
                   
-                  {/* Effet scan animé - plus réaliste */}
+                  {/* Animated scan effect – more realistic */}
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-r from-transparent via-dermai-ai-400/30 to-transparent z-10"
                     animate={{
@@ -283,7 +283,7 @@ export default function HomePage() {
                     }}
                   />
                   
-                  {/* Grille de scan holographique */}
+                  {/* Holographic scan grid */}
                   <div className="absolute inset-0 opacity-15 z-10">
                     {[...Array(8)].map((_, i) => (
                       <div key={i} className="absolute w-full h-px bg-dermai-ai-400" style={{ top: `${(i + 1) * 12.5}%` }}></div>
@@ -293,79 +293,79 @@ export default function HomePage() {
                     ))}
                   </div>
                   
-                  {/* Points d'analyse avec traits et encadrés fixes - Positionnés sur le vrai visage */}
+                  {/* Analysis points with callouts – positioned on the face */}
                   <div className="absolute inset-0 z-20">
-                    {/* Zone T - Sébum (Front/milieu du visage) */}
+                    {/* T-zone – Sebum (forehead/mid-face) */}
                     <div className="absolute top-[25%] left-[50%] -translate-x-1/2">
                       <motion.div 
                         className="w-2.5 h-2.5 bg-dermai-ai-500 rounded-full border border-white shadow-lg"
                         animate={{ opacity: [0.6, 1, 0.6] }}
                         transition={{ duration: 2, repeat: Infinity }}
                       />
-                      {/* Trait en L vers le haut-gauche */}
+                      {/* L-shaped line up-left */}
                       <div className="absolute -top-10 left-1">
                         <div className="w-px h-8 bg-dermai-ai-400"></div>
                       </div>
                       <div className="absolute -top-10 -left-24">
                         <div className="h-px w-24 bg-dermai-ai-400"></div>
                       </div>
-                      {/* Encadré avec transparence */}
+                      {/* Translucent callout */}
                       <div className="absolute -top-16 -left-32 bg-dermai-ai-600/80 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg text-xs font-mono whitespace-nowrap border border-dermai-ai-400/30">
-                        <div className="font-semibold">Zone T</div>
-                        <div className="text-dermai-ai-200">Sébum</div>
+                        <div className="font-semibold">T-zone</div>
+                        <div className="text-dermai-ai-200">Sebum</div>
                       </div>
                     </div>
 
-                    {/* Joue D - Hydratation (Joue droite) */}
+                    {/* Right cheek – Hydration */}
                     <div className="absolute top-[45%] left-[65%]">
                       <motion.div 
                         className="w-2.5 h-2.5 bg-dermai-ai-500 rounded-full border border-white shadow-lg"
                         animate={{ opacity: [0.6, 1, 0.6] }}
                         transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
                       />
-                      {/* Trait horizontal vers la droite puis vertical vers le bas */}
+                      {/* Horizontal then vertical line */}
                       <div className="absolute top-1 left-2">
                         <div className="h-px w-6 bg-dermai-ai-400"></div>
                       </div>
                       <div className="absolute top-1 left-8">
                         <div className="w-px h-6 bg-dermai-ai-400"></div>
                       </div>
-                      {/* Encadré avec transparence - bien à l'intérieur */}
+                      {/* Translucent callout – well inside */}
                       <div className="absolute top-8 left-2 bg-dermai-ai-600/80 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg text-xs font-mono whitespace-nowrap border border-dermai-ai-400/30 z-30">
-                        <div className="font-semibold">Joue D</div>
-                        <div className="text-dermai-ai-200">Hydratation</div>
+                        <div className="font-semibold">Right Cheek</div>
+                        <div className="text-dermai-ai-200">Hydration</div>
                       </div>
                     </div>
 
-                    {/* Menton - Texture (Bas du menton) */}
+                    {/* Chin – Texture */}
                     <div className="absolute top-[70%] left-[50%] -translate-x-1/2">
                       <motion.div 
                         className="w-2.5 h-2.5 bg-dermai-ai-500 rounded-full border border-white shadow-lg"
                         animate={{ opacity: [0.6, 1, 0.6] }}
                         transition={{ duration: 2, repeat: Infinity, delay: 1 }}
                       />
-                      {/* Trait vers le bas puis gauche */}
+                      {/* Line down then left */}
                       <div className="absolute top-2 left-1">
                         <div className="w-px h-8 bg-dermai-ai-400"></div>
                       </div>
                       <div className="absolute top-10 -left-20">
                         <div className="h-px w-20 bg-dermai-ai-400"></div>
                       </div>
-                      {/* Encadré avec transparence */}
+                      {/* Translucent callout */}
                       <div className="absolute top-12 -left-32 bg-dermai-ai-600/80 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg text-xs font-mono whitespace-nowrap border border-dermai-ai-400/30">
-                        <div className="font-semibold">Menton</div>
+                        <div className="font-semibold">Chin</div>
                         <div className="text-dermai-ai-200">Texture</div>
                       </div>
                     </div>
                   </div>
                 </div>
                 
-                {/* Indicateurs tech améliorés - Mobile responsive */}
+                {/* Improved tech indicators – Mobile responsive */}
                 <div className="mt-4 grid grid-cols-3 gap-2">
                   {[
-                    { icon: <Eye className="w-3 h-3" />, label: "Analysé", value: "98%", color: "bg-emerald-100 text-emerald-600" },
-                    { icon: <Brain className="w-3 h-3" />, label: "IA", value: "Active", color: "bg-dermai-ai-100 text-dermai-ai-600" },
-                    { icon: <Zap className="w-3 h-3" />, label: "Vitesse", value: "2min", color: "bg-amber-100 text-amber-600" },
+                    { icon: <Eye className="w-3 h-3" />, label: "Analyzed", value: "98%", color: "bg-emerald-100 text-emerald-600" },
+                    { icon: <Brain className="w-3 h-3" />, label: "AI", value: "Active", color: "bg-dermai-ai-100 text-dermai-ai-600" },
+                    { icon: <Zap className="w-3 h-3" />, label: "Speed", value: "2min", color: "bg-amber-100 text-amber-600" },
                   ].map((stat, i) => (
                     <motion.div 
                       key={i} 
@@ -384,7 +384,7 @@ export default function HomePage() {
                 </div>
               </div>
               
-              {/* Effet de glow autour du container */}
+              {/* Glow effect around container */}
               <div className="absolute -inset-4 bg-gradient-to-r from-dermai-ai-400/20 via-transparent to-dermai-ai-400/20 rounded-3xl blur-xl -z-10"></div>
             </motion.div>
 
@@ -392,8 +392,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Section Comment ça marche */}
-      <section id="fonctionnement" className="py-16 sm:py-20 lg:py-24 bg-dermai-light">
+      {/* How it works section */}
+      <section id="how-it-works" className="py-16 sm:py-20 lg:py-24 bg-dermai-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <motion.div
             className="text-center mb-20"
@@ -402,13 +402,13 @@ export default function HomePage() {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl lg:text-5xl font-display font-bold text-dermai-neutral-900 mb-6">
-              Comment
+              How
               <span className="block bg-gradient-to-r from-dermai-ai-600 to-dermai-ai-400 bg-clip-text text-transparent">
-                ça marche ?
+                it works
               </span>
             </h2>
             <p className="text-xl text-dermai-neutral-600 max-w-3xl mx-auto leading-relaxed">
-              Un processus simple en 3 étapes pour transformer votre routine skincare
+              A simple 3-step process to transform your skincare routine
             </p>
           </motion.div>
 
@@ -416,27 +416,27 @@ export default function HomePage() {
             {[
               {
                 step: "01",
-                title: "Téléchargez vos photos",
-                description: "Prenez simplement 2-3 photos de votre visage avec votre smartphone. Notre guide vous aide à capturer les meilleurs angles pour une analyse optimale.",
+                title: "Upload your photos",
+                description: "Simply take 2–3 photos of your face with your smartphone. Our guide helps you capture the best angles for optimal analysis.",
                 icon: <Camera className="w-8 h-8 text-white" />,
                 iconBg: "from-dermai-ai-500 to-dermai-ai-400",
-                details: ["Éclairage naturel recommandé", "Visage dégagé", "Plusieurs angles"]
+                details: ["Natural light recommended", "Face unobstructed", "Multiple angles"]
               },
               {
                 step: "02", 
-                title: "Questionnaire personnalisé",
-                description: "Répondez à quelques questions sur votre type de peau, vos préoccupations actuelles et votre routine beauté pour affiner l'analyse.",
+                title: "Personalized questionnaire",
+                description: "Answer a few questions about your skin type, current concerns, and routine to refine the analysis.",
                 icon: <FileText className="w-8 h-8 text-white" />,
                 iconBg: "from-dermai-ai-500 to-dermai-ai-400",
-                details: ["5 minutes maximum", "Questions ciblées", "Historique skincare"]
+                details: ["Max 5 minutes", "Targeted questions", "Skincare history"]
               },
               {
                 step: "03",
-                title: "Recevez votre diagnostic",
-                description: "Notre IA analyse vos données et vous fournit un rapport détaillé avec scores, diagnostic précis et routine personnalisée.",
+                title: "Get your assessment",
+                description: "Our AI analyzes your data and provides a detailed report with scores, precise assessment, and a personalized routine.",
                 icon: <Sparkles className="w-8 h-8 text-white" />,
                 iconBg: "from-dermai-ai-500 to-dermai-ai-400",
-                details: ["Résultats en 2 minutes", "8 paramètres analysés", "Recommandations produits"]
+                details: ["Results in 2 minutes", "8 parameters analyzed", "Product recommendations"]
               }
             ].map((step, index) => (
               <motion.div
@@ -447,7 +447,7 @@ export default function HomePage() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.2 }}
               >
-                {/* Ligne de connexion - Hidden on mobile */}
+                {/* Connector line – hidden on mobile */}
                 {index < 2 && (
                   <div className="hidden lg:block absolute top-12 -right-6 w-12 h-px bg-gradient-to-r from-dermai-ai-300 to-transparent"></div>
                 )}
@@ -483,7 +483,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Section Fonctionnalités avancées */}
+      {/* Advanced features section */}
       <section className="py-24 bg-dermai-pure">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
@@ -493,13 +493,13 @@ export default function HomePage() {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl lg:text-5xl font-display font-bold text-dermai-neutral-900 mb-6">
-              Technologie
+              Cutting-edge
               <span className="block bg-gradient-to-r from-dermai-ai-600 to-dermai-ai-400 bg-clip-text text-transparent">
-                de Pointe
+                Technology
               </span>
             </h2>
             <p className="text-xl text-dermai-neutral-600 max-w-3xl mx-auto leading-relaxed">
-              L'intelligence artificielle au service de votre beauté
+              Artificial intelligence at the service of your beauty
             </p>
           </motion.div>
 
@@ -514,10 +514,10 @@ export default function HomePage() {
                   <Brain className="w-8 h-8 text-dermai-ai-500 flex-shrink-0" />
                   <div>
                     <h3 className="text-xl font-display font-semibold text-dermai-neutral-900 mb-2">
-                      IA Dermatologique Avancée
+                      Advanced Dermatology AI
                     </h3>
                     <p className="text-dermai-neutral-600 leading-relaxed">
-                      Notre modèle d'IA analysé des milliers de profils cutanés pour identifier avec précision vos besoins spécifiques et recommander les meilleurs soins.
+                      Our AI model has analyzed thousands of skin profiles to precisely identify your specific needs and recommend the best care.
                     </p>
                   </div>
                 </div>
@@ -526,10 +526,10 @@ export default function HomePage() {
                   <Shield className="w-8 h-8 text-dermai-ai-500 flex-shrink-0" />
                   <div>
                     <h3 className="text-xl font-display font-semibold text-dermai-neutral-900 mb-2">
-                      Analyse Multi-Paramètres
+                      Multi-parameter Analysis
                     </h3>
                     <p className="text-dermai-neutral-600 leading-relaxed">
-                      8 paramètres essentiels analysés : hydratation, sébum, texture, pores, rides, taches, sensibilité et éclat pour un diagnostic complet.
+                      8 key parameters analyzed: hydration, sebum, texture, pores, wrinkles, dark spots, sensitivity, and radiance for a complete assessment.
                     </p>
                   </div>
                 </div>
@@ -538,10 +538,10 @@ export default function HomePage() {
                   <Zap className="w-8 h-8 text-dermai-ai-500 flex-shrink-0" />
                   <div>
                     <h3 className="text-xl font-display font-semibold text-dermai-neutral-900 mb-2">
-                      Recommandations Personnalisées
+                      Personalized Recommendations
                     </h3>
                     <p className="text-dermai-neutral-600 leading-relaxed">
-                      Routine skincare sur-mesure avec sélection de produits adaptés à votre budget et disponibles en ligne.
+                      A tailored skincare routine with products matched to your budget and available online.
                     </p>
                   </div>
                 </div>
@@ -604,8 +604,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Section Témoignages */}
-      <section id="temoignages" className="py-16 sm:py-20 lg:py-24 bg-dermai-light">
+      {/* Testimonials section */}
+      <section id="testimonials" className="py-16 sm:py-20 lg:py-24 bg-dermai-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <motion.div
             className="text-center mb-20"
@@ -614,14 +614,14 @@ export default function HomePage() {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl lg:text-5xl font-display font-bold text-dermai-neutral-900 mb-6">
-              Ils ont transformé
+              They transformed
               <span className="block bg-gradient-to-r from-dermai-ai-600 to-dermai-ai-400 bg-clip-text text-transparent">
-                leur routine
+                their routine
               </span>
             </h2>
           </motion.div>
 
-          {/* Stats en chiffres */}
+          {/* Number stats */}
           <motion.div
             className="grid md:grid-cols-4 gap-8 mb-20"
             initial={{ opacity: 0, y: 30 }}
@@ -629,10 +629,10 @@ export default function HomePage() {
             viewport={{ once: true }}
           >
             {[
-              { value: "95%", label: "Précision diagnostic", sublabel: "Validée cliniquement" },
-              { value: "3.2K+", label: "Analyses réalisées", sublabel: "Chaque mois" },
-              { value: "4.8/5", label: "Note utilisateurs", sublabel: "Satisfaction globale" },
-              { value: "2min", label: "Temps d'analyse", sublabel: "Résultats instantanés" }
+              { value: "95%", label: "Assessment accuracy", sublabel: "Clinically validated" },
+              { value: "3.2K+", label: "Analyses completed", sublabel: "Per month" },
+              { value: "4.8/5", label: "User rating", sublabel: "Overall satisfaction" },
+              { value: "2min", label: "Analysis time", sublabel: "Instant results" }
             ].map((stat, i) => (
               <motion.div 
                 key={i} 
@@ -651,33 +651,33 @@ export default function HomePage() {
             ))}
           </motion.div>
 
-                    {/* Témoignages utilisateurs */}
+          {/* User testimonials */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {[
                 {
-                  quote: "DermAI a révolutionné ma routine skincare. Les recommandations sont ultra-précises et les résultats visibles en quelques semaines seulement.",
+                  quote: "DermAI revolutionized my skincare routine. The recommendations are ultra-precise and the results were visible within just a few weeks.",
                   author: "Sarah M.",
-                  age: "26 ans",
+                  age: "26",
                   location: "Paris",
                   avatar: <Users className="w-6 h-6 text-dermai-ai-600" />,
                   avatarBg: "bg-dermai-ai-100",
                   rating: 5,
-                  improvement: "Hydratation +40%"
+                  improvement: "Hydration +40%"
                 },
                 {
-                  quote: "Enfin une analyse qui comprend vraiment ma peau sensible ! Les produits recommandés ont transformé mon quotidien beauté.",
+                  quote: "Finally, an analysis that really understands my sensitive skin! The recommended products transformed my daily routine.",
                   author: "Emma L.",
-                  age: "34 ans", 
+                  age: "34", 
                   location: "Lyon",
                   avatar: <Users className="w-6 h-6 text-dermai-ai-600" />,
                   avatarBg: "bg-dermai-ai-100",
                   rating: 5,
-                  improvement: "Rougeurs -60%"
+                  improvement: "Redness −60%"
                 },
                 {
-                  quote: "L'IA de DermAI a identifié des problèmes que je n'avais même pas remarqués. Ma routine est maintenant parfaitement adaptée.",
+                  quote: "DermAI’s AI identified issues I hadn’t even noticed. My routine is now perfectly tailored.",
                   author: "Julie R.",
-                  age: "29 ans",
+                  age: "29",
                   location: "Marseille", 
                   avatar: <Users className="w-6 h-6 text-dermai-ai-600" />,
                   avatarBg: "bg-dermai-ai-100",
@@ -723,7 +723,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Section Fonctionnalités futures - Preview */}
+      {/* Future features – preview */}
       <section className="py-24 bg-dermai-pure">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
@@ -733,13 +733,13 @@ export default function HomePage() {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl lg:text-5xl font-display font-bold text-dermai-neutral-900 mb-6">
-              L'avenir de votre
+              The future of your
               <span className="block bg-gradient-to-r from-dermai-ai-600 to-dermai-ai-400 bg-clip-text text-transparent">
-                routine beauté
+                beauty routine
               </span>
             </h2>
             <p className="text-xl text-dermai-neutral-600 max-w-3xl mx-auto leading-relaxed">
-              Découvrez les fonctionnalités qui arrivent bientôt sur DermAI
+              Discover the features coming soon to DermAI
             </p>
           </motion.div>
 
@@ -752,22 +752,22 @@ export default function HomePage() {
             >
               {[
                 {
-                  title: "Suivi Évolution",
-                  description: "Analysez l'évolution de votre peau dans le temps avec des photos comparatives et des rapports de progression personnalisés.",
+                  title: "Progress Tracking",
+                  description: "Analyze how your skin evolves over time with side-by-side photos and personalized progress reports.",
                   icon: <TrendingUp className="w-8 h-8 text-dermai-ai-600" />,
                   iconBg: "bg-dermai-ai-100",
-                  status: "Bientôt disponible"
+                  status: "Coming soon"
                 },
                 {
-                  title: "Coach IA Personnel",
-                  description: "Un assistant IA disponible 24h/24 pour répondre à vos questions skincare et ajuster votre routine en temps réel.",
+                  title: "Personal AI Coach",
+                  description: "An AI assistant available 24/7 to answer skincare questions and adjust your routine in real time.",
                   icon: <Bot className="w-8 h-8 text-dermai-ai-600" />,
                   iconBg: "bg-dermai-ai-100",
-                  status: "En développement"
+                  status: "In development"
                 },
                 {
-                  title: "Marketplace Intégrée",
-                  description: "Commandez directement vos produits recommandés avec des partenariats exclusifs et des prix préférentiels.",
+                  title: "Integrated Marketplace",
+                  description: "Order your recommended products directly with exclusive partnerships and preferential pricing.",
                   icon: <ShoppingBag className="w-8 h-8 text-dermai-ai-600" />,
                   iconBg: "bg-dermai-ai-100",
                   status: "Q2 2024"
@@ -808,7 +808,7 @@ export default function HomePage() {
               viewport={{ once: true }}
             >
               <div className="bg-gradient-to-br from-dermai-nude-50 to-dermai-light rounded-3xl p-8 border border-dermai-nude-200/50 relative overflow-hidden">
-                {/* Badge "Coming Soon" */}
+                {/* “Coming Soon” badge */}
                 <div className="absolute top-4 right-4 bg-dermai-ai-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
                   Coming Soon
                 </div>
@@ -820,28 +820,28 @@ export default function HomePage() {
                       AI
                     </div>
                     <div>
-                      <div className="font-semibold text-dermai-neutral-800">Assistant DermAI</div>
-                      <div className="text-sm text-dermai-neutral-500">En ligne maintenant</div>
+                      <div className="font-semibold text-dermai-neutral-800">DermAI Assistant</div>
+                      <div className="text-sm text-dermai-neutral-500">Online now</div>
                     </div>
                   </div>
                   
                   <div className="space-y-4">
                     <div className="bg-dermai-pure rounded-2xl p-4 border border-dermai-nude-200/30">
                       <div className="text-sm text-dermai-neutral-600">
-                        "Comment puis-je améliorer l'hydratation de ma zone T ?"
+                        "How can I improve hydration in my T-zone?"
                       </div>
                     </div>
                     
                     <div className="bg-dermai-ai-500 text-white rounded-2xl p-4">
                       <div className="text-sm">
-                        "Basé sur votre dernière analyse, je recommande d'ajuster votre routine matin avec un sérum à l'acide hyaluronique..."
+                        "Based on your latest analysis, I recommend adjusting your morning routine with a hyaluronic acid serum…"
                       </div>
                     </div>
                   </div>
                   
                   {/* Progress chart simulation */}
                   <div className="bg-dermai-pure rounded-2xl p-4 border border-dermai-nude-200/30">
-                    <div className="text-sm font-semibold text-dermai-neutral-800 mb-3">Progression 30 jours</div>
+                    <div className="text-sm font-semibold text-dermai-neutral-800 mb-3">30-day Progress</div>
                     <div className="space-y-2">
                       {[
                         { label: "Hydration", progress: 75 },
@@ -868,9 +868,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Final - Premium design */}
+      {/* Final CTA – premium design */}
       <section className="py-24 bg-gradient-to-br from-dermai-ai-600 via-dermai-ai-500 to-dermai-ai-400 relative overflow-hidden">
-        {/* Éléments décoratifs */}
+        {/* Decorative elements */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.1),transparent_50%)]"></div>
         
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center text-white">
@@ -880,24 +880,24 @@ export default function HomePage() {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl lg:text-5xl font-display font-bold mb-6">
-              Votre Peau Mérite 
-              <span className="block">une Expertise IA</span>
+              Your Skin Deserves 
+              <span className="block">AI Expertise</span>
             </h2>
             <p className="text-xl opacity-90 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Découvrez votre profil cutané unique et recevez des recommandations scientifiquement fondées
+              Discover your unique skin profile and receive science-backed recommendations
             </p>
             <Link
               href="/upload"
               className="group inline-flex items-center space-x-4 bg-dermai-pure text-dermai-ai-600 font-semibold py-5 px-10 rounded-full text-lg hover:shadow-premium-lg transition-all duration-500 transform hover:scale-105"
             >
-              <span>Commencer maintenant</span>
+              <span>Start now</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
           </motion.div>
         </div>
       </section>
 
-      {/* Footer - Minimal et élégant */}
+      {/* Footer – minimal and elegant */}
       <footer className="bg-dermai-neutral-900 text-dermai-neutral-400 py-12">
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex items-center justify-between">
@@ -911,7 +911,7 @@ export default function HomePage() {
               </a>
             </div>
             <div className="text-sm font-mono">
-              © 2024 DermAI • Fondé en Science
+              © 2024 DermAI • Founded on Science
             </div>
           </div>
         </div>

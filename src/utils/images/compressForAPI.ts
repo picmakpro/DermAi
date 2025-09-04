@@ -1,6 +1,6 @@
 /**
- * Compression agressive des images pour l'envoi à l'API
- * Optimisé pour Vercel et les limites de payload
+ * Aggressive image compression for API upload
+ * Optimized for Vercel and payload limits
  */
 
 export interface CompressionOptions {
@@ -10,81 +10,84 @@ export interface CompressionOptions {
   format: 'jpeg' | 'webp'
 }
 
-// Configuration optimisée pour Vercel
+// Optimized configuration for Vercel
 const DEFAULT_OPTIONS: CompressionOptions = {
-  maxWidth: 1024,    // Réduit de 1920 à 1024
-  maxHeight: 1024,   // Réduit de 1080 à 1024
-  quality: 0.6,      // Réduit de 0.8 à 0.6
-  format: 'jpeg'     // JPEG plus compact que WebP pour l'IA
+  maxWidth: 1024,   // Reduced from 1920 to 1024
+  maxHeight: 1024,  // Reduced from 1080 to 1024
+  quality: 0.6,     // Reduced from 0.8 to 0.6
+  format: 'jpeg'    // JPEG is typically more compact than WebP for AI
 }
 
 /**
- * Compresse une image de manière agressive pour l'API
+ * Aggressively compress a single image for API usage
  */
 export async function compressImageForAPI(
-  file: File, 
+  file: File,
   options: Partial<CompressionOptions> = {}
 ): Promise<string> {
   const config = { ...DEFAULT_OPTIONS, ...options }
-  
+
   try {
-    // Créer l'image
+    // Create an Image element from the file
     const img = await createImageFromFile(file)
-    
-    // Calculer les nouvelles dimensions en gardant le ratio
+
+    // Compute new dimensions while preserving aspect ratio
     const { width, height } = calculateOptimalDimensions(
-      img.naturalWidth, 
-      img.naturalHeight, 
-      config.maxWidth, 
+      img.naturalWidth,
+      img.naturalHeight,
+      config.maxWidth,
       config.maxHeight
     )
-    
-    // Créer le canvas
+
+    // Create canvas
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
-    
+
     if (!ctx) {
-      throw new Error('Impossible de créer le contexte canvas')
+      throw new Error('Failed to create canvas context')
     }
-    
+
     canvas.width = width
     canvas.height = height
-    
-    // Optimisations de rendu pour la qualité
-    ctx.imageSmoothingEnabled = true
-    ctx.imageSmoothingQuality = 'high'
-    
-    // Dessiner l'image redimensionnée
+
+    // Rendering optimizations for quality
+    ;(ctx as CanvasRenderingContext2D).imageSmoothingEnabled = true
+    ;(ctx as CanvasRenderingContext2D).imageSmoothingQuality = 'high'
+
+    // Draw the resized image
     ctx.drawImage(img, 0, 0, width, height)
-    
-    // Convertir en base64 avec compression
+
+    // Convert to base64 with compression
     const dataUrl = canvas.toDataURL(`image/${config.format}`, config.quality)
-    
-    // Nettoyer
+
+    // Cleanup
     canvas.remove()
-    URL.revokeObjectURL(img.src)
-    
-    console.log(`📦 Compression: ${file.size} → ${Math.round(dataUrl.length * 0.75)} bytes (${Math.round(config.quality * 100)}% qualité)`)
-    
+    URL.revokeObjectURL((img as HTMLImageElement).src)
+
+    console.log(
+      `📦 Compression: ${file.size} → ${Math.round(
+        dataUrl.length * 0.75
+      )} bytes (${Math.round(config.quality * 100)}% quality)`
+    )
+
     return dataUrl
-    
   } catch (error) {
-    console.error('❌ Erreur compression image:', error)
-    // Fallback: convertir sans compression
+    console.error('❌ Image compression error:', error)
+    // Fallback: convert without compression
     return convertFileToBase64Fallback(file)
   }
 }
 
 /**
- * Compresse plusieurs images en parallèle avec limite de concurrence
+ * Compress multiple images in parallel with a concurrency cap
  */
 export async function compressImagesForAPI(
-  files: File[], 
+  files: File[],
   options: Partial<CompressionOptions> = {}
 ): Promise<string[]> {
-  const batchSize = 2 // Traiter 2 images en parallèle max
+  const batchSize = 2 // Process at most 2 images in parallel
   const results: string[] = []
-  
+
   for (let i = 0; i < files.length; i += batchSize) {
     const batch = files.slice(i, i + batchSize)
     const batchResults = await Promise.all(
@@ -92,12 +95,12 @@ export async function compressImagesForAPI(
     )
     results.push(...batchResults)
   }
-  
+
   return results
 }
 
 /**
- * Calcule les dimensions optimales en gardant le ratio
+ * Compute optimal dimensions while preserving aspect ratio
  */
 function calculateOptimalDimensions(
   originalWidth: number,
@@ -106,41 +109,41 @@ function calculateOptimalDimensions(
   maxHeight: number
 ): { width: number; height: number } {
   let { width, height } = { width: originalWidth, height: originalHeight }
-  
-  // Réduire si nécessaire
+
+  // Downscale if needed
   if (width > maxWidth) {
     height = (height * maxWidth) / width
     width = maxWidth
   }
-  
+
   if (height > maxHeight) {
     width = (width * maxHeight) / height
     height = maxHeight
   }
-  
+
   return { width: Math.round(width), height: Math.round(height) }
 }
 
 /**
- * Crée un élément Image à partir d'un File
+ * Create an Image element from a File
  */
 function createImageFromFile(file: File): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image()
     const url = URL.createObjectURL(file)
-    
+
     img.onload = () => resolve(img)
     img.onerror = () => {
       URL.revokeObjectURL(url)
-      reject(new Error('Impossible de charger l\'image'))
+      reject(new Error('Failed to load image'))
     }
-    
+
     img.src = url
   })
 }
 
 /**
- * Fallback sans compression
+ * Fallback without compression
  */
 function convertFileToBase64Fallback(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -152,20 +155,20 @@ function convertFileToBase64Fallback(file: File): Promise<string> {
 }
 
 /**
- * Estime la taille du payload JSON avec plusieurs images
+ * Estimate JSON payload size when embedding multiple images
  */
 export function estimatePayloadSize(imageCount: number, avgImageSize: number): number {
-  // Taille approximative du JSON sans images
-  const basePayloadSize = 2000 // 2KB pour questionnaire + métadonnées
-  
-  // Les images base64 font ~33% plus que la taille binaire
+  // Approximate JSON size without images
+  const basePayloadSize = 2000 // ~2 KB for questionnaire + metadata
+
+  // Base64-encoded images are ~33% larger than binary
   const totalImageSize = imageCount * avgImageSize * 1.33
-  
+
   return basePayloadSize + totalImageSize
 }
 
 /**
- * Recommandations de compression selon le nombre d'images
+ * Compression recommendations based on image count
  */
 export function getCompressionOptionsForCount(imageCount: number): CompressionOptions {
   if (imageCount === 1) {

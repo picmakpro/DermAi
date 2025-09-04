@@ -9,7 +9,7 @@ function openDB(): Promise<IDBDatabase> {
     const req = indexedDB.open(DB_NAME, DB_VERSION)
     req.onupgradeneeded = () => {
       const db = req.result
-      // Créer les stores si manquants
+      // Create stores if missing
       if (!db.objectStoreNames.contains('photos')) {
         db.createObjectStore('photos')
       }
@@ -44,12 +44,17 @@ export async function getPhotoDataUrl(id: string): Promise<string | null> {
 
 export async function removePhotos(ids: string[]): Promise<void> {
   const db = await openDB()
-  await Promise.all(ids.map(id => new Promise<void>((resolve, reject) => {
-    const tx = db.transaction(STORE, 'readwrite')
-    tx.objectStore(STORE).delete(id)
-    tx.oncomplete = () => resolve()
-    tx.onerror = () => reject(tx.error)
-  })))
+  await Promise.all(
+    ids.map(
+      id =>
+        new Promise<void>((resolve, reject) => {
+          const tx = db.transaction(STORE, 'readwrite')
+          tx.objectStore(STORE).delete(id)
+          tx.oncomplete = () => resolve()
+          tx.onerror = () => reject(tx.error)
+        })
+    )
+  )
 }
 
 export async function clearAllPhotos(): Promise<void> {
@@ -61,5 +66,3 @@ export async function clearAllPhotos(): Promise<void> {
     tx.onerror = () => reject(tx.error)
   })
 }
-
-

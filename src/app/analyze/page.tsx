@@ -87,19 +87,19 @@ export default function AnalyzePage() {
     const { photos, questionnaire } = sessionData
 
     // Build analysis request (data is already in correct structure)
-    const analyzeRequest: AnalyzeRequest = {
+    const analyzeRequest = {
       photos,
       userProfile: questionnaire.userProfile,
       skinConcerns: questionnaire.skinConcerns,
       currentRoutine: questionnaire.currentRoutine,
       allergies: questionnaire.allergies
-    }
+    } as AnalyzeRequest
 
     console.log('Starting analysis with:', analyzeRequest)
     console.log('Detailed UserProfile:', analyzeRequest.userProfile)
     console.log('Detailed photos:', analyzeRequest.photos.map(p => ({ id: p.id, type: p.type, hasFile: !!p.file })))
     
-    await analyze(analyzeRequest)
+    await analyze(analyzeRequest as any)
   }, [sessionData, analyze])
 
   useEffect(() => {
@@ -208,7 +208,7 @@ export default function AnalyzePage() {
         />
       ))}
       
-      {/* Particules grandes qui dérivent */}
+      {/* Large drifting particles */}
       {Array.from({ length: 6 }, (_, i) => (
         <motion.div
           key={`large-particle-${i}`}
@@ -216,7 +216,7 @@ export default function AnalyzePage() {
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
-            opacity: 0.15, // Opacité fixe
+            opacity: 0.15, // Fixed opacity
           }}
           animate={{
             x: Math.random() * 100 - 50,
@@ -256,8 +256,8 @@ export default function AnalyzePage() {
             </div>
 
             <div className="text-right">
-              <div className="text-sm text-dermai-neutral-500">Étape 3 sur 4</div>
-              <div className="text-sm text-dermai-ai-600 font-medium font-display">Analyse en cours...</div>
+              <div className="text-sm text-dermai-neutral-500">Step 3 of 4</div>
+              <div className="text-sm text-dermai-ai-600 font-medium font-display">Analysis in progress...</div>
             </div>
           </div>
         </div>
@@ -265,16 +265,16 @@ export default function AnalyzePage() {
 
       <div className="max-w-4xl mx-auto px-4 py-12">
         <div className="max-w-2xl mx-auto">
-          {/* En-tête */}
+          {/* Header */}
           <div className="text-center mb-8">
-            {/* Animation simple d'analyse IA */}
+            {/* Simple AI analysis animation */}
             <motion.div
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ type: "spring", duration: 0.8 }}
               className="relative w-32 h-32 mx-auto mb-6"
             >
-              {/* Cercles de scan concentriques */}
+              {/* Concentric scanning circles */}
               <motion.div
                 className="absolute inset-0 rounded-full border-2 border-dermai-ai-300/30"
                 animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.8, 0.3] }}
@@ -291,7 +291,7 @@ export default function AnalyzePage() {
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
               />
               
-              {/* Icône de scan dermatologique au centre */}
+              {/* Dermatological scan icon in center */}
               <motion.div
                 className="absolute inset-0 flex items-center justify-center"
                 animate={{ scale: [1, 1.05, 1] }}
@@ -326,7 +326,7 @@ export default function AnalyzePage() {
               transition={{ delay: 0.3 }}
               className="text-4xl md:text-5xl font-bold font-display text-dermai-neutral-900 mb-4"
             >
-              DermAI analyse votre peau
+              DermAI analyzes your skin
             </motion.h1>
             
             <motion.p
@@ -335,12 +335,12 @@ export default function AnalyzePage() {
               transition={{ delay: 0.4 }}
               className="text-xl text-dermai-neutral-600 leading-relaxed max-w-lg mx-auto"
             >
-              Notre intelligence artificielle examine vos photos avec une 
-              <strong className="text-dermai-ai-600 font-display"> précision dermatologique</strong> pour vous offrir une analyse personnalisée
+              Our artificial intelligence examines your photos with 
+              <strong className="text-dermai-ai-600 font-display"> dermatological precision</strong> to provide you with a personalized assessment
             </motion.p>
           </div>
 
-          {/* Contenu principal */}
+          {/* Main content */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -348,7 +348,7 @@ export default function AnalyzePage() {
             className="card bg-dermai-pure rounded-3xl shadow-premium border border-dermai-nude-200 p-8"
           >
             {error ? (
-              // État d'erreur
+              // Error state
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -369,7 +369,7 @@ export default function AnalyzePage() {
                   <AlertCircle className="w-10 h-10 text-red-600" />
                 </motion.div>
                 <h2 className="text-2xl font-bold font-display text-dermai-neutral-900 mb-3">
-                  Erreur d&apos;analyse
+                  Analysis Error
                 </h2>
                 <p className="text-dermai-neutral-600 mb-8 max-w-md mx-auto leading-relaxed">
                   {error}
@@ -381,7 +381,7 @@ export default function AnalyzePage() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    Réessayer l'analyse
+                    Retry Analysis
                   </motion.button>
                   <motion.button
                     onClick={handleGoBack}
@@ -389,18 +389,18 @@ export default function AnalyzePage() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    Retour au questionnaire
+                    Back to Questionnaire
                   </motion.button>
                 </div>
               </motion.div>
             ) : (
-              // État de chargement
+              // Loading state
               <div className="space-y-8">
-                {/* Barre de progression */}
+                {/* Progress bar */}
                 <div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm font-medium font-display text-dermai-neutral-700">
-                      Progression
+                      Progress
                     </span>
                     <span className="text-sm text-dermai-neutral-500">
                       {Math.round(progress)}%
@@ -416,7 +416,7 @@ export default function AnalyzePage() {
                   </div>
                 </div>
 
-                {/* Étapes de l'analyse */}
+                {/* Analysis steps */}
                 <div className="space-y-4">
                   {analysisSteps.map((step, index) => {
                     const isActive = index === currentStep
@@ -445,7 +445,7 @@ export default function AnalyzePage() {
                             : 'border-dermai-nude-200 bg-dermai-nude-50/30'
                         }`}
                       >
-                        {/* Icône avec animation */}
+                        {/* Icon with animation */}
                         <motion.div 
                           className={`relative w-14 h-14 rounded-full flex items-center justify-center mr-6 transition-all duration-300 ${
                             isActive
@@ -481,7 +481,7 @@ export default function AnalyzePage() {
                           )}
                         </motion.div>
 
-                        {/* Contenu texte */}
+                        {/* Text content */}
                         <div className="flex-1">
                           <motion.h3 
                             className={`font-display font-semibold text-lg mb-1 transition-colors ${
@@ -495,7 +495,7 @@ export default function AnalyzePage() {
                             {step.label}
                           </motion.h3>
                           
-                          {/* Status text avec animation */}
+                          {/* Status text with animation */}
                           <motion.div className="text-sm">
                             {isActive && (
                               <motion.p 
@@ -508,7 +508,7 @@ export default function AnalyzePage() {
                                   animate={{ opacity: [1, 0.5, 1] }}
                                   transition={{ duration: 1.5, repeat: Infinity }}
                                 >
-                                  En cours d'analyse...
+                                  Analyzing...
                                 </motion.span>
                               </motion.p>
                             )}
@@ -525,16 +525,16 @@ export default function AnalyzePage() {
                                   transition={{ delay: 0.3, type: "spring" }}
                                   className="w-2 h-2 bg-dermai-ai-600 rounded-full mr-2"
                                 />
-                                Terminé avec succès
+                                Completed successfully
                               </motion.p>
                             )}
                             {!isActive && !isCompleted && (
-                              <p className="text-dermai-neutral-400">En attente...</p>
+                              <p className="text-dermai-neutral-400">Waiting...</p>
                             )}
                           </motion.div>
                         </div>
 
-                        {/* Indicateur de progression */}
+                        {/* Progress indicator */}
                         {isActive && (
                           <motion.div
                             className="absolute right-4 w-6 h-6"
@@ -549,7 +549,7 @@ export default function AnalyzePage() {
                   })}
                 </div>
 
-                {/* Informations sur l'analyse */}
+                {/* Analysis information */}
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -572,45 +572,46 @@ export default function AnalyzePage() {
                       >
                         <Microscope className="w-4 h-4 text-white" />
                       </motion.div>
-                      Détails de l'analyse
+                      Analysis Details
                     </h3>
                     <motion.span 
                       className="text-xs text-dermai-ai-600 font-medium bg-dermai-ai-50 px-3 py-1 rounded-full"
                       animate={{ opacity: [1, 0.7, 1] }}
                       transition={{ duration: 2, repeat: Infinity }}
                     >
-                      Ne quittez pas la page
+                      Please don&apos;t leave this page
                     </motion.span>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                     <div className="flex justify-between items-center p-3 bg-dermai-pure rounded-2xl border border-dermai-nude-200">
-                      <span className="text-dermai-neutral-600">Photos analysées :</span>
+                      <span className="text-dermai-neutral-600">Photos analyzed:</span>
                       <span className="font-display font-semibold text-dermai-neutral-900">{sessionData.photos.length}</span>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-dermai-pure rounded-2xl border border-dermai-nude-200">
-                      <span className="text-dermai-neutral-600">Modèle IA :</span>
+                      <span className="text-dermai-neutral-600">AI Model:</span>
                       <span className="font-display font-semibold text-dermai-ai-600">DermAI Vision 4.0</span>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-dermai-pure rounded-2xl border border-dermai-nude-200">
-                      <span className="text-dermai-neutral-600">Étape actuelle :</span>
+                      <span className="text-dermai-neutral-600">Current step:</span>
                       <span className="font-display font-semibold text-dermai-neutral-900">{`${currentStep + 1}/${analysisSteps.length}`}</span>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-dermai-pure rounded-2xl border border-dermai-nude-200">
-                      <span className="text-dermai-neutral-600">Durée estimée :</span>
+                      <span className="text-dermai-neutral-600">Estimated duration:</span>
                       <span className="font-display font-semibold text-dermai-neutral-900">≈ 45–90 s</span>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-dermai-pure rounded-2xl border border-dermai-nude-200 md:col-span-2">
-                      <span className="text-dermai-neutral-600">Type de peau détecté :</span>
+                      <span className="text-dermai-neutral-600">Detected skin type:</span>
                       <span className="font-display font-semibold text-dermai-ai-600">
+                        {/* value used in logic; keep as-is (French) */}
                         {sessionData.questionnaire.userProfile?.skinType === 'Je ne sais pas' 
-                          ? 'Analyse en cours par l\'IA...' 
+                          ? 'Analysis in progress by AI...' 
                           : sessionData.questionnaire.userProfile?.skinType}
                       </span>
                     </div>
                   </div>
                 </motion.div>
 
-                {/* Note de sécurité */}
+                {/* Security notice */}
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -632,11 +633,11 @@ export default function AnalyzePage() {
                       <Shield className="w-4 h-4 text-white" />
                     </motion.div>
                     <div>
-                      <h4 className="font-display font-semibold text-dermai-ai-900 mb-2 text-lg">Avertissement médical</h4>
+                      <h4 className="font-display font-semibold text-dermai-ai-900 mb-2 text-lg">Medical Disclaimer</h4>
                       <p className="text-sm text-dermai-ai-800 leading-relaxed">
-                        Cette analyse est réalisée par intelligence artificielle et constitue un outil d'aide à la décision. 
-                        Elle ne remplace pas un diagnostic médical professionnel. En cas de problème dermatologique 
-                        persistant ou sévère, consultez un dermatologue qualifié.
+                        This analysis is performed by artificial intelligence and constitutes a decision-support tool. 
+                        It does not replace professional medical assessment. In case of persistent or severe dermatological 
+                        issues, consult a qualified dermatologist.
                       </p>
                     </div>
                   </div>

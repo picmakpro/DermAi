@@ -2,17 +2,17 @@ import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
-    // Test des variables d'environnement
+    // Test environment variables
     const openaiKey = process.env.OPENAI_API_KEY
     const nodeEnv = process.env.NODE_ENV
     
-    // Test de l'import OpenAI
+    // Test OpenAI import
     let openaiImportOk = false
     try {
       const OpenAI = (await import('openai')).default
       openaiImportOk = !!OpenAI
     } catch (err) {
-      console.error('Erreur import OpenAI:', err)
+      console.error('OpenAI import error:', err)
     }
 
     const diagnostics = {
@@ -25,7 +25,7 @@ export async function GET() {
       runtime: 'nodejs'
     }
 
-    console.log('🔍 Diagnostics Vercel:', diagnostics)
+    console.log('🔍 Vercel Diagnostics:', diagnostics)
 
     return NextResponse.json({
       success: true,
@@ -33,7 +33,7 @@ export async function GET() {
     })
 
   } catch (error) {
-    console.error('Erreur test API:', error)
+    console.error('Test API error:', error)
     return NextResponse.json(
       { 
         success: false, 

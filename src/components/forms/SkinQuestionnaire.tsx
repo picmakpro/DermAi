@@ -11,8 +11,8 @@ import ImprovedSummary from './ImprovedSummary'
 // Simplified types for questionnaire
 interface UserProfile {
   age: number
-  gender: string
-  skinType: string
+  gender: string // value used in logic; keep as-is (French) when set to 'Ne souhaite pas préciser'
+  skinType: string // value used in logic; keep as-is (French) when set to 'Je ne sais pas'
 }
 
 interface SkinConcerns {
@@ -39,6 +39,7 @@ interface QuestionnaireData {
 }
 
 const SKIN_CONCERNS = [
+  // value used in logic; keep as-is (French)
   'Acné/Boutons',
   'Poils incarnés', 
   'Rides/Vieillissement',
@@ -53,6 +54,7 @@ const SKIN_CONCERNS = [
 ]
 
 const COMMON_PRODUCTS = [
+  // value used in logic; keep as-is (French)
   'Nettoyant visage',
   'Hydratant',
   'Crème solaire',
@@ -94,12 +96,12 @@ export default function SkinQuestionnaire() {
   const [showAiMessage, setShowAiMessage] = useState(false)
   const [photosCount, setPhotosCount] = useState(0)
   const [selectedAgeRange, setSelectedAgeRange] = useState<string>('')
-  
+
   const [data, setData] = useState<QuestionnaireData>({
     userProfile: {
       age: 25,
-      gender: 'Ne souhaite pas préciser',
-      skinType: 'Je ne sais pas'
+      gender: 'Ne souhaite pas préciser', // value used in logic; keep as-is (French)
+      skinType: 'Je ne sais pas' // value used in logic; keep as-is (French)
     },
     skinConcerns: {
       primary: [],
@@ -127,6 +129,17 @@ export default function SkinQuestionnaire() {
       setPhotosCount(photos.length)
     }
   }, [])
+
+  // Analytics for new full-screen steps
+  useEffect(() => {
+    if (currentStep === 0 && typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'intro_before_after_view');
+    } else if (currentStep === 3 && typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'similar_concerns_view');
+    } else if (currentStep === 6 && typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'savings_progress_view');
+    }
+  }, [currentStep])
 
   const updateData = (section: keyof QuestionnaireData, updates: Partial<QuestionnaireData[keyof QuestionnaireData]>) => {
     setData(prev => ({
@@ -156,13 +169,13 @@ export default function SkinQuestionnaire() {
 
     if (currentStep < totalSteps - 1) {
       setCurrentStep(currentStep + 1)
-      // Scroll automatique vers le haut de la page
+      // Auto scroll to top for better UX
       setTimeout(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
       }, 100)
     } else {
-      // Dernière étape atteinte, soumettre le formulaire
-      console.log('Tentative de soumission, étape:', currentStep, 'total:', totalSteps)
+      // Last step reached, submit the form
+      console.log('Submit attempt, step:', currentStep, 'total:', totalSteps)
       handleSubmit()
     }
   }
@@ -174,21 +187,21 @@ export default function SkinQuestionnaire() {
   }
 
   const handleSubmit = () => {
-    // Vérifier que le formulaire est complet avant soumission
+    // Check that the form is complete before submission
     if (!isFormComplete()) {
-      alert('Veuillez compléter toutes les étapes obligatoires du formulaire.')
+      alert('Please complete all required form steps.')
       return
     }
 
-    // Récupérer les photos du sessionStorage
+    // Retrieve photos from sessionStorage
     const photosData = sessionStorage.getItem('dermai_photos')
     if (!photosData) {
-      alert('Erreur : photos non trouvées. Veuillez recommencer.')
+      alert('Error: photos not found. Please start over.')
       router.push('/upload')
       return
     }
 
-    // Stocker toutes les données pour l'analyse
+    // Store all data for analysis
     const completeData = {
       photos: JSON.parse(photosData),
       userProfile: data.userProfile,
@@ -199,7 +212,7 @@ export default function SkinQuestionnaire() {
 
     sessionStorage.setItem('dermai_questionnaire', JSON.stringify(completeData))
     
-    // Rediriger vers l'analyse
+    // Redirect to analysis
     router.push('/analyze')
   }
 
@@ -209,18 +222,20 @@ export default function SkinQuestionnaire() {
       if (item === 'Je ne sais pas') {
         setShowAiMessage(false)
       }
-      // Si on désélectionne "Autres", vider le texte
+      // If unselecting "Autres", clear the text
       if (item === 'Autres') {
         updateData('skinConcerns', { otherText: '' })
       }
       return array.filter(i => i !== item)
     } else {
+      // Selecting 'Je ne sais pas' overrides others
       // value used in logic; keep as-is (French)
       if (item === 'Je ne sais pas') {
         setShowAiMessage(true)
-        updateData('skinConcerns', { otherText: '' }) // Vider le texte "Autres"
+        updateData('skinConcerns', { otherText: '' }) // Clear "Autres" text
         return [item]
       }
+      // Ensure 'Je ne sais pas' is removed when selecting other items
       // value used in logic; keep as-is (French)
       const filteredArray = array.filter(i => i !== 'Je ne sais pas')
       setShowAiMessage(false)
@@ -232,148 +247,149 @@ export default function SkinQuestionnaire() {
     }
   }
 
-  // Validation complète du formulaire
+  // Full form validation
   const isFormComplete = () => {
-    // Étape 1: Profil (tranche d'âge sélectionnée)
+    // Step 1: Profile (age range selected)
     const step1Valid = selectedAgeRange !== ''
 
-    // Étape 2: Préoccupations (au moins une sélection requise)
+    // Step 2: Concerns (at least one selection)
     const step2Valid = data.skinConcerns.primary.length > 0
 
-    // Étape 7: Préférence de routine choisie (dernière étape)
+    // Step 7: Selected routine preference (last step)
     const step7Valid = !!data.currentRoutine.routinePreference
 
-    console.log('Validation formulaire:', { step1Valid, step2Valid, step7Valid, currentStep })
+    console.log('Form validation:', { step1Valid, step2Valid, step7Valid, currentStep })
     return step1Valid && step2Valid && step7Valid
   }
 
-  // Validation de l'étape actuelle
+  // Validate current step
   const canProceed = () => {
     switch (currentStep) {
       case 0: // IntroBeforeAfterScreen
         return true
-      case 1: // Profil
+      case 1: // Profile
         return selectedAgeRange !== ''
-      case 2: // Préoccupations
+      case 2: // Concerns
         return data.skinConcerns.primary.length > 0
       case 3: // SimilarConcernsProofScreen
         return true
-      case 4: // Routine actuelle
-        return true // Routine optionnelle
+      case 4: // Current routine
+        return true // Routine optional
       case 5: // Allergies
-        return true // Allergies optionnelles
+        return true // Allergies optional
       case 6: // SavingsProgressScreen
         return true
-      case 7: // Type de routine + Budget (dernière étape)
-        return !!data.currentRoutine.routinePreference // Doit choisir un type de routine
+      case 7: // Routine type + Budget (last step)
+        return !!data.currentRoutine.routinePreference // Must choose a routine type
       default:
         return true
     }
   }
 
-  // Fonction pour sélectionner une tranche d'âge
+  // Select age range
   const handleAgeRangeSelect = (range: typeof AGE_RANGES[0]) => {
     setSelectedAgeRange(range.range)
     updateData('userProfile', { age: range.value })
   }
 
-  // Vérifier si la routine a des produits
+  // Whether routine has products
   const hasRoutineProducts = () => {
     return data.currentRoutine.morningProducts.length > 0 || data.currentRoutine.eveningProducts.length > 0
   }
 
-  // Formatage de la routine pour l'affichage
+  // Format routine for display (UI-only)
   const getRoutineDisplay = () => {
     const morning = data.currentRoutine.morningProducts
     const evening = data.currentRoutine.eveningProducts
     
     if (morning.length === 0 && evening.length === 0) {
-      return 'Aucune routine'
+      return 'No routine'
     }
     
-    const parts = []
+    const parts: string[] = []
     if (morning.length > 0) {
-      parts.push(`Matin: ${morning.join(', ')}`)
+      parts.push(`Morning: ${morning.join(', ')}`)
     }
     if (evening.length > 0) {
-      parts.push(`Soir: ${evening.join(', ')}`)
+      parts.push(`Evening: ${evening.join(', ')}`)
     }
     
     return parts.join(' • ')
   }
 
-  // Formatage des préoccupations pour l'affichage
+  // Format concerns for display (UI-only)
   const getConcernsDisplay = () => {
     if (data.skinConcerns.primary.includes('Je ne sais pas')) {
-      return 'IA analysera automatiquement'
+      return 'AI will analyze automatically'
     }
     
     let concerns = [...data.skinConcerns.primary]
     
-    // Si "Autres" est sélectionné et qu'il y a du texte, remplacer par le texte
+    // If "Autres" is selected and text exists, replace with the typed text
     if (concerns.includes('Autres') && data.skinConcerns.otherText.trim()) {
       concerns = concerns.filter(c => c !== 'Autres')
       concerns.push(data.skinConcerns.otherText.trim())
     } else if (concerns.includes('Autres')) {
-      // Si "Autres" sans texte, le garder tel quel
+      // Keep "Autres" as-is if no text was provided (logic-bound)
     }
     
     return concerns.join(', ')
   }
 
-  // Récapitulatif dynamique
+  // Dynamic summary card (UI-only)
   const renderSummary = () => (
     <div className="card bg-dermai-pure border border-dermai-nude-200 rounded-2xl p-5 shadow-premium">
       <h3 className="font-semibold font-display text-dermai-neutral-800 mb-4 flex items-center">
         <div className="w-8 h-8 bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 rounded-full flex items-center justify-center mr-3 shadow-glow">
           <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+            <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
           </svg>
         </div>
-        Récapitulatif
+        Summary
       </h3>
       
       <div className="space-y-2 text-sm text-gray-700">
         {/* Photos */}
         <div className="flex items-center">
           <span className="w-2.5 h-2.5 bg-green-500 rounded-full mr-3"></span>
-          <span className="text-gray-700">{photosCount} photo{photosCount > 1 ? 's' : ''} uploadée{photosCount > 1 ? 's' : ''}</span>
+          <span className="text-gray-700">
+            {photosCount} uploaded face photo{photosCount > 1 ? 's' : ''}
+          </span>
         </div>
 
-        {/* Profil - toujours affiché avec valeurs actuelles */}
+        {/* Profile - always show with current values */}
         <div className="flex items-center">
           <span className="w-2.5 h-2.5 bg-purple-500 rounded-full mr-3"></span>
           <span className="text-gray-700">
             {data.userProfile.gender !== 'Ne souhaite pas préciser' && `${data.userProfile.gender}, `}
-            {selectedAgeRange || `${data.userProfile.age} ans`}
-            {` • Peau ${data.userProfile.skinType === 'Je ne sais pas' ? 'à déterminer par l’IA' : data.userProfile.skinType}`}
+            {selectedAgeRange || `${data.userProfile.age} years`}
+            {` • Skin ${data.userProfile.skinType === 'Je ne sais pas' ? 'to be determined by AI' : data.userProfile.skinType}`}
           </span>
         </div>
 
-        {/* Préoccupations */}
+        {/* Concerns */}
         {data.skinConcerns.primary.length > 0 && (
           <div className="flex items-start">
             <span className="w-2.5 h-2.5 bg-orange-500 rounded-full mr-3 mt-1"></span>
             <div className="text-gray-700">
-              {data.skinConcerns.primary.includes('Je ne sais pas') || data.skinConcerns.primary.length === 0 ? 
-                (
-                  <span className="italic text-blue-600">À déterminer par l’IA</span>
-                ) : (
-                  <span>{getConcernsDisplay()}</span>
-                )}
+              {data.skinConcerns.primary.includes('Je ne sais pas') || data.skinConcerns.primary.length === 0 ? (
+                <span className="italic text-blue-600">To be determined by AI</span>
+              ) : (
+                <span>{getConcernsDisplay()}</span>
+              )}
             </div>
           </div>
         )}
 
-        {/* Routine - toujours afficher même si vide */}
+        {/* Routine - show even if empty */}
         <div className="flex items-start">
           <span className="w-2.5 h-2.5 bg-purple-500 rounded-full mr-3 mt-1"></span>
           <span className="text-gray-700 text-xs">
-            {getRoutineDisplay()} {data.currentRoutine.routinePreference ? `• Préférence: ${data.currentRoutine.routinePreference}` : ''}
+            {getRoutineDisplay()} {data.currentRoutine.routinePreference ? `• Preference: ${data.currentRoutine.routinePreference}` : ''}
           </span>
         </div>
 
-        {/* Budget - toujours afficher */}
+        {/* Budget - always show */}
         <div className="flex items-center">
           <span className="w-2.5 h-2.5 bg-green-600 rounded-full mr-3"></span>
           <span className="text-gray-700">Budget {data.currentRoutine.monthlyBudget}</span>
@@ -384,69 +400,59 @@ export default function SkinQuestionnaire() {
           <div className="flex items-start text-sm">
             <span className="w-3 h-3 bg-red-500 rounded-full mr-3 mt-1"></span>
             <span className="text-gray-700 text-xs">
-              {data.allergies.ingredients.includes('Aucune allergie connue') 
-                ? 'Aucune allergie connue'
-                : `Éviter: ${data.allergies.ingredients.join(', ')}`
+              {data.allergies.ingredients.includes('No known allergies') 
+                ? 'No known allergies'
+                : `Avoid: ${data.allergies.ingredients.join(', ')}`
               }
             </span>
           </div>
         )}
 
-        {/* Réactions passées (si renseignées) */}
+        {/* Past reactions (if provided) */}
         {data.allergies.pastReactions.trim() && (
           <div className="flex items-start text-sm">
             <span className="w-3 h-3 bg-yellow-500 rounded-full mr-3 mt-1"></span>
             <div className="text-gray-700 text-xs">
-              <span className="font-medium">Réactions passées:</span><br/>
+              <span className="font-medium">Past reactions:</span><br/>
               <span className="italic">"{data.allergies.pastReactions.trim()}"</span>
             </div>
           </div>
         )}
 
-        {/* Statut de validation */}
+        {/* Validation status */}
         <div className="mt-4 pt-3 border-t border-gray-100">
           {isFormComplete() ? (
             <div className="flex items-center text-sm text-green-600">
               <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
-              Formulaire complet
+              Form complete
             </div>
           ) : (
             <div className="flex items-center text-sm text-orange-600">
               <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
               </svg>
-              Étapes manquantes
+              Missing steps
             </div>
           )}
         </div>
       </div>
 
-      {/* Bouton d'analyse - Mobile */}
+      {/* Analysis button – Mobile */}
       <div className="mt-4 md:hidden">
         <button
           onClick={handleSubmit}
           disabled={!isFormComplete()}
           className="btn-primary w-full font-semibold py-3 px-6 rounded-2xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
         >
-          {isFormComplete() ? '🚀 Lancer l\'analyse DermAI' : '⏳ Compléter le formulaire'}
+          {isFormComplete() ? '🚀 Start DermAI analysis' : '⏳ Complete the form'}
         </button>
       </div>
     </div>
   )
 
   const renderStep = () => {
-    // Analytics pour les nouveaux écrans
-    useEffect(() => {
-      if (currentStep === 0 && typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', 'intro_before_after_view');
-      } else if (currentStep === 3 && typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', 'similar_concerns_view');
-      } else if (currentStep === 6 && typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', 'savings_progress_view');
-      }
-    }, [currentStep]);
 
     switch (currentStep) {
       case 0:
@@ -462,13 +468,13 @@ export default function SkinQuestionnaire() {
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Profil personnel</h2>
-              <p className="text-dermai-neutral-600">Informations de base pour personnaliser votre analyse</p>
+              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Personal profile</h2>
+              <p className="text-dermai-neutral-600">Basic information to personalize your analysis</p>
             </div>
 
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Âge *</label>
+                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Age *</label>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                   {AGE_RANGES.map((range) => (
                     <button
@@ -488,7 +494,7 @@ export default function SkinQuestionnaire() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Genre</label>
+                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Gender</label>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {GENDER_OPTIONS.map(option => (
                     <button
@@ -508,7 +514,7 @@ export default function SkinQuestionnaire() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Type de peau (si vous le connaissez)</label>
+                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Skin type (if you know it)</label>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {SKIN_TYPES.map(type => (
                     <button
@@ -534,8 +540,8 @@ export default function SkinQuestionnaire() {
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Préoccupations cutanées</h2>
-              <p className="text-dermai-neutral-600">Quels sont vos principaux soucis de peau ? (max 3) *</p>
+              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Skin concerns</h2>
+              <p className="text-dermai-neutral-600">What are your main skin concerns? (max 3) *</p>
             </div>
 
             <div>
@@ -548,9 +554,7 @@ export default function SkinQuestionnaire() {
                     })}
                     className={`p-3 text-sm font-medium rounded-xl border-2 transition-all hover-lift ${
                       data.skinConcerns.primary.includes(concern)
-                        ? concern === 'Je ne sais pas'
-                          ? 'border-dermai-ai-500 bg-dermai-ai-50 text-dermai-ai-700 shadow-glow'
-                          : 'border-dermai-ai-500 bg-dermai-ai-50 text-dermai-ai-700 shadow-glow'
+                        ? 'border-dermai-ai-500 bg-dermai-ai-50 text-dermai-ai-700 shadow-glow'
                         : 'border-dermai-nude-200 bg-dermai-pure text-dermai-neutral-700 hover:border-dermai-ai-300 hover:bg-dermai-ai-50'
                     }`}
                   >
@@ -559,30 +563,30 @@ export default function SkinQuestionnaire() {
                 ))}
               </div>
               <p className="text-xs text-dermai-neutral-500 mt-2">
-                {data.skinConcerns.primary.length}/3 sélectionnés
+                {data.skinConcerns.primary.length}/3 selected
               </p>
             </div>
 
-            {/* Champ texte pour "Autres" */}
+            {/* Text field for "Autres" */}
             {data.skinConcerns.primary.includes('Autres') && (
               <div className="bg-dermai-ai-50 border border-dermai-ai-200 rounded-xl p-4">
                 <label className="block text-sm font-medium text-dermai-ai-700 mb-2">
-                  Précisez vos autres préoccupations :
+                  Specify your other concerns:
                 </label>
                 <input
                   type="text"
                   value={data.skinConcerns.otherText}
                   onChange={(e) => updateData('skinConcerns', { otherText: e.target.value })}
-                  placeholder="Ex: Hyperpigmentation, pores dilatés, texture rugueuse..."
+                  placeholder="E.g., hyperpigmentation, enlarged pores, uneven texture..."
                   className="w-full px-3 py-2 border border-dermai-ai-300 rounded-lg focus:ring-2 focus:ring-dermai-ai-500 focus:border-transparent bg-white"
                 />
                 <p className="text-xs text-orange-600 mt-1">
-                  Ces informations aideront l'IA à mieux cibler son analyse
+                  This helps the AI better target its analysis.
                 </p>
               </div>
             )}
 
-            {/* Message IA rassurant */}
+            {/* Reassuring AI message */}
             {showAiMessage && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <div className="flex">
@@ -590,9 +594,9 @@ export default function SkinQuestionnaire() {
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                   </svg>
                   <div>
-                    <h4 className="font-semibold text-blue-900">Parfait !</h4>
+                    <h4 className="font-semibold text-blue-900">Great!</h4>
                     <p className="text-sm text-blue-800 mt-1">
-                      L'IA analysera vos photos et estimera automatiquement les préoccupations prioritaires avec une grande précision.
+                      The AI will analyze your photos and automatically estimate your priority concerns with high accuracy.
                     </p>
                   </div>
                 </div>
@@ -614,13 +618,13 @@ export default function SkinQuestionnaire() {
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Routine actuelle</h2>
-              <p className="text-dermai-neutral-600">Quels produits utilisez-vous ? (optionnel)</p>
+              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Current routine</h2>
+              <p className="text-dermai-neutral-600">Which products do you use? (optional)</p>
             </div>
 
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Routine du matin</label>
+                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Morning routine</label>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {COMMON_PRODUCTS.map(product => (
                     <button
@@ -641,7 +645,7 @@ export default function SkinQuestionnaire() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Routine du soir</label>
+                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Evening routine</label>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {COMMON_PRODUCTS.map(product => (
                     <button
@@ -662,7 +666,7 @@ export default function SkinQuestionnaire() {
               </div>
 
               <div>
-                {/* (Budget déplacé à l'étape 4 après le type de routine) */}
+                {/* (Budget moved to step 7 alongside routine type) */}
               </div>
             </div>
           </div>
@@ -672,8 +676,8 @@ export default function SkinQuestionnaire() {
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Allergies et sensibilités</h2>
-              <p className="text-dermai-neutral-600">Avez-vous des ingrédients à éviter ? (optionnel)</p>
+              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Allergies & sensitivities</h2>
+              <p className="text-dermai-neutral-600">Any ingredients to avoid? (optional)</p>
             </div>
 
             <div>
@@ -695,17 +699,17 @@ export default function SkinQuestionnaire() {
                 ))}
               </div>
               <p className="text-xs text-dermai-neutral-500 mt-3">
-                Ces informations nous aident à éviter les produits qui pourraient ne pas vous convenir.
+                This helps us avoid products that may not suit you.
               </p>
             </div>
 
-            {data.allergies.ingredients.length > 0 && !data.allergies.ingredients.includes('Aucune allergie connue') && (
+            {data.allergies.ingredients.length > 0 && !data.allergies.ingredients.includes('No known allergies') && (
               <div>
-                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-2">Réactions passées (optionnel)</label>
+                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-2">Past reactions (optional)</label>
                 <textarea
                   value={data.allergies.pastReactions}
                   onChange={(e) => updateData('allergies', { pastReactions: e.target.value })}
-                  placeholder="Décrivez brièvement vos réactions passées..."
+                  placeholder="Briefly describe any past reactions..."
                   className="w-full p-3 border-2 border-dermai-nude-200 rounded-xl focus:border-dermai-ai-500 focus:outline-none transition-colors resize-none"
                   rows={3}
                 />
@@ -727,18 +731,18 @@ export default function SkinQuestionnaire() {
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Finalisation</h2>
-              <p className="text-dermai-neutral-600">Dernières préférences pour personnaliser vos recommandations</p>
+              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Finalization</h2>
+              <p className="text-dermai-neutral-600">Last preferences to personalize your recommendations</p>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Type de routine souhaitée *</label>
+              <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Preferred routine type *</label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {[
-                  { label: 'Minimaliste', help: '2-3 étapes essentielles' },
-                  { label: 'Simple', help: '3-4 étapes faciles' },
-                  { label: 'Équilibrée', help: '4-5 étapes optimisées' },
-                  { label: 'Complète', help: '5-7 étapes détaillées' }
+                  { label: 'Minimaliste', help: '2-3 étapes essentielles' }, // value used in logic; keep as-is (French)
+                  { label: 'Simple', help: '3-4 étapes faciles' }, // value used in logic; keep as-is (French)
+                  { label: 'Équilibrée', help: '4-5 étapes optimisées' }, // value used in logic; keep as-is (French)
+                  { label: 'Complète', help: '5-7 étapes détaillées' } // value used in logic; keep as-is (French)
                 ].map(opt => (
                   <button
                     key={opt.label}
@@ -757,7 +761,7 @@ export default function SkinQuestionnaire() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Budget mensuel souhaité</label>
+              <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Desired monthly budget</label>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {BUDGET_RANGES.map(range => (
                   <button
@@ -775,7 +779,7 @@ export default function SkinQuestionnaire() {
                 ))}
               </div>
               <p className="text-xs text-dermai-neutral-500 mt-2">
-                Cela nous aide à recommander des produits adaptés à votre fourchette de prix.
+                This helps us recommend products within your price range.
               </p>
             </div>
           </div>
@@ -786,14 +790,14 @@ export default function SkinQuestionnaire() {
     }
   }
 
-  // Rendu direct pour les écrans plein écran
+  // Direct render for full-screen steps
   if (currentStep === 0 || currentStep === 3 || currentStep === 6) {
     return renderStep()
   }
 
   return (
     <div className="min-h-screen bg-dermai-pure">
-      {/* Header avec progression */}
+      {/* Header with progress */}
       <div className="bg-dermai-pure/80 backdrop-blur-sm border-b border-dermai-nude-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -808,7 +812,7 @@ export default function SkinQuestionnaire() {
               </a>
             </div>
 
-            {/* Progress dots - ajusté pour 7 étapes */}
+            {/* Progress dots - adjusted for 7 steps */}
             <div className="hidden md:flex items-center space-x-2">
               {[...Array(7)].map((_, i) => (
                 <div 
@@ -835,11 +839,11 @@ export default function SkinQuestionnaire() {
         </div>
       </div>
 
-      {/* Layout principal */}
+      {/* Main layout */}
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="lg:grid lg:grid-cols-3 lg:gap-8">
           
-          {/* Contenu principal */}
+          {/* Main content */}
           <div className="lg:col-span-2">
             <div className="card bg-dermai-pure rounded-3xl shadow-premium border border-dermai-nude-200 p-8 lg:p-10 hover:shadow-premium-lg transition-shadow">
               {renderStep()}
@@ -852,7 +856,7 @@ export default function SkinQuestionnaire() {
                   className="flex items-center space-x-2 text-dermai-neutral-600 hover:text-dermai-neutral-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus-dermai"
                 >
                   <span>←</span>
-                  <span>Précédent</span>
+                  <span>Previous</span>
                 </button>
                 
                 <button
@@ -862,8 +866,8 @@ export default function SkinQuestionnaire() {
                 >
                   <span>
                     {currentStep === totalSteps - 1 ? (
-                      isFormComplete() ? '🚀 Lancer l\'analyse DermAI' : '⏳ Compléter le formulaire'
-                    ) : 'Suivant'}
+                      isFormComplete() ? '🚀 Start DermAI analysis' : '⏳ Complete the form'
+                    ) : 'Next'}
                   </span>
                   {currentStep !== totalSteps - 1 && (
                     <div className="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center">
@@ -875,7 +879,7 @@ export default function SkinQuestionnaire() {
             </div>
           </div>
 
-          {/* Panneau latéral récapitulatif - Desktop */}
+          {/* Summary side panel – Desktop */}
           <div className="hidden lg:block">
             <div className="sticky top-8">
               <ImprovedSummary
@@ -892,7 +896,7 @@ export default function SkinQuestionnaire() {
           </div>
         </div>
 
-        {/* Récapitulatif mobile - bas de page */}
+        {/* Mobile summary – bottom of page */}
         <div className="lg:hidden mt-8">
           <ImprovedSummary
             photosCount={photosCount}

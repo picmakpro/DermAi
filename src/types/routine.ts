@@ -1,19 +1,19 @@
-// Types pour un système de routine dermatologique avancé
+// Types for an advanced dermatological routine system
 
-export type FrequencyType = 
-  | 'daily' // Quotidien (matin et/ou soir)
-  | 'weekly' // Hebdomadaire (ex: 2-3 fois par semaine)
-  | 'monthly' // Mensuel (ex: 1 fois par mois)
-  | 'as-needed' // Au besoin (ex: après cicatrisation)
-  | 'progressive' // Progression (ex: introduire après 2 semaines)
+export type FrequencyType =
+  | 'daily'        // Daily (morning and/or evening)
+  | 'weekly'       // Weekly (e.g., 2–3 times per week)
+  | 'monthly'      // Monthly (e.g., once a month)
+  | 'as-needed'    // As needed (e.g., after healing)
+  | 'progressive'  // Progressive (e.g., introduce after 2 weeks)
 
 export type TimeOfDay = 'morning' | 'evening' | 'both'
 
-export type RoutinePhase = 
-  | 'immediate' // Dès maintenant
-  | 'adaptation' // Après adaptation (2-4 semaines)
-  | 'maintenance' // Phase de maintenance (après 6-8 semaines)
-  | 'seasonal' // Selon la saison
+export type RoutinePhase =
+  | 'immediate'     // Start right away
+  | 'adaptation'    // After adaptation (2–4 weeks)
+  | 'maintenance'   // Maintenance phase (after 6–8 weeks)
+  | 'seasonal'      // Seasonal adjustments
 
 export interface RoutineStep {
   id: string
@@ -21,22 +21,27 @@ export interface RoutineStep {
   description: string
   productSuggestion?: string
   applicationTips: string[]
-  
-  // Fréquence et timing
+
+  // Frequency & timing
   frequency: FrequencyType
   timeOfDay: TimeOfDay
-  frequencyDetails?: string // "2-3 fois par semaine", "Tous les 2 jours"
-  
-  // Gestion des phases
+  /** e.g., "2–3 times per week", "Every other day" */
+  frequencyDetails?: string
+
+  // Phase management
   phase: RoutinePhase
-  startAfterDays?: number // Introduire après X jours
-  duration?: string // "Pendant 4 semaines puis remplacer"
-  
-  // Conditions et dependencies
-  conditions?: string[] // ["Après cicatrisation", "Si peau sèche"]
-  prerequisites?: string[] // ["Après avoir terminé l'étape 2"]
-  
-  // Métadonnées
+  /** Introduce after X days */
+  startAfterDays?: number
+  /** e.g., "For 4 weeks then replace" */
+  duration?: string
+
+  // Conditions & dependencies
+  /** e.g., ["After healing", "If skin is dry"] */
+  conditions?: string[]
+  /** e.g., ["After completing step 2"] */
+  prerequisites?: string[]
+
+  // Metadata
   category: 'cleansing' | 'treatment' | 'hydration' | 'protection' | 'exfoliation'
   importance: 'essential' | 'recommended' | 'optional'
   order: number
@@ -51,36 +56,37 @@ export interface PersonalizedRoutine {
     sensitivity: 'low' | 'medium' | 'high'
     allergies: string[]
   }
-  
+
   phases: {
     immediate: RoutineStep[]
     adaptation: RoutineStep[]
     maintenance: RoutineStep[]
   }
-  
-  // Vue organisée par moment de la journée
+
+  // View organized by time of day
   schedule: {
     morning: RoutineStep[]
     evening: RoutineStep[]
     weekly: RoutineStep[]
     asNeeded: RoutineStep[]
   }
-  
-  // Notifications et rappels
+
+  // Notifications & reminders
   reminders?: {
     stepId: string
     message: string
+    /** Trigger reminder after X days */
     triggerAfterDays: number
   }[]
-  
-  // Évolution et suivi
+
+  // Progress & tracking
   progressTracking?: {
     currentPhase: RoutinePhase
     phaseStartDate: Date
     nextPhaseDate?: Date
     completedSteps: string[]
   }
-  
+
   createdAt: Date
   updatedAt: Date
 }

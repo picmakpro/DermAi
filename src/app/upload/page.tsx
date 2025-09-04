@@ -36,7 +36,9 @@ export default function UploadPage() {
       // Store compressed dataURLs in IndexedDB
       const meta = [] as Array<{ id: string; type: PhotoUpload['type']; quality: PhotoUpload['quality']; preview: string }>
       for (const photo of photos) {
-        const compressedDataUrl = await compressImageForAPI(photo.file, compressionOptions)
+        const compressedDataUrl = typeof photo.file === 'string' 
+          ? photo.file 
+          : await compressImageForAPI(photo.file, compressionOptions)
         await savePhotoDataUrl(photo.id, compressedDataUrl)
         meta.push({ id: photo.id, type: photo.type, quality: photo.quality, preview: photo.preview })
       }
@@ -99,9 +101,9 @@ export default function UploadPage() {
         </div>
       </div>
 
-      {/* Hero Section avec espacements harmonisés */}
+      {/* Hero Section with harmonized spacing */}
       <div className="h-[75vh] md:h-[80vh] bg-gradient-to-br from-dermai-nude-200 via-dermai-nude-100 to-dermai-ai-100 relative overflow-hidden">
-        {/* Formes organiques flottantes */}
+        {/* Floating organic shapes */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {[...Array(8)].map((_, i) => (
             <div
@@ -121,14 +123,14 @@ export default function UploadPage() {
           ))}
         </div>
 
-        {/* Stack vertical héros : Camera → Titre → Paragraphe → Icônes */}
+        {/* Vertical hero stack: Camera → Title → Paragraph → Icons */}
         <div className="h-full flex flex-col justify-center items-center px-4 py-8 md:py-12 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center space-y-4 md:space-y-6"
           >
-            {/* Icône caméra principale */}
+            {/* Main camera icon */}
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
@@ -139,29 +141,29 @@ export default function UploadPage() {
               <Camera className="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 text-dermai-ai-600" />
             </motion.div>
             
-            {/* Titre */}
+            {/* Title */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
               className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold font-display text-dermai-neutral-800"
             >
-              Capturez votre peau
+              Capture your skin
             </motion.h1>
             
-            {/* Paragraphe */}
+            {/* Paragraph */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
               className="text-base md:text-lg lg:text-xl opacity-80 leading-relaxed text-dermai-neutral-700 max-w-2xl mx-auto"
             >
-              Prenez quelques photos de votre visage pour que DermAI puisse analyser 
-              votre peau avec une <strong className="font-display text-dermai-ai-700">précision dermatologique</strong>
+              Take a few photos of your face so DermAI can analyze 
+              your skin with <strong className="font-display text-dermai-ai-700">dermatological precision</strong>
             </motion.p>
           </motion.div>
 
-          {/* Rangée d'icônes avec espacement harmonisé */}
+          {/* Icon row with harmonized spacing */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -175,20 +177,20 @@ export default function UploadPage() {
             {[
               {
                 icon: <Shield className="w-6 h-6 md:w-7 md:h-7 text-dermai-ai-600" />,
-                title: "Photos sécurisées",
-                description: "Vos données restent privées et ne sont jamais partagées",
+                title: "Secure photos",
+                description: "Your data remains private and is never shared",
                 bgColor: "bg-white/60"
               },
               {
                 icon: <Zap className="w-6 h-6 md:w-7 md:h-7 text-dermai-ai-600" />,
-                title: "Analyse rapide",
-                description: "Résultats en moins de 2 minutes après l'upload",
+                title: "Fast analysis",
+                description: "Results in less than 2 minutes after upload",
                 bgColor: "bg-white/60"
               },
               {
                 icon: <CheckCircle2 className="w-6 h-6 md:w-7 md:h-7 text-dermai-ai-600" />,
-                title: "Qualité optimale",
-                description: "Guides intégrés pour prendre les meilleures photos",
+                title: "Optimal quality",
+                description: "Built-in guides to take the best photos",
                 bgColor: "bg-white/60"
               }
             ].map((item, index) => (
@@ -205,7 +207,7 @@ export default function UploadPage() {
                   </div>
                 </div>
                 <h3 className="font-semibold font-display text-dermai-neutral-800 text-sm md:text-base lg:text-lg mb-2">{item.title}</h3>
-                {/* Texte descriptif visible uniquement sur desktop */}
+                {/* Descriptive text visible only on desktop */}
                 <p className="hidden lg:block text-sm text-dermai-neutral-600 opacity-80">{item.description}</p>
               </motion.div>
             ))}
@@ -213,7 +215,7 @@ export default function UploadPage() {
         </div>
       </div>
 
-      {/* Contenu principal - Sections Upload et Conseils avec chevauchement contrôlé */}
+      {/* Main content - Upload and Tips sections with controlled overlap */}
       <div 
         className="max-w-5xl mx-auto px-4 relative z-20"
         style={{ 
@@ -226,7 +228,7 @@ export default function UploadPage() {
           transition={{ delay: 0.8 }}
           className="space-y-8 md:space-y-12"
         >
-          {/* Section Upload avec bouton d'action clair - Effet de superposition */}
+          {/* Upload section with clear action button - Overlay effect */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -236,29 +238,29 @@ export default function UploadPage() {
             <div className="p-6 md:p-8 lg:p-10">
               <div className="text-center mb-6 md:mb-8">
                 <h2 className="text-2xl md:text-3xl font-bold font-display text-dermai-neutral-900 mb-3">
-                  Ajoutez vos photos
+                  Add your photos
                 </h2>
                 <p className="text-dermai-neutral-600 text-sm md:text-base">
-                  Glissez-déposez vos photos ou utilisez le bouton ci-dessous
+                  Drag and drop your photos or use the button below
                 </p>
               </div>
               
               <PhotoUploadZone onPhotosChange={handlePhotosChange} />
               
-              {/* Bouton d'action clair et proéminent */}
+              {/* Clear and prominent action button */}
               <div className="text-center mt-6 md:mt-8">
                 <button
                   onClick={() => document.getElementById('photo-input')?.click()}
                   className="btn-primary inline-flex items-center space-x-3 font-semibold py-4 px-8 rounded-2xl transition-all transform hover:scale-105 text-base md:text-lg"
                 >
                   <Camera className="w-5 h-5 md:w-6 md:h-6" />
-                  <span>Ajouter vos photos</span>
+                  <span>Add your photos</span>
                 </button>
               </div>
             </div>
           </motion.div>
 
-          {/* Tips Section repositionnée après upload */}
+          {/* Tips Section repositioned after upload */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -269,29 +271,29 @@ export default function UploadPage() {
               <div className="w-8 h-8 md:w-10 md:h-10 bg-dermai-ai-100 rounded-full flex items-center justify-center mr-3">
                 <Info className="w-4 h-4 md:w-5 md:h-5 text-dermai-ai-600" />
               </div>
-              Conseils pour prendre vos photos
+              Tips for taking your photos
             </h3>
             <div className="grid md:grid-cols-2 gap-4 md:gap-6">
               <div className="flex items-start space-x-3">
                 <CheckCircle2 className="w-5 h-5 text-dermai-ai-500 mt-0.5 flex-shrink-0" />
-                <span className="text-dermai-neutral-700">Éclairage naturel de face</span>
+                <span className="text-dermai-neutral-700">Natural front lighting</span>
               </div>
               <div className="flex items-start space-x-3">
                 <CheckCircle2 className="w-5 h-5 text-dermai-ai-500 mt-0.5 flex-shrink-0" />
-                <span className="text-dermai-neutral-700">Visage propre, sans maquillage</span>
+                <span className="text-dermai-neutral-700">Clean face, no makeup</span>
               </div>
               <div className="flex items-start space-x-3">
                 <CheckCircle2 className="w-5 h-5 text-dermai-ai-500 mt-0.5 flex-shrink-0" />
-                <span className="text-dermai-neutral-700">Plusieurs angles différents</span>
+                <span className="text-dermai-neutral-700">Multiple different angles</span>
               </div>
               <div className="flex items-start space-x-3">
                 <CheckCircle2 className="w-5 h-5 text-dermai-ai-500 mt-0.5 flex-shrink-0" />
-                <span className="text-dermai-neutral-700">Photos nettes et claires</span>
+                <span className="text-dermai-neutral-700">Sharp and clear photos</span>
               </div>
             </div>
           </motion.div>
 
-          {/* Navigation - Optimisée pour mobile */}
+          {/* Navigation - Optimized for mobile */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -303,7 +305,7 @@ export default function UploadPage() {
               className="flex items-center space-x-2 text-dermai-neutral-600 hover:text-dermai-neutral-900 transition-colors focus-dermai order-2 sm:order-1"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span className="text-sm md:text-base">Retour à l'accueil</span>
+              <span className="text-sm md:text-base">Back to home</span>
             </button>
             
             <button
@@ -314,13 +316,13 @@ export default function UploadPage() {
               {isUploading ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 md:h-5 md:w-5 border-b-2 border-white"></div>
-                  <span className="text-sm md:text-base">Préparation...</span>
+                  <span className="text-sm md:text-base">Preparing...</span>
                 </>
               ) : (
                 <>
-                  {/* Mobile : mot seul, Desktop : phrase complète */}
-                  <span className="sm:hidden text-sm">Continuer</span>
-                  <span className="hidden sm:inline text-sm md:text-base">Continuer vers le questionnaire</span>
+                  {/* Mobile: single word, Desktop: complete phrase */}
+                  <span className="sm:hidden text-sm">Continue</span>
+                  <span className="hidden sm:inline text-sm md:text-base">Continue to questionnaire</span>
                   <div className="w-4 h-4 md:w-5 md:h-5 bg-white/20 rounded-full flex items-center justify-center">
                     <span className="text-xs">→</span>
                   </div>
@@ -341,7 +343,7 @@ export default function UploadPage() {
             <div className="flex items-center justify-center space-x-2 text-sm text-dermai-neutral-600">
               <Shield className="w-4 h-4 text-dermai-ai-500" />
               <span>
-                <strong className="text-dermai-neutral-900">Confidentialité garantie :</strong> Vos photos sont sécurisées et ne sont utilisées que pour votre diagnostic
+                <strong className="text-dermai-neutral-900">Privacy guaranteed:</strong> Your photos are secure and are only used for your assessment
               </span>
             </div>
           </div>

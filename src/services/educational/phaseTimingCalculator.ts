@@ -1,6 +1,6 @@
 /**
- * Service de calcul des durées personnalisées selon les principes dermatologiques
- * Respecte le cycle cellulaire de 28 jours et les facteurs individuels
+ * Personalized timing calculator based on dermatological principles.
+ * Respects the ~28-day skin renewal cycle and individual factors.
  */
 
 import type { BeautyAssessment, UnifiedRoutineStep } from '@/types'
@@ -18,319 +18,325 @@ export interface PhaseTiming {
 }
 
 export class PhaseTimingCalculator {
-  
   /**
-   * Calcule la durée personnalisée de la phase immédiate
-   * Prend en compte la durée MAXIMALE des traitements individuels
+   * Calculates the personalized duration of the immediate phase.
+   * Takes into account the MAXIMUM duration among individual treatments.
    */
   static calculateImmediateDuration(
-    assessment: BeautyAssessment, 
+    assessment: BeautyAssessment,
     immediateSteps?: UnifiedRoutineStep[]
   ): string {
-    // Protection contre undefined/null
+    // Guard against undefined/null
     if (!assessment) {
-      return "1-3 semaines" // Valeur par défaut élargie
+      return '1–3 weeks' // Wider default range
     }
-    
-    let baseDuration = 14 // 2 semaines standard
-    
-    // NOUVEAU : Prendre en compte les durées des traitements individuels
+
+    let baseDuration = 14 // 2 weeks standard
+
+    // NEW: Take individual treatment durations into account
     if (immediateSteps && immediateSteps.length > 0) {
       const treatmentDurations: number[] = []
-      
-      immediateSteps.forEach(step => {
+
+      immediateSteps.forEach((step) => {
         const criteria = this.getVisualCriteria(step)
         if (criteria) {
-          // Extraire durée maximale du range (ex: "14-21 jours" -> 21)
+          // Extract the max from a range (e.g., "14–21 days" -> 21)
           const match = criteria.estimatedDays.match(/(\d+)-(\d+)/)
           if (match) {
-            treatmentDurations.push(parseInt(match[2])) // Prendre max
+            treatmentDurations.push(parseInt(match[2])) // take max
           }
         }
       })
-      
-      // Utiliser la durée la plus longue des traitements
+
+      // Use the longest treatment duration
       if (treatmentDurations.length > 0) {
         const maxTreatmentDuration = Math.max(...treatmentDurations)
         baseDuration = Math.max(baseDuration, maxTreatmentDuration)
       }
     }
-    
-    // Facteur âge (cicatrisation plus lente)
+
+    // Age factor (slower healing)
     const estimatedAge = assessment.estimatedSkinAge || 30
     if (estimatedAge > 50) baseDuration += 7
     if (estimatedAge > 65) baseDuration += 7
-    
-    // Facteur gravité problèmes (réduit car déjà pris en compte via traitements)
-    const severeProblemCount = assessment.zoneSpecific?.filter(zone => 
-      zone.problems?.some(p => p.intensity === 'intense')
-    ).length || 0
-    baseDuration += severeProblemCount * 2 // Réduit de 3 à 2
-    
-    // Facteur type de peau
-    if (assessment.skinType?.toLowerCase().includes('sensible')) baseDuration += 5
-    
+
+    // Severity factor (reduced because treatments already account for it)
+    const severeProblemCount =
+      assessment.zoneSpecific?.filter((zone) =>
+        zone.problems?.some((p) => p.intensity === 'severe')
+      ).length || 0
+    baseDuration += severeProblemCount * 2 // reduced from 3 to 2
+
+    // Skin type factor
+    const skinType = assessment.skinType?.toLowerCase() || ''
+    if (skinType.includes('sensitive')) baseDuration += 5
+
     return this.formatDurationRange(baseDuration)
   }
-  
+
   /**
-   * Calcule la durée personnalisée de la phase d'adaptation
-   * Facteurs : complexité traitements, nombre actifs à introduire
+   * Calculates the personalized duration of the adaptation phase.
+   * Factors: treatment complexity, number of actives to introduce.
    */
   static calculateAdaptationDuration(treatments: UnifiedRoutineStep[]): string {
-    let baseDuration = 28 // 4 semaines standard
-    
-    // Facteur complexité traitements
-    const complexTreatments = treatments.filter(t => 
-      ['retinol', 'aha', 'bha', 'vitamin-c', 'niacinamide'].some(active => 
-        t.title.toLowerCase().includes(active) ||
-        t.applicationAdvice.toLowerCase().includes(active)
+    let baseDuration = 28 // 4 weeks standard
+
+    // Treatment complexity factor
+    const complexTreatments = treatments.filter((t) =>
+      ['retinol', 'aha', 'bha', 'vitamin-c', 'niacinamide'].some(
+        (active) =>
+          t.title.toLowerCase().includes(active) || t.applicationAdvice.toLowerCase().includes(active)
       )
     ).length
     baseDuration += complexTreatments * 7
-    
-    // Facteur nombre zones traitées
-    const totalZones = new Set(
-      treatments.flatMap(t => t.zones || [])
-    ).size
+
+    // Number of zones treated
+    const totalZones = new Set(treatments.flatMap((t) => t.zones || [])).size
     baseDuration += totalZones * 2
-    
-    // Facteur fréquence progressive
-    const progressiveTreatments = treatments.filter(t => 
-      t.frequency === 'progressive' || 
-      t.frequencyDetails?.includes('progressive')
+
+    // Progressive frequency factor
+    const progressiveTreatments = treatments.filter(
+      (t) => t.frequency === 'progressive' || t.frequencyDetails?.includes('progressive')
     ).length
     baseDuration += progressiveTreatments * 5
-    
+
     return this.formatDurationRange(baseDuration)
   }
-  
+
   /**
-   * Durée de maintenance (toujours continue avec cycles)
+   * Maintenance duration (always ongoing with cycles)
    */
   static calculateMaintenanceDuration(): string {
-    return "En continu"
+    return 'Ongoing'
   }
-  
+
   /**
-   * Formate une durée en jours vers un range lisible
+   * Format a number of days into a readable range.
    */
   private static formatDurationRange(days: number): string {
-    if (days <= 7) return "1 semaine"
-    if (days <= 14) return "1-2 semaines"
-    if (days <= 21) return "2-3 semaines"
-    if (days <= 28) return "3-4 semaines"
-    if (days <= 42) return "4-6 semaines"
-    if (days <= 56) return "6-8 semaines"
-    return "8+ semaines"
+    if (days <= 7) return '1 week'
+    if (days <= 14) return '1–2 weeks'
+    if (days <= 21) return '2–3 weeks'
+    if (days <= 28) return '3–4 weeks'
+    if (days <= 42) return '4–6 weeks'
+    if (days <= 56) return '6–8 weeks'
+    return '8+ weeks'
   }
-  
+
   /**
-   * Objectifs éducatifs par phase
+   * Educational objectives per phase.
    */
   static getPhaseObjectives(): Record<string, PhaseObjective> {
     return {
       immediate: {
-        title: "Calmer et protéger la peau, rétablir la barrière cutanée",
-        description: "Cette phase stabilise votre peau et traite les problèmes urgents en respectant son rythme naturel.",
-        tooltip: `CYCLE CELLULAIRE NATUREL
+        title: 'Soothe and protect the skin, restore the barrier',
+        description:
+          'This phase stabilizes your skin and addresses urgent concerns while respecting its natural rhythm.',
+        tooltip: `NATURAL CELLULAR CYCLE
 
-Votre peau suit un cycle naturel de 28 jours pour se renouveler.
+Your skin follows a natural ~28-day cycle to renew itself.
 
-Attaquer directement avec des actifs forts risque de provoquer :
-• Irritations et rougeurs
-• Réactions de défense de la peau  
-• Sensibilisation durable
+Starting directly with strong actives can cause:
+• Irritation and redness
+• Defensive reactions in the skin
+• Long-term sensitization
 
-Cette phase prépare votre peau aux traitements suivants en respectant son rythme biologique.`
+This phase prepares your skin for subsequent treatments while respecting its biology.`
       },
-      
+
       adaptation: {
-        title: "Introduire progressivement des actifs plus puissants",
-        description: "Votre peau s'habitue aux nouveaux actifs pour une tolérance optimale et des bénéfices durables.",
-        tooltip: `ADAPTATION PROGRESSIVE
+        title: 'Introduce stronger actives progressively',
+        description:
+          'Your skin adapts to new actives for optimal tolerance and lasting benefits.',
+        tooltip: `PROGRESSIVE ADAPTATION
 
-Votre peau a besoin de temps pour s'habituer aux nouveaux actifs.
+Your skin needs time to adjust to new actives.
 
-Cette progression évite :
-• Les boutons d'adaptation (purging)
-• Les desquamations excessives
-• Les sensibilisations permanentes
+This progression helps prevent:
+• Purging breakouts
+• Excessive flaking
+• Lasting sensitization
 
-Résultat : Une tolérance optimale pour des bénéfices durables.`
+Result: optimal tolerance and durable benefits.`
       },
-      
+
       maintenance: {
-        title: "Maintenir les résultats obtenus, éviter les rechutes",
-        description: "Routine optimisée qui préserve vos acquis et prévient le retour des problèmes initiaux.",
-        tooltip: `PRÉSERVATION DES ACQUIS
+        title: 'Maintain results and prevent relapse',
+        description:
+          'An optimized routine that preserves progress and prevents initial concerns from returning.',
+        tooltip: `PRESERVING GAINS
 
-Votre peau est maintenant habituée et peut recevoir des soins ciblés.
+Your skin is now adapted and can handle targeted care.
 
-Cette phase permet de :
-• Maintenir les améliorations obtenues
-• Prévenir les rechutes
-• Optimiser les bénéfices long terme
+This phase helps you:
+• Maintain improvements
+• Prevent setbacks
+• Optimize long-term benefits
 
-Une routine bien établie garantit des résultats durables.`
+A well-established routine ensures lasting results.`
       }
     }
   }
-  
+
   /**
-   * Calcule toutes les informations de timing pour une routine complète
+   * Computes all timing info for a complete routine.
    */
   static calculateCompleteTiming(
-    assessment: BeautyAssessment, 
+    assessment: BeautyAssessment,
     routine: UnifiedRoutineStep[]
   ): Record<string, PhaseTiming> {
     const objectives = this.getPhaseObjectives()
-    
-    // Protection contre undefined/null
+
+    // Guard against undefined/null
     if (!assessment) {
       return {
         immediate: {
-          duration: "1-3 semaines",
+          duration: '1–3 weeks',
           objective: objectives.immediate,
           educationalTips: []
         },
         adaptation: {
-          duration: "3-6 semaines",
+          duration: '3–6 weeks',
           objective: objectives.adaptation,
           educationalTips: [
-            "Suivez précisément les instructions de chaque produit",
-            "Surveillez les réactions cutanées quotidiennement",
-            "N'ajoutez pas d'autres produits non recommandés"
+            'Follow each product’s instructions precisely',
+            'Monitor skin reactions daily',
+            "Don’t add non-recommended products"
           ]
         },
         maintenance: {
-          duration: "En continu",
+          duration: 'Ongoing',
           objective: objectives.maintenance,
           educationalTips: []
         }
       }
     }
-    
-    const immediateSteps = routine.filter(step => step.phase === 'immediate')
-    const adaptationSteps = routine.filter(step => step.phase === 'adaptation')
-    
+
+    const immediateSteps = routine.filter((step) => step.phase === 'immediate')
+    const adaptationSteps = routine.filter((step) => step.phase === 'adaptation')
+
     return {
       immediate: {
         duration: this.calculateImmediateDuration(assessment, immediateSteps),
         objective: objectives.immediate,
         educationalTips: [
-          "Commencez par les soins de base (nettoyage, hydratation)",
-          "Observez la réaction de votre peau quotidiennement",
-          "Patience : les résultats apparaissent progressivement"
+          'Start with the basics (cleansing, moisturizing)',
+          'Observe your skin’s reaction daily',
+          'Be patient: results appear progressively'
         ]
       },
-      
+
       adaptation: {
         duration: this.calculateAdaptationDuration(adaptationSteps),
         objective: objectives.adaptation,
         educationalTips: [
-          "Suivez précisément les instructions de chaque produit",
-          "Surveillez les réactions cutanées quotidiennement",
-          "N'ajoutez pas d'autres produits non recommandés"
+          'Follow each product’s instructions precisely',
+          'Monitor skin reactions daily',
+          "Don’t add non-recommended products"
         ]
       },
-      
+
       maintenance: {
         duration: this.calculateMaintenanceDuration(),
         objective: objectives.maintenance,
         educationalTips: [
-          "Maintenez une routine quotidienne régulière",
-          "Adaptez selon les saisons et votre évolution",
-          "Consultez régulièrement pour optimiser"
+          'Keep a consistent daily routine',
+          'Adjust with seasons and your progress',
+          'Check in regularly to optimize'
         ]
       }
     }
   }
-  
+
   /**
-   * Génère des badges temporels enrichis pour les étapes
+   * Generates enriched time badges for steps.
    */
   static generateTimingBadge(step: UnifiedRoutineStep): string {
-    // Badges d'observation pour traitements temporaires
+    // Observation badges for temporary treatments — support FR & EN keywords
     if (step.applicationDuration) {
-      if (step.applicationDuration.includes('cicatrisation')) {
-        return "👁️ Jusqu'à cicatrisation"
+      const ad = step.applicationDuration.toLowerCase()
+      if (ad.includes('cicatrisation') || ad.includes('healing')) {
+        return '👁️ Until healing'
       }
-      if (step.applicationDuration.includes('disparition')) {
-        return "👁️ Jusqu'à disparition"
+      if (ad.includes('disparition') || ad.includes('clear') || ad.includes('resolution')) {
+        return '👁️ Until it clears'
       }
-      if (step.applicationDuration.includes('réduction')) {
-        return "👁️ Jusqu'à réduction"
+      if (ad.includes('réduction') || ad.includes('reduction') || ad.includes('reduced')) {
+        return '👁️ Until reduction'
       }
-      if (step.applicationDuration.includes('apaisement')) {
-        return "👁️ Jusqu'à apaisement"
+      if (ad.includes('apaisement') || ad.includes('soothing') || ad.includes('calm')) {
+        return '👁️ Until soothed'
       }
     }
-    
-    // Badges temporels standards
+
+    // Standard time badges
     if (step.frequency === 'daily') {
-      return step.timeOfDay === 'morning' ? "⏰ Quotidien matin" : 
-             step.timeOfDay === 'evening' ? "⏰ Quotidien soir" : 
-             "⏰ Quotidien"
+      return step.timeOfDay === 'morning'
+        ? '⏰ Daily morning'
+        : step.timeOfDay === 'evening'
+        ? '⏰ Daily evening'
+        : '⏰ Daily'
     }
-    
+
     if (step.frequency === 'weekly') {
-      return "⏱️ Hebdomadaire"
+      return '⏱️ Weekly'
     }
-    
+
     if (step.frequency === 'progressive') {
-      return "📈 Progressif"
+      return '📈 Progressive'
     }
-    
+
     if (step.frequency === 'as-needed') {
-      return "🎯 Au besoin"
+      return '🎯 As needed'
     }
-    
-    return "⏰ Quotidien"
+
+    return '⏰ Daily'
   }
-  
+
   /**
-   * Détermine les critères visuels d'évolution pour une étape
+   * Determines visual evolution criteria for a step.
    */
-  static getVisualCriteria(step: UnifiedRoutineStep): {
+  static getVisualCriteria(
+    step: UnifiedRoutineStep
+  ): {
     observation: string
     estimatedDays: string
     nextStep: string
   } | null {
     const title = step.title.toLowerCase()
-    
-    if (title.includes('poils incarnés')) {
+
+    if (title.includes('poils incarnés') || title.includes('ingrown')) {
       return {
-        observation: 'Vérifier absence de rougeurs et gonflements',
-        estimatedDays: '7-14 jours',
-        nextStep: 'Continuer prévention rasage'
+        observation: 'Check absence of redness and swelling',
+        estimatedDays: '7–14 days',
+        nextStep: 'Continue shaving prevention'
       }
     }
-    
-    if (title.includes('imperfections')) {
+
+    if (title.includes('imperfections') || title.includes('blemish') || title.includes('acne')) {
       return {
-        observation: 'Compter diminution nombre boutons actifs',
-        estimatedDays: '14-21 jours',
-        nextStep: 'Introduire prévention récidive'
+        observation: 'Count the reduction in active blemishes',
+        estimatedDays: '14–21 days',
+        nextStep: 'Introduce relapse prevention'
       }
     }
-    
-    if (title.includes('rougeurs')) {
+
+    if (title.includes('rougeurs') || title.includes('redness')) {
       return {
-        observation: 'Teint plus homogène, moins de réactivité',
-        estimatedDays: '7-14 jours',
-        nextStep: 'Renforcer barrière cutanée'
+        observation: 'More even tone, less reactivity',
+        estimatedDays: '7–14 days',
+        nextStep: 'Reinforce skin barrier'
       }
     }
-    
-    if (title.includes('cicatrisation')) {
+
+    if (title.includes('cicatrisation') || title.includes('healing')) {
       return {
-        observation: 'Peau lisse, couleur normalisée',
-        estimatedDays: '10-21 jours',
-        nextStep: 'Prévention cicatrices'
+        observation: 'Skin smooth, color normalized',
+        estimatedDays: '10–21 days',
+        nextStep: 'Scar prevention'
       }
     }
-    
+
     return null
   }
 }

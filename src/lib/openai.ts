@@ -1,6 +1,6 @@
 import OpenAI from 'openai'
 
-// Cette fonction sera appelée uniquement côté serveur
+// This function is called server-side only
 export function createOpenAIClient() {
   if (!process.env.OPENAI_API_KEY) {
     throw new Error('OPENAI_API_KEY is required')
@@ -11,6 +11,6 @@ export function createOpenAIClient() {
   })
 }
 
-// Modèle GPT-4o avec capacités vision intégrées
+// GPT-4o model with built-in vision capabilities
 export const ANALYSIS_MODEL = 'gpt-4o'
 export const CHAT_MODEL = 'gpt-4o'

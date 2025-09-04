@@ -9,7 +9,7 @@ import type { BeautyAssessment, UnifiedRoutineStep } from '@/types'
 // EXEMPLE 1: Utilisateur jeune avec problèmes légers
 export const youngUserProfile: BeautyAssessment = {
   mainConcern: 'Imperfections légères zone T',
-  intensity: 'légère',
+  intensity: 'mild',
   concernedZones: ['front', 'nez'],
   skinType: 'Peau mixte',
   estimatedSkinAge: 24,
@@ -22,7 +22,7 @@ export const youngUserProfile: BeautyAssessment = {
   zoneSpecific: [
     {
       zone: 'front',
-      problems: [{ name: 'Comédons', intensity: 'légère' }],
+      problems: [{ name: 'Comédons', intensity: 'mild' }],
       description: 'Quelques points noirs ponctuels'
     }
   ]
@@ -63,7 +63,7 @@ export const youngUserRoutine: UnifiedRoutineStep[] = [
 // EXEMPLE 2: Utilisateur mature avec problèmes complexes
 export const matureUserProfile: BeautyAssessment = {
   mainConcern: 'Vieillissement cutané avec taches pigmentaires',
-  intensity: 'modérée',
+  intensity: 'moderate',
   concernedZones: ['visage complet', 'contour des yeux'],
   skinType: 'Peau sèche sensible',
   estimatedSkinAge: 58,
@@ -78,16 +78,16 @@ export const matureUserProfile: BeautyAssessment = {
     {
       zone: 'contour des yeux',
       problems: [
-        { name: 'Rides fines', intensity: 'modérée' },
-        { name: 'Cernes', intensity: 'légère' }
+        { name: 'Rides fines', intensity: 'moderate' },
+        { name: 'Cernes', intensity: 'mild' }
       ],
       description: 'Zone délicate avec signes de fatigue'
     },
     {
       zone: 'joues',
       problems: [
-        { name: 'Taches pigmentaires', intensity: 'intense' },
-        { name: 'Perte de fermeté', intensity: 'modérée' }
+        { name: 'Taches pigmentaires', intensity: 'severe' },
+        { name: 'Perte de fermeté', intensity: 'moderate' }
       ],
       description: 'Hyperpigmentation solaire ancienne'
     }
@@ -143,7 +143,7 @@ export const matureUserRoutine: UnifiedRoutineStep[] = [
 // EXEMPLE 3: Utilisateur avec problèmes de rasage
 export const shavingIssuesProfile: BeautyAssessment = {
   mainConcern: 'Poils incarnés et irritations post-rasage',
-  intensity: 'intense',
+  intensity: 'severe',
   concernedZones: ['menton', 'cou', 'joues basses'],
   skinType: 'Peau mixte sensible',
   estimatedSkinAge: 32,
@@ -158,16 +158,16 @@ export const shavingIssuesProfile: BeautyAssessment = {
     {
       zone: 'menton',
       problems: [
-        { name: 'Poils incarnés', intensity: 'intense' },
-        { name: 'Rougeurs', intensity: 'intense' }
+        { name: 'Poils incarnés', intensity: 'severe' },
+        { name: 'Rougeurs', intensity: 'severe' }
       ],
       description: 'Zone de rasage la plus problématique'
     },
     {
       zone: 'cou',
       problems: [
-        { name: 'Poils incarnés', intensity: 'modérée' },
-        { name: 'Cicatrisation', intensity: 'modérée' }
+        { name: 'Poils incarnés', intensity: 'moderate' },
+        { name: 'Cicatrisation', intensity: 'moderate' }
       ],
       description: 'Inflammations récurrentes'
     }

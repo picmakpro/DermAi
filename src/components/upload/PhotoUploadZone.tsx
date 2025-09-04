@@ -24,37 +24,37 @@ export default function PhotoUploadZone({
     const newErrors: string[] = []
     const validPhotos: PhotoUpload[] = []
 
-    // Vérifier le nombre total
+    // Check total count
     if (photos.length + fileArray.length > maxPhotos) {
-      newErrors.push(`Maximum ${maxPhotos} photos autorisées`)
+      newErrors.push(`Maximum ${maxPhotos} photos allowed`)
       setErrors(newErrors)
       return
     }
 
-    // Convertir si nécessaire puis valider chaque fichier
+    // Convert if needed, then validate each file
     for (let i = 0; i < fileArray.length; i++) {
       const original = fileArray[i]
       
       try {
-        console.log('📁 Traitement fichier:', original.name, original.type, original.size)
+        console.log('📁 Processing file:', original.name, original.type, original.size)
         
-        // Détection améliorée du type HEIC (par extension si type manquant)
+        // Better HEIC detection (by extension if type is missing)
         let detectedType = original.type
         if (!detectedType && original.name.toLowerCase().match(/\.(heic|heif)$/)) {
           detectedType = original.name.toLowerCase().endsWith('.heic') ? 'image/heic' : 'image/heif'
-          console.log('🔍 Type détecté par extension:', detectedType)
+          console.log('🔍 Type detected from extension:', detectedType)
         }
         
-        // Créer un nouveau fichier avec le bon type MIME si nécessaire
+        // Create a new File with corrected MIME type if needed
         const fileWithCorrectType = detectedType !== original.type 
           ? new File([original], original.name, { type: detectedType, lastModified: original.lastModified })
           : original
         
-        // Conversion si nécessaire
+        // Convert if necessary
         const { file, converted, originalType } = await ensureCompatibleImage(fileWithCorrectType)
-        console.log('🔄 Conversion:', converted ? 'effectuée' : 'non nécessaire', `(${originalType} → ${file.type})`)
+        console.log('🔄 Conversion:', converted ? 'performed' : 'not needed', `(${originalType} → ${file.type})`)
         
-        // Validation du fichier final
+        // Validate the final file
         const validation = await validateImage(file)
         
         if (validation.valid) {
@@ -66,18 +66,18 @@ export default function PhotoUploadZone({
             quality: 'good'
           }
           validPhotos.push(photoUpload)
-          console.log('✅ Photo validée:', file.name)
+          console.log('✅ Photo validated:', file.name)
         } else {
-          console.error('❌ Validation échouée:', validation.error)
+          console.error('❌ Validation failed:', validation.error)
           newErrors.push(`${original.name}: ${validation.error}`)
         }
       } catch (error) {
-        console.error('💥 Erreur traitement fichier:', error)
-        newErrors.push(`${original.name}: Erreur de traitement du fichier`)
+        console.error('💥 File processing error:', error)
+        newErrors.push(`${original.name}: File processing error`)
       }
     }
 
-    // Mettre à jour l'état
+    // Update state
     const updatedPhotos = [...photos, ...validPhotos]
     setPhotos(updatedPhotos)
     onPhotosChange(updatedPhotos)
@@ -102,7 +102,7 @@ export default function PhotoUploadZone({
   const removePhoto = (id: string) => {
     const updatedPhotos = photos.filter(photo => {
       if (photo.id === id) {
-        URL.revokeObjectURL(photo.preview) // Nettoyer la mémoire
+        URL.revokeObjectURL(photo.preview) // Clean up memory
         return false
       }
       return true
@@ -121,7 +121,7 @@ export default function PhotoUploadZone({
 
   return (
     <div className="space-y-4 md:space-y-6">
-      {/* Zone de drop - Optimisée pour mobile */}
+      {/* Drop zone — mobile optimized */}
       <div
         className={`relative border-2 border-dashed rounded-xl p-4 md:p-8 text-center transition-all duration-300 ${
           dragActive 
@@ -158,25 +158,25 @@ export default function PhotoUploadZone({
           
           <div>
             <h3 className="text-base md:text-lg font-semibold text-dermai-neutral-900">
-              {photos.length >= maxPhotos ? 'Limite atteinte' : 'Ajoutez vos photos'}
+              {photos.length >= maxPhotos ? 'Limit reached' : 'Add your photos'}
             </h3>
             <p className="text-dermai-neutral-600 mt-1 md:mt-2 text-sm md:text-base">
               {photos.length >= maxPhotos 
-                ? `Maximum ${maxPhotos} photos atteint`
-                : `Glissez-déposez ou cliquez pour sélectionner (${photos.length}/${maxPhotos})`
+                ? `Maximum ${maxPhotos} photos reached`
+                : `Drag & drop or click to select (${photos.length}/${maxPhotos})`
               }
             </p>
             <p className="text-xs md:text-sm text-dermai-neutral-500 mt-1 md:mt-2">
-              JPG, PNG, WebP, HEIC/HEIF, AVIF • Max {(MAX_FILE_SIZE / (1024 * 1024)).toFixed(0)}MB par photo
+              JPG, PNG, WebP, HEIC/HEIF, AVIF • Max {(MAX_FILE_SIZE / (1024 * 1024)).toFixed(0)}MB per photo
             </p>
           </div>
         </div>
       </div>
 
-      {/* Erreurs */}
+      {/* Errors */}
       {errors.length > 0 && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <h4 className="font-semibold text-red-700 mb-2">Erreurs détectées :</h4>
+          <h4 className="font-semibold text-red-700 mb-2">Detected errors:</h4>
           <ul className="space-y-1">
             {errors.map((error, index) => (
               <li key={index} className="text-sm text-red-600">• {error}</li>
@@ -185,15 +185,15 @@ export default function PhotoUploadZone({
         </div>
       )}
 
-      {/* Aperçu des photos - Optimisé pour mobile */}
+      {/* Photo preview — mobile optimized */}
       {photos.length > 0 && (
         <div className="space-y-3 md:space-y-4">
-          <h4 className="font-semibold text-dermai-neutral-900 text-sm md:text-base">Photos sélectionnées :</h4>
+          <h4 className="font-semibold text-dermai-neutral-900 text-sm md:text-base">Selected photos:</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
             {photos.map((photo) => (
               <div key={photo.id} className="bg-white border border-dermai-nude-200 rounded-lg p-3 md:p-4">
                 <div className="flex items-start space-x-3 md:space-x-4">
-                  {/* Miniature */}
+                  {/* Thumbnail */}
                   <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden bg-dermai-nude-100 flex-shrink-0">
                     <img 
                       src={photo.preview} 
@@ -202,7 +202,7 @@ export default function PhotoUploadZone({
                     />
                   </div>
                   
-                  {/* Informations */}
+                  {/* Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs md:text-sm font-medium text-dermai-neutral-900 truncate">
@@ -218,7 +218,7 @@ export default function PhotoUploadZone({
                       </button>
                     </div>
                     
-                    {/* Sélecteur de type */}
+                    {/* Type selector */}
                     <select
                       value={photo.type}
                       onChange={(e) => updatePhotoType(photo.id, e.target.value as PhotoType)}
@@ -230,7 +230,7 @@ export default function PhotoUploadZone({
                     </select>
                     
                     <p className="text-xs text-dermai-neutral-500 mt-1">
-                      {(photo.file.size / (1024 * 1024)).toFixed(1)}MB
+                      {typeof photo.file === 'string' ? 'Base64' : (photo.file.size / (1024 * 1024)).toFixed(1) + 'MB'}
                     </p>
                   </div>
                 </div>
@@ -239,7 +239,6 @@ export default function PhotoUploadZone({
           </div>
         </div>
       )}
-
 
     </div>
   )

@@ -13,28 +13,28 @@ export async function POST(request: NextRequest) {
     const body = await request.json() as ChatRequestBody
 
     if (!Array.isArray(body.messages) || body.messages.length === 0) {
-      return NextResponse.json({ error: 'Messages requis' }, { status: 400 })
+      return NextResponse.json({ error: 'Messages required' }, { status: 400 })
     }
 
     const openai = createOpenAIClient()
 
-    const systemPrompt = `Tu es l'assistant Derma AI.
-Objectif: répondre UNIQUEMENT aux questions liées au diagnostic, aux scores et aux recommandations affichées à l'utilisateur.
-Comportement:
-- Style clair, empathique, professionnel.
-- Pas de jargon technique inutile.
-- Si la question est hors sujet (ex: actualités, sujets personnels, technique), réponds poliment que tu es dédié au diagnostic en cours.
-- Si une recommandation comporte un ingrédient listé en allergie, propose une alternative.
-- N'invente pas des données absentes du résultat fourni.
+    const systemPrompt = `You are the Derma AI assistant.
+Objective: respond ONLY to questions related to the assessment, scores and recommendations displayed to the user.
+Behavior:
+- Clear, empathetic, professional style.
+- No unnecessary technical jargon.
+- If the question is off-topic (e.g.: news, personal topics, technical), politely respond that you are dedicated to the current assessment.
+- If a recommendation contains an ingredient listed as an allergy, suggest an alternative.
+- Don't invent data absent from the provided results.
 `
 
-    // Créer un contexte optimisé avec seulement les infos essentielles
+    // Create an optimized context with only essential information
     const essentialContext = {
-      diagnostic: body.analysis?.diagnostic || null,
+      beautyAssessment: body.analysis?.beautyAssessment || null,
       scores: body.analysis?.scores || null,
       recommendations: {
         routine: body.analysis?.recommendations?.routine || null,
-        products: body.analysis?.recommendations?.products?.slice(0, 3) || null // Limiter à 3 produits
+        products: body.analysis?.recommendations?.products?.slice(0, 3) || null // Limit to 3 products
       },
       userProfile: {
         age: body.questionnaire?.userProfile?.age || null,
@@ -44,10 +44,10 @@ Comportement:
       allergies: body.questionnaire?.allergies?.ingredients || null
     }
     
-    const contextPrompt = `CONTEXTE ANALYSE:\n${JSON.stringify(essentialContext, null, 2)}`
+    const contextPrompt = `ANALYSIS CONTEXT:\n${JSON.stringify(essentialContext, null, 2)}`
 
-    // Limiter l'historique des messages pour éviter trop de tokens
-    const recentMessages = body.messages.slice(-6) // Garder seulement les 6 derniers messages
+    // Limit message history to avoid too many tokens
+    const recentMessages = body.messages.slice(-6) // Keep only the last 6 messages
     
     const response = await openai.chat.completions.create({
       model: CHAT_MODEL,
@@ -57,20 +57,20 @@ Comportement:
         { role: 'system', content: contextPrompt },
         ...recentMessages,
       ],
-      max_tokens: 400, // Réduire aussi la taille de la réponse
+      max_tokens: 400, // Also reduce response size
     })
 
-    const text = response.choices[0]?.message?.content ?? 'Désolé, je n’ai pas pu formuler une réponse.'
+    const text = response.choices[0]?.message?.content ?? 'Sorry, I couldn\'t formulate a response.'
     return NextResponse.json({ reply: text })
 
   } catch (error) {
-    console.error('Erreur API /chat:', error)
-    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 })
+    console.error('API error /chat:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
 export async function GET() {
-  return NextResponse.json({ error: 'Méthode non autorisée' }, { status: 405 })
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 })
 }
 
 

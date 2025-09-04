@@ -14,33 +14,17 @@ interface SimilarConcernsProofScreenProps {
  * Social proof screen - displayed after main concerns selection
  * Reassures user by showing they're not alone with their skin problems
  */
-export default function SimilarConcernsProofScreen({ 
-  onContinue, 
-  onBack, 
-  userConcerns 
+export default function SimilarConcernsProofScreen({
+  onContinue,
+  onBack,
+  userConcerns = []
 }: SimilarConcernsProofScreenProps) {
-  const [userCount, setUserCount] = useState(23428)
-
-  useEffect(() => {
-    // Simulate dynamic counter retrieval
-    // In production, this would come from an API
-    const fetchUserCount = () => {
-      // Static fallback if no dynamic data
-      setUserCount(23428)
-    }
-    
-    fetchUserCount()
-  }, [])
-
-  // Format user count
-  const formatUserCount = (count: number) => {
-    return count.toLocaleString('fr-FR')
-  }
 
   // Determine personalized message based on concerns
+  // value used in logic; keep as-is (French) for comparisons below
   const getPersonalizedMessage = () => {
     if (userConcerns.includes('Je ne sais pas')) {
-      return 'des préoccupations similaires'
+      return 'similar concerns'
     }
     
     const mainConcern = userConcerns[0]
@@ -64,7 +48,7 @@ export default function SimilarConcernsProofScreen({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-dermai-nude-50 via-dermai-pure to-purple-50 flex flex-col">
-      {/* Header with navigation */}
+      {/* Header with back + progress */}
       <div className="flex items-center justify-between p-4 lg:p-6">
         <button
           onClick={onBack}
@@ -75,8 +59,7 @@ export default function SimilarConcernsProofScreen({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        
-        {/* Visual progress indicator */}
+
         <div className="flex-1 max-w-xs mx-4">
           <div className="h-1.5 bg-dermai-nude-200 rounded-full overflow-hidden">
             <div 
@@ -85,77 +68,82 @@ export default function SimilarConcernsProofScreen({
             />
           </div>
         </div>
-        <div className="w-8" /> {/* Spacer pour équilibrer */}
+        <div className="w-8" /> {/* Spacer for balance */}
       </div>
 
-      {/* Contenu principal */}
+      {/* Main content */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 lg:px-8 pb-20">
         <div className="w-full max-w-md lg:max-w-lg text-center space-y-8">
           
-          {/* Message de réconfort */}
+          {/* Reassurance message */}
           <div className="space-y-4">
             <h1 className="text-xl lg:text-2xl font-semibold font-display text-dermai-neutral-700 leading-relaxed">
-              Vous êtes entre de bonnes mains
+              You’re in good hands
             </h1>
           </div>
 
-          {/* Visuel carte du monde */}
+          {/* World map visual */}
           <div className="relative">
-            <div className="aspect-[4/3] relative bg-dermai-nude-100 rounded-3xl overflow-hidden shadow-premium border border-dermai-nude-200">
+            <div className="aspect-[4/3] relative bg-dermai-nude-50/80 rounded-2xl overflow-hidden shadow-premium border border-dermai-nude-200">
               <Image
                 src="/illustrations/world-proof@2x.png"
-                alt="Carte du monde montrant les utilisateurs DermAI"
+                alt="World map showing DermAI users"
                 fill
                 className="object-cover"
                 priority
               />
               
-              {/* Points lumineux animés pour simuler l'activité */}
+              {/* Floating counters */}
               <div className="absolute inset-0">
                 {[
-                  { top: '30%', left: '25%' }, // Europe
-                  { top: '40%', left: '15%' }, // Amérique Nord
-                  { top: '55%', left: '20%' }, // Amérique Sud
-                  { top: '45%', left: '75%' }, // Asie
-                  { top: '65%', left: '80%' }, // Océanie
-                  { top: '50%', left: '50%' }, // Afrique
-                ].map((position, index) => (
+                  { top: '40%', left: '15%' }, // North America
+                  { top: '35%', left: '55%' }, // Europe
+                  { top: '65%', left: '50%' }, // Africa
+                  { top: '50%', left: '75%' }, // Asia
+                  { top: '75%', left: '85%' }, // Oceania
+                  { top: '70%', left: '30%' }  // South America
+                ].map((pos, i) => (
                   <div
-                    key={index}
-                    className="absolute w-2 h-2 bg-dermai-ai-400 rounded-full animate-pulse shadow-glow"
-                    style={{ 
-                      top: position.top, 
-                      left: position.left,
-                      animationDelay: `${index * 0.5}s`
-                    }}
-                  />
+                    key={i}
+                    className="absolute transform -translate-x-1/2 -translate-y-1/2"
+                    style={{ top: pos.top, left: pos.left }}
+                  >
+                    <div className="bg-dermai-pure/70 backdrop-blur-sm border border-dermai-nude-200 rounded-full px-3 py-1.5 flex items-center space-x-2 shadow-sm">
+                      <div className="w-5 h-5 rounded-full bg-dermai-ai-500 flex items-center justify-center">
+                        <Brain className="w-3 h-3 text-white" />
+                      </div>
+                      <span className="text-xs font-medium text-dermai-neutral-700">
+                        +{Math.floor(200 + Math.random() * 800)} users
+                      </span>
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Statistique principale */}
+          {/* Main stat */}
           <div className="space-y-6">
             <div className="text-center">
               <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2 leading-tight">
-                Vous n'êtes pas seul(e) !
+                You’re not alone!
               </h2>
               <p className="text-lg lg:text-xl text-dermai-neutral-700 leading-relaxed">
-                DermAI a aidé{' '}
+                DermAI has helped{' '}
                 <span className="font-bold text-dermai-ai-600">
-                  {formatUserCount(userCount)}
-                </span>
-                {' '}personnes avec {getPersonalizedMessage()}
+                  12,000+ people
+                </span>{' '}
+                with {getPersonalizedMessage()}.
               </p>
             </div>
 
-            {/* Sous-titre informatif */}
+            {/* Informative subtitle */}
             <p className="text-sm text-dermai-neutral-500 italic">
-              Données agrégées d'utilisateurs similaires
+              Aggregated data from similar users
             </p>
           </div>
 
-          {/* Points de réassurance supplémentaires */}
+          {/* Additional reassurance points */}
           <div className="bg-dermai-pure/60 backdrop-blur-sm border border-dermai-nude-200 rounded-2xl p-6 space-y-4">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
@@ -163,38 +151,39 @@ export default function SimilarConcernsProofScreen({
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
               </div>
-              <span className="text-dermai-neutral-700 font-medium">Analyse confidentielle et sécurisée</span>
+              <span className="text-dermai-neutral-700 font-medium">Private & secure analysis</span>
             </div>
             
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                <Brain className="w-4 h-4 text-blue-600" strokeWidth={2} />
+                <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                </svg>
               </div>
-              <span className="text-dermai-neutral-700 font-medium">Recommandations basées sur l'IA</span>
+              <span className="text-dermai-neutral-700 font-medium">AI-based recommendations</span>
             </div>
 
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
                 <svg className="w-4 h-4 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                  <path d="M10 2a6 6 0 00-6 6v2.586l-.707.707A1 1 0 004 13h12a1 1 0 00.707-1.707L16 10.586V8a6 6 0 00-6-6z" />
                 </svg>
               </div>
-              <span className="text-dermai-neutral-700 font-medium">Communauté bienveillante</span>
+              <span className="text-dermai-neutral-700 font-medium">Supportive community</span>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* CTA fixe en bas */}
-      <div className="sticky bottom-0 bg-dermai-pure/95 backdrop-blur-lg border-t border-dermai-nude-200 p-6">
-        <div className="max-w-md mx-auto">
-          <button
-            onClick={onContinue}
-            className="w-full bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 text-white font-semibold py-4 px-6 rounded-2xl shadow-premium hover:shadow-glow transition-all duration-300 hover-lift text-lg"
-            style={{ minHeight: '44px' }}
-          >
-            Continuer
-          </button>
+          {/* Continue CTA */}
+          <div>
+            <button
+              onClick={onContinue}
+              className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 text-white font-semibold shadow-premium hover:shadow-glow-lg transition-all duration-300 transform hover:scale-105"
+            >
+              Continue
+            </button>
+          </div>
+
         </div>
       </div>
     </div>

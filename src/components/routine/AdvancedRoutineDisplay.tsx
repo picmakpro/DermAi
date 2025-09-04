@@ -15,7 +15,7 @@ import {
   Lightbulb
 } from 'lucide-react'
 
-// Ancienne interface pour compatibilité
+// Legacy interface for compatibility
 interface RoutineStep {
   title: string
   description: string
@@ -29,11 +29,12 @@ interface RoutineStep {
   applicationTips: string[]
 }
 
-// Nouvelle interface avec catalogId
+// New interface with catalogId
 interface NewRoutineStep {
+  // value used in logic; keep as-is (French)
   name: string
-  frequency: 'quotidien' | 'hebdomadaire' | 'ponctuel'
-  timing: 'matin' | 'soir' | 'matin_et_soir'
+  frequency: 'quotidien' | 'hebdomadaire' | 'ponctuel' // FR input values
+  timing: 'matin' | 'soir' | 'matin_et_soir'          // FR input values
   catalogId: string
   application: string
   startDate: string
@@ -54,11 +55,11 @@ const timeIcons = {
 }
 
 const frequencyLabels = {
-  daily: 'Quotidien',
-  weekly: 'Hebdomadaire', 
-  monthly: 'Mensuel',
-  'as-needed': 'Au besoin',
-  progressive: 'Progressif'
+  daily: 'Daily',
+  weekly: 'Weekly', 
+  monthly: 'Monthly',
+  'as-needed': 'As needed',
+  progressive: 'Progressive'
 }
 
 const phaseColors = {
@@ -68,9 +69,9 @@ const phaseColors = {
 }
 
 const phaseLabels = {
-  immediate: 'Phase Immédiate',
-  adaptation: 'Phase d’adaptation',
-  maintenance: 'Phase de Maintenance'
+  immediate: 'Immediate Phase',
+  adaptation: 'Adaptation Phase',
+  maintenance: 'Maintenance Phase'
 }
 
 const categoryIcons = {
@@ -85,19 +86,19 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
   const [activePhase, setActivePhase] = useState<'immediate' | 'adaptation' | 'maintenance'>('immediate')
   const [viewMode, setViewMode] = useState<'phases' | 'schedule'>('phases')
 
-  // Helper pour déterminer si c'est la nouvelle structure
+  // Helper to detect the new structure
   const isNewStructure = (step: any): step is NewRoutineStep => {
     return 'catalogId' in step && 'timing' in step
   }
 
-  // Helper pour obtenir le nom du produit depuis le catalogId
+  // Helper: map catalogId to display product name
   const getProductNameFromCatalogId = (catalogId: string): string => {
-    // Mapping cohérent avec la page de résultats
+    // Keep consistent with the results page; use English names
     if (catalogId === 'B01MSSDEPK') {
-      return 'CeraVe Nettoyant Hydratant'
+      return 'CeraVe Hydrating Cleanser'
     }
     if (catalogId === 'B00BNUY3HE') {
-      return 'La Roche-Posay Cicaplast Baume B5'
+      return 'La Roche-Posay Cicaplast Balm B5'
     }
     if (catalogId === 'B01MDTVZTZ') {
       return 'The Ordinary Niacinamide 10% + Zinc 1%'
@@ -110,25 +111,25 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
     }
 
     if (catalogId.includes('CERAVE') || catalogId.includes('HYDRATING') || catalogId.includes('CLEANSER')) {
-      return 'CeraVe Gel Nettoyant Hydratant'
+      return 'CeraVe Hydrating Cleanser Gel'
     }
     if (catalogId.includes('AVENE') || catalogId.includes('CICALFATE')) {
-      return 'Avène Cicalfate+ Crème Réparatrice'
+      return 'Avène Cicalfate+ Restorative Cream'
     }
     if (catalogId.includes('ORDINARY') || catalogId.includes('NIACINAMIDE')) {
-      return 'The Ordinary Sérum Niacinamide 10%'
+      return 'The Ordinary Niacinamide 10% Serum'
     }
     if (catalogId.includes('LRP') || catalogId.includes('ANTHELIOS') || catalogId.includes('SPF')) {
       return 'La Roche-Posay Anthelios SPF 50+'
     }
     if (catalogId.includes('PAULA') || catalogId.includes('CHOICE') || catalogId.includes('BHA')) {
-      return 'Paula\'s Choice BHA 2% Exfoliant'
+      return "Paula's Choice 2% BHA Exfoliant"
     }
     if (catalogId.includes('EFFACLAR')) {
-      return 'La Roche-Posay Effaclar Gel Nettoyant'
+      return 'La Roche-Posay Effaclar Purifying Gel'
     }
     
-    // Fallback générique basé sur l'ID
+    // Generic fallback based on ID
     const parts = catalogId.split('_')
     if (parts.length >= 2) {
       const brand = parts[0].replace(/([A-Z])/g, ' $1').trim()
@@ -136,14 +137,15 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
       return `${brand} ${product}`.replace(/\s+/g, ' ')
     }
     
-    return 'Produit Recommandé'
+    return 'Recommended Product'
   }
 
-  // Helper pour normaliser une étape avant filtrage
+  // Normalize a step before filtering
   const normalizeStep = (step: RoutineStep | NewRoutineStep) => {
     if (isNewStructure(step)) {
       return {
         ...step,
+        // value used in logic; FR -> EN mapping for UI only
         timeOfDay: step.timing === 'matin' ? 'morning' as const :
                   step.timing === 'soir' ? 'evening' as const : 'both' as const,
         frequency: step.frequency === 'quotidien' ? 'daily' as const : 
@@ -153,7 +155,7 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
     return step
   }
 
-  // Organiser par moment de la journée
+  // Organize by schedule/time of day
   const organizeBySchedule = () => {
     const allSteps = [
       ...routine.immediate,
@@ -172,7 +174,7 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
   const scheduleData = organizeBySchedule()
 
   const renderStep = (step: any, index: number) => {
-    // Normaliser la structure pour l'affichage
+    // Normalize structure for display
     const normalizedStep = isNewStructure(step) ? {
       title: step.name,
       description: '',
@@ -182,7 +184,7 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
                 step.timing === 'soir' ? 'evening' as const : 'both' as const,
       phase: 'immediate' as const,
       category: 'treatment' as const,
-      productSuggestion: `Produit ${step.catalogId}`,
+      productSuggestion: `Product ${step.catalogId}`,
       catalogId: step.catalogId,
       applicationTips: [step.application],
       startDate: step.startDate,
@@ -226,11 +228,11 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
           {normalizedStep.startAfterDays && (
             <div className="flex items-center space-x-1 text-xs text-orange-600 mb-2">
               <Calendar className="w-3 h-3" />
-              <span>À introduire dans {normalizedStep.startAfterDays} jours</span>
+              <span>Introduce after {normalizedStep.startAfterDays} days</span>
             </div>
           )}
           
-          {/* Nouvelle structure avec catalogId */}
+          {/* New structure with catalogId */}
           {isNewStructure(step) && (
             <div className="bg-dermai-ai-50 rounded-lg p-2 mb-2 border border-dermai-ai-200">
               <div className="flex items-center space-x-1 text-xs text-dermai-ai-700 mb-1">
@@ -244,16 +246,20 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
               >
                 {getProductNameFromCatalogId(step.catalogId)}
               </a>
-              <p className="text-xs text-gray-600 mt-1">Commencer: {(step.startDate || '').replace(/_/g,' ').replace('apres','après')}</p>
+              <p className="text-xs text-gray-600 mt-1">
+                Start: {(step.startDate || '')
+                  .replace(/_/g,' ')
+                  .replace(/apres|après/ig,'after')}
+              </p>
             </div>
           )}
           
-          {/* Ancienne structure avec productSuggestion */}
+          {/* Legacy structure with productSuggestion */}
           {!isNewStructure(step) && normalizedStep.productSuggestion && (
             <div className="bg-gray-50 rounded-lg p-2 mb-2">
               <div className="flex items-center space-x-1 text-xs text-gray-700 mb-1">
                 <Target className="w-3 h-3" />
-                <span className="font-medium">Produit recommandé</span>
+                <span className="font-medium">Recommended product</span>
               </div>
               <p className="text-xs text-gray-600">{normalizedStep.productSuggestion}</p>
             </div>
@@ -263,7 +269,7 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
             <div className="space-y-1">
               <div className="flex items-center space-x-1 text-xs text-green-700">
                 <Lightbulb className="w-3 h-3" />
-                <span className="font-medium">Conseils d&apos;application</span>
+                <span className="font-medium">Application tips</span>
               </div>
               {normalizedStep.applicationTips?.map((tip: string, tipIndex: number) => (
                   <div key={tipIndex} className="flex items-start space-x-2 text-xs text-gray-600">
@@ -287,8 +293,8 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
             <Calendar className="w-5 h-5 text-dermai-ai-600" />
           </div>
           <div>
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900">Routines Personnalisées</h2>
-            <p className="text-sm text-dermai-neutral-600">Propulsé par DermAI</p>
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900">Personalized Routines</h2>
+            <p className="text-sm text-dermai-neutral-600">Powered by DermAI</p>
           </div>
         </div>
         
@@ -301,7 +307,7 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
                 : 'text-gray-600 hover:text-gray-800'
             }`}
           >
-            Par phases
+            Phases
           </button>
           <button
             onClick={() => setViewMode('schedule')}
@@ -311,14 +317,14 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
                 : 'text-gray-600 hover:text-gray-800'
             }`}
           >
-            Par horaires
+            Schedule
           </button>
         </div>
       </div>
 
       {viewMode === 'phases' ? (
         <>
-          {/* Navigation des phases */}
+          {/* Phase navigation */}
           <div className="flex flex-wrap gap-2 mb-6">
             {Object.keys(routine).map((phase) => (
               <button
@@ -340,7 +346,7 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
             ))}
           </div>
 
-          {/* Contenu de la phase active */}
+          {/* Active phase content */}
           <div className={`bg-gradient-to-br ${phaseColors[activePhase]} rounded-2xl p-6 border`}>
             <div className="flex items-center space-x-2 mb-4">
               <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
@@ -361,7 +367,7 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
               <div className="mt-4 p-3 bg-white/30 rounded-lg">
                 <div className="flex items-center space-x-2 text-sm text-gray-700">
                   <Info className="w-4 h-4" />
-                  <span className="font-medium">À commencer dès maintenant</span>
+                  <span className="font-medium">Start right away</span>
                 </div>
               </div>
             )}
@@ -369,40 +375,40 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
         </>
       ) : (
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Routine Matin */}
+          {/* Morning routine */}
           <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-6 border border-orange-100">
             <div className="flex items-center space-x-3 mb-4">
               <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
                 <Sun className="w-4 h-4 text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900">Routine Matin</h3>
+              <h3 className="text-lg font-semibold text-gray-900">Morning Routine</h3>
             </div>
             <div className="space-y-3">
               {scheduleData.morning.map((step, index) => renderStep(step, index))}
             </div>
           </div>
 
-          {/* Routine Soir */}
+          {/* Evening routine */}
           <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-6 border border-indigo-100">
             <div className="flex items-center space-x-3 mb-4">
               <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center">
                 <Moon className="w-4 h-4 text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900">Routine Soir</h3>
+              <h3 className="text-lg font-semibold text-gray-900">Evening Routine</h3>
             </div>
             <div className="space-y-3">
               {scheduleData.evening.map((step, index) => renderStep(step, index))}
             </div>
           </div>
 
-          {/* Routine Hebdomadaire */}
+          {/* Weekly routine */}
           {scheduleData.weekly.length > 0 && (
             <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-100">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
                   <Repeat className="w-4 h-4 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">Routine Hebdomadaire</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Weekly Routine</h3>
               </div>
               <div className="space-y-3">
                 {scheduleData.weekly.map((step, index) => renderStep(step, index))}
@@ -410,14 +416,14 @@ export default function AdvancedRoutineDisplay({ routine }: AdvancedRoutineProps
             </div>
           )}
 
-          {/* Au besoin */}
+          {/* As needed */}
           {scheduleData.asNeeded.length > 0 && (
             <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-2xl p-6 border border-gray-100">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center">
                   <Info className="w-4 h-4 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">Au Besoin</h3>
+                <h3 className="text-lg font-semibold text-gray-900">As Needed</h3>
               </div>
               <div className="space-y-3">
                 {scheduleData.asNeeded.map((step, index) => renderStep(step, index))}

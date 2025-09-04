@@ -6,7 +6,7 @@ import type { SkinAnalysis } from '@/types'
 
 export default function ChatWidget({ analysis, onClose }: { analysis: SkinAnalysis; onClose: () => void }) {
   const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([
-    { role: 'assistant', content: 'Bonjour ! Je suis votre assistant DermAI. Posez vos questions sur votre diagnostic et vos recommandations.' },
+    { role: 'assistant', content: 'Hello! I am your DermAI assistant. Ask your questions about your assessment and recommendations.' },
   ])
   const [input, setInput] = useState('')
   const [isSending, setIsSending] = useState(false)
@@ -41,10 +41,10 @@ export default function ChatWidget({ analysis, onClose }: { analysis: SkinAnalys
         throw new Error(data.error)
       }
       
-      setMessages((m) => [...m, { role: 'assistant', content: data.reply || 'Désolé, je n\'ai pas pu formuler une réponse.' }])
+      setMessages((m) => [...m, { role: 'assistant', content: data.reply || 'Sorry, I couldn\'t formulate a response.' }])
     } catch (e) {
-      console.error('Erreur chat:', e)
-      setMessages((m) => [...m, { role: 'assistant', content: "Désolé, je ne peux pas répondre pour le moment. Veuillez réessayer." }])
+      console.error('Chat error:', e)
+      setMessages((m) => [...m, { role: 'assistant', content: "Sorry, I can't respond at the moment. Please try again." }])
     } finally {
       setIsSending(false)
     }
@@ -59,8 +59,8 @@ export default function ChatWidget({ analysis, onClose }: { analysis: SkinAnalys
             <MessageCircle className="w-3 h-3 md:w-4 md:h-4" />
           </div>
           <div>
-            <h4 className="font-bold text-sm">Assistant DermAI</h4>
-            <p className="text-xs opacity-90 hidden md:block">Votre expert beauté IA</p>
+            <h4 className="font-bold text-sm">DermAI Assistant</h4>
+            <p className="text-xs opacity-90 hidden md:block">Your AI beauty expert</p>
           </div>
         </div>
         <button 
@@ -120,7 +120,7 @@ export default function ChatWidget({ analysis, onClose }: { analysis: SkinAnalys
         <div className="flex gap-2 md:gap-3">
           <input
             className="flex-1 border-2 border-dermai-ai-200 rounded-lg md:rounded-xl px-3 md:px-4 py-2 md:py-3 text-sm focus:outline-none focus:ring-2 focus:ring-dermai-ai-400 focus:border-dermai-ai-400 transition-all"
-            placeholder="Posez votre question…"
+            placeholder="Ask your question…"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && send()}

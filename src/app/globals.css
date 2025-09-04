@@ -11,18 +11,18 @@
     @apply text-dermai-neutral-900 bg-dermai-pure font-sans;
   }
 
-  /* Variables CSS pour les polices selon la DA */
+  /* CSS variables for fonts according to design system */
   :root {
     --font-inter: 'Inter', ui-sans-serif, system-ui, sans-serif;
     --font-display: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
     --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;
     
-    /* Tokens CSS pour espacements harmonisés du héros Upload */
+    /* CSS tokens for harmonized spacing of Upload hero */
     --hero-gap-target: clamp(24px, 6vh, 48px);
     --hero-overlap: clamp(32px, 8vh, 68px);
   }
 
-  /* Media query pour desktop - espacements plus larges */
+  /* Media query for desktop - wider spacing */
   @media (min-width: 1024px) {
     :root {
       --hero-gap-target: clamp(32px, 7vh, 56px);
@@ -32,7 +32,7 @@
 }
 
 @layer components {
-  /* Boutons premium selon la nouvelle DA */
+  /* Premium buttons according to new design system */
   .btn-primary {
     @apply bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 hover:from-dermai-ai-600 hover:to-dermai-ai-500 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-premium hover:shadow-glow;
   }
@@ -45,7 +45,7 @@
     @apply bg-transparent border-2 border-dermai-ai-400 text-dermai-ai-600 hover:bg-dermai-ai-400 hover:text-white font-semibold py-3 px-6 rounded-full transition-all duration-300;
   }
   
-  /* Cards premium avec glassmorphism */
+  /* Premium cards with glassmorphism */
   .card {
     @apply bg-dermai-pure/95 backdrop-blur-md rounded-3xl shadow-premium border border-dermai-nude-200/50 p-8 hover:shadow-premium-lg transition-all duration-500;
   }
@@ -72,7 +72,7 @@
     @apply font-mono text-sm text-dermai-neutral-500 tracking-wide;
   }
   
-  /* Glow effects pour les éléments IA */
+  /* Glow effects for AI elements */
   .glow-ai {
     @apply shadow-glow;
   }
@@ -81,7 +81,7 @@
     @apply shadow-glow-lg;
   }
   
-  /* Animations douces */
+  /* Smooth animations */
   .hover-lift {
     @apply transition-all duration-300 transform hover:scale-105 hover:shadow-premium;
   }
@@ -90,12 +90,12 @@
     @apply transition-all duration-300 hover:shadow-glow;
   }
   
-  /* Containers responsifs */
+  /* Responsive containers */
   .container-dermai {
     @apply max-w-6xl mx-auto px-6;
   }
   
-  /* Gradients de texte pour les titres */
+  /* Text gradients for titles */
   .text-gradient-ai {
     @apply bg-gradient-to-r from-dermai-ai-600 to-dermai-ai-400 bg-clip-text text-transparent;
   }
@@ -106,7 +106,7 @@
 }
 
 @layer utilities {
-  /* Scrollbar personnalisée pour un look premium */
+  /* Custom scrollbar for premium look */
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -116,7 +116,7 @@
     display: none;
   }
   
-  /* Animation scan holographique */
+  /* Holographic scan animation */
   .scan-effect::before {
     content: '';
     position: absolute;
@@ -134,7 +134,7 @@
     100% { left: -100%; }
   }
   
-  /* États de focus accessibles avec la palette DermAI */
+  /* Accessible focus states with DermAI palette */
   .focus-dermai {
     @apply focus:outline-none focus:ring-2 focus:ring-dermai-ai-400 focus:ring-opacity-50;
   }

@@ -1,7 +1,8 @@
 import type { SkinAnalysis } from '@/types'
+import { normalizeAssessmentFRtoEN } from '@/lib/i18n/mappers'
 
 const DB_NAME = 'dermai-db'
-const DB_VERSION = 2 // align with photoStore to ensure upgrade
+const DB_VERSION = 2 // keep in sync with photoStore to ensure upgrade
 const STORE = 'analysis'
 
 function openDB(): Promise<IDBDatabase> {
@@ -33,12 +34,33 @@ export async function saveAnalysis(id: string, data: unknown): Promise<void> {
 
 export async function getAnalysis(id: string): Promise<SkinAnalysis | null> {
   const db = await openDB()
-  return await new Promise((resolve, reject) => {
+  const result = await new Promise<SkinAnalysis | null>((resolve, reject) => {
     const tx = db.transaction(STORE, 'readonly')
     const req = tx.objectStore(STORE).get(id)
     req.onsuccess = () => resolve(req.result ?? null)
     req.onerror = () => reject(req.error)
   })
+
+  if (!result) return null
+
+  // Auto-migration: normalize FR → EN and write back if changed
+  const original = JSON.stringify(result.beautyAssessment)
+  const normalized = normalizeAssessmentFRtoEN(result.beautyAssessment)
+  const afterNormalization = JSON.stringify(normalized)
+
+  if (original !== afterNormalization) {
+    console.log('🔄 Auto-migrating analysis from FR to EN:', id)
+    const migratedAnalysis = {
+      ...result,
+      beautyAssessment: normalized
+    }
+    
+    // Write back the migrated version
+    await saveAnalysis(id, migratedAnalysis)
+    return migratedAnalysis
+  }
+
+  return result
 }
 
 export async function clearAllAnalysis(): Promise<void> {
@@ -50,5 +72,3 @@ export async function clearAllAnalysis(): Promise<void> {
     tx.onerror = () => reject(tx.error)
   })
 }
-
-

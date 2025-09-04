@@ -1,6 +1,6 @@
 // affiliateCatalog expects FR values for mapping from questionnaire responses; keep catalog skinTypes in French to avoid breaking mappings.
 
-// Interface pour le catalogue
+// Catalog interfaces
 interface CatalogProduct {
   id: string
   name: string
@@ -33,52 +33,52 @@ interface RecommendedProductCard {
   affiliateLink: string
 }
 
-// État global du catalogue
+// Global catalog state
 let catalogCache: AffiliateCatalog | null = null
 
-// Charger le catalogue depuis le fichier JSON
+// Load catalog from JSON file
 export const loadCatalog = async (): Promise<AffiliateCatalog> => {
   if (catalogCache) {
     return catalogCache
   }
-  
+
   try {
-    console.log('📦 Chargement du catalogue affilié...')
+    console.log('📦 Loading affiliate catalog...')
     const response = await fetch('/affiliateCatalog.json')
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     catalogCache = await response.json()
-    console.log('✅ Catalogue chargé:', catalogCache!.products.length, 'produits')
+    console.log('✅ Catalog loaded:', catalogCache!.products.length, 'products')
     return catalogCache!
   } catch (error) {
-    console.error('❌ Erreur chargement catalogue:', error)
+    console.error('❌ Catalog load error:', error)
     return { products: [] }
   }
 }
 
-// Trouver un produit du catalogue par nom (heuristique robuste)
+// Find a product in the catalog by name (robust heuristic)
 const findProductByName = (catalog: AffiliateCatalog, name: string, brand?: string): CatalogProduct | null => {
   const norm = (s: string) => s.toLowerCase().replace(/\s+/g, ' ').trim()
   const targetName = norm(name)
   const targetBrand = brand ? norm(brand) : undefined
 
-  // 1) Match exact sur le nom
+  // 1) Exact name match
   let found = catalog.products.find(p => norm(p.name) === targetName)
   if (found) return found
 
-  // 2) Match brand+name inclusif
+  // 2) Inclusive brand+name match
   if (targetBrand) {
-    found = catalog.products.find(p => norm(p.brand) === targetBrand && norm(p.name).includes(targetName)) || null
+    found = catalog.products.find(p => norm(p.brand) === targetBrand && norm(p.name).includes(targetName))
     if (found) return found
   }
 
-  // 3) Match partiel sur nom
-  found = catalog.products.find(p => norm(p.name).includes(targetName)) || null
+  // 3) Partial name match
+  found = catalog.products.find(p => norm(p.name).includes(targetName))
   return found || null
 }
 
-// Rechercher une alternative dans la même catégorie que le produit courant
+// Look up an alternative within the same category as the current product
 export const findAlternativeProduct = async (
   current: { name: string; brand?: string; price?: number },
   excludeIds: string[] = []
@@ -86,18 +86,18 @@ export const findAlternativeProduct = async (
   const catalog = await loadCatalog()
   const currentProduct = findProductByName(catalog, current.name, current.brand)
   if (!currentProduct) {
-    console.warn('Produit courant introuvable dans le catalogue pour alternative:', current)
+    console.warn('Current product not found in catalog for alternative lookup:', current)
     return null
   }
 
   const sameCategory = catalog.products.filter(p => p.category === currentProduct.category)
   if (sameCategory.length === 0) return null
 
-  // Exclure le produit courant et ceux explicitement exclus
+  // Exclude current product and any explicitly excluded
   const candidates = sameCategory.filter(p => p.id !== currentProduct.id && !excludeIds.includes(p.id))
   if (candidates.length === 0) return null
 
-  // Heuristique simple: si prix fourni, proposer une option un peu moins chère si possible, sinon la première autre marque
+  // Simple heuristic: if a price is provided, try a slightly cheaper option; otherwise pick the first other brand
   let choice: CatalogProduct | undefined
   if (typeof current.price === 'number') {
     const cheaper = candidates
@@ -112,52 +112,53 @@ export const findAlternativeProduct = async (
   return convertToRecommendedCard(choice)
 }
 
-// Rechercher un produit par ID Amazon
+// Find a product by Amazon ID
 const findProductByAmazonId = (catalog: AffiliateCatalog, amazonId: string): CatalogProduct | null => {
   return catalog.products.find(product => product.id === amazonId) || null
 }
 
-// Rechercher un produit par patterns dans le catalogId
+// Find a product by patterns in the catalogId
 const findProductByPattern = (catalog: AffiliateCatalog, catalogId: string): CatalogProduct | null => {
   const patterns = [
     { pattern: /CERAVE.*CLEANSER/i, category: 'cleanser', brand: 'CeraVe' },
     { pattern: /AVENE.*CICALFATE/i, brand: 'Avène' },
     { pattern: /ORDINARY.*NIACINAMIDE/i, brand: 'The Ordinary', ingredients: ['Niacinamide'] },
     { pattern: /LRP|ROCHE.*SPF/i, brand: 'La Roche-Posay', category: 'sunscreen' },
-    { pattern: /PAULA.*CHOICE.*BHA/i, brand: 'Paula\'s Choice', ingredients: ['Acide Salicylique'] }
+    { pattern: /PAULA.*CHOICE.*BHA/i, brand: "Paula's Choice", ingredients: ['Acide Salicylique'] } // keep FR ingredient to match catalog
   ]
-  
+
   for (const { pattern, category, brand, ingredients } of patterns) {
     if (pattern.test(catalogId)) {
-      console.log(`🔍 Pattern trouvé pour ${catalogId}:`, { category, brand, ingredients })
-      
-      // Chercher le produit correspondant dans le catalogue
+      console.log(`🔍 Pattern matched for ${catalogId}:`, { category, brand, ingredients })
+
+      // Try to locate the corresponding product in the catalog
       const product = catalog.products.find(p => {
         const matchBrand = brand ? p.brand.toLowerCase().includes(brand.toLowerCase()) : true
         const matchCategory = category ? p.category === category : true
-        const matchIngredients = ingredients ? 
-          ingredients.some(ing => p.activeIngredients.some(active => 
-            active.toLowerCase().includes(ing.toLowerCase())
-          )) : true
-        
+        const matchIngredients = ingredients
+          ? ingredients.some(ing =>
+              p.activeIngredients.some(active => active.toLowerCase().includes(ing.toLowerCase()))
+            )
+          : true
+
         return matchBrand && matchCategory && matchIngredients
       })
-      
+
       if (product) {
-        console.log('✅ Produit trouvé dans le catalogue:', product.name)
+        console.log('✅ Product found in catalog:', product.name)
         return product
       }
     }
   }
-  
+
   return null
 }
 
-// Convertir un produit du catalogue en RecommendedProductCard
+// Convert a catalog product to RecommendedProductCard
 const convertToRecommendedCard = (product: CatalogProduct): RecommendedProductCard => {
-  const originalPrice = Math.round(product.price * 1.2 * 100) / 100 // +20% pour prix original
+  const originalPrice = Math.round(product.price * 1.2 * 100) / 100 // +20% as an "original price"
   const discount = Math.round(((originalPrice - product.price) / originalPrice) * 100)
-  
+
   return {
     name: product.name,
     brand: product.brand,
@@ -165,53 +166,54 @@ const convertToRecommendedCard = (product: CatalogProduct): RecommendedProductCa
     originalPrice,
     imageUrl: product.imageUrl,
     discount,
-    frequency: "Selon routine",
+    frequency: 'Per routine',
     benefits: product.benefits.slice(0, 3), // Max 3 benefits
-    instructions: "Suivre les instructions de la routine personnalisée",
-    whyThisProduct: "Sélectionné par l'IA pour votre diagnostic",
+    instructions: 'Follow your personalized routine instructions',
+    whyThisProduct: 'Selected by AI for your diagnosis',
     affiliateLink: product.affiliateLink
   }
 }
 
-// Fonction principale pour obtenir les infos produit
+// Main function to retrieve product info by catalogId
 export const getProductInfoByCatalogId = async (catalogId: string): Promise<RecommendedProductCard> => {
-  console.log('🔍 Recherche produit pour catalogId:', catalogId)
-  
-  // Charger le catalogue
+  console.log('🔍 Looking up product for catalogId:', catalogId)
+
+  // Load catalog
   const catalog = await loadCatalog()
-  
-  // D'abord essayer de trouver par ID Amazon exact (si c'est dans le catalogId)
+
+  // Try to match an exact Amazon-style ID if present in the catalogId
   const amazonIdMatch = catalogId.match(/([A-Z0-9]{10})/)?.[1]
   if (amazonIdMatch) {
-    console.log('🔍 ID Amazon trouvé:', amazonIdMatch)
+    console.log('🔍 Amazon-like ID detected:', amazonIdMatch)
     const productById = findProductByAmazonId(catalog, amazonIdMatch)
     if (productById) {
-      console.log('✅ Produit trouvé par ID Amazon:', productById.name)
+      console.log('✅ Product found by Amazon ID:', productById.name)
       return convertToRecommendedCard(productById)
     }
   }
-  
-  // Ensuite essayer par patterns
+
+  // Then try with patterns
   const productByPattern = findProductByPattern(catalog, catalogId)
   if (productByPattern) {
     return convertToRecommendedCard(productByPattern)
   }
-  
-  console.log('⚠️ Aucun produit trouvé, fallback générique pour:', catalogId)
-  
-  // Produit générique si rien trouvé
+
+  console.log('⚠️ No product found, returning generic fallback for:', catalogId)
+
+  // Generic fallback
   return {
-    name: "Produit Soin Ciblé",
-    brand: "Sélection DermAI",
+    name: 'Targeted Care Product',
+    brand: 'DermAI Selection',
     price: 15.99,
     originalPrice: 19.99,
-    imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop&auto=format",
+    imageUrl:
+      'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop&auto=format',
     discount: 20,
-    frequency: "Selon routine",
-    benefits: ["Soin personnalisé", "Adapté à votre peau", "Recommandé par l'IA"],
-    instructions: "Suivre les conseils de la routine personnalisée",
-    whyThisProduct: `Produit sélectionné pour votre routine (${catalogId})`,
-    affiliateLink: "#"
+    frequency: 'Per routine',
+    benefits: ['Personalized care', 'Adapted to your skin', 'AI-recommended'],
+    instructions: 'Follow the guidance in your personalized routine',
+    whyThisProduct: `Product selected for your routine (${catalogId})`,
+    affiliateLink: '#'
   }
 }
 

@@ -26,7 +26,7 @@ import { EducationalTooltip, MobileEducationalTooltip } from '@/components/share
 
 interface UnifiedRoutineSectionProps {
   routine: UnifiedRoutineStep[]
-  beautyAssessment?: BeautyAssessment // Nécessaire pour calcul durées personnalisées
+  beautyAssessment?: BeautyAssessment // Needed for personalized durations
 }
 
 const timeIcons = {
@@ -36,11 +36,11 @@ const timeIcons = {
 }
 
 const frequencyLabels = {
-  daily: 'Quotidien',
-  weekly: 'Hebdomadaire', 
-  monthly: 'Mensuel',
-  'as-needed': 'Au besoin',
-  progressive: 'Progressif'
+  daily: 'Daily',
+  weekly: 'Weekly', 
+  monthly: 'Monthly',
+  'as-needed': 'As needed',
+  progressive: 'Progressive'
 }
 
 const phaseColors = {
@@ -50,9 +50,9 @@ const phaseColors = {
 }
 
 const phaseLabels = {
-  immediate: 'Phase Immédiate',
-  adaptation: 'Phase d\'adaptation',
-  maintenance: 'Phase de Maintenance'
+  immediate: 'Immediate Phase',
+  adaptation: 'Adaptation Phase',
+  maintenance: 'Maintenance Phase'
 }
 
 // Removed unused categoryIcons
@@ -63,7 +63,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
   const [isMobile, setIsMobile] = useState(false)
   const [phaseTimings, setPhaseTimings] = useState<Record<string, PhaseTiming>>({})
 
-  // Détection mobile
+  // Mobile detection
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768)
     checkMobile()
@@ -71,7 +71,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // Calcul des durées personnalisées
+  // Compute personalized durations
   useEffect(() => {
     if (beautyAssessment && routine.length > 0) {
       const timings = PhaseTimingCalculator.calculateCompleteTiming(beautyAssessment, routine)
@@ -83,7 +83,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
     return null
   }
 
-  // Organiser par phases
+  // Organize by phases
   const organizeByPhases = () => {
     return {
       immediate: routine.filter(step => step.phase === 'immediate'),
@@ -92,68 +92,80 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
     }
   }
 
-  // Organiser par moment de la journée avec déduplication intelligente
+  // Organize by time of day with smart de-duplication
   const organizeBySchedule = () => {
     const deduplicateByProduct = (steps: UnifiedRoutineStep[]) => {
       const productGroups = new Map<string, UnifiedRoutineStep[]>()
       
-      // Regrouper par catégorie ET fonction, pas par produit exact
+      // Group by category AND function, not exact product
       steps.forEach(step => {
-        let productKey = step.recommendedProducts[0]?.name || step.title
-        
-        // Regroupement intelligent pour produits similaires
-        if (step.category === 'protection' || step.title.includes('Protection solaire')) {
-          productKey = 'Protection solaire' // Unifier toutes les protections solaires
-        } else if (step.category === 'cleansing' || step.title.includes('Nettoyage')) {
-          productKey = 'Nettoyage doux' // Unifier tous les nettoyants
-        } else if (step.category === 'hydration' || step.title.includes('Hydratation')) {
-          productKey = 'Hydratation globale' // Unifier toutes les hydratations
+        let groupKey = step.recommendedProducts[0]?.name || step.title
+        let displayTitle = groupKey
+
+        // Smart grouping for similar products
+        // value used in logic; keep FR checks, add EN checks for robustness
+        if (step.category === 'protection' || step.title.includes('Protection solaire') || step.title.toLowerCase().includes('sun protection')) {
+          groupKey = 'Protection solaire'
+          displayTitle = 'Sun protection'
+        } else if (step.category === 'cleansing' || step.title.includes('Nettoyage') || step.title.toLowerCase().includes('cleansing')) {
+          groupKey = 'Nettoyage doux'
+          displayTitle = 'Gentle cleansing'
+        } else if (step.category === 'hydration' || step.title.includes('Hydratation') || step.title.toLowerCase().includes('hydration')) {
+          groupKey = 'Hydratation globale'
+          displayTitle = 'Overall hydration'
         }
         
-        if (!productGroups.has(productKey)) {
-          productGroups.set(productKey, [])
+        if (!productGroups.has(groupKey)) {
+          productGroups.set(groupKey, [])
         }
-        productGroups.get(productKey)!.push(step)
+        // Store displayTitle on a temporary field if we need it later
+        productGroups.get(groupKey)!.push({ ...step, title: displayTitle })
       })
       
-      // Créer des étapes fusionnées pour chaque produit unique
+      // Create merged steps per unique group
       const deduplicatedSteps: UnifiedRoutineStep[] = []
       
-      productGroups.forEach((stepsGroup, productKey) => {
+      productGroups.forEach((stepsGroup, _groupKey) => {
         if (stepsGroup.length === 1) {
-          // Pas de duplication, garder l'étape tel quel
           deduplicatedSteps.push(stepsGroup[0])
         } else {
-          // Fusionner les étapes multiples en une seule évolutive
           const baseStep = stepsGroup[0]
           const allPhases = stepsGroup.map(s => s.phase).filter((p, i, arr) => arr.indexOf(p) === i)
-          const phaseNames = allPhases.map(p => phaseLabels[p as keyof typeof phaseLabels])
+          // Keep phase names for potential future use
+          // const phaseNames = allPhases.map(p => phaseLabels[p as keyof typeof phaseLabels])
+
+          // Clean title from evolution hints
+          const cleanTitle = baseStep.title.replace(
+            // value used in logic; support FR and EN markers
+            /(optimisée?|renforcée?|→\s*(évolutif|optimisé)|optimized?|strengthened?|→\s*(evolved|optimized))/gi,
+            ''
+          ).trim()
           
-          // Créer un titre nettoyé sans mentions évolutives
-          const cleanTitle = baseStep.title.replace(/(optimisée?|renforcée?|→\s*(évolutif|optimisé))/gi, '').trim()
-          
-          // Fusionner les conseils d'application
+          // Merge application advices (favor the simplest/first)
           const uniqueAdvices = stepsGroup
             .map(s => s.applicationAdvice)
             .filter((advice, i, arr) => arr.indexOf(advice) === i)
           
-          const finalAdvice = uniqueAdvices.length > 1
-            ? uniqueAdvices[0] // Prendre le premier conseil, le plus simple
-            : uniqueAdvices[0]
+          const finalAdvice = uniqueAdvices[0]
           
-          // Créer la durée : garder temporaire si c'est un traitement, sinon "En continu"
-          const isBaseCareProduct = baseStep.category === 'cleansing' || baseStep.category === 'hydration' || baseStep.category === 'protection'
-          const finalDuration = allPhases.length > 1 && isBaseCareProduct
-            ? "En continu"
-            : baseStep.applicationDuration
+          // Duration: keep "continuous" for base-care products across phases, else original duration
+          const isBaseCareProduct =
+            baseStep.category === 'cleansing' ||
+            baseStep.category === 'hydration' ||
+            baseStep.category === 'protection'
+
+          const finalDuration =
+            allPhases.length > 1 && isBaseCareProduct
+              ? 'Continuous'
+              : baseStep.applicationDuration
           
           const evolvedStep: UnifiedRoutineStep = {
             ...baseStep,
-            title: productKey, // Utiliser la clé unifiée comme titre
+            title: cleanTitle || baseStep.title,
             applicationAdvice: finalAdvice,
             applicationDuration: finalDuration,
             stepNumber: Math.min(...stepsGroup.map(s => s.stepNumber)),
-            phase: 'immediate' as const, // Phase de base pour l'affichage
+            phase: 'immediate', // base phase for display
           }
           
           deduplicatedSteps.push(evolvedStep)
@@ -163,14 +175,14 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
       return deduplicatedSteps.sort((a, b) => a.stepNumber - b.stepNumber)
     }
     
-    // Filtrage intelligent : éviter les doublons entre sections
+    // Smart filtering: avoid duplicates across sections
     const morningSteps = routine.filter(step => 
       (step.timeOfDay === 'morning' || step.timeOfDay === 'both') && 
-      step.frequency === 'daily' // Seulement les étapes quotidiennes
+      step.frequency === 'daily' // daily steps only
     )
     const eveningSteps = routine.filter(step => 
       (step.timeOfDay === 'evening' || step.timeOfDay === 'both') && 
-      step.frequency === 'daily' // Seulement les étapes quotidiennes
+      step.frequency === 'daily' // daily steps only
     )
     
     return {
@@ -186,13 +198,13 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
   const scheduleData = organizeBySchedule()
 
   const renderStep = (step: UnifiedRoutineStep, index: number, resetNumbering: boolean = false) => {
-    // Détection des étapes temporaires pour le badge uniquement
-    const isTemporary = step.applicationDuration && !step.applicationDuration.includes('continu')
+    // Temporary steps detection for badge only
+    const isTemporary = step.applicationDuration && !/continu|continuous|ongoing/i.test(step.applicationDuration)
     
-    // Style uniforme pour toutes les étapes
+    // Unified style for all steps
     const className = "bg-white rounded-xl p-3 md:p-4 border border-gray-100 hover:shadow-md transition-all"
     
-    // Numérotation reset pour chaque section horaire
+    // Reset numbering per schedule section
     const displayNumber = resetNumbering ? index + 1 : step.stepNumber
     
     return (
@@ -211,29 +223,29 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
           </div>
           
           <div className="flex-1">
-            {/* Titre sur une ligne, badges en dessous sur mobile */}
+            {/* Title on one line, badges below on mobile */}
             <div className="mb-2">
               <div className="flex items-start justify-between mb-1">
                 <h4 className="font-medium text-gray-900 text-sm md:text-base leading-tight pr-2">{step.title}</h4>
-                {/* Badge timing - mieux adapté mobile */}
+                {/* Timing badge – better mobile fit */}
                 <div className="flex items-center space-x-1 text-xs text-gray-500 flex-shrink-0">
                   {timeIcons[step.timeOfDay as keyof typeof timeIcons]}
                   <span className="hidden sm:inline">{frequencyLabels[step.frequency as keyof typeof frequencyLabels]}</span>
                   <span className="sm:hidden">
-                    {step.frequency === 'daily' && 'Jour'}
-                    {step.frequency === 'weekly' && 'Sem'}
-                    {step.frequency === 'monthly' && 'Mois'}
-                    {step.frequency === 'as-needed' && 'Besoin'}
+                    {step.frequency === 'daily' && 'Day'}
+                    {step.frequency === 'weekly' && 'Wk'}
+                    {step.frequency === 'monthly' && 'Mo'}
+                    {step.frequency === 'as-needed' && 'Need'}
                     {step.frequency === 'progressive' && 'Prog'}
                   </span>
                 </div>
               </div>
               
-              {/* Badge temporaire en dessous du titre sur mobile */}
+              {/* Temporary badge under title on mobile */}
               {isTemporary && (
                 <div className="flex items-center space-x-1 px-2 py-1 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700 rounded-full text-xs font-medium w-fit">
                   <Clock className="w-3 h-3" />
-                  <span>Temporaire</span>
+                  <span>Temporary</span>
                 </div>
               )}
             </div>
@@ -248,26 +260,26 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
             {step.startAfterDays && (
               <div className="flex items-center space-x-1 text-xs text-orange-600 mb-2">
                 <Calendar className="w-3 h-3" />
-                <span>À introduire dans {step.startAfterDays} jours minimum</span>
+                <span>Introduce after at least {step.startAfterDays} days</span>
               </div>
             )}
 
-            {/* Zones ciblées - version mobile optimisée */}
+            {/* Target areas – mobile-optimized */}
             {step.targetArea === 'specific' && step.zones && step.zones.length > 0 && (
               <div className="flex items-center gap-1 px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium w-fit mb-2">
                 <MapPin className="w-3 h-3 flex-shrink-0" />
                 <span className="truncate">
-                  <span className="hidden sm:inline">Zones : </span>
+                  <span className="hidden sm:inline">Zones: </span>
                   {step.zones.join(', ')}
                 </span>
               </div>
             )}
             
-            {/* Produits recommandés - optimisé mobile */}
+            {/* Recommended products – mobile-optimized */}
             <div className="bg-dermai-ai-50 rounded-lg p-2 md:p-3 mb-2 md:mb-3 border border-dermai-ai-200">
               <div className="flex items-center space-x-1 text-xs text-dermai-ai-700 mb-1 md:mb-2">
                 <ShoppingBag className="w-3 h-3 flex-shrink-0" />
-                <span className="font-medium">Produit recommandé</span>
+                <span className="font-medium">Recommended product</span>
               </div>
               {step.recommendedProducts.map((product, productIndex) => (
                 <div key={productIndex} className="mb-1 md:mb-2 last:mb-0">
@@ -284,7 +296,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                       rel="noopener noreferrer"
                       className="inline-flex items-center text-xs text-dermai-ai-600 hover:underline font-medium"
                     >
-                      <span>Voir le produit</span>
+                      <span>View product</span>
                       <span className="ml-1">→</span>
                     </a>
                   )}
@@ -292,27 +304,27 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
               ))}
             </div>
             
-            {/* Conseils d'application - optimisé mobile */}
+            {/* Application tips – mobile-optimized */}
             <div className="space-y-1 mb-2 md:mb-3">
               <div className="flex items-center space-x-1 text-xs text-green-700">
                 <Lightbulb className="w-3 h-3 flex-shrink-0" />
-                <span className="font-medium">Conseils d'application</span>
+                <span className="font-medium">Application tips</span>
               </div>
               <div className="text-xs text-gray-600 leading-relaxed">
                 {step.applicationAdvice}
               </div>
             </div>
 
-            {/* Durée d'application simplifiée */}
+            {/* Application duration */}
             {(() => {
               const criteria = PhaseTimingCalculator.getVisualCriteria(step)
               if (criteria) {
-                // Format simplifié pour les traitements avec critères visuels - mobile optimisé
+                // Simplified format for treatments with visual criteria – mobile-optimized
                 return (
                   <div className="space-y-1 mb-2 md:mb-3">
                     <div className="flex items-center space-x-1 text-xs text-blue-700">
                       <Clock className="w-3 h-3 flex-shrink-0" />
-                      <span className="font-medium">Durée d'application</span>
+                      <span className="font-medium">Application duration</span>
                     </div>
                     <div className="text-xs text-blue-600 leading-relaxed font-medium">
                       {criteria.observation} ({criteria.estimatedDays})
@@ -320,12 +332,12 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                   </div>
                 )
               } else if (step.applicationDuration) {
-                // Format classique - mobile optimisé
+                // Classic format – mobile-optimized
                 return (
                   <div className="space-y-1 mb-2 md:mb-3">
                     <div className="flex items-center space-x-1 text-xs text-blue-700">
                       <Clock className="w-3 h-3 flex-shrink-0" />
-                      <span className="font-medium">Durée d'application</span>
+                      <span className="font-medium">Application duration</span>
                     </div>
                     <div className="text-xs text-blue-600 leading-relaxed font-medium">
                       {step.applicationDuration}
@@ -336,7 +348,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
               return null
             })()}
 
-            {/* Timing détaillé - mobile optimisé */}
+            {/* Detailed timing – mobile-optimized */}
             {step.timingDetails && (
               <div className="space-y-1 mb-2 md:mb-3">
                 <div className="flex items-center space-x-1 text-xs text-purple-700">
@@ -349,7 +361,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
               </div>
             )}
 
-            {/* Restrictions - mobile optimisé */}
+            {/* Restrictions – mobile-optimized */}
             {step.restrictions && step.restrictions.length > 0 && (
               <div className="space-y-1">
                 <div className="flex items-center space-x-1 text-xs text-orange-700">
@@ -380,8 +392,8 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
             <Calendar className="w-4 h-4 md:w-5 md:h-5 text-dermai-ai-600" />
           </div>
           <div>
-            <h2 className="text-lg md:text-2xl font-bold text-gray-900">Routines Personnalisées</h2>
-            <p className="text-xs md:text-sm text-dermai-neutral-600">Propulsé par DermAI</p>
+            <h2 className="text-lg md:text-2xl font-bold text-gray-900">Personalized Routines</h2>
+            <p className="text-xs md:text-sm text-dermai-neutral-600">Powered by DermAI</p>
           </div>
         </div>
         
@@ -404,14 +416,14 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                 : 'text-gray-600 hover:text-gray-800'
             }`}
           >
-            Horaires
+            Schedule
           </button>
         </div>
       </div>
 
       {viewMode === 'phases' ? (
         <>
-          {/* Navigation des phases - mobile optimisé */}
+          {/* Phase navigation – mobile-optimized */}
           <div className="flex flex-wrap gap-1.5 md:gap-2 mb-4 md:mb-6">
             {Object.keys(phaseData).map((phase) => {
               const stepCount = phaseData[phase as keyof typeof phaseData].length
@@ -429,7 +441,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                   <span className="whitespace-nowrap">
                     <span className="hidden sm:inline">{phaseLabels[phase as keyof typeof phaseLabels]}</span>
                     <span className="sm:hidden">
-                      {phase === 'immediate' && 'Immédiate'}
+                      {phase === 'immediate' && 'Immediate'}
                       {phase === 'adaptation' && 'Adaptation'}
                       {phase === 'maintenance' && 'Maintenance'}
                     </span>
@@ -442,9 +454,9 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
             })}
           </div>
 
-          {/* Contenu de la phase active */}
+          {/* Active phase content */}
           <div className={`bg-gradient-to-br ${phaseColors[activePhase]} rounded-2xl p-4 md:p-6 border`}>
-            {/* Header avec objectif éducatif et info-bulle */}
+            {/* Header with educational objective and tooltip */}
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
@@ -471,19 +483,19 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                 </div>
               </div>
               
-              {/* Info-bulle éducative */}
+              {/* Educational tooltip */}
               {phaseTimings[activePhase] && (
                 <div className="flex-shrink-0">
                   <div className="mt-1">
                     {isMobile ? (
                       <MobileEducationalTooltip
                         content={phaseTimings[activePhase].objective.tooltip}
-                        title="Pourquoi cette phase ?"
+                        title="Why this phase?"
                       />
                     ) : (
                       <EducationalTooltip
                         content={phaseTimings[activePhase].objective.tooltip}
-                        title="Pourquoi cette phase ?"
+                        title="Why this phase?"
                         trigger="hover"
                         position="auto"
                         maxWidth="450px"
@@ -498,12 +510,12 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
               {phaseData[activePhase].map((step, index) => renderStep(step, index))}
             </div>
 
-            {/* Conseils éducatifs spécifiques à la phase */}
+            {/* Educational tips for the phase */}
             {phaseTimings[activePhase]?.educationalTips && (
               <div className="mt-4 p-3 bg-white/30 rounded-lg">
                 <div className="flex items-center space-x-2 text-sm text-gray-700 mb-2">
                   <BookOpen className="w-4 h-4" />
-                  <span className="font-medium">Conseils pour cette phase</span>
+                  <span className="font-medium">Tips for this phase</span>
                 </div>
                 <ul className="text-sm text-gray-700 space-y-1">
                   {phaseTimings[activePhase].educationalTips.map((tip, index) => (
@@ -520,16 +532,16 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
               <div className="mt-4 p-3 bg-white/30 rounded-lg">
                 <div className="flex items-center space-x-2 text-sm text-gray-700">
                   <Info className="w-4 h-4" />
-                  <span className="font-medium">À commencer dès maintenant</span>
+                  <span className="font-medium">Start right away</span>
                 </div>
               </div>
             )}
 
-            {/* Navigation entre phases - responsive */}
+            {/* Phase navigation – responsive */}
             <div className="mt-4 md:mt-6 pt-3 md:pt-4 border-t border-white/30">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
                 <div className="text-xs md:text-sm text-gray-700 text-center sm:text-left">
-                  <span className="font-medium">Phase actuelle :</span>
+                  <span className="font-medium">Current phase:</span>
                   <span className="ml-1">{phaseLabels[activePhase]}</span>
                   {phaseTimings[activePhase] && (
                     <span className="ml-1 text-gray-600">({phaseTimings[activePhase].duration})</span>
@@ -537,7 +549,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                 </div>
                 
                 <div className="flex items-center justify-center sm:justify-end space-x-2">
-                  {/* Bouton phase précédente */}
+                  {/* Previous phase button */}
                   {activePhase !== 'immediate' && (
                     <button
                       onClick={() => {
@@ -552,11 +564,11 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                       <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                       </svg>
-                      <span className="hidden sm:inline">Précédente</span>
+                      <span className="hidden sm:inline">Previous</span>
                     </button>
                   )}
                   
-                  {/* Bouton phase suivante */}
+                  {/* Next phase button */}
                   {activePhase !== 'maintenance' && (
                     <button
                       onClick={() => {
@@ -570,8 +582,8 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                     >
                       <span className="whitespace-nowrap">
                         <span className="hidden sm:inline">
-                          {activePhase === 'immediate' && 'Phase d\'adaptation'}
-                          {activePhase === 'adaptation' && 'Phase de maintenance'}
+                          {activePhase === 'immediate' && 'Adaptation Phase'}
+                          {activePhase === 'adaptation' && 'Maintenance Phase'}
                         </span>
                         <span className="sm:hidden">
                           {activePhase === 'immediate' && 'Adaptation'}
@@ -584,11 +596,11 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                     </button>
                   )}
                   
-                  {/* Message final pour la dernière phase */}
+                  {/* Final message for last phase */}
                   {activePhase === 'maintenance' && (
                     <div className="flex items-center space-x-1 px-2.5 md:px-3 py-1.5 md:py-2 bg-green-100 text-green-700 rounded-lg text-xs md:text-sm font-medium">
                       <CheckCircle className="w-3 h-3 md:w-4 md:h-4" />
-                      <span>Routine complète</span>
+                      <span>Routine complete</span>
                     </div>
                   )}
                 </div>
@@ -598,40 +610,40 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
         </>
       ) : (
         <div className="grid md:grid-cols-2 gap-3 md:gap-6">
-          {/* Routine Matin - mobile optimisé */}
+          {/* Morning routine – mobile-optimized */}
           <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl md:rounded-2xl p-3 md:p-6 border border-orange-100">
             <div className="flex items-center space-x-2 md:space-x-3 mb-3 md:mb-4">
               <div className="w-6 h-6 md:w-8 md:h-8 bg-orange-500 rounded-full flex items-center justify-center">
                 <Sun className="w-3 h-3 md:w-4 md:h-4 text-white" />
               </div>
-              <h3 className="text-base md:text-lg font-semibold text-gray-900">Routine Matin</h3>
+              <h3 className="text-base md:text-lg font-semibold text-gray-900">Morning routine</h3>
             </div>
             <div className="space-y-2 md:space-y-3">
               {scheduleData.morning.map((step, index) => renderStep(step, index, true))}
             </div>
           </div>
 
-          {/* Routine Soir - mobile optimisé */}
+          {/* Evening routine – mobile-optimized */}
           <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl md:rounded-2xl p-3 md:p-6 border border-indigo-100">
             <div className="flex items-center space-x-2 md:space-x-3 mb-3 md:mb-4">
               <div className="w-6 h-6 md:w-8 md:h-8 bg-indigo-500 rounded-full flex items-center justify-center">
                 <Moon className="w-3 h-3 md:w-4 md:h-4 text-white" />
               </div>
-              <h3 className="text-base md:text-lg font-semibold text-gray-900">Routine Soir</h3>
+              <h3 className="text-base md:text-lg font-semibold text-gray-900">Evening routine</h3>
             </div>
             <div className="space-y-2 md:space-y-3">
               {scheduleData.evening.map((step, index) => renderStep(step, index, true))}
             </div>
           </div>
 
-          {/* Routine Hebdomadaire */}
+          {/* Weekly routine */}
           {scheduleData.weekly.length > 0 && (
             <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-4 md:p-6 border border-green-100 md:col-span-2">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
                   <Repeat className="w-4 h-4 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">Routine Hebdomadaire</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Weekly routine</h3>
               </div>
               <div className="space-y-3">
                 {scheduleData.weekly.map((step, index) => renderStep(step, index, true))}
@@ -639,14 +651,14 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
             </div>
           )}
 
-          {/* Routine Mensuelle */}
+          {/* Monthly routine */}
           {scheduleData.monthly.length > 0 && (
             <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-4 md:p-6 border border-amber-100 md:col-span-2">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center">
                   <Calendar className="w-4 h-4 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">Routine Mensuelle</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Monthly routine</h3>
               </div>
               <div className="space-y-3">
                 {scheduleData.monthly.map((step, index) => renderStep(step, index, true))}
@@ -654,14 +666,14 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
             </div>
           )}
 
-          {/* Au besoin */}
+          {/* As needed */}
           {scheduleData.asNeeded.length > 0 && (
             <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-2xl p-4 md:p-6 border border-gray-100 md:col-span-2">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center">
                   <Info className="w-4 h-4 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">Au Besoin</h3>
+                <h3 className="text-lg font-semibold text-gray-900">As needed</h3>
               </div>
               <div className="space-y-3">
                 {scheduleData.asNeeded.map((step, index) => renderStep(step, index, true))}

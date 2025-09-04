@@ -10,7 +10,7 @@ interface IntroBeforeAfterScreenProps {
 }
 
 /**
- * Before/after introduction screen - displayed before form
+ * Before/after introduction screen – shown before the form
  * Presents analysis benefits with comparison visual
  */
 export default function IntroBeforeAfterScreen({ 
@@ -35,7 +35,7 @@ export default function IntroBeforeAfterScreen({
               </a>
             </div>
 
-            {/* Progress dots - adjusted for 7 steps */}
+            {/* Progress dots – adjusted for total steps */}
             <div className="hidden md:flex items-center space-x-2">
               {[...Array(totalSteps)].map((_, i) => (
                 <div 
@@ -81,48 +81,48 @@ export default function IntroBeforeAfterScreen({
               
               {/* Labels Day 0 / Day 30 */}
               <div className="absolute bottom-4 left-4 bg-dermai-pure/90 backdrop-blur-sm px-3 py-1.5 rounded-full border border-dermai-nude-200">
-                <span className="text-sm font-semibold text-dermai-neutral-800">Jour 0</span>
+                <span className="text-sm font-semibold text-dermai-neutral-800">Day 0</span>
               </div>
               <div className="absolute bottom-4 right-4 bg-dermai-pure/90 backdrop-blur-sm px-3 py-1.5 rounded-full border border-dermai-nude-200">
-                <span className="text-sm font-semibold text-dermai-neutral-600">Jour 30</span>
+                <span className="text-sm font-semibold text-dermai-neutral-600">Day 30</span>
               </div>
             </div>
           </div>
 
-          {/* Titre principal - Version simplifiée */}
+          {/* Title */}
           <div className="space-y-2">
             <h1 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 leading-tight" tabIndex={0}>
-              Découvrez le potentiel de transformation de votre peau grâce à notre analyse avancée
+              Discover your skin’s transformation potential with our advanced analysis
             </h1>
           </div>
 
-          {/* Liste des bénéfices avec icônes Lucide et sous-titres */}
+          {/* Benefits list with icons */}
           <div className="space-y-4 text-left">
             {[
               {
                 icon: Target,
-                title: 'Recommandations produits personnalisées',
-                description: 'Sélection précise adaptée à vos besoins'
+                title: 'Personalized product recommendations',
+                description: 'Precise selection tailored to your needs'
               },
               {
                 icon: Sparkles,
-                title: 'Techniques de soin avancées',
-                description: 'Méthodes éprouvées pour optimiser votre routine'
+                title: 'Advanced skincare techniques',
+                description: 'Proven methods to optimize your routine'
               },
               {
                 icon: Brain,
-                title: 'Analyse IA de votre peau',
-                description: 'Diagnostic précis basé sur la vision artificielle'
+                title: 'AI-powered skin analysis',
+                description: 'Accurate diagnostics using computer vision'
               },
               {
                 icon: Award,
-                title: 'Conseils validés par des dermatologues',
-                description: 'Recommandations basées sur la science'
+                title: 'Dermatologist-validated guidance',
+                description: 'Science-based recommendations'
               },
               {
                 icon: TrendingUp,
-                title: 'Amélioration visible de votre peau',
-                description: 'Résultats mesurables en quelques semaines'
+                title: 'Visible improvement',
+                description: 'Measurable results in just weeks'
               }
             ].map((benefit, index) => {
               const IconComponent = benefit.icon
@@ -146,16 +146,16 @@ export default function IntroBeforeAfterScreen({
         </div>
       </div>
 
-      {/* CTA fixe en bas */}
+      {/* Fixed bottom CTA */}
       <div className="sticky bottom-0 bg-dermai-pure/95 backdrop-blur-lg border-t border-dermai-nude-200 p-6">
         <div className="max-w-md lg:max-w-lg mx-auto">
           <button
             onClick={onContinue}
             className="w-full bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 text-white font-semibold py-4 px-6 rounded-2xl shadow-premium hover:shadow-glow transition-all duration-300 hover-lift text-lg focus:outline-none focus:ring-2 focus:ring-dermai-ai-500 focus:ring-offset-2"
             style={{ minHeight: '44px' }}
-            aria-label="Continuer vers le questionnaire"
+            aria-label="Continue to the questionnaire"
           >
-            Ok, j'ai compris
+            Got it, continue
           </button>
         </div>
       </div>

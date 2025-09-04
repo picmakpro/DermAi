@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import type { AnalyzeRequest, SkinAnalysis } from '@/types'
+import type { AnalyzeRequest } from '@/types/api'
+import type { SkinAnalysis } from '@/types'
 
 export interface UseAnalysisReturn {
   isAnalyzing: boolean
@@ -24,45 +25,57 @@ export function useAnalysis(): UseAnalysisReturn {
       setError(null)
       setProgress(0)
 
-      // Simulation du progress (GPT-4o ne donne pas de feedback temps réel)
-      let progressInterval: ReturnType<typeof setInterval> | null = setInterval(() => {
-        setProgress(prev => Math.min(prev + Math.random() * 15, 85))
-      }, 1000)
-
-      // Les photos sont déjà en base64 depuis le sessionStorage
-      const requestForAPI = request
-
-      // Appel API au lieu du service direct
-      const response = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestForAPI)
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Erreur de l\'API')
-      }
-
-      const result = await response.json()
+      // Progress simulation (GPT-4o does not provide real-time feedback)
+      let progressInterval: ReturnType<typeof setInterval> | null = null
       
-      if (progressInterval) clearInterval(progressInterval)
-      setProgress(100)
-      setAnalysis(result.data)
-
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erreur inconnue'
-      if (message === 'Failed to fetch') {
-        setError("La page a été interrompue pendant l’analyse (fermeture/rafraîchissement/enregistrement). Relancez l’analyse.")
-      } else {
-        setError(message)
-      }
-    } finally {
       try {
-        if (progressInterval) clearInterval(progressInterval)
-      } catch {}
+        progressInterval = setInterval(() => {
+          setProgress(prev => Math.min(prev + Math.random() * 15, 85))
+        }, 1000)
+
+        // Photos are already base64-encoded from sessionStorage
+        const requestForAPI = request
+
+        // API call instead of direct service
+        const response = await fetch('/api/analyze', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestForAPI)
+        })
+
+        if (!response.ok) {
+          const errorData = await response.json()
+          throw new Error(errorData.error || 'API error')
+        }
+
+        const result = await response.json()
+        
+        if (progressInterval) {
+          clearInterval(progressInterval)
+          progressInterval = null
+        }
+        setProgress(100)
+        setAnalysis(result.data)
+
+      } catch (err) {
+        if (progressInterval) {
+          clearInterval(progressInterval)
+          progressInterval = null
+        }
+        
+        const message = err instanceof Error ? err.message : 'Unknown error'
+        if (message === 'Failed to fetch') {
+          setError("The page was interrupted during analysis (closing/refreshing/saving). Please relaunch the analysis.")
+        } else {
+          setError(message)
+        }
+              } finally {
+          setIsAnalyzing(false)
+        }
+    } catch (outerErr) {
+      setError('Unexpected error occurred')
       setIsAnalyzing(false)
     }
   }

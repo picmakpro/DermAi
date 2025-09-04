@@ -9,10 +9,10 @@ export default function QuestionnairePage() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Vérifier que les photos sont disponibles
+    // Check that photos are available
     const photosData = sessionStorage.getItem('dermai_photos')
     if (!photosData) {
-      // Rediriger vers l'upload si pas de photos
+      // Redirect to upload if no photos
       router.push('/upload')
       return
     }
@@ -24,7 +24,7 @@ export default function QuestionnairePage() {
       <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto"></div>
-          <p className="text-gray-600 mt-2">Chargement...</p>
+          <p className="text-gray-600 mt-2">Loading...</p>
         </div>
       </div>
     )

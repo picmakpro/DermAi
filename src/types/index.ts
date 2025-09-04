@@ -1,3 +1,7 @@
+// Core domain types — translated docs/comments to EN.
+// NOTE: Keep all French union literal values as-is to preserve mappings.
+
+/** Basic user identity */
 export interface User {
   id: string
   email: string
@@ -5,21 +9,23 @@ export interface User {
   createdAt: Date
 }
 
+/** Client-side photo upload metadata */
 export interface PhotoUpload {
   id: string
-  file: File
+  file: File | string // File on client-side, string (base64) on server-side
   preview: string
   type: PhotoType
   quality: 'good' | 'medium' | 'poor'
 }
 
-export type PhotoType = 
-  | 'face-frontal' 
-  | 'close-up-zone' 
-  | 'profile-left' 
-  | 'profile-right' 
+export type PhotoType =
+  | 'face-frontal'
+  | 'close-up-zone'
+  | 'profile-left'
+  | 'profile-right'
   | 'texture-macro'
 
+/** Full skin analysis record */
 export interface SkinAnalysis {
   id: string
   userId: string
@@ -30,6 +36,7 @@ export interface SkinAnalysis {
   createdAt: Date
 }
 
+/** Model scores (0–100) + overall */
 export interface SkinScores {
   hydration: ScoreDetail
   wrinkles: ScoreDetail // rides
@@ -42,6 +49,7 @@ export interface SkinScores {
   overall: number
 }
 
+/** Single score with rationale and confidence */
 export interface ScoreDetail {
   value: number // 0-100
   justification: string
@@ -49,74 +57,79 @@ export interface ScoreDetail {
   basedOn: string[]
 }
 
+/** Visual assessment consolidated for UX + logic */
 export interface BeautyAssessment {
-  skinType?: string // Global skin type (ex: "Combination skin", "Oily skin")
+  skinType?: string // Global skin type (e.g., "combination", "oily")
   mainConcern: string
-  // value used in logic; keep as-is (French)
-  intensity: 'légère' | 'modérée' | 'intense'
+  // canonical values in English
+  intensity: 'mild' | 'moderate' | 'severe'
   concernedZones: string[]
-  specificities?: SkinSpecificity[] // Nouvelles spécificités détaillées avec intensité
+  specificities?: SkinSpecificity[] // New detailed specificities with intensity
   visualFindings: string[]
   expectedImprovement: string
-  improvementTimeEstimate?: string // Nouveau: temps pour atteindre 90/100
-  // Nouvelle structure pour évaluation beauté globale + par zones
+  improvementTimeEstimate?: string // New: time to reach ~90/100
+  // New structure: global + per-zone beauty evaluation
   estimatedSkinAge?: number
   overview?: string[]
   zoneSpecific?: ZoneSpecificIssue[]
 }
 
+/** Specificity item */
 export interface SkinSpecificity {
-  name: string // ex: "Ingrown hairs after shaving"
-  // value used in logic; keep as-is (French)
-  intensity: 'légère' | 'modérée' | 'intense'
-  zones: string[] // ex: ["menton", "cou"]
+  name: string // e.g., "Ingrown hairs after shaving"
+  // canonical values in English
+  intensity: 'mild' | 'moderate' | 'severe'
+  zones: string[] // e.g., ["chin", "neck"]
 }
 
+/** Per-zone issues (new multi-problem structure) */
 export interface ZoneSpecificIssue {
   zone: string
-  problems: ZoneProblem[] // Nouveau: plusieurs problèmes par zone
-  description?: string // Optionnel maintenant
+  problems: ZoneProblem[] // New: multiple problems per zone
+  description?: string // Optional now
 }
 
+/** Problem within a zone */
 export interface ZoneProblem {
-  name: string // Problem name (ex: "Ingrown hairs", "Redness")
-  // value used in logic; keep as-is (French)
-  intensity: 'légère' | 'modérée' | 'intense'
-  description?: string // Description optionnelle du problème
+  name: string // e.g., "ingrowns", "redness"
+  // canonical values in English
+  intensity: 'mild' | 'moderate' | 'severe'
+  description?: string // Optional problem description
 }
 
-// Garder l'ancienne interface pour compatibilité
+/** Legacy shape kept for backward compatibility */
 export interface ZoneSpecificIssueLegacy {
   zone: string
-  // value used in logic; keep as-is (French)
-  intensity: 'légère' | 'modérée' | 'intense'
+  // canonical values in English
+  intensity: 'mild' | 'moderate' | 'severe'
   concerns: string[]
   description: string
 }
 
+/** AI product & routine recommendations */
 export interface ProductRecommendations {
   immediate: string[]
-  routine: NewRoutineStructure | AdvancedRoutine // Nouvelle structure avec catalogId
+  routine: NewRoutineStructure | AdvancedRoutine // New structure with catalogId
   products: string[]
   lifestyle: string[]
-  // Nouvelle structure pour recommandations globales/localisées
+  // New: global/localized recommendations
   overview?: string
   zoneSpecificCare?: string
   restrictions?: string
   localizedRoutine?: LocalizedRoutineStep[]
-  // Optionnel: données enrichies pour l'UI produit
+  // Optional: enriched data for product UI
   productsDetailed?: RecommendedProductCard[]
-  // Optionnel: routine structurée (obsolète, remplacé par AdvancedRoutine)
+  // Optional: structured routine (deprecated, replaced by AdvancedRoutine)
   routineBreakdown?: {
     morning: string[]
     evening: string[]
     weekly: string[]
   }
-  // NOUVELLE ROUTINE UNIFIÉE (remplace zones à surveiller + routine)
+  // NEW: unified routine (replaces “zones to monitor” + routine)
   unifiedRoutine?: UnifiedRoutineStep[]
 }
 
-// Nouvelle structure de routine avec catalogId obligatoire
+/** New routine structure with mandatory catalogId */
 export interface NewRoutineStructure {
   immediate: NewRoutineStep[]
   adaptation: NewRoutineStep[]
@@ -127,11 +140,12 @@ export interface NewRoutineStep {
   name: string
   frequency: 'quotidien' | 'hebdomadaire' | 'ponctuel'
   timing: 'matin' | 'soir' | 'matin_et_soir'
-  catalogId: string // ID obligatoire du catalogue
+  catalogId: string // Mandatory catalog ID
   application: string
   startDate: string
 }
 
+/** Localized routine (per-zone) */
 export interface LocalizedRoutineStep {
   zone: string
   priority: 'haute' | 'moyenne' | 'basse'
@@ -142,13 +156,13 @@ export interface LocalizedStep {
   name: string
   frequency: 'quotidien' | 'hebdomadaire' | 'ponctuel'
   timing: 'matin' | 'soir' | 'selon_besoin'
-  catalogId: string // ID obligatoire du catalogue
+  catalogId: string // Mandatory catalog ID
   application: string
   duration: string
   resume: string
 }
 
-// Import du nouveau système de routine
+/** Advanced routine system (legacy/alt structure) */
 export interface AdvancedRoutine {
   immediate: AdvancedRoutineStep[]
   adaptation: AdvancedRoutineStep[]
@@ -168,6 +182,7 @@ export interface AdvancedRoutineStep {
   applicationTips: string[]
 }
 
+/** Compact product card for UI lists */
 export interface RecommendedProductCard {
   name: string
   brand: string
@@ -179,6 +194,7 @@ export interface RecommendedProductCard {
   badges?: string[]
 }
 
+/** Internal product model */
 export interface Product {
   id: string
   name: string
@@ -192,6 +208,7 @@ export interface Product {
   compatibilityScore: number
 }
 
+/** A single routine step resolved to a product */
 export interface RoutineStep {
   order: number
   product: Product
@@ -200,6 +217,7 @@ export interface RoutineStep {
   tips: string
 }
 
+/** Bundled products with savings info */
 export interface ProductBundle {
   products: Product[]
   totalPrice: number
@@ -207,41 +225,43 @@ export interface ProductBundle {
   description: string
 }
 
-// Nouvelle structure pour routine unifiée (intégration zones + traitements + phases/timing)
+/**
+ * Unified routine step (integrates zones + treatments + phase/timing)
+ */
 export interface UnifiedRoutineStep {
   stepNumber: number
-  title: string // "Traitement des rougeurs — Zones : joues, front"
-  targetArea: 'global' | 'specific' // Global = visage entier, Specific = zones ciblées
-  zones?: string[] // ["menton", "joues"] si targetArea = 'specific'
-  
-  // Blocs conservés identiques
+  title: string // e.g., "Traitement des rougeurs — Zones : joues, front"
+  targetArea: 'global' | 'specific' // global = whole face, specific = targeted zones
+  zones?: string[] // e.g., ["menton", "joues"] when targetArea = 'specific'
+
+  // Kept blocks
   recommendedProducts: RecommendedProduct[]
   applicationAdvice: string
   restrictions?: string[]
-  
-  // Métadonnées pour l'IA + nouvelles données phases/timing
+
+  // AI metadata + new phase/timing data
   treatmentType: 'cleansing' | 'treatment' | 'moisturizing' | 'protection'
   priority: number
   phase: 'immediate' | 'adaptation' | 'maintenance'
-  
-  // Nouvelles propriétés pour l'UI phases/temporelle
+
+  // New properties for phase/temporal UI
   frequency: 'daily' | 'weekly' | 'monthly' | 'as-needed' | 'progressive'
   timeOfDay: 'morning' | 'evening' | 'both'
   frequencyDetails?: string
   startAfterDays?: number
   category: 'cleansing' | 'treatment' | 'hydration' | 'protection' | 'exfoliation'
-  
-  // NOUVEAUX CHAMPS pour amélioration UX
-  applicationDuration?: string // "Jusqu'à teint plus homogène (1-2 semaines)" | "En continu"
-  timingBadge?: string // "Quotidien 🌙" | "Hebdomadaire 🌙" | "Progressif"
-  timingDetails?: string // "1x/semaine, soir sans rétinol" | "tous les 2 jours"
-  
-  // NOUVEAUX CHAMPS pour déduplication vue horaires
-  isEvolutive?: boolean // Marque si cette étape est le résultat d'une fusion de plusieurs phases
-  evolutivePhases?: ('immediate' | 'adaptation' | 'maintenance')[] // Les phases fusionnées
+
+  // NEW UX fields
+  applicationDuration?: string // e.g., "Jusqu'à teint plus homogène (1-2 semaines)" | "En continu"
+  timingBadge?: string // e.g., "Quotidien 🌙" | "Hebdomadaire 🌙" | "Progressif"
+  timingDetails?: string // e.g., "1x/semaine, soir sans rétinol" | "tous les 2 jours"
+
+  // NEW fields for de-duplication in schedule view
+  isEvolutive?: boolean // Mark if this step is a fusion across phases
+  evolutivePhases?: ('immediate' | 'adaptation' | 'maintenance')[] // Fused phases
 }
 
-// Interface pour produit recommandé dans la routine unifiée
+/** Product referenced within a unified routine step */
 export interface RecommendedProduct {
   id: string
   name: string
@@ -252,10 +272,13 @@ export interface RecommendedProduct {
   catalogId?: string
 }
 
-// Interface pour timing badges
+/** Timing badge info for UI chips */
 export interface TimingBadgeInfo {
-  badge: string // Le texte du badge principal
-  icon: string // Icône(s) matin/soir 
-  details?: string // Détails comme "1x/semaine, soir sans rétinol"
-  color: 'blue' | 'purple' | 'green' | 'orange' // Couleur du badge
+  badge: string // Main badge text
+  icon: string  // Morning/evening icons
+  details?: string // Extra details (e.g., "1x/semaine, soir sans rétinol")
+  color: 'blue' | 'purple' | 'green' | 'orange'
 }
+
+// Re-export API types for convenience
+export type { AnalyzeRequest, UserProfile, SkinConcerns, CurrentRoutine, ApiResponse } from './api'
