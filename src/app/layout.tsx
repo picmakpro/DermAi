@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Inter, Space_Grotesk, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
 
-// Polices selon la nouvelle direction artistique
+// Fonts according to new artistic direction
 const inter = Inter({ 
   subsets: ['latin'],
   variable: '--font-inter',
@@ -23,9 +23,9 @@ const ibmPlexMono = IBM_Plex_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'DermAI - Diagnostic Dermatologique par IA',
-  description: 'Obtenez un diagnostic précis de votre peau en quelques minutes grâce à l\'intelligence artificielle avancée. Recommandations personnalisées et routine sur-mesure.',
-  keywords: ['dermatologie', 'intelligence artificielle', 'diagnostic peau', 'skincare', 'analyse dermatologique', 'routine beauté'],
+  title: 'DermAI - AI Dermatological Diagnosis',
+  description: 'Get a precise skin diagnosis in minutes with advanced artificial intelligence. Personalized recommendations and custom routine.',
+  keywords: ['dermatology', 'artificial intelligence', 'skin diagnosis', 'skincare', 'dermatological analysis', 'beauty routine'],
 }
 
 export default function RootLayout({
@@ -34,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="fr">
+    <html lang="en">
       <body className={`${inter.variable} ${spaceGrotesk.variable} ${ibmPlexMono.variable} font-sans antialiased`}>
         {children}
       </body>

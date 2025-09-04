@@ -10,8 +10,8 @@ interface IntroBeforeAfterScreenProps {
 }
 
 /**
- * Écran d'introduction avant/après - affiché avant le formulaire
- * Présente les bénéfices de l'analyse avec un visuel de comparaison
+ * Before/after introduction screen - displayed before form
+ * Presents analysis benefits with comparison visual
  */
 export default function IntroBeforeAfterScreen({ 
   onContinue, 
@@ -20,7 +20,7 @@ export default function IntroBeforeAfterScreen({
 }: IntroBeforeAfterScreenProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-dermai-nude-50 via-dermai-pure to-purple-50 flex flex-col">
-      {/* Header avec barre de progression */}
+      {/* Header with progress bar */}
       <div className="bg-dermai-pure/80 backdrop-blur-sm border-b border-dermai-nude-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -35,7 +35,7 @@ export default function IntroBeforeAfterScreen({
               </a>
             </div>
 
-            {/* Progress dots - ajusté pour 7 étapes */}
+            {/* Progress dots - adjusted for 7 steps */}
             <div className="hidden md:flex items-center space-x-2">
               {[...Array(totalSteps)].map((_, i) => (
                 <div 
@@ -62,17 +62,17 @@ export default function IntroBeforeAfterScreen({
         </div>
       </div>
 
-      {/* Contenu principal */}
+      {/* Main content */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 lg:px-8 pb-20">
         <div className="w-full max-w-md lg:max-w-lg text-center space-y-8">
           
-          {/* Visuel Before/After */}
+          {/* Before/After visual */}
           <div className="relative">
             <div className="aspect-[4/3] relative bg-dermai-nude-100 rounded-3xl overflow-hidden shadow-premium border border-dermai-nude-200">
-              {/* Image de comparaison avant/après */}
+              {/* Before/after comparison image */}
               <Image
                 src="/illustrations/before-after@2x.png"
-                alt="Comparaison avant/après de l'analyse de peau DermAI"
+                alt="DermAI skin analysis before/after comparison"
                 fill
                 className="object-cover"
                 priority

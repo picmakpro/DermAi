@@ -22,38 +22,38 @@ export default function UploadPage() {
 
   const handleContinue = async () => {
     if (photos.length === 0) {
-      alert('Veuillez sélectionner au moins une photo')
+      alert('Please select at least one photo')
       return
     }
 
     setIsUploading(true)
 
     try {
-      // Compression agressive selon le nombre de photos
+      // Aggressive compression based on photo count
       const compressionOptions = getCompressionOptionsForCount(photos.length)
-      console.log(`📦 Compression ${photos.length} photos avec:`, compressionOptions)
+      console.log(`📦 Compressing ${photos.length} photos with:`, compressionOptions)
       
-      // Stocker les dataURL compressés en IndexedDB
+      // Store compressed dataURLs in IndexedDB
       const meta = [] as Array<{ id: string; type: PhotoUpload['type']; quality: PhotoUpload['quality']; preview: string }>
       for (const photo of photos) {
         const compressedDataUrl = await compressImageForAPI(photo.file, compressionOptions)
         await savePhotoDataUrl(photo.id, compressedDataUrl)
         meta.push({ id: photo.id, type: photo.type, quality: photo.quality, preview: photo.preview })
       }
-      // Ne mettre que les métadonnées légères dans sessionStorage
+      // Only put lightweight metadata in sessionStorage
       sessionStorage.setItem('dermai_photos', JSON.stringify(meta))
       
-      // Rediriger vers le formulaire
+      // Redirect to form
       router.push('/questionnaire')
     } catch (error) {
-      console.error('Erreur lors de la conversion des photos:', error)
-      alert('Erreur lors du traitement des photos')
+      console.error('Error converting photos:', error)
+      alert('Error processing photos')
     } finally {
       setIsUploading(false)
     }
   }
 
-  // Helper function pour convertir File en base64
+  // Helper function to convert File to base64
   const convertFileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
@@ -90,7 +90,7 @@ export default function UploadPage() {
 
             {/* Step indicator */}
             <div className="text-right">
-              <div className="text-sm text-dermai-neutral-500">Étape 1 sur 4</div>
+              <div className="text-sm text-dermai-neutral-500">Step 1 of 4</div>
               <div className="w-32 bg-dermai-neutral-200 rounded-full h-2 mt-1">
                 <div className="bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 h-2 rounded-full w-1/4 transition-all shadow-glow"></div>
               </div>

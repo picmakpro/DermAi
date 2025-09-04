@@ -1,14 +1,15 @@
 export const APP_NAME = 'DermAI V2'
-export const APP_DESCRIPTION = 'Diagnostic dermatologique IA révolutionnaire'
+export const APP_DESCRIPTION = 'Revolutionary AI dermatological diagnosis'
 
 export const PHOTO_TYPES = {
-  'face-frontal': 'Face complète frontale',
-  'close-up-zone': 'Close-up zone problématique',
-  'profile-left': 'Profil gauche',
-  'profile-right': 'Profil droit',
-  'texture-macro': 'Texture peau macro'
+  'face-frontal': 'Full frontal face',
+  'close-up-zone': 'Close-up problem zone',
+  'profile-left': 'Left profile',
+  'profile-right': 'Right profile',
+  'texture-macro': 'Macro skin texture'
 } as const
 
+// value used in logic; keep as-is (French)
 export const SKIN_TYPES = [
   'Sèche',
   'Normale', 
@@ -18,6 +19,7 @@ export const SKIN_TYPES = [
   'Je ne sais pas'
 ] as const
 
+// value used in logic; keep as-is (French)
 export const GENDER_OPTIONS = [
   'Homme',
   'Femme', 
@@ -25,6 +27,7 @@ export const GENDER_OPTIONS = [
   'Ne souhaite pas préciser'
 ] as const
 
+// value used in logic; keep as-is (French)
 export const BUDGET_RANGES = [
   '< 50€',
   '50-100€',

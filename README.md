@@ -1,15 +1,15 @@
-# 🧬 DermAI V2 - Diagnostic Dermatologique IA
+# 🧬 DermAI V2 - AI Dermatological Diagnosis
 
-> Application révolutionnaire de diagnostic dermatologique utilisant GPT-4o Vision pour des analyses précises et des recommandations personnalisées.
+> Revolutionary dermatological diagnosis application using GPT-4o Vision for precise analysis and personalized recommendations.
 
-## ✨ Fonctionnalités
+## ✨ Features
 
-- 🤖 **Analyse IA avancée** - GPT-4o Vision pour diagnostic précis
-- 📸 **Upload professionnel** - Interface drag & drop intuitive  
-- 🎯 **Diagnostic spécifique** - Conditions nommées précisément
-- 📊 **Scores détaillés** - 8 paramètres cutanés analysés
-- 🛍️ **Recommandations** - Produits et routine personnalisés
-- 📱 **Mobile-first** - Interface responsive optimisée
+- 🤖 **Advanced AI Analysis** - GPT-4o Vision for precise diagnosis
+- 📸 **Professional Upload** - Intuitive drag & drop interface  
+- 🎯 **Specific Diagnosis** - Precisely named conditions
+- 📊 **Detailed Scores** - 8 analyzed skin parameters
+- 🛍️ **Recommendations** - Personalized products and routine
+- 📱 **Mobile-first** - Optimized responsive interface
 
 ## 🚀 Technologies
 
@@ -17,27 +17,27 @@
 - **IA**: OpenAI GPT-4o Vision API
 - **Architecture**: App Router, composants modulaires
 - **Validation**: Validation d'images avancée
-- **Performance**: Optimisé pour mobile et desktop
+- **Performance**: Optimized for mobile and desktop
 
 ## 🛠️ Installation
 
-Cloner le repository
+Clone the repository
 git clone https://github.com/YOUR_USERNAME/dermai-v2.git
 cd dermai-v2
 
-Installer les dépendances
+Install dependencies
 npm install
 
-Configurer les variables d'environnement
+Configure environment variables
 cp .env.example .env.local
-Ajouter votre clé OpenAI dans .env.local
+Add your OpenAI key in .env.local
 
-Lancer en développement
+Run in development
 npm run dev
 
 ## 🔧 Configuration
 
-### Variables d'environnement requises
+### Required environment variables
 
 OPENAI_API_KEY=sk-your-openai-key-here
 NEXT_PUBLIC_APP_URL=http://localhost:3000
@@ -45,9 +45,9 @@ NODE_ENV=development
 
 ## 📋 Roadmap
 
-### ✅ Phase 1 - MVP (Complété)
+### ✅ Phase 1 - MVP (Completed)
 - [x] Architecture Next.js 15 + TypeScript
-- [x] Integration GPT-4o Vision
+- [x] GPT-4o Vision Integration
 - [x] Upload photos professionnel
 - [x] Prompt engineering optimisé
 - [x] Interface moderne

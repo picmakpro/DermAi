@@ -1,70 +1,70 @@
-# 📚 Documentation DermAI V2
+# 📚 DermAI V2 Documentation
 
-Cette documentation centralisée contient toutes les spécifications, stratégies et guides techniques pour DermAI V2.
+This centralized documentation contains all specifications, strategies and technical guides for DermAI V2.
 
-## 📖 **Documents Principaux**
+## 📖 **Main Documents**
 
-### **🎯 Spécifications & Architecture**
-- **[spec.md](./spec.md)** - Spécifications fonctionnelles et techniques complètes
-- **[architecture-database.md](./architecture-database.md)** - Architecture base de données Supabase
+### **🎯 Specifications & Architecture**
+- **[spec.md](./spec.md)** - Complete functional and technical specifications
+- **[architecture-database.md](./architecture-database.md)** - Supabase database architecture
 
-### **📋 Planification & Stratégie** 
-- **[planning-dermai-v2.md](./planning-dermai-v2.md)** - Roadmap et planning détaillé
-- **[monetization-strategy.md](./monetization-strategy.md)** - Stratégie de monétisation et catalogue interne
+### **📋 Planning & Strategy** 
+- **[planning-dermai-v2.md](./planning-dermai-v2.md)** - Detailed roadmap and planning
+- **[monetization-strategy.md](./monetization-strategy.md)** - Monetization strategy and internal catalog
 
-### **🔬 Logique Métier**
-- **[dermatological-logic.md](./dermatological-logic.md)** - Logique dermatologique 3 phases
-- **[educational-interface.md](./educational-interface.md)** - Interface éducative utilisateur
+### **🔬 Business Logic**
+- **[dermatological-logic.md](./dermatological-logic.md)** - 3-phase dermatological logic
+- **[educational-interface.md](./educational-interface.md)** - User educational interface
 
-### **🚀 Amélioration & Optimisation**
-- **[dermai-diagnostic-improvement-strategy.md](./dermai-diagnostic-improvement-strategy.md)** - Stratégie d'amélioration du diagnostic IA
+### **🚀 Improvement & Optimization**
+- **[dermai-diagnostic-improvement-strategy.md](./dermai-diagnostic-improvement-strategy.md)** - AI diagnostic improvement strategy
 
-## 🎯 **Navigation Rapide**
+## 🎯 **Quick Navigation**
 
-### **Pour débuter :**
-1. Lire `spec.md` pour comprendre l'architecture globale
-2. Consulter `planning-dermai-v2.md` pour la roadmap
-3. Étudier `dermatological-logic.md` pour la logique métier
+### **To get started:**
+1. Read `spec.md` to understand global architecture
+2. Consult `planning-dermai-v2.md` for roadmap
+3. Study `dermatological-logic.md` for business logic
 
-### **Pour le développement :**
+### **For development:**
 - **Frontend/UI** → `spec.md` + `educational-interface.md`
 - **Backend/API** → `spec.md` + `architecture-database.md`
-- **IA/Diagnostic** → `dermai-diagnostic-improvement-strategy.md`
+- **AI/Diagnosis** → `dermai-diagnostic-improvement-strategy.md`
 - **Business** → `monetization-strategy.md`
 
-### **Pour la maintenance :**
-- **Déploiement** → Section 10 de `spec.md`
-- **Base de données** → `architecture-database.md`
-- **Logique phases** → `dermatological-logic.md`
+### **For maintenance:**
+- **Deployment** → Section 10 of `spec.md`
+- **Database** → `architecture-database.md`
+- **Phase logic** → `dermatological-logic.md`
 
-## ✅ **État des Implémentations**
+## ✅ **Implementation Status**
 
-### **🎉 Fonctionnalités Terminées**
-- ✅ Routine unifiée 3 phases avec transition intelligente
-- ✅ Interface éducative avec durées personnalisées
-- ✅ Déploiement Vercel optimisé (compression payload)
-- ✅ Logique dermatologique validée scientifiquement
-- ✅ Numérotation cohérente des phases (1,2,3...)
-- ✅ Critères visuels d'évolution (vs timing arbitraire)
+### **🎉 Completed Features**
+- ✅ 3-phase unified routine with intelligent transition
+- ✅ Educational interface with personalized durations
+- ✅ Optimized Vercel deployment (payload compression)
+- ✅ Scientifically validated dermatological logic
+- ✅ Consistent phase numbering (1,2,3...)
+- ✅ Visual evolution criteria (vs arbitrary timing)
 
-### **🔄 En Cours**
-- Interface utilisateur dashboard/historique
-- Système d'authentification NextAuth.js
-- Base de données Supabase complète
+### **🔄 In Progress**
+- User dashboard/history interface
+- NextAuth.js authentication system
+- Complete Supabase database
 
-### **📈 Prochaines Étapes**
-- Tests utilisateur complets
-- Optimisation prompts IA pour diagnostic précis
-- Intégration APIs d'affiliation (Sephora, Amazon)
-- Système de feedback et amélioration continue
+### **📈 Next Steps**
+- Complete user testing
+- AI prompt optimization for precise diagnosis
+- Affiliate API integration (Sephora, Amazon)
+- Feedback system and continuous improvement
 
 ## 📞 **Contacts & Support**
 
-- **Documentation technique** : Voir `spec.md`
-- **Questions logique dermatologique** : Voir `dermatological-logic.md`
-- **Problèmes déploiement** : Section 10 de `spec.md`
+- **Technical documentation** : See `spec.md`
+- **Dermatological logic questions** : See `dermatological-logic.md`
+- **Deployment issues** : Section 10 of `spec.md`
 
 ---
 
-*Documentation consolidée le 02 janvier 2025*  
-*Tous les documents obsolètes supprimés, informations centralisées*
+*Documentation consolidated on January 2, 2025*  
+*All obsolete documents removed, information centralized*
