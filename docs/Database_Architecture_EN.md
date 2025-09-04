@@ -1,15 +1,15 @@
-# 🏗️ Architecture Base de Données - DermAI V2
+# 🏗️ Database Architecture – DermAI V2
 
-## Vue d'ensemble
+## Overview
 
-Ce document définit l'architecture complète de la base de données Supabase pour DermAI V2, incluant les schémas, relations, politiques de sécurité et migrations.
+This document defines the complete Supabase database architecture for DermAI V2, including schemas, relationships, security policies, and migrations.
 
 ---
 
-## 📊 **SCHÉMA DE BASE DE DONNÉES**
+## 📊 **DATABASE SCHEMA**
 
 ### **Table: profiles** 
-*Profils utilisateurs étendus*
+*Extended user profiles*
 
 ```sql
 CREATE TABLE profiles (
@@ -23,45 +23,45 @@ CREATE TABLE profiles (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   
-  -- Préférences utilisateur
+  -- User preferences
   notification_preferences JSONB DEFAULT '{"email": true, "push": false, "sms": false}',
   privacy_settings JSONB DEFAULT '{"share_analytics": true, "public_profile": false}',
   
-  -- Métadonnées d'acquisition
+  -- Acquisition metadata
   acquisition_source TEXT, -- 'organic', 'google_ads', 'social', etc.
   utm_campaign TEXT,
   utm_source TEXT,
   utm_medium TEXT
 );
 
--- Index pour performance
+-- Indexes for performance
 CREATE INDEX idx_profiles_email ON profiles(email);
 CREATE INDEX idx_profiles_subscription ON profiles(subscription_status);
 CREATE INDEX idx_profiles_created_at ON profiles(created_at);
 ```
 
 ### **Table: user_analyses**
-*Analyses et diagnostics utilisateur*
+*User analyses and diagnoses*
 
 ```sql
 CREATE TABLE user_analyses (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
   
-  -- Données de base
-  analysis_data JSONB NOT NULL, -- Résultat complet de l'analyse IA
-  photos_metadata JSONB, -- Métadonnées des photos (URLs, types, etc.)
-  questionnaire_data JSONB, -- Réponses au questionnaire
+  -- Core data
+  analysis_data JSONB NOT NULL, -- Full AI analysis result
+  photos_metadata JSONB, -- Photo metadata (URLs, types, etc.)
+  questionnaire_data JSONB, -- Questionnaire answers
   
-  -- Statut et partage
+  -- Status & sharing
   status TEXT DEFAULT 'completed' CHECK (status IN ('pending', 'processing', 'completed', 'error')),
   shared_publicly BOOLEAN DEFAULT FALSE,
-  share_token TEXT UNIQUE, -- Token pour partage public
+  share_token TEXT UNIQUE, -- Token for public sharing
   share_expires_at TIMESTAMP WITH TIME ZONE,
   
-  -- Tracking et analytics
-  analysis_version TEXT DEFAULT '1.0', -- Version du prompt/algorithme
-  processing_time_ms INTEGER, -- Temps de traitement
+  -- Tracking & analytics
+  analysis_version TEXT DEFAULT '1.0', -- Prompt/algorithm version
+  processing_time_ms INTEGER, -- Processing time
   ai_model_used TEXT DEFAULT 'gpt-4o-vision',
   
   -- Timestamps
@@ -69,7 +69,7 @@ CREATE TABLE user_analyses (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Index pour performance
+-- Indexes for performance
 CREATE INDEX idx_analyses_user_id ON user_analyses(user_id);
 CREATE INDEX idx_analyses_created_at ON user_analyses(created_at);
 CREATE INDEX idx_analyses_status ON user_analyses(status);
@@ -77,7 +77,7 @@ CREATE INDEX idx_analyses_share_token ON user_analyses(share_token) WHERE share_
 ```
 
 ### **Table: skin_progress**
-*Suivi de l'évolution cutanée*
+*Tracking skin evolution*
 
 ```sql
 CREATE TABLE skin_progress (
@@ -86,33 +86,33 @@ CREATE TABLE skin_progress (
   base_analysis_id UUID REFERENCES user_analyses(id) ON DELETE CASCADE,
   comparison_analysis_id UUID REFERENCES user_analyses(id) ON DELETE CASCADE,
   
-  -- Données de comparaison
-  comparison_data JSONB NOT NULL, -- Scores différentiels, pourcentages d'amélioration
-  improvement_areas TEXT[], -- Zones d'amélioration identifiées
-  regression_areas TEXT[], -- Zones de dégradation (si applicable)
+  -- Comparison data
+  comparison_data JSONB NOT NULL, -- Differential scores, % improvement
+  improvement_areas TEXT[], -- Identified areas of improvement
+  regression_areas TEXT[], -- Areas of worsening (if any)
   
-  -- Métadonnées
-  time_period_days INTEGER, -- Nombre de jours entre les analyses
-  progress_notes TEXT, -- Notes utilisateur optionnelles
-  ai_insights TEXT, -- Insights générés par l'IA
+  -- Metadata
+  time_period_days INTEGER, -- # of days between analyses
+  progress_notes TEXT, -- Optional user notes
+  ai_insights TEXT, -- AI-generated insights
   
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Index
+-- Indexes
 CREATE INDEX idx_progress_user_id ON skin_progress(user_id);
 CREATE INDEX idx_progress_base_analysis ON skin_progress(base_analysis_id);
 CREATE INDEX idx_progress_created_at ON skin_progress(created_at);
 ```
 
 ### **Table: products**
-*Catalogue interne de produits soigneusement curatés*
+*Carefully curated internal product catalog*
 
 ```sql
 CREATE TABLE products (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   
-  -- Informations de base
+  -- Basic information
   name TEXT NOT NULL,
   brand TEXT NOT NULL,
   category TEXT NOT NULL CHECK (category IN (
@@ -122,34 +122,34 @@ CREATE TABLE products (
   )),
   subcategory TEXT, -- 'gel_cleanser', 'vitamin_c_serum', 'retinol_treatment'
   
-  -- Données commerciales
+  -- Commercial data
   price DECIMAL(8,2) NOT NULL,
   affiliate_link TEXT NOT NULL,
-  commission_rate DECIMAL(5,4) DEFAULT 0.0500, -- ex: 0.0800 pour 8%
+  commission_rate DECIMAL(5,4) DEFAULT 0.0500, -- e.g., 0.0800 for 8%
   
-  -- Critères de sélection IA intelligente
+  -- Intelligent AI selection criteria
   skin_types TEXT[] NOT NULL DEFAULT '{}', -- ['dry', 'oily', 'combination', 'sensitive']
   target_concerns TEXT[] NOT NULL DEFAULT '{}', -- ['dehydration', 'acne', 'wrinkles', 'hyperpigmentation']
   concern_intensity TEXT DEFAULT 'moderate' CHECK (concern_intensity IN ('mild', 'moderate', 'severe')),
   routine_position TEXT[] DEFAULT '{"both"}' CHECK (routine_position <@ ARRAY['morning', 'evening', 'both']),
   
-  -- Métadonnées de qualité pour priorisation
+  -- Quality metadata for prioritization
   efficacy_rating DECIMAL(3,2) DEFAULT 4.0 CHECK (efficacy_rating BETWEEN 1.0 AND 5.0),
   user_rating DECIMAL(3,2), 
   reviews_count INTEGER DEFAULT 0,
   clinical_proven BOOLEAN DEFAULT FALSE,
   dermatologist_recommended BOOLEAN DEFAULT FALSE,
   
-  -- Gestion intelligente du catalogue
+  -- Smart catalog management
   in_stock BOOLEAN DEFAULT TRUE,
   priority_score INTEGER DEFAULT 100 CHECK (priority_score BETWEEN 1 AND 100),
   budget_tier TEXT DEFAULT 'mid' CHECK (budget_tier IN ('budget', 'mid', 'premium', 'luxury')),
   
-  -- Données d'optimisation
-  conversion_rate DECIMAL(5,4) DEFAULT 0.0000, -- Taux de conversion moyen
-  recommendation_count INTEGER DEFAULT 0, -- Nombre de fois recommandé
+  -- Optimization data
+  conversion_rate DECIMAL(5,4) DEFAULT 0.0000, -- Average conversion rate
+  recommendation_count INTEGER DEFAULT 0, -- # of times recommended
   
-  -- Images et descriptions
+  -- Images & descriptions
   image_url TEXT,
   description TEXT,
   key_ingredients TEXT[],
@@ -158,7 +158,7 @@ CREATE TABLE products (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Index pour performance de sélection IA
+-- Indexes for AI-driven selection performance
 CREATE INDEX idx_products_category ON products(category);
 CREATE INDEX idx_products_concerns ON products USING GIN(target_concerns);
 CREATE INDEX idx_products_skin_types ON products USING GIN(skin_types);
@@ -168,7 +168,7 @@ CREATE INDEX idx_products_in_stock ON products(in_stock) WHERE in_stock = TRUE;
 ```
 
 ### **Table: product_interactions**
-*Tracking des interactions avec les produits internes*
+*Tracking interactions with internal products*
 
 ```sql
 CREATE TABLE product_interactions (
@@ -177,28 +177,28 @@ CREATE TABLE product_interactions (
   analysis_id UUID REFERENCES user_analyses(id) ON DELETE SET NULL,
   product_id UUID REFERENCES products(id) ON DELETE CASCADE,
   
-  -- Context de la recommandation
-  recommendation_context JSONB, -- Pourquoi ce produit a été recommandé
-  position_in_routine INTEGER, -- Position dans la routine recommandée
-  budget_allocated DECIMAL(8,2), -- Budget alloué pour ce produit
+  -- Recommendation context
+  recommendation_context JSONB, -- Why this product was recommended
+  position_in_routine INTEGER, -- Position within the recommended routine
+  budget_allocated DECIMAL(8,2), -- Budget allocated to this product
   
-  -- Tracking interaction
+  -- Interaction tracking
   interaction_type TEXT NOT NULL CHECK (interaction_type IN ('recommended', 'viewed', 'clicked', 'wishlisted', 'purchased')),
   interaction_timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   
-  -- Données de conversion
+  -- Conversion data
   conversion_confirmed BOOLEAN DEFAULT FALSE,
   conversion_timestamp TIMESTAMP WITH TIME ZONE,
   purchase_amount DECIMAL(8,2),
   commission_earned DECIMAL(8,2),
   
-  -- Métadonnées
+  -- Metadata
   user_agent TEXT,
   device_type TEXT,
   utm_parameters JSONB
 );
 
--- Index pour analytics de performance produits
+-- Indexes for product-performance analytics
 CREATE INDEX idx_product_interactions_product_id ON product_interactions(product_id);
 CREATE INDEX idx_product_interactions_user_id ON product_interactions(user_id);
 CREATE INDEX idx_product_interactions_type ON product_interactions(interaction_type);
@@ -207,31 +207,31 @@ CREATE INDEX idx_product_interactions_timestamp ON product_interactions(interact
 ```
 
 ### **Table: user_preferences**
-*Préférences détaillées pour la personnalisation*
+*Detailed preferences for personalization*
 
 ```sql
 CREATE TABLE user_preferences (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES profiles(id) ON DELETE CASCADE UNIQUE,
   
-  -- Préférences produits
-  preferred_brands TEXT[], -- Marques préférées
+  -- Product preferences
+  preferred_brands TEXT[], -- Favorite brands
   budget_range_min DECIMAL(8,2) DEFAULT 0,
   budget_range_max DECIMAL(8,2) DEFAULT 1000,
-  excluded_ingredients TEXT[], -- Ingrédients à éviter
-  preferred_product_types TEXT[], -- Types de produits préférés
+  excluded_ingredients TEXT[], -- Ingredients to avoid
+  preferred_product_types TEXT[], -- Preferred product types
   
-  -- Préférences routine
+  -- Routine preferences
   routine_frequency TEXT DEFAULT 'daily' CHECK (routine_frequency IN ('minimal', 'daily', 'intensive')),
   morning_routine_duration INTEGER DEFAULT 10, -- minutes
   evening_routine_duration INTEGER DEFAULT 15, -- minutes
   
-  -- Préférences communication
+  -- Communication preferences
   reminder_frequency TEXT DEFAULT 'weekly' CHECK (reminder_frequency IN ('never', 'weekly', 'monthly')),
   preferred_communication_time TIME DEFAULT '09:00:00',
   language_preference TEXT DEFAULT 'fr' CHECK (language_preference IN ('fr', 'en', 'es', 'de')),
   
-  -- Tracking et analytics
+  -- Tracking & analytics
   analytics_consent BOOLEAN DEFAULT TRUE,
   marketing_consent BOOLEAN DEFAULT FALSE,
   data_sharing_consent BOOLEAN DEFAULT FALSE,
@@ -240,12 +240,12 @@ CREATE TABLE user_preferences (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Index
+-- Indexes
 CREATE INDEX idx_user_preferences_user_id ON user_preferences(user_id);
 ```
 
 ### **Table: ai_feedback**
-*Feedback utilisateur sur les analyses IA*
+*User feedback on AI analyses*
 
 ```sql
 CREATE TABLE ai_feedback (
@@ -253,50 +253,50 @@ CREATE TABLE ai_feedback (
   user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
   analysis_id UUID REFERENCES user_analyses(id) ON DELETE CASCADE,
   
-  -- Feedback sur l'analyse
+  -- Analysis feedback
   accuracy_rating INTEGER CHECK (accuracy_rating BETWEEN 1 AND 5),
   usefulness_rating INTEGER CHECK (usefulness_rating BETWEEN 1 AND 5),
   product_relevance_rating INTEGER CHECK (product_relevance_rating BETWEEN 1 AND 5),
   
-  -- Feedback textuel
+  -- Text feedback
   feedback_text TEXT,
   improvement_suggestions TEXT,
   
-  -- Feedback spécifique
-  inaccurate_areas TEXT[], -- Zones mal analysées selon l'utilisateur
-  helpful_insights TEXT[], -- Insights particulièrement utiles
+  -- Specific feedback
+  inaccurate_areas TEXT[], -- Areas the user felt were misanalyzed
+  helpful_insights TEXT[], -- Particularly useful insights
   
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Index
+-- Indexes
 CREATE INDEX idx_feedback_analysis_id ON ai_feedback(analysis_id);
 CREATE INDEX idx_feedback_user_id ON ai_feedback(user_id);
 CREATE INDEX idx_feedback_ratings ON ai_feedback(accuracy_rating, usefulness_rating);
 ```
 
 ### **Table: analytics_events**
-*Événements analytics détaillés*
+*Detailed analytics events*
 
 ```sql
 CREATE TABLE analytics_events (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES profiles(id) ON DELETE SET NULL, -- NULL pour événements anonymes
+  user_id UUID REFERENCES profiles(id) ON DELETE SET NULL, -- NULL for anonymous events
   session_id TEXT NOT NULL,
   
-  -- Données de l'événement
+  -- Event data
   event_name TEXT NOT NULL,
   event_category TEXT, -- 'engagement', 'conversion', 'error', etc.
   event_properties JSONB,
   
-  -- Contexte utilisateur
+  -- User context
   page_url TEXT,
   referrer_url TEXT,
   user_agent TEXT,
   device_type TEXT,
   screen_resolution TEXT,
   
-  -- Géolocalisation (anonymisée)
+  -- Geolocation (anonymized)
   country_code TEXT,
   region TEXT,
   
@@ -306,7 +306,7 @@ CREATE TABLE analytics_events (
   time_on_page_ms INTEGER
 );
 
--- Index pour performance analytics
+-- Indexes for analytics performance
 CREATE INDEX idx_analytics_event_name ON analytics_events(event_name);
 CREATE INDEX idx_analytics_timestamp ON analytics_events(timestamp);
 CREATE INDEX idx_analytics_user_id ON analytics_events(user_id);
@@ -315,15 +315,15 @@ CREATE INDEX idx_analytics_session ON analytics_events(session_id);
 
 ---
 
-## 🔒 **POLITIQUES DE SÉCURITÉ (RLS)**
+## 🔒 **SECURITY POLICIES (RLS)**
 
-### **Row Level Security pour profiles**
+### **Row Level Security for profiles**
 
 ```sql
--- Activer RLS
+-- Enable RLS
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 
--- Politique : Utilisateurs peuvent voir/modifier uniquement leur profil
+-- Policy: Users can view/update only their profile
 CREATE POLICY "Users can view own profile" ON profiles
   FOR SELECT USING (auth.uid() = id);
 
@@ -334,29 +334,29 @@ CREATE POLICY "Users can insert own profile" ON profiles
   FOR INSERT WITH CHECK (auth.uid() = id);
 ```
 
-### **Row Level Security pour user_analyses**
+### **Row Level Security for user_analyses**
 
 ```sql
 ALTER TABLE user_analyses ENABLE ROW LEVEL SECURITY;
 
--- Utilisateurs peuvent voir leurs analyses
+-- Users can view their own analyses
 CREATE POLICY "Users can view own analyses" ON user_analyses
   FOR SELECT USING (auth.uid() = user_id);
 
--- Utilisateurs peuvent créer des analyses
+-- Users can create analyses
 CREATE POLICY "Users can create analyses" ON user_analyses
   FOR INSERT WITH CHECK (auth.uid() = user_id);
 
--- Utilisateurs peuvent modifier leurs analyses
+-- Users can modify their analyses
 CREATE POLICY "Users can update own analyses" ON user_analyses
   FOR UPDATE USING (auth.uid() = user_id);
 
--- Analyses publiques visibles par tous
+-- Public analyses are viewable by everyone
 CREATE POLICY "Public analyses are viewable by all" ON user_analyses
   FOR SELECT USING (shared_publicly = TRUE AND share_expires_at > NOW());
 ```
 
-### **Row Level Security pour autres tables**
+### **Row Level Security for other tables**
 
 ```sql
 -- skin_progress
@@ -369,7 +369,7 @@ ALTER TABLE affiliate_interactions ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view own interactions" ON affiliate_interactions
   FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "System can insert interactions" ON affiliate_interactions
-  FOR INSERT WITH CHECK (TRUE); -- Permet l'insertion depuis l'API
+  FOR INSERT WITH CHECK (TRUE); -- Allow insertion from the API
 
 -- user_preferences
 ALTER TABLE user_preferences ENABLE ROW LEVEL SECURITY;
@@ -384,12 +384,12 @@ CREATE POLICY "Users can manage own feedback" ON ai_feedback
 
 ---
 
-## 🔄 **TRIGGERS ET FONCTIONS**
+## 🔄 **TRIGGERS & FUNCTIONS**
 
-### **Fonction de mise à jour automatique**
+### **Auto-update function**
 
 ```sql
--- Fonction générique pour updated_at
+-- Generic function for updated_at
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -398,7 +398,7 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
--- Appliquer aux tables nécessaires
+-- Apply to required tables
 CREATE TRIGGER update_profiles_updated_at BEFORE UPDATE ON profiles
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -409,7 +409,7 @@ CREATE TRIGGER update_preferences_updated_at BEFORE UPDATE ON user_preferences
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 ```
 
-### **Fonction de calcul automatique de progression**
+### **Auto-calculation function for progress**
 
 ```sql
 CREATE OR REPLACE FUNCTION calculate_skin_progress(
@@ -420,11 +420,11 @@ DECLARE
   progress_data JSONB;
   score_improvement DECIMAL;
 BEGIN
-  -- Calculer l'amélioration du score global
+  -- Compute improvement of the overall score
   score_improvement := (comparison_analysis_data->>'globalScore')::DECIMAL 
                      - (base_analysis_data->>'globalScore')::DECIMAL;
   
-  -- Construire l'objet de progression
+  -- Build the progress object
   progress_data := jsonb_build_object(
     'score_improvement', score_improvement,
     'improvement_percentage', 
@@ -443,9 +443,9 @@ $$ LANGUAGE plpgsql;
 
 ---
 
-## 📈 **VUES POUR ANALYTICS**
+## 📈 **VIEWS FOR ANALYTICS**
 
-### **Vue des métriques utilisateur**
+### **User metrics view**
 
 ```sql
 CREATE VIEW user_metrics AS
@@ -465,7 +465,7 @@ LEFT JOIN affiliate_interactions ai ON p.id = ai.user_id
 GROUP BY p.id, p.email, p.subscription_status, p.created_at;
 ```
 
-### **Vue des performances d'affiliation**
+### **Affiliate performance view**
 
 ```sql
 CREATE VIEW affiliate_performance AS
@@ -490,12 +490,12 @@ ORDER BY total_commission DESC;
 
 ---
 
-## 🚀 **SCRIPT DE MIGRATION INITIAL**
+## 🚀 **INITIAL MIGRATION SCRIPT**
 
 ```sql
--- Script de création complète à exécuter sur Supabase
+-- Full creation script to run on Supabase
 
--- 1. Créer les tables dans l'ordre
+-- 1. Create tables in order
 \i profiles.sql
 \i user_analyses.sql  
 \i skin_progress.sql
@@ -504,39 +504,39 @@ ORDER BY total_commission DESC;
 \i ai_feedback.sql
 \i analytics_events.sql
 
--- 2. Créer les fonctions
+-- 2. Create functions
 \i functions.sql
 
--- 3. Appliquer les politiques RLS
+-- 3. Apply RLS policies
 \i security_policies.sql
 
--- 4. Créer les vues
+-- 4. Create views
 \i analytics_views.sql
 
--- 5. Insérer des données de test (optionnel)
+-- 5. Insert test data (optional)
 \i test_data.sql
 ```
 
 ---
 
-## 📊 **STRATÉGIE DE BACKUP ET MAINTENANCE**
+## 📊 **BACKUP & MAINTENANCE STRATEGY**
 
-### **Backup automatique**
-- Backup quotidien automatique via Supabase
-- Export hebdomadaire vers stockage externe
-- Rétention de 30 jours pour les backups quotidiens
-- Rétention de 12 mois pour les backups mensuels
+### **Automatic backups**
+- Daily automatic backup via Supabase
+- Weekly export to external storage
+- 30‑day retention for daily backups
+- 12‑month retention for monthly backups
 
-### **Maintenance des données**
-- Purge automatique des analytics_events > 6 mois
-- Archivage des analyses inactives > 2 ans
-- Nettoyage des tokens de partage expirés
-- Optimisation des index mensuellement
+### **Data maintenance**
+- Automatic purge of `analytics_events` > 6 months
+- Archive inactive analyses > 2 years
+- Clean expired share tokens
+- Monthly index optimization
 
 ### **Monitoring**
-- Alertes sur la croissance rapide des tables
-- Surveillance des performances des requêtes
-- Monitoring de l'utilisation du stockage
-- Logs des accès aux données sensibles
+- Alerts on rapid table growth
+- Query performance monitoring
+- Storage usage monitoring
+- Logs of access to sensitive data
 
-Cette architecture est conçue pour être scalable, sécurisée et conforme au RGPD, tout en supportant les besoins analytiques et business de DermAI V2.
+This architecture is designed to be scalable, secure, and GDPR‑compliant while supporting DermAI V2’s analytical and business needs.

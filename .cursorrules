@@ -1,306 +1,306 @@
-# 📚 RÈGLES DOCUMENTATION DERMAI V2
+# 📚 DermAI V2 Documentation Rules
 
-## 🎯 PRINCIPE FONDAMENTAL
-**spec.md est le point central** qui résume TOUTES les spécificités de l'application et référence TOUTE la documentation.
+## 🎯 Fundamental Principle
+**`spec.md` is the central hub** that summarizes **ALL** application specifics and references **ALL** documentation.
 
-## 📁 STRUCTURE DOCUMENTAIRE OBLIGATOIRE
+## 📁 Mandatory Documentation Structure
 
-### **Localisation des documents**
-- **TOUS** les documents de spécifications doivent être dans `/docs/`
-- **AUCUN** document `.md` de spécification à la racine (sauf README.md projet)
-- **INTERDICTION** de créer des documents temporaires de correction/changelog
+### **Document Location**
+- **ALL** specification documents must be in `/docs/`
+- **NO** specification `.md` files at the project root (except the project `README.md`)
+- **FORBIDDEN** to create temporary correction/changelog documents
 
-### **Documents centraux autorisés dans /docs/**
-1. **spec.md** - Point central, résumé complet application
-2. **architecture-database.md** - Architecture base de données
-3. **planning-dermai-v2.md** - Roadmap et planning
-4. **monetization-strategy.md** - Stratégie business et revenus
-5. **dermatological-logic.md** - Logique métier dermatologique
-6. **educational-interface.md** - Interface éducative utilisateur
-7. **dermai-diagnostic-improvement-strategy.md** - Amélioration IA
-8. **README.md** - Index navigation documentation
+### **Core Documents Allowed in `/docs/`**
+1. **spec.md** — Central hub, complete app summary
+2. **architecture-database.md** — Database architecture
+3. **planning-dermai-v2.md** — Roadmap and planning
+4. **monetization-strategy.md** — Business strategy and revenue
+5. **dermatological-logic.md** — Dermatological business logic
+6. **educational-interface.md** — User educational interface
+7. **dermai-diagnostic-improvement-strategy.md** — AI improvement
+8. **README.md** — Documentation navigation index
 
-## 🚨 RÈGLES STRICTES DE CRÉATION
+## 🚨 Strict Creation Rules
 
-### **AVANT de créer un nouveau document :**
-1. **OBLIGATOIRE** : Vérifier si l'information peut être intégrée dans un document existant
-2. **SI NOUVEAU DOCUMENT nécessaire** :
-   - Créer d'ABORD la section dans `spec.md` qui référence ce nouveau document
-   - Expliquer dans `spec.md` pourquoi ce document séparé est nécessaire
-   - Ajouter le lien dans `docs/README.md` section appropriée
+### **BEFORE creating a new document:**
+1. **MANDATORY:** Check if the information can be integrated into an existing document
+2. **IF a NEW DOCUMENT is necessary:**
+   - **First**, create the section in `spec.md` that references this new document
+   - Explain in `spec.md` why this separate document is needed
+   - Add the link in `docs/README.md` under the appropriate section
 
-### **Types de documents INTERDITS :**
-❌ `CORRECTION_*.md` - Intégrer directement dans le code ou doc principal
-❌ `FIX_*.md` - Corriger directement, pas de documentation intermédiaire  
-❌ `CHANGELOG_*.md` - Utiliser git commits et intégrer dans doc principal
-❌ `SUMMARY_*.md` - Résumer dans le document principal concerné
-❌ `IMPLEMENTATION_*.md` - Documenter dans spec.md section technique
-❌ `UPDATE_*.md` - Mettre à jour le document principal directement
-❌ Tout fichier temporaire de correction ou de travail
+### **Forbidden Document Types:**
+❌ `CORRECTION_*.md` — Integrate directly into code or the main doc  
+❌ `FIX_*.md` — Fix directly; no intermediate documentation  
+❌ `CHANGELOG_*.md` — Use git commits and integrate into the main doc  
+❌ `SUMMARY_*.md` — Summarize within the relevant main document  
+❌ `IMPLEMENTATION_*.md` — Document in the technical section of `spec.md`  
+❌ `UPDATE_*.md` — Update the main document directly  
+❌ Any temporary correction or working file
 
-### **Cas autorisés pour NOUVEAU document :**
-✅ **Nouvelle fonctionnalité majeure** (ex: Dashboard utilisateur)
-✅ **Nouveau compartiment technique** (ex: Système de paiement)
-✅ **Nouvelle intégration externe** (ex: API Shopify)
-✅ **Nouvelle stratégie business** (ex: Modèle SaaS)
+### **Allowed Cases for a NEW Document:**
+✅ **New major feature** (e.g., User dashboard)  
+✅ **New technical subsystem** (e.g., Payment system)  
+✅ **New external integration** (e.g., Shopify API)  
+✅ **New business strategy** (e.g., SaaS model)
 
-## 📝 PROCÉDURE OBLIGATOIRE NOUVELLE FONCTIONNALITÉ
+## 📝 Mandatory Procedure for a New Feature
 
-### **Étape 1 : Mise à jour spec.md**
+### **Step 1: Update `spec.md`**
 ```markdown
-## X. [NOUVEAU] Nom de la fonctionnalité
+## X. [NEW] Feature Name
 
-### X.1. Vue d'ensemble
-[Description courte de la fonctionnalité]
+### X.1. Overview
+[Short description of the feature]
 
-### X.2. Architecture technique
-[Résumé technique]
+### X.2. Technical Architecture
+[Technical summary]
 
-### X.3. Documentation détaillée
-Voir [nom-fonctionnalite.md](./nom-fonctionnalite.md) pour les spécifications complètes.
+### X.3. Detailed Documentation
+See [feature-name.md](./feature-name.md) for full specifications.
 ```
 
-### **Étape 2 : Création document détaillé**
-- Nom : `docs/nom-fonctionnalite.md`
-- Structure obligatoire :
+### **Step 2: Create Detailed Document**
+- Name: `docs/feature-name.md`
+- Required structure:
 ```markdown
-# Nom de la Fonctionnalité
+# Feature Name
 
-## Vue d'ensemble
-[Lien avec l'écosystème DermAI]
+## Overview
+[Link to DermAI ecosystem]
 
-## Spécifications techniques
-[Détails complets]
+## Technical Specifications
+[Full details]
 
-## Intégration
-[Comment s'intègre avec l'existant]
+## Integration
+[How it integrates with existing systems]
 ```
 
-### **Étape 3 : Mise à jour README.md**
-Ajouter dans la section appropriée de `docs/README.md`
+### **Step 3: Update `README.md`**
+Add it in the appropriate section of `docs/README.md`
 
-## 🛠️ RÈGLES DE MODIFICATION
+## 🛠️ Modification Rules
 
-### **Modification existante :**
-- Modifier DIRECTEMENT le document principal concerné
-- PAS de document intermédiaire de correction
-- Si changement majeur : noter dans spec.md section concernée
+### **Modifying Existing Content:**
+- Edit the relevant main document **directly**
+- **No** intermediate correction document
+- For major changes: note it in the relevant section of `spec.md`
 
-### **Correction de bug/problème :**
-- Corriger le code directement
-- Si impact sur architecture : mettre à jour spec.md
-- PAS de document de correction séparé
+### **Bug/Issue Fixes:**
+- Fix the code directly
+- If it impacts architecture: update `spec.md`
+- **No** separate correction document
 
-### **Amélioration UX/UI :**
-- Si mineure : pas de documentation
-- Si majeure : section dans spec.md + mise à jour document concerné
+### **UX/UI Improvements:**
+- If minor: no documentation
+- If major: section in `spec.md` + update the relevant document
 
-## 🎯 RESPONSABILITÉS PAR DOCUMENT
+## 🎯 Responsibilities per Document
 
-### **spec.md doit contenir :**
-- Vue d'ensemble complète de l'application
-- Toutes les fonctionnalités (résumé)
-- Architecture technique globale
-- Stack technologique complète
-- Configuration déploiement
-- Références à TOUS les autres documents
+### **`spec.md` must include:**
+- Complete application overview
+- All features (summary)
+- Global technical architecture
+- Full technology stack
+- Deployment configuration
+- References to **ALL** other documents
 
-### **Documents spécialisés contiennent :**
-- Détails approfondis de leur domaine
-- Spécifications techniques précises
-- Exemples et cas d'usage
-- Procédures spécifiques
+### **Specialized documents include:**
+- Deep, domain-specific details
+- Precise technical specs
+- Examples and use cases
+- Specific procedures
 
-## ⚠️ SANCTIONS AUTOMATIQUES
+## ⚠️ Automatic Sanctions
 
-Si ces règles ne sont pas respectées :
-1. **Document mal placé** → Déplacer immédiatement dans /docs/
-2. **Document temporaire** → Intégrer contenu et supprimer
-3. **spec.md non mis à jour** → Ajouter référence obligatoire
-4. **Information dupliquée** → Consolider dans document principal
+If these rules are not followed:
+1. **Misplaced document** → Move immediately to `/docs/`
+2. **Temporary document** → Merge its content and delete it
+3. **`spec.md` not updated** → Add the required reference
+4. **Duplicated information** → Consolidate into the main document
 
-## 🔄 MAINTENANCE DOCUMENTATION
+## 🔄 Documentation Maintenance
 
-### **Révision mensuelle obligatoire :**
-- Vérifier que spec.md référence tout
-- Supprimer documents obsolètes
-- Consolider informations éparpillées
-- Mettre à jour liens et références
+### **Mandatory monthly review:**
+- Ensure `spec.md` references everything
+- Delete obsolete documents
+- Consolidate scattered information
+- Update links and references
 
-### **Avant chaque release majeure :**
-- Validation complète de spec.md
-- Vérification cohérence entre documents
-- Mise à jour des exemples et procédures
+### **Before each major release:**
+- Full validation of `spec.md`
+- Check consistency across documents
+- Update examples and procedures
 
-## 📊 EXEMPLE CONCRET
+## 📊 Concrete Example
 
-**❌ MAUVAIS :**
+**❌ BAD:**
 ```
 /DASHBOARD_IMPLEMENTATION.md
 /USER_PROFILE_FIXES.md
 /PAYMENT_SYSTEM_DRAFT.md
 ```
 
-**✅ BON :**
+**✅ GOOD:**
 ```
-/docs/spec.md (avec section Dashboard référençant dashboard.md)
-/docs/dashboard.md (spécifications complètes Dashboard)
-Code corrigé directement (pas de doc séparé)
-/docs/payment-integration.md (si vraiment nouveau système)
+/docs/spec.md (with a Dashboard section referencing dashboard.md)
+/docs/dashboard.md (complete Dashboard specs)
+Code fixed directly (no separate doc)
+/docs/payment-integration.md (if truly a new system)
 ```
 
-Cette organisation documentaire est **NON-NÉGOCIABLE** et doit être respectée par tous les contributeurs pour maintenir la clarté et la maintenabilité du projet DermAI V2.
+This documentation organization is **NON‑NEGOTIABLE** and must be followed by all contributors to maintain clarity and maintainability for DermAI V2.
 
 ---
 
-# 🧬 RÈGLES SPÉCIFIQUES DERMAI V2
+# 🧬 DermAI V2–Specific Rules
 
-## 🏥 **CONFORMITÉ DERMATOLOGIQUE**
+## 🏥 **Dermatological Compliance**
 
-### **Principes Médicaux Non-Négociables**
-- ❌ **JAMAIS de diagnostic médical** - Rester dans l'univers cosmétique
-- ❌ **JAMAIS de termes anxiogènes** : "maladie", "pathologie", "traitement médical"
-- ✅ **Toujours utiliser** : "soin", "amélioration", "optimisation", "routine beauté"
-- ✅ **Validation scientifique** : Respecter cycle cellulaire 28 jours dans la logique des phases
+### **Non‑Negotiable Medical Principles**
+- ❌ **NEVER medical diagnosis** — Stay within the cosmetic realm
+- ❌ **NEVER anxiety‑inducing terms**: “disease”, “pathology”, “medical treatment”
+- ✅ **Always use**: “care”, “improvement”, “optimization”, “beauty routine”
+- ✅ **Scientific validation**: Respect the 28‑day cell cycle in the phase logic
 
-### **Vocabulaire Autorisé/Interdit**
+### **Allowed/Forbidden Vocabulary**
 ```
-❌ INTERDIT                    ✅ AUTORISÉ
-"Votre peau est abîmée"    →   "Votre peau montre des zones à optimiser"
-"Traitement médical"       →   "Soin ciblé"
-"Pathologie cutanée"       →   "Préoccupation beauté"
-"Diagnostic médical"       →   "Analyse personnalisée"
+❌ FORBIDDEN                      ✅ ALLOWED
+“Your skin is damaged”       →   “Your skin shows areas to optimize”
+“Medical treatment”          →   “Targeted care”
+“Skin pathology”             →   “Beauty concern”
+“Medical diagnosis”          →   “Personalized analysis”
 ```
 
-## 🎨 **COHÉRENCE UI/UX**
+## 🎨 **UI/UX Consistency**
 
-### **Design System Obligatoire**
-- **Couleurs** : Palette définie dans `spec.md` section 6.1.1
-- **Typographie** : Inter pour UI, Neue Haas Grotesk pour branding
-- **Composants** : Réutiliser les composants existants `/src/components/`
-- **Responsive** : Mobile-first obligatoire
+### **Mandatory Design System**
+- **Colors**: Palette defined in `spec.md` section 6.1.1
+- **Typography**: Inter for UI, Neue Haas Grotesk for branding
+- **Components**: Reuse existing components in `/src/components/`
+- **Responsive**: Mobile‑first required
 
-### **Règles d'Interface**
-- **Numérotation phases** : Toujours 1,2,3... par phase (jamais 100, 200...)
-- **Badges temporels** : Icônes cohérentes ☀️🌙📈⚡
-- **Messages** : Ton bienveillant et expert, jamais anxiogène
-- **Loading states** : Toujours prévoir états de chargement
+### **Interface Rules**
+- **Phase numbering**: Always 1, 2, 3… per phase (never 100, 200…)
+- **Temporal badges**: Consistent icons ☀️🌙📈⚡
+- **Messages**: Kind and expert tone, never anxiety‑inducing
+- **Loading states**: Always provide loading states
 
-## 🤖 **LOGIQUE IA ET PROMPTS**
+## 🤖 **AI Logic & Prompts**
 
-### **Génération de Routines**
-- **3 Phases obligatoires** : Immédiate → Adaptation → Maintenance
-- **Transition intelligente** : Base durable identifiée et conservée
-- **Critères visuels** : Jamais de timing arbitraire, toujours critères observables
-- **Déduplication** : Éviter produits en double dans vue horaires
+### **Routine Generation**
+- **Mandatory 3 phases**: Immediate → Adaptation → Maintenance
+- **Intelligent transitions**: Durable base identified and preserved
+- **Visual criteria**: Never arbitrary timing; always observable criteria
+- **Deduplication**: Avoid duplicate products in the schedule view
 
-### **Prompts GPT-4o Vision**
-- **Non-directif** : "Analysez objectivement" vs "Cherchez des poils incarnés"
-- **Adaptatif** : Prompt selon profil utilisateur (âge, genre, type peau)
-- **Scoring cohérent** : Pondération dynamique selon contexte
-- **Seuils sécurité** : Jamais >85/100 si incertitude, suggérer consultation si sévère
+### **GPT‑4o Vision Prompts**
+- **Non‑directive**: “Analyze objectively” vs “Look for ingrown hairs”
+- **Adaptive**: Prompt by user profile (age, gender, skin type)
+- **Consistent scoring**: Dynamic weighting by context
+- **Safety thresholds**: Never > 85/100 if uncertain; suggest consultation if severe
 
-## 🔧 **ARCHITECTURE TECHNIQUE**
+## 🔧 **Technical Architecture**
 
-### **Structure de Code Obligatoire**
+### **Mandatory Code Structure**
 ```
 src/
-├── app/              # Pages Next.js 15 App Router
-├── components/       # Composants réutilisables
-│   ├── forms/       # Formulaires et questionnaires
-│   ├── results/     # Affichage résultats
-│   ├── shared/      # Composants partagés
-│   └── upload/      # Upload de photos
-├── services/        # Logique métier
-│   ├── ai/         # Services IA
-│   ├── affiliate/  # Affiliation produits
-│   └── educational/ # Interface éducative
-├── types/          # Types TypeScript
-└── utils/          # Utilitaires
+├── app/              # Next.js 15 App Router pages
+├── components/       # Reusable components
+│   ├── forms/        # Forms and questionnaires
+│   ├── results/      # Results display
+│   ├── shared/       # Shared components
+│   └── upload/       # Photo upload
+├── services/         # Business logic
+│   ├── ai/           # AI services
+│   ├── affiliate/    # Product affiliation
+│   └── educational/  # Educational interface
+├── types/            # TypeScript types
+└── utils/            # Utilities
 ```
 
-### **Convention de Nommage**
-- **Composants** : PascalCase (`AnalysisService`, `PhotoUploadZone`)
-- **Fichiers** : kebab-case (`analysis.service.ts`, `photo-upload-zone.tsx`)
-- **Variables** : camelCase (`beautyAssessment`, `routineSteps`)
-- **Types** : PascalCase avec suffixe (`UnifiedRoutineStep`, `BeautyAssessment`)
+### **Naming Convention**
+- **Components**: PascalCase (`AnalysisService`, `PhotoUploadZone`)
+- **Files**: kebab-case (`analysis.service.ts`, `photo-upload-zone.tsx`)
+- **Variables**: camelCase (`beautyAssessment`, `routineSteps`)
+- **Types**: PascalCase with suffix (`UnifiedRoutineStep`, `BeautyAssessment`)
 
-### **Performance Obligatoire**
-- **Images** : Compression automatique selon nombre (voir `utils/images/compressForAPI.ts`)
-- **API** : Timeout 30s max, gestion erreurs gracieuse
-- **Bundle** : Code splitting par route, lazy loading composants lourds
-- **Types** : TypeScript strict, pas de `any`
+### **Mandatory Performance**
+- **Images**: Automatic compression by count (see `utils/images/compressForAPI.ts`)
+- **API**: 30s timeout, graceful error handling
+- **Bundle**: Route-based code splitting, lazy‑load heavy components
+- **Types**: Strict TypeScript, no `any`
 
-## 📱 **MOBILE-FIRST**
+## 📱 **Mobile‑First**
 
 ### **Responsive Design**
-- **Breakpoints** : `sm:` (640px), `md:` (768px), `lg:` (1024px), `xl:` (1280px)
-- **Touch-friendly** : Boutons minimum 44px, espacements suffisants
-- **Performance mobile** : Images WebP, compression aggressive
-- **Offline** : IndexedDB pour cache, graceful degradation
+- **Breakpoints**: `sm:` (640px), `md:` (768px), `lg:` (1024px), `xl:` (1280px)
+- **Touch‑friendly**: Buttons min 44px, adequate spacing
+- **Mobile performance**: WebP images, aggressive compression
+- **Offline**: IndexedDB for cache, graceful degradation
 
-### **Export Mobile**
-- **Format fixe** : 512x512px pour réseaux sociaux
-- **Qualité** : High-DPI, logo DermAI visible
-- **Contenu** : Condensé mais lisible, branding professionnel
+### **Mobile Export**
+- **Fixed format**: 512×512 px for social networks
+- **Quality**: High‑DPI, DermAI logo visible
+- **Content**: Condensed yet readable, professional branding
 
-## 💰 **AFFILIATION ET BUSINESS**
+## 💰 **Affiliation & Business**
 
-### **Catalogue Interne**
-- **Produits curés** : Jamais de produits génériques ("Soin ciblé adapté")
-- **Prix réels** : Toujours afficher prix et liens d'achat
-- **Tracking** : Événements analytics pour conversions
-- **Fallback** : Si API externe fail, utiliser catalogue interne
+### **Internal Catalog**
+- **Curated products**: Never generic products (“Adapted targeted care”)
+- **Real prices**: Always show prices and purchase links
+- **Tracking**: Analytics events for conversions
+- **Fallback**: If external API fails, use internal catalog
 
-### **Recommandations**
-- **Contextuel** : Selon âge, budget, type peau, préférences
-- **Éviter surdosage** : Maximum 5 produits par routine
-- **Transparence** : Indiquer si lien d'affiliation
+### **Recommendations**
+- **Contextual**: By age, budget, skin type, preferences
+- **Avoid overdosing**: Max 5 products per routine
+- **Transparency**: Indicate if a link is an affiliate link
 
-## 🧪 **TESTS ET VALIDATION**
+## 🧪 **Testing & Validation**
 
-### **Tests Obligatoires**
-- **Unit tests** : Services critiques (`analysis.service.ts`, calculs de phases)
-- **E2E tests** : Parcours complet upload → diagnostic → routine
-- **Mobile testing** : Tous devices, export fonctionnel
-- **Performance** : Lighthouse score >90 mobile
+### **Mandatory Tests**
+- **Unit tests**: Critical services (`analysis.service.ts`, phase calculations)
+- **E2E tests**: Full flow upload → diagnosis → routine
+- **Mobile testing**: All devices, export working
+- **Performance**: Lighthouse mobile score > 90
 
-### **Validation Dermatologique**
-- **Cas de test** : Profils variés (jeune/mature, homme/femme, sensible)
-- **Cohérence scores** : Vérification écart vs expert <10%
-- **Timing phases** : Validation durées selon profil
-- **Feedback loop** : Collecte retours utilisateurs
+### **Dermatological Validation**
+- **Test cases**: Varied profiles (young/mature, male/female, sensitive)
+- **Score consistency**: Delta vs expert < 10%
+- **Phase timing**: Validate durations by profile
+- **Feedback loop**: Collect user feedback
 
-## 🌍 **INTERNATIONALISATION**
+## 🌍 **Internationalization**
 
-### **Préparation i18n**
-- **Textes externalisés** : Pas de strings hard-codées
-- **Format dates** : Locale-aware
-- **Responsive texte** : Gestion longueurs variables
-- **RTL ready** : Structure compatible droite-à-gauche
+### **i18n Readiness**
+- **Externalized texts**: No hard‑coded strings
+- **Date formats**: Locale‑aware
+- **Responsive text**: Handle variable lengths
+- **RTL ready**: Right‑to‑left compatible structure
 
-### **Accessibilité (A11y)**
-- **ARIA labels** : Composants interactifs étiquetés
-- **Contrast** : Minimum AA (4.5:1)
-- **Keyboard navigation** : Tous les flows navigables au clavier
-- **Screen readers** : Contenu structuré sémantiquement
+### **Accessibility (A11y)**
+- **ARIA labels**: Label interactive components
+- **Contrast**: Minimum AA (4.5:1)
+- **Keyboard navigation**: All flows navigable by keyboard
+- **Screen readers**: Semantically structured content
 
-## 📊 **ANALYTICS ET TRACKING**
+## 📊 **Analytics & Tracking**
 
-### **Événements Critiques**
-- `photo_uploaded` : Photos analysées
-- `questionnaire_completed` : Questionnaire terminé
-- `analysis_completed` : Diagnostic généré
-- `product_clicked` : Interaction produit
-- `routine_viewed` : Vue routine par phase
-- `export_mobile` : Partage mobile
+### **Critical Events**
+- `photo_uploaded`: Photos analyzed
+- `questionnaire_completed`: Questionnaire finished
+- `analysis_completed`: Diagnosis generated
+- `product_clicked`: Product interaction
+- `routine_viewed`: Routine viewed by phase
+- `export_mobile`: Mobile sharing
 
-### **Privacy-First**
-- **RGPD compliant** : Consentement explicite
-- **Data minimization** : Collecter minimum nécessaire
-- **Anonymisation** : Pas d'identification personnelle
-- **Retention** : Purge automatique données anciennes
+### **Privacy‑First**
+- **GDPR compliant**: Explicit consent
+- **Data minimization**: Collect the bare minimum
+- **Anonymization**: No personally identifying data
+- **Retention**: Automatic purge of old data
 
 ---
 
-**Ces règles complémentent l'organisation documentaire et garantissent la qualité, cohérence et conformité du projet DermAI V2.**
+**These rules complement the documentation organization and ensure the quality, consistency, and compliance of the DermAI V2 project.**
