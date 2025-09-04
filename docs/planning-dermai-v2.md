@@ -1,55 +1,55 @@
-# 📋 PLANNING DÉTAILLÉ - DermAI V2
-## Version Web App Gratuite avec Inscription
+# 📋 DETAILED PLANNING - DermAI V2
+## Free Web App Version with Registration
 
-> **Objectif :** Finaliser DermAI V2 en version web complète avec authentification, dashboard utilisateur et monétisation par affiliation
+> **Objective:** Complete DermAI V2 as a full web version with authentication, user dashboard and affiliate monetization
 
 ---
 
-## 🎯 **ÉTAT ACTUEL DU PROJET**
+## 🎯 **CURRENT PROJECT STATUS**
 
-### ✅ **Fonctionnalités Implémentées**
-- Architecture Next.js 15 + TypeScript + Tailwind CSS
-- Interface d'upload de photos avec drag & drop
-- Questionnaire interactif en 7 étapes avec 3 écrans plein écran
-- Intégration GPT-4o Vision pour l'analyse dermatologique
-- Page de résultats avec scores détaillés (8 paramètres)
-- Système de partage viral avec export d'images (html2canvas)
-- Stockage local : IndexedDB (photos) + SessionStorage (métadonnées)
-- Catalogue d'affiliation de base (JSON statique)
-- Analytics partielles (Google Analytics events)
-- Charte graphique DermAI complète
+### ✅ **Implemented Features**
+- Next.js 15 + TypeScript + Tailwind CSS architecture
+- Photo upload interface with drag & drop
+- Interactive 7-step questionnaire with 3 full-screen displays
+- GPT-4o Vision integration for dermatological analysis
+- Results page with detailed scores (8 parameters)
+- Viral sharing system with image export (html2canvas)
+- Local storage: IndexedDB (photos) + SessionStorage (metadata)
+- Basic affiliate catalog (static JSON)
+- Partial analytics (Google Analytics events)
+- Complete DermAI graphic charter
 
-### ⚠️ **Dépendances Installées Mais Non Configurées**
+### ⚠️ **Installed But Not Configured Dependencies**
 - `next-auth`: ^4.24.11 (authentification)
 - `@supabase/supabase-js`: ^2.55.0 (base de données)
 - `lz-string`: ^1.5.0 (compression pour partage)
 - `html2canvas`: ^1.4.1 (export d'images)
 
-### ❌ **Fonctionnalités Manquantes Critiques**
-- Authentification utilisateur et gestion des sessions
-- Dashboard utilisateur avec historique des analyses
-- Sauvegarde cloud des diagnostics et photos
-- Système de suivi de l'évolution cutanée
-- Monétisation d'affiliation avec vraies APIs
-- Analytics complètes et tracking des conversions
-- Tests automatisés et monitoring
+### ❌ **Critical Missing Features**
+- User authentication and session management
+- User dashboard with analysis history
+- Cloud backup of diagnostics and photos
+- Skin evolution tracking system
+- Affiliate monetization with real APIs
+- Complete analytics and conversion tracking
+- Automated testing and monitoring
 
 ---
 
-## 🏗️ **ARCHITECTURE TECHNIQUE CIBLE**
+## 🏗️ **TARGET TECHNICAL ARCHITECTURE**
 
-### **Stack Technologique Finale**
+### **Final Technology Stack**
 ```typescript
 // Frontend
 - Next.js 15 (App Router) + React 19 + TypeScript
 - Tailwind CSS + Framer Motion (animations)
 - React Hook Form + Zod (formulaires/validation)
 
-// Authentification & Base de Données
+// Authentication & Database
 - NextAuth.js (authentification multi-provider)
 - Supabase (PostgreSQL + Storage + RLS)
 
-// IA & APIs
+// AI & APIs
 - OpenAI GPT-4o Vision (analyse dermatologique)
 - APIs d'affiliation (Sephora, Amazon, Douglas)
 
@@ -58,15 +58,15 @@
 - Sentry (error tracking)
 - Vercel Analytics (performance)
 
-// Déploiement
+// Deployment
 - Vercel (hosting)
 - Redis Cloud (cache)
 - CDN global (assets)
 ```
 
-### **Structure de Base de Données Supabase**
+### **Supabase Database Structure**
 ```sql
--- Table utilisateurs
+-- Users table
 CREATE TABLE profiles (
   id UUID REFERENCES auth.users PRIMARY KEY,
   email TEXT UNIQUE NOT NULL,
@@ -77,7 +77,7 @@ CREATE TABLE profiles (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Table analyses
+-- Analyses table
 CREATE TABLE user_analyses (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
@@ -88,7 +88,7 @@ CREATE TABLE user_analyses (
   share_token TEXT UNIQUE
 );
 
--- Table évolution
+-- Evolution table
 CREATE TABLE skin_progress (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,

@@ -39,7 +39,7 @@ import AdvancedRoutineDisplay from '@/components/routine/AdvancedRoutineDisplay'
 import ShareableCard from '@/components/shared/ShareableCard'
 import { UnifiedRoutineSection } from '@/components/results/UnifiedRoutineSection'
 
-// Fonction utilitaire pour extraire les problèmes d'une zone
+// Utility function to extract problems from a zone
 const extractProblems = (zone: any) => {
   // 1. Nouvelle structure multi-problèmes
   if (Array.isArray(zone.problems) && zone.problems.length > 0) {
@@ -81,14 +81,14 @@ const scoreIcons = {
 }
 
 const scoreLabels: Record<keyof Omit<SkinScores, 'overall'>, string> = {
-  hydration: 'Hydratation',
-  wrinkles: 'Rides',
-  firmness: 'Fermeté',
-  radiance: 'Éclat',
+  hydration: 'Hydration',
+  wrinkles: 'Wrinkles',
+  firmness: 'Firmness',
+  radiance: 'Radiance',
   pores: 'Pores',
-  spots: 'Taches',
-  darkCircles: 'Cernes',
-  skinAge: 'Âge de la peau',
+  spots: 'Dark spots',
+  darkCircles: 'Dark circles',
+  skinAge: 'Skin age',
 }
 
 // Extraction des catalogId depuis l'analyse pour afficher les vrais produits du catalogue

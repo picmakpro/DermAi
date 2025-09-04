@@ -1,12 +1,12 @@
-# Spécifications Fonctionnelles et Techniques de DermAI V2
+# Functional and Technical Specifications for DermAI V2
 
-## 1. Vue d'ensemble
+## 1. Overview
 
-DermAI V2 est une application web de diagnostic dermatologique basée sur l'intelligence artificielle. Elle a pour but de fournir aux utilisateurs une analyse personnalisée de leur peau, des recommandations de produits et une routine de soins sur mesure. L'application se distingue par son approche en deux étapes pour le diagnostic, sa forte personnalisation et son potentiel de monétisation via l'affiliation.
+DermAI V2 is an AI-based dermatological diagnosis web application. It aims to provide users with personalized skin analysis, product recommendations and custom skincare routines. The application stands out through its two-step diagnostic approach, strong personalization and monetization potential via affiliate marketing.
 
-## 2. Architecture Technique
+## 2. Technical Architecture
 
-### 2.1. Stack Technologique
+### 2.1. Technology Stack
 
 **Frontend**
 - **Framework:** Next.js 15 (avec App Router), React 19, TypeScript
@@ -15,22 +15,22 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 - **Validation de données:** Zod
 - **Gestion de formulaires:** React Hook Form
 
-**Backend & Authentification**
-- **Authentification:** NextAuth.js (email/password + OAuth Google/Apple)
-- **Base de données:** Supabase (PostgreSQL avec Row Level Security)
-- **Stockage fichiers:** Supabase Storage (photos utilisateurs)
-- **Cache:** Redis Cloud (cache des recherches produits)
+**Backend & Authentication**
+- **Authentication:** NextAuth.js (email/password + OAuth Google/Apple)
+- **Database:** Supabase (PostgreSQL with Row Level Security)
+- **File storage:** Supabase Storage (user photos)
+- **Cache:** Redis Cloud (product search cache)
 
-**IA & APIs Externes**
-- **IA:** OpenAI GPT-4o Vision API
-- **Affiliation:** APIs Sephora, Amazon Associates, Douglas
+**AI & External APIs**
+- **AI:** OpenAI GPT-4o Vision API
+- **Affiliate:** Sephora APIs, Amazon Associates, Douglas
 - **Analytics:** Google Analytics 4 + Enhanced Ecommerce
 - **Monitoring:** Sentry (error tracking), Vercel Analytics
 
-**Stockage & Données**
-- **Stockage cloud:** Supabase (analyses, profils utilisateurs)
-- **Stockage local:** IndexedDB (cache offline), SessionStorage (session)
-- **Compression:** LZ-String (partage de résultats)
+**Storage & Data**
+- **Cloud storage:** Supabase (analyses, user profiles)
+- **Local storage:** IndexedDB (offline cache), SessionStorage (session)
+- **Compression:** LZ-String (results sharing)
 
 ### 2.2. Structure du Projet
 
