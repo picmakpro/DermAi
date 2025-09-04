@@ -8,7 +8,7 @@ import SimilarConcernsProofScreen from './SimilarConcernsProofScreen'
 import SavingsProgressScreen from './SavingsProgressScreen'
 import ImprovedSummary from './ImprovedSummary'
 
-// Types simplifiés pour le questionnaire
+// Simplified types for questionnaire
 interface UserProfile {
   age: number
   gender: string
@@ -29,7 +29,7 @@ interface CurrentRoutine {
 interface QuestionnaireData {
   userProfile: UserProfile
   skinConcerns: SkinConcerns & {
-    otherText: string // Nouveau champ pour "Autre"
+    otherText: string // New field for "Other"
   }
   currentRoutine: CurrentRoutine
   allergies: {
@@ -66,31 +66,31 @@ const COMMON_PRODUCTS = [
 ]
 
 const ALLERGENIC_INGREDIENTS = [
-  'Parfums/Fragrances',
-  'Alcool',
+  'Fragrances',
+  'Alcohol',
   'Sulfates',
   'Parabens',
-  'Huiles essentielles',
-  'Lanoline',
-  'Conservateurs MI/MCI',
-  'Acide salicylique',
-  'Rétinol',
-  'Aucune allergie connue'
+  'Essential oils',
+  'Lanolin',
+  'MI/MCI Preservatives',
+  'Salicylic acid',
+  'Retinol',
+  'No known allergies'
 ]
 
 const AGE_RANGES = [
-  { label: '13-17 ans', value: 15, range: '13-17' },
-  { label: '18-24 ans', value: 21, range: '18-24' },
-  { label: '25-34 ans', value: 29, range: '25-34' },
-  { label: '35-44 ans', value: 39, range: '35-44' },
-  { label: '45-54 ans', value: 49, range: '45-54' },
-  { label: '55-64 ans', value: 59, range: '55-64' },
-  { label: '65+ ans', value: 70, range: '65+' }
+  { label: '13-17 years', value: 15, range: '13-17' },
+  { label: '18-24 years', value: 21, range: '18-24' },
+  { label: '25-34 years', value: 29, range: '25-34' },
+  { label: '35-44 years', value: 39, range: '35-44' },
+  { label: '45-54 years', value: 49, range: '45-54' },
+  { label: '55-64 years', value: 59, range: '55-64' },
+  { label: '65+ years', value: 70, range: '65+' }
 ]
 
 export default function SkinQuestionnaire() {
   const router = useRouter()
-  const [currentStep, setCurrentStep] = useState(0) // Commencer à 0 pour l'écran intro
+  const [currentStep, setCurrentStep] = useState(0) // Start at 0 for intro screen
   const [showAiMessage, setShowAiMessage] = useState(false)
   const [photosCount, setPhotosCount] = useState(0)
   const [selectedAgeRange, setSelectedAgeRange] = useState<string>('')
@@ -103,12 +103,12 @@ export default function SkinQuestionnaire() {
     },
     skinConcerns: {
       primary: [],
-      otherText: '' // Nouveau champ
+      otherText: '' // New field
     },
     currentRoutine: {
       morningProducts: [],
       eveningProducts: [],
-      // routinePreference sera choisie à la fin du formulaire
+      // routinePreference will be chosen at the end of the form
       monthlyBudget: '50-100€'
     },
     allergies: {
@@ -117,10 +117,10 @@ export default function SkinQuestionnaire() {
     }
   })
 
-  const totalSteps = 8 // 3 nouveaux écrans + 5 étapes questionnaire (0-7)
+  const totalSteps = 8 // 3 new screens + 5 questionnaire steps (0-7)
 
   useEffect(() => {
-    // Récupérer le nombre de photos
+    // Get number of photos
     const photosData = sessionStorage.getItem('dermai_photos')
     if (photosData) {
       const photos = JSON.parse(photosData)
@@ -136,7 +136,7 @@ export default function SkinQuestionnaire() {
   }
 
   const handleNext = () => {
-    // Analytics pour les nouveaux écrans
+    // Analytics for new screens
     if (currentStep === 0) {
       // intro_before_after_cta_click
       if (typeof window !== 'undefined' && (window as any).gtag) {

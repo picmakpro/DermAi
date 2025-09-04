@@ -29,7 +29,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-dermai-pure">
-      {/* Header Navigation - Responsive avec menu mobile */}
+      {/* Header Navigation - Responsive with mobile menu */}
       <nav className="bg-dermai-pure/95 backdrop-blur-md border-b border-dermai-nude-200/30 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-5">
           <div className="flex items-center justify-between">
@@ -50,22 +50,22 @@ export default function HomePage() {
 
             {/* Navigation Desktop */}
             <div className="hidden md:flex items-center space-x-10">
-              <a href="#fonctionnement" className="text-dermai-neutral-600 hover:text-dermai-ai-600 transition-all duration-300 font-medium tracking-wide">
-                Fonctionnement
+              <a href="#how-it-works" className="text-dermai-neutral-600 hover:text-dermai-ai-600 transition-all duration-300 font-medium tracking-wide">
+                How it works
               </a>
-              <a href="#temoignages" className="text-dermai-neutral-600 hover:text-dermai-ai-600 transition-all duration-300 font-medium tracking-wide">
-                Témoignages
+              <a href="#testimonials" className="text-dermai-neutral-600 hover:text-dermai-ai-600 transition-all duration-300 font-medium tracking-wide">
+                Testimonials
               </a>
               <Link
                 href="/upload"
                 className="group relative bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 text-white px-8 py-3.5 rounded-full font-semibold tracking-wide hover:shadow-glow-lg transition-all duration-300 transform hover:scale-105 overflow-hidden"
               >
-                <span className="relative z-10">Analyser</span>
+                <span className="relative z-10">Analyze</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-dermai-ai-400 to-dermai-ai-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </Link>
             </div>
 
-            {/* Bouton Mobile Menu */}
+            {/* Mobile Menu Button */}
             <div className="md:hidden">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -76,7 +76,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Menu Mobile */}
+          {/* Mobile Menu */}
           <AnimatePresence>
             {isMobileMenuOpen && (
               <motion.div
@@ -88,25 +88,25 @@ export default function HomePage() {
               >
                 <div className="space-y-4">
                   <a 
-                    href="#fonctionnement" 
+                    href="#how-it-works" 
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="block py-3 px-4 text-dermai-neutral-600 hover:text-dermai-ai-600 hover:bg-dermai-nude-50 rounded-2xl transition-all duration-300 font-medium"
                   >
-                    Comment ça marche
+                    How it works
                   </a>
                   <a 
-                    href="#temoignages" 
+                    href="#testimonials" 
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="block py-3 px-4 text-dermai-neutral-600 hover:text-dermai-ai-600 hover:bg-dermai-nude-50 rounded-2xl transition-all duration-300 font-medium"
                   >
-                    Témoignages
+                    Testimonials
                   </a>
                   <Link
                     href="/upload"
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="block text-center bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 text-white py-4 px-6 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-premium"
                   >
-                    Commencer l'analyse
+                    Start analysis
                   </Link>
                 </div>
               </motion.div>

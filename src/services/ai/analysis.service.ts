@@ -5,24 +5,24 @@ import type { AnalyzeRequest } from '@/types/api'
 export class AnalysisService {
   
   /**
-   * Analyse complète des photos avec GPT-4o Vision - NOUVELLE LOGIQUE EN 2 ÉTAPES
+   * Complete photo analysis with GPT-4o Vision - NEW 2-STEP LOGIC
    */
   static async analyzeSkin(request: AnalyzeRequest): Promise<SkinAnalysis> {
     try {
-      console.log('🔧 Initialisation client OpenAI...')
+      console.log('🔧 Initializing OpenAI client...')
       
-      // Vérifier les variables d'environnement
+      // Check environment variables
       if (!process.env.OPENAI_API_KEY) {
-        throw new Error('OPENAI_API_KEY manquante dans les variables d\'environnement Vercel')
+        throw new Error('OPENAI_API_KEY missing in Vercel environment variables')
       }
       
-      // Créer le client OpenAI côté serveur
+      // Create OpenAI client server-side
       const openai = createOpenAIClient()
-      console.log('✅ Client OpenAI initialisé avec succès')
+      console.log('✅ OpenAI client initialized successfully')
 
-      // Les images sont déjà en base64 depuis le client
+      // Images are already in base64 from client
       const imageContents = request.photos.map(photo => {
-        // Extraire la partie base64 si elle contient le prefix data:
+        // Extract base64 part if it contains data: prefix
         let base64Data = ''
         
         if (typeof photo.file === 'string') {
@@ -36,35 +36,35 @@ export class AnalysisService {
         return base64Data
       }).filter(base64 => base64.length > 0)
 
-      // Validation des images
+      // Image validation
       if (imageContents.length === 0) {
-        throw new Error('Aucune image valide trouvée pour l\'analyse')
+        throw new Error('No valid images found for analysis')
       }
 
-      console.log('🔍 ÉTAPE 1: Analyse diagnostique pure (sans catalogue)')
+      console.log('🔍 STEP 1: Pure diagnostic analysis (without catalog)')
 
-      // ÉTAPE 1: Analyse diagnostique pure SANS catalogue
+      // STEP 1: Pure diagnostic analysis WITHOUT catalog
       const diagnosticResult = await this.performDiagnosticAnalysis(openai, imageContents, request)
       
-      console.log('✅ Diagnostic établi:', {
+      console.log('✅ Diagnosis established:', {
         mainConcern: diagnosticResult.beautyAssessment?.mainConcern,
         overallScore: diagnosticResult.scores?.overall,
         concernedZones: diagnosticResult.beautyAssessment?.concernedZones
       })
 
-      console.log('🛍️ ÉTAPE 2: Sélection produits basée sur le diagnostic')
+      console.log('🛍️ STEP 2: Product selection based on diagnosis')
 
-      // ÉTAPE 2: Sélection des produits basée sur le diagnostic établi
+      // STEP 2: Product selection based on established diagnosis
       const productRecommendations = await this.selectProductsBasedOnDiagnosis(openai, diagnosticResult, request)
 
-      console.log('✅ Produits sélectionnés:', productRecommendations)
+      console.log('✅ Products selected:', productRecommendations)
 
-      // ÉTAPE 3: Génération de la routine unifiée
-      console.log('🔄 ÉTAPE 3: Génération routine unifiée')
+      // STEP 3: Unified routine generation
+      console.log('🔄 STEP 3: Unified routine generation')
       const unifiedRoutine = this.generateUnifiedRoutine(diagnosticResult.beautyAssessment, productRecommendations)
-      console.log('✅ Routine unifiée générée:', unifiedRoutine.length, 'étapes')
+      console.log('✅ Unified routine generated:', unifiedRoutine.length, 'steps')
 
-      // Fusionner les résultats avec routine unifiée
+      // Merge results with unified routine
       const finalAnalysis: SkinAnalysis = {
         id: this.generateId(),
         userId: 'temp-user',
@@ -73,7 +73,7 @@ export class AnalysisService {
         beautyAssessment: diagnosticResult.beautyAssessment,
         recommendations: {
           ...productRecommendations,
-          unifiedRoutine // Ajouter la routine unifiée
+          unifiedRoutine // Add unified routine
         },
         createdAt: new Date()
       }
