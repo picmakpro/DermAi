@@ -1,32 +1,32 @@
 export const validateImage = async (file: File): Promise<{ valid: boolean; error?: string }> => {
-  // Types supportés après conversion (HEIC/HEIF seront convertis en JPEG)
+  // Supported types after conversion (HEIC/HEIF will be converted to JPEG)
   const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
   const maxSize = 5 * 1024 * 1024 // 5MB
-  const minWidth = 400 // Réduit pour mobile
-  const minHeight = 400 // Réduit pour mobile
+  const minWidth = 400 // Reduced for mobile
+  const minHeight = 400 // Reduced for mobile
 
-  // Vérification du type après conversion
+  // Type verification after conversion
   if (!allowedTypes.includes(file.type)) {
-    return { valid: false, error: `Format non supporté. Utilisez JPG, PNG ou WebP.` }
+    return { valid: false, error: `Unsupported format. Use JPG, PNG or WebP.` }
   }
 
-  // Vérification de la taille
+  // Size verification
   if (file.size > maxSize) {
-    return { valid: false, error: 'Image trop lourde. Maximum 5MB.' }
+    return { valid: false, error: 'Image too large. Maximum 5MB.' }
   }
 
-  // Validation asynchrone des dimensions
+  // Asynchronous dimension validation
   return new Promise((resolve) => {
     const img = new Image()
     
     img.onload = () => {
-      // Nettoyage de l'URL temporaire
+      // Clean up temporary URL
       URL.revokeObjectURL(img.src)
       
       if (img.width < minWidth || img.height < minHeight) {
         resolve({ 
           valid: false, 
-          error: `Résolution trop faible: ${img.width}x${img.height}px. Minimum ${minWidth}x${minHeight}px` 
+          error: `Resolution too low: ${img.width}x${img.height}px. Minimum ${minWidth}x${minHeight}px` 
         })
       } else {
         resolve({ valid: true })
@@ -34,12 +34,12 @@ export const validateImage = async (file: File): Promise<{ valid: boolean; error
     }
     
     img.onerror = () => {
-      // Nettoyage de l'URL temporaire
+      // Clean up temporary URL
       URL.revokeObjectURL(img.src)
-      resolve({ valid: false, error: 'Image corrompue ou illisible' })
+      resolve({ valid: false, error: 'Corrupted or unreadable image' })
     }
     
-    // Créer une URL temporaire pour le test
+    // Create temporary URL for testing
     img.src = URL.createObjectURL(file)
   })
 }
@@ -50,15 +50,15 @@ export const validateUserProfile = (profile: UserProfile): { valid: boolean; err
   const errors: string[] = []
 
   if (!profile.age || profile.age < 13 || profile.age > 100) {
-    errors.push('Âge invalide (13-100 ans)')
+    errors.push('Invalid age (13-100 years)')
   }
 
   if (!profile.gender) {
-    errors.push('Genre requis')
+    errors.push('Gender required')
   }
 
   if (!profile.skinType) {
-    errors.push('Type de peau requis')
+    errors.push('Skin type required')
   }
 
   return { valid: errors.length === 0, errors }

@@ -11,8 +11,8 @@ interface SimilarConcernsProofScreenProps {
 }
 
 /**
- * Écran de preuve sociale - affiché après sélection des préoccupations principales
- * Rassure l'utilisateur en montrant qu'il n'est pas seul avec ses problèmes de peau
+ * Social proof screen - displayed after main concerns selection
+ * Reassures user by showing they're not alone with their skin problems
  */
 export default function SimilarConcernsProofScreen({ 
   onContinue, 
@@ -22,22 +22,22 @@ export default function SimilarConcernsProofScreen({
   const [userCount, setUserCount] = useState(23428)
 
   useEffect(() => {
-    // Simuler une récupération dynamique du compteur
-    // En production, cela viendrait d'une API
+    // Simulate dynamic counter retrieval
+    // In production, this would come from an API
     const fetchUserCount = () => {
-      // Fallback statique si pas de données dynamiques
+      // Static fallback if no dynamic data
       setUserCount(23428)
     }
     
     fetchUserCount()
   }, [])
 
-  // Formater le nombre d'utilisateurs
+  // Format user count
   const formatUserCount = (count: number) => {
     return count.toLocaleString('fr-FR')
   }
 
-  // Déterminer le message personnalisé selon les préoccupations
+  // Determine personalized message based on concerns
   const getPersonalizedMessage = () => {
     if (userConcerns.includes('Je ne sais pas')) {
       return 'des préoccupations similaires'
@@ -46,37 +46,37 @@ export default function SimilarConcernsProofScreen({
     const mainConcern = userConcerns[0]
     switch (mainConcern) {
       case 'Acné/Boutons':
-        return 'des problèmes d\'acné'
+        return 'acne problems'
       case 'Rides/Vieillissement':
-        return 'des préoccupations anti-âge'
+        return 'anti-aging concerns'
       case 'Taches pigmentaires':
-        return 'des problèmes de pigmentation'
+        return 'pigmentation problems'
       case 'Rougeurs/Irritations':
-        return 'des problèmes de sensibilité'
+        return 'sensitivity problems'
       case 'Peau sèche':
-        return 'des problèmes de sécheresse'
+        return 'dryness problems'
       case 'Poils incarnés':
-        return 'des problèmes de poils incarnés'
+        return 'ingrown hair problems'
       default:
-        return 'des préoccupations similaires'
+        return 'similar concerns'
     }
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-dermai-nude-50 via-dermai-pure to-purple-50 flex flex-col">
-      {/* Header avec navigation */}
+      {/* Header with navigation */}
       <div className="flex items-center justify-between p-4 lg:p-6">
         <button
           onClick={onBack}
           className="p-2 hover:bg-dermai-nude-100 rounded-full transition-colors"
-          aria-label="Retour"
+          aria-label="Back"
         >
           <svg className="w-6 h-6 text-dermai-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
         
-        {/* Indicateur de progression visuel */}
+        {/* Visual progress indicator */}
         <div className="flex-1 max-w-xs mx-4">
           <div className="h-1.5 bg-dermai-nude-200 rounded-full overflow-hidden">
             <div 

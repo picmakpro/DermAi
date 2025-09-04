@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 import { useAnalysis } from '@/hooks/useAnalysis'
 import type { PhotoUpload } from '@/types'
 
-// Type temporaire pour la requête d'analyse
+// Temporary type for analysis request
 interface AnalyzeRequest {
   photos: any[]
   userProfile?: any
@@ -35,15 +35,15 @@ export default function AnalyzePage() {
   const [currentStep, setCurrentStep] = useState(0)
 
   const analysisSteps = [
-    { id: 'skin-condition', label: 'Analyse de la condition de la peau', icon: Eye },
-    { id: 'focus-zones', label: 'Focus sur les zones à surveiller', icon: Sparkles },
-    { id: 'routine-generation', label: 'Génération de la routine personnalisée', icon: CheckCircle2 },
-    { id: 'product-selection', label: 'Sélection des produits adaptés', icon: ShoppingBag }
+    { id: 'skin-condition', label: 'Skin condition analysis', icon: Eye },
+    { id: 'focus-zones', label: 'Focus on areas to monitor', icon: Sparkles },
+    { id: 'routine-generation', label: 'Personalized routine generation', icon: CheckCircle2 },
+    { id: 'product-selection', label: 'Suitable product selection', icon: ShoppingBag }
   ]
 
   useEffect(() => {
     const load = async () => {
-      // Récupérer les données du sessionStorage
+      // Get data from sessionStorage
       const photos = sessionStorage.getItem('dermai_photos')
       const questionnaire = sessionStorage.getItem('dermai_questionnaire')
 
@@ -56,7 +56,7 @@ export default function AnalyzePage() {
         const photosData = JSON.parse(photos) as Array<{ id: string; preview: string; type: PhotoUpload['type']; quality: PhotoUpload['quality'] }>
         const questionnaireData = JSON.parse(questionnaire)
 
-        // Reconstituer les photos avec dataURL depuis IndexedDB (pas de quota)
+        // Rebuild photos with dataURL from IndexedDB (no quota)
         const rebuiltPhotos: any[] = await Promise.all(
           photosData.map(async (p: any) => ({
             id: p.id,
@@ -72,7 +72,7 @@ export default function AnalyzePage() {
           questionnaire: questionnaireData
         })
       } catch (error) {
-        console.error('Erreur parsing sessionStorage:', error)
+        console.error('Error parsing sessionStorage:', error)
         router.push('/upload')
       }
     }
@@ -80,13 +80,13 @@ export default function AnalyzePage() {
     load()
   }, [router])
 
-  // Définir startAnalysis en premier
+  // Define startAnalysis first
   const startAnalysis = useCallback(async () => {
     if (!sessionData) return
 
     const { photos, questionnaire } = sessionData
 
-    // Construire la requête d'analyse (les données sont déjà dans la bonne structure)
+    // Build analysis request (data is already in correct structure)
     const analyzeRequest: AnalyzeRequest = {
       photos,
       userProfile: questionnaire.userProfile,
@@ -95,9 +95,9 @@ export default function AnalyzePage() {
       allergies: questionnaire.allergies
     }
 
-    console.log('Démarrage analyse avec:', analyzeRequest)
-    console.log('UserProfile détaillé:', analyzeRequest.userProfile)
-    console.log('Photos détaillées:', analyzeRequest.photos.map(p => ({ id: p.id, type: p.type, hasFile: !!p.file })))
+    console.log('Starting analysis with:', analyzeRequest)
+    console.log('Detailed UserProfile:', analyzeRequest.userProfile)
+    console.log('Detailed photos:', analyzeRequest.photos.map(p => ({ id: p.id, type: p.type, hasFile: !!p.file })))
     
     await analyze(analyzeRequest)
   }, [sessionData, analyze])
@@ -109,16 +109,16 @@ export default function AnalyzePage() {
   }, [sessionData, isAnalyzing, analysis, error, startAnalysis])
 
   useEffect(() => {
-    // Rediriger vers les résultats quand l'analyse est terminée
+    // Redirect to results when analysis is complete
     if (analysis) {
       const id = analysis.id || `analysis_${Date.now()}`
-      // Stocker payload lourd en IndexedDB et garder ID léger en sessionStorage
+      // Store heavy payload in IndexedDB and keep lightweight ID in sessionStorage
       saveAnalysis(id, analysis).then(() => {
         sessionStorage.setItem('dermai_analysis_id', id)
         router.push('/results')
       }).catch((e) => {
-        console.error('Erreur sauvegarde analysis:', e)
-        // fallback minimal (tronqué) si nécessaire
+        console.error('Analysis save error:', e)
+        // minimal fallback (truncated) if necessary
         try {
           sessionStorage.setItem('dermai_analysis_id', id)
         } catch {}
@@ -128,13 +128,13 @@ export default function AnalyzePage() {
   }, [analysis, router])
 
   useEffect(() => {
-    // Gérer le progrès des étapes visuelles - s'assurer que toutes les étapes sont visibles
+    // Handle visual step progress - ensure all steps are visible
     if (isAnalyzing) {
       if (progress < 20) setCurrentStep(0)
       else if (progress < 40) setCurrentStep(1)
       else if (progress < 70) setCurrentStep(2)
-      else if (progress < 95) setCurrentStep(3) // S'assurer que l'étape 4 est visible
-      else setCurrentStep(3) // Rester sur la dernière étape jusqu'à la fin
+      else if (progress < 95) setCurrentStep(3) // Ensure step 4 is visible
+      else setCurrentStep(3) // Stay on last step until completion
     }
   }, [progress, isAnalyzing])
 
@@ -160,7 +160,7 @@ export default function AnalyzePage() {
 
   return (
     <div className="min-h-screen bg-dermai-pure relative overflow-hidden">
-      {/* Particules qui flottent en continu sans changement d'état */}
+      {/* Particles floating continuously without state change */}
       {Array.from({ length: 20 }, (_, i) => (
         <motion.div
           key={`particle-${i}`}
@@ -168,7 +168,7 @@ export default function AnalyzePage() {
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
-            opacity: 0.3, // Opacité fixe
+            opacity: 0.3, // Fixed opacity
           }}
           animate={{
             x: Math.random() * 50 - 25,
@@ -184,7 +184,7 @@ export default function AnalyzePage() {
         />
       ))}
       
-      {/* Particules moyennes flottantes */}
+      {/* Medium floating particles */}
       {Array.from({ length: 12 }, (_, i) => (
         <motion.div
           key={`medium-particle-${i}`}
@@ -192,7 +192,7 @@ export default function AnalyzePage() {
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
-            opacity: 0.25, // Opacité fixe
+            opacity: 0.25, // Fixed opacity
           }}
           animate={{
             x: Math.random() * 80 - 40,
