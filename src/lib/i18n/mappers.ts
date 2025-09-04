@@ -41,9 +41,22 @@ export const normalizeSkinType = (v?: string): SkinTypeEN | undefined => {
 export const normalizeConcern = (s: string): string => {
   const k = (s||'').toLowerCase().trim();
   const map: Record<string, string> = {
-    'rougeurs':'redness','poils incarnés':'ingrowns','imperfections':'blemishes',
+    // Skin concerns from questionnaire
+    'acné/boutons': 'blemishes',
+    'poils incarnés': 'ingrowns', 
+    'rides/vieillissement': 'wrinkles',
+    'taches pigmentaires': 'pigmentation',
+    'rougeurs/irritations': 'redness',
+    'peau sèche': 'dehydration',
+    'points noirs': 'blackheads',
+    'cicatrices': 'scars',
+    'sensibilité': 'sensitivity',
+    'je ne sais pas': 'unknown',
+    'autres': 'other',
+    // Legacy mappings
+    'rougeurs':'redness','imperfections':'blemishes',
     'taches':'pigmentation','hyperpigmentation':'pigmentation',
-    'points noirs':'blackheads','pores dilatés':'enlarged-pores',
+    'pores dilatés':'enlarged-pores',
     'déshydratation':'dehydration','deshydratation':'dehydration','rides':'wrinkles'
   };
   return map[k] || k; // assume EN already if unknown

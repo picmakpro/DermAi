@@ -186,7 +186,7 @@ export default function SkinQuestionnaire() {
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Check that the form is complete before submission
     if (!isFormComplete()) {
       alert('Please complete all required form steps.')
@@ -201,16 +201,47 @@ export default function SkinQuestionnaire() {
       return
     }
 
-    // Store all data for analysis
-    const completeData = {
-      photos: JSON.parse(photosData),
-      userProfile: data.userProfile,
-      skinConcerns: data.skinConcerns,
-      currentRoutine: data.currentRoutine,
-      allergies: data.allergies
-    }
+    try {
+      // Import mappers dynamically to avoid SSR issues
+      const { normalizeGender, normalizeSkinType, normalizeRoutinePreference, normalizeBudget, normalizeConcern } = await import('@/lib/i18n/mappers')
+      
+      // Store all data for analysis with normalization
+      const completeData = {
+        photos: JSON.parse(photosData),
+        userProfile: {
+          ...data.userProfile,
+          // Normalize FR values to EN before sending to API
+          gender: normalizeGender(data.userProfile.gender) || data.userProfile.gender,
+          skinType: normalizeSkinType(data.userProfile.skinType) || data.userProfile.skinType
+        },
+        skinConcerns: {
+          ...data.skinConcerns,
+          // Normalize concern strings
+          primary: data.skinConcerns.primary.map(concern => normalizeConcern(concern))
+        },
+        currentRoutine: {
+          ...data.currentRoutine,
+          // Normalize routine preferences and budget
+          routinePreference: normalizeRoutinePreference(data.currentRoutine.routinePreference) || data.currentRoutine.routinePreference,
+          monthlyBudget: normalizeBudget(data.currentRoutine.monthlyBudget) || data.currentRoutine.monthlyBudget
+        },
+        allergies: data.allergies
+      }
 
-    sessionStorage.setItem('dermai_questionnaire', JSON.stringify(completeData))
+      console.log('🔄 Normalized questionnaire data before storing:', completeData)
+      sessionStorage.setItem('dermai_questionnaire', JSON.stringify(completeData))
+    } catch (error) {
+      console.error('Error normalizing questionnaire data:', error)
+      // Fallback: store original data if normalization fails
+      const completeData = {
+        photos: JSON.parse(photosData),
+        userProfile: data.userProfile,
+        skinConcerns: data.skinConcerns,
+        currentRoutine: data.currentRoutine,
+        allergies: data.allergies
+      }
+      sessionStorage.setItem('dermai_questionnaire', JSON.stringify(completeData))
+    }
     
     // Redirect to analysis
     router.push('/analyze')

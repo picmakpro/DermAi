@@ -97,12 +97,24 @@ describe('Mappers FR -> EN', () => {
   })
 
   describe('normalizeConcern', () => {
-    it('should map French concerns to English', () => {
+    it('should map French questionnaire concerns to English', () => {
+      expect(normalizeConcern('Acné/Boutons')).toBe('blemishes')
+      expect(normalizeConcern('Poils incarnés')).toBe('ingrowns')
+      expect(normalizeConcern('Rides/Vieillissement')).toBe('wrinkles')
+      expect(normalizeConcern('Taches pigmentaires')).toBe('pigmentation')
+      expect(normalizeConcern('Rougeurs/Irritations')).toBe('redness')
+      expect(normalizeConcern('Peau sèche')).toBe('dehydration')
+      expect(normalizeConcern('Points noirs')).toBe('blackheads')
+      expect(normalizeConcern('Cicatrices')).toBe('scars')
+      expect(normalizeConcern('Sensibilité')).toBe('sensitivity')
+      expect(normalizeConcern('Je ne sais pas')).toBe('unknown')
+      expect(normalizeConcern('Autres')).toBe('other')
+    })
+
+    it('should map legacy French concerns to English', () => {
       expect(normalizeConcern('rougeurs')).toBe('redness')
-      expect(normalizeConcern('poils incarnés')).toBe('ingrowns')
       expect(normalizeConcern('imperfections')).toBe('blemishes')
       expect(normalizeConcern('taches')).toBe('pigmentation')
-      expect(normalizeConcern('points noirs')).toBe('blackheads')
       expect(normalizeConcern('pores dilatés')).toBe('enlarged-pores')
       expect(normalizeConcern('déshydratation')).toBe('dehydration')
       expect(normalizeConcern('rides')).toBe('wrinkles')
@@ -110,6 +122,11 @@ describe('Mappers FR -> EN', () => {
 
     it('should handle accents variations', () => {
       expect(normalizeConcern('deshydratation')).toBe('dehydration')
+    })
+
+    it('should be case insensitive', () => {
+      expect(normalizeConcern('ACNÉ/BOUTONS')).toBe('blemishes')
+      expect(normalizeConcern('poils incarnés')).toBe('ingrowns')
     })
 
     it('should pass through unknown values', () => {
