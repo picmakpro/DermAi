@@ -1,42 +1,93 @@
-# Write the provided documentation to a Markdown file and return a download link
-content = """# 📚 DermAI V2 Documentation
+# 🧬 DermAI V2 - AI Dermatological Diagnosis
 
-This centralized documentation contains all specifications, strategies and technical guides for DermAI V2.
+> Revolutionary dermatological diagnosis application using GPT-4o Vision for precise analysis and personalized recommendations.
 
-## 📖 **Main Documents**
+## ✨ Features
+
+- 🤖 **Advanced AI Analysis** - GPT-4o Vision for precise diagnosis
+- 📸 **Professional Upload** - Intuitive drag & drop interface  
+- 🎯 **Specific Diagnosis** - Precisely named conditions
+- 📊 **Detailed Scores** - 8 skin parameters analyzed
+- 🛍️ **Recommendations** - Personalized products and routine
+- 📱 **Mobile-first** - Optimized responsive interface
+
+## 🚀 Technology Stack
+
+- **Frontend:** Next.js 15, React 19, TypeScript, Tailwind CSS
+- **AI:** OpenAI GPT-4o Vision API
+- **Analytics:** Google Analytics 4
+- **Deployment:** Vercel with optimized serverless functions
+- **Storage:** IndexedDB (local) + Supabase (cloud)
+
+## 📚 **Documentation**
+
+For complete documentation, see the [docs/](./docs/) folder:
 
 ### **🎯 Specifications & Architecture**
-- **[spec.md](./spec.md)** - Complete functional and technical specifications
-- **[architecture-database.md](./architecture-database.md)** - Supabase database architecture
+- **[spec-english.md](./docs/spec-english.md)** - Complete functional and technical specifications
+- **[Database_Architecture_EN.md](./docs/Database_Architecture_EN.md)** - Supabase database architecture
 
 ### **📋 Planning & Strategy** 
-- **[planning-dermai-v2.md](./planning-dermai-v2.md)** - Detailed roadmap and planning
-- **[monetization-strategy.md](./monetization-strategy.md)** - Monetization strategy and internal catalog
+- **[Roadmap_Planning_EN.md](./docs/Roadmap_Planning_EN.md)** - Detailed roadmap and planning
+- **[monetization-strategy.md](./docs/monetization-strategy.md)** - Monetization strategy and internal catalog
 
 ### **🔬 Business Logic**
-- **[dermatological-logic.md](./dermatological-logic.md)** - 3-phase dermatological logic
-- **[educational-interface.md](./educational-interface.md)** - User educational interface
+- **[Dermatological_Logic_EN.md](./docs/Dermatological_Logic_EN.md)** - 3-phase dermatological logic
+- **[Educational_Interface_EN.md](./docs/Educational_Interface_EN.md)** - User educational interface
 
 ### **🚀 Improvement & Optimization**
-- **[dermai-diagnostic-improvement-strategy.md](./dermai-diagnostic-improvement-strategy.md)** - AI diagnostic improvement strategy
+- **[Diagnostic_Improvement_Strategy_EN.md](./docs/Diagnostic_Improvement_Strategy_EN.md)** - AI diagnostic improvement strategy
 
-## 🎯 **Quick Navigation**
+## 🎯 **Quick Start**
 
 ### **To get started:**
-1. Read `spec.md` to understand global architecture
-2. Consult `planning-dermai-v2.md` for roadmap
-3. Study `dermatological-logic.md` for business logic
+1. **Read [spec-english.md](./docs/spec-english.md)** for complete overview
+2. **Check [Roadmap_Planning_EN.md](./docs/Roadmap_Planning_EN.md)** for roadmap
+3. **Study [Dermatological_Logic_EN.md](./docs/Dermatological_Logic_EN.md)** for business logic
 
 ### **For development:**
-- **Frontend/UI** → `spec.md` + `educational-interface.md`
-- **Backend/API** → `spec.md` + `architecture-database.md`
-- **AI/Diagnosis** → `dermai-diagnostic-improvement-strategy.md`
+- **Frontend/UI** → `spec-english.md` + `Educational_Interface_EN.md`
+- **Backend/API** → `spec-english.md` + `Database_Architecture_EN.md`
+- **AI/Diagnosis** → `Diagnostic_Improvement_Strategy_EN.md`
 - **Business** → `monetization-strategy.md`
 
-### **For maintenance:**
-- **Deployment** → Section 10 of `spec.md`
-- **Database** → `architecture-database.md`
-- **Phase logic** → `dermatological-logic.md`
+## ⚡ Quick Demo
+
+```bash
+# Clone the repository
+git clone https://github.com/picmakpro/Dermai-en.git
+cd dermai-v2-english
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.local.example .env.local
+# Add your OPENAI_API_KEY
+
+# Start development server
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to see the application.
+
+## 🏗️ Project Structure
+
+```
+src/
+├── app/              # Next.js 15 App Router pages
+├── components/       # Reusable components
+│   ├── forms/        # Forms and questionnaires
+│   ├── results/      # Results display
+│   ├── shared/       # Shared components
+│   └── upload/       # Photo upload
+├── services/         # Business logic
+│   ├── ai/           # AI services
+│   ├── affiliate/    # Product affiliation
+│   └── educational/  # Educational interface
+├── types/            # TypeScript types
+└── utils/            # Utilities
+```
 
 ## ✅ **Implementation Status**
 
@@ -47,6 +98,8 @@ This centralized documentation contains all specifications, strategies and techn
 - ✅ Scientifically validated dermatological logic
 - ✅ Consistent phase numbering (1,2,3...)
 - ✅ Visual evolution criteria (vs arbitrary timing)
+- ✅ Complete French to English translation
+- ✅ Logic-safety comments for all French values
 
 ### **🔄 In Progress**
 - User dashboard/history interface
@@ -59,18 +112,41 @@ This centralized documentation contains all specifications, strategies and techn
 - Affiliate API integration (Sephora, Amazon)
 - Feedback system and continuous improvement
 
-## 📞 **Contacts & Support**
+## 🚀 Deployment
 
-- **Technical documentation** : See `spec.md`
-- **Dermatological logic questions** : See `dermatological-logic.md`
-- **Deployment issues** : Section 10 of `spec.md`
+The application is optimized for Vercel deployment:
+
+```bash
+# Build for production
+npm run build
+
+# Deploy to Vercel
+vercel --prod
+```
+
+**Environment Variables Required:**
+```env
+OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+NODE_ENV=production
+NEXT_PUBLIC_APP_URL=https://your-app.vercel.app
+```
+
+## 📞 **Support & Documentation**
+
+- **Technical documentation**: See [spec-english.md](./docs/spec-english.md)
+- **Dermatological logic questions**: See [Dermatological_Logic_EN.md](./docs/Dermatological_Logic_EN.md)
+- **Deployment issues**: Section 10 of [spec-english.md](./docs/spec-english.md)
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ---
 
-*Documentation consolidated on 3rd september, 2025*  
-*All obsolete documents removed, information centralized*
-"""
-path = "/mnt/data/DermAI-V2_Documentation.md"
-with open(path, "w", encoding="utf-8") as f:
-    f.write(content)
-path
+**DermAI V2** - Transforming skincare through AI-powered personalized diagnosis.
+
+*Built with ❤️ by the DermAI team*
