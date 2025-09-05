@@ -1,11 +1,14 @@
 // Types for an advanced dermatological routine system
 
 export type FrequencyType =
-  | 'daily'        // Daily (morning and/or evening)
-  | 'weekly'       // Weekly (e.g., 2–3 times per week)
-  | 'monthly'      // Monthly (e.g., once a month)
-  | 'as-needed'    // As needed (e.g., after healing)
-  | 'progressive'  // Progressive (e.g., introduce after 2 weeks)
+  | 'quotidien'    // Daily (from API)
+  | 'hebdomadaire' // Weekly (from API)
+  | 'ponctuel'     // As needed (from API)
+  | 'daily'        // Daily (legacy)
+  | 'weekly'       // Weekly (legacy)
+  | 'monthly'      // Monthly (legacy)
+  | 'as-needed'    // As needed (legacy)
+  | 'progressive'  // Progressive (legacy)
 
 export type TimeOfDay = 'morning' | 'evening' | 'both'
 

@@ -165,3 +165,82 @@ export const normalizeAssessmentFRtoEN = (assessment: any): any => {
 
   return normalized;
 };
+
+// Display mappers: EN canonical → FR labels for UI
+export const getGenderLabel = (gender?: string): string => {
+  const map: Record<string, string> = {
+    'male': 'Homme',
+    'female': 'Femme', 
+    'other': 'Autre',
+    'prefer-not-to-say': 'Ne souhaite pas préciser'
+  };
+  return map[gender || ''] || gender || 'Ne souhaite pas préciser';
+};
+
+export const getSkinTypeLabel = (skinType?: string): string => {
+  const map: Record<string, string> = {
+    'dry': 'Sèche',
+    'normal': 'Normale',
+    'combination': 'Mixte', 
+    'oily': 'Grasse',
+    'sensitive': 'Sensible',
+    'unknown': 'À définir par l\'IA'
+  };
+  return map[skinType || ''] || 'À définir par l\'IA';
+};
+
+export const getRoutinePreferenceLabel = (preference?: string): string => {
+  const map: Record<string, string> = {
+    'minimalist': 'Minimaliste',
+    'simple': 'Simple',
+    'balanced': 'Équilibrée',
+    'complete': 'Complète'
+  };
+  return map[preference || ''] || preference || 'Équilibrée';
+};
+
+export const getBudgetLabel = (budget?: string): string => {
+  const map: Record<string, string> = {
+    'under-50': '< 50€',
+    '50-100': '50-100€',
+    '100-200': '100-200€',
+    'over-200': '> 200€',
+    'no-limit': 'Pas de limite'
+  };
+  return map[budget || ''] || budget || '50-100€';
+};
+
+export const getConcernLabel = (concern?: string): string => {
+  const map: Record<string, string> = {
+    'blemishes': 'Acné/Boutons',
+    'ingrowns': 'Poils incarnés',
+    'wrinkles': 'Rides/Vieillissement',
+    'pigmentation': 'Taches pigmentaires',
+    'redness': 'Rougeurs/Irritations',
+    'dehydration': 'Peau sèche',
+    'blackheads': 'Points noirs',
+    'scars': 'Cicatrices',
+    'sensitivity': 'Sensibilité',
+    'unknown': 'Je ne sais pas',
+    'other': 'Autres'
+  };
+  return map[concern || ''] || concern || 'Je ne sais pas';
+};
+
+export const getFrequencyLabel = (frequency?: string): string => {
+  const map: Record<string, string> = {
+    'quotidien': 'Quotidien',
+    'hebdomadaire': 'Hebdomadaire', 
+    'ponctuel': 'Ponctuel'
+  };
+  return map[frequency || ''] || frequency || 'Quotidien';
+};
+
+export const getTimingLabel = (timing?: string): string => {
+  const map: Record<string, string> = {
+    'matin': 'Matin',
+    'soir': 'Soir',
+    'matin_et_soir': 'Matin et soir'
+  };
+  return map[timing || ''] || timing || 'Matin et soir';
+};

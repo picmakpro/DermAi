@@ -172,7 +172,7 @@ export interface AdvancedRoutine {
 export interface AdvancedRoutineStep {
   title: string
   description: string
-  frequency: 'daily' | 'weekly' | 'monthly' | 'as-needed' | 'progressive'
+  frequency: 'quotidien' | 'hebdomadaire' | 'ponctuel' | 'daily' | 'weekly' | 'monthly' | 'as-needed' | 'progressive'
   timeOfDay: 'morning' | 'evening' | 'both'
   frequencyDetails?: string
   phase: 'immediate' | 'adaptation' | 'maintenance'
@@ -245,7 +245,7 @@ export interface UnifiedRoutineStep {
   phase: 'immediate' | 'adaptation' | 'maintenance'
 
   // New properties for phase/temporal UI
-  frequency: 'daily' | 'weekly' | 'monthly' | 'as-needed' | 'progressive'
+  frequency: 'quotidien' | 'hebdomadaire' | 'ponctuel' | 'daily' | 'weekly' | 'monthly' | 'as-needed' | 'progressive'
   timeOfDay: 'morning' | 'evening' | 'both'
   frequencyDetails?: string
   startAfterDays?: number

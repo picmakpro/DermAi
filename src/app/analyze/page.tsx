@@ -602,9 +602,8 @@ export default function AnalyzePage() {
                     <div className="flex justify-between items-center p-3 bg-dermai-pure rounded-2xl border border-dermai-nude-200 md:col-span-2">
                       <span className="text-dermai-neutral-600">Detected skin type:</span>
                       <span className="font-display font-semibold text-dermai-ai-600">
-                        {/* value used in logic; keep as-is (French) */}
-                        {sessionData.questionnaire.userProfile?.skinType === 'Je ne sais pas' 
-                          ? 'Analysis in progress by AI...' 
+                        {sessionData.questionnaire.userProfile?.skinType === 'unknown' 
+                          ? 'À définir par l\'IA' 
                           : sessionData.questionnaire.userProfile?.skinType}
                       </span>
                     </div>

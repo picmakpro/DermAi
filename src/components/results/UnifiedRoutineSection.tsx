@@ -20,6 +20,7 @@ import {
   TrendingUp,
   Heart
 } from 'lucide-react'
+import { getFrequencyLabel, getTimingLabel } from '@/lib/i18n/mappers'
 import type { UnifiedRoutineStep, BeautyAssessment } from '@/types'
 import { PhaseTimingCalculator, type PhaseTiming } from '@/services/educational/phaseTimingCalculator'
 import { EducationalTooltip, MobileEducationalTooltip } from '@/components/shared/EducationalTooltip'
@@ -36,11 +37,16 @@ const timeIcons = {
 }
 
 const frequencyLabels = {
-  daily: 'Daily',
-  weekly: 'Weekly', 
-  monthly: 'Monthly',
-  'as-needed': 'As needed',
-  progressive: 'Progressive'
+  // API values (FR) → display labels (FR)
+  quotidien: 'Quotidien',
+  hebdomadaire: 'Hebdomadaire', 
+  ponctuel: 'Ponctuel',
+  // Legacy EN values
+  daily: 'Quotidien',
+  weekly: 'Hebdomadaire', 
+  monthly: 'Mensuel',
+  'as-needed': 'Au besoin',
+  progressive: 'Progressif'
 }
 
 const phaseColors = {
@@ -178,19 +184,19 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
     // Smart filtering: avoid duplicates across sections
     const morningSteps = routine.filter(step => 
       (step.timeOfDay === 'morning' || step.timeOfDay === 'both') && 
-      step.frequency === 'daily' // daily steps only
+      (step.frequency === 'quotidien' || step.frequency === 'daily') // daily steps only
     )
     const eveningSteps = routine.filter(step => 
       (step.timeOfDay === 'evening' || step.timeOfDay === 'both') && 
-      step.frequency === 'daily' // daily steps only
+      (step.frequency === 'quotidien' || step.frequency === 'daily') // daily steps only
     )
     
     return {
       morning: deduplicateByProduct(morningSteps),
       evening: deduplicateByProduct(eveningSteps),
-      weekly: routine.filter(step => step.frequency === 'weekly'),
+      weekly: routine.filter(step => step.frequency === 'hebdomadaire' || step.frequency === 'weekly'),
       monthly: routine.filter(step => step.frequency === 'monthly'),
-      asNeeded: routine.filter(step => step.frequency === 'as-needed')
+      asNeeded: routine.filter(step => step.frequency === 'ponctuel' || step.frequency === 'as-needed')
     }
   }
 
@@ -232,10 +238,10 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                   {timeIcons[step.timeOfDay as keyof typeof timeIcons]}
                   <span className="hidden sm:inline">{frequencyLabels[step.frequency as keyof typeof frequencyLabels]}</span>
                   <span className="sm:hidden">
-                    {step.frequency === 'daily' && 'Day'}
-                    {step.frequency === 'weekly' && 'Wk'}
-                    {step.frequency === 'monthly' && 'Mo'}
-                    {step.frequency === 'as-needed' && 'Need'}
+                    {(step.frequency === 'quotidien' || step.frequency === 'daily') && 'Quot'}
+                    {(step.frequency === 'hebdomadaire' || step.frequency === 'weekly') && 'Hebdo'}
+                    {step.frequency === 'monthly' && 'Mens'}
+                    {(step.frequency === 'ponctuel' || step.frequency === 'as-needed') && 'Besoin'}
                     {step.frequency === 'progressive' && 'Prog'}
                   </span>
                 </div>

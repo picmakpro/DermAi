@@ -7,7 +7,10 @@ import {
   normalizeRoutinePreference,
   normalizeBudget,
   normalizeConcern,
-  normalizeAssessmentFRtoEN
+  normalizeAssessmentFRtoEN,
+  getSkinTypeLabel,
+  getFrequencyLabel,
+  getTimingLabel
 } from '../mappers'
 
 describe('Mappers FR -> EN', () => {
@@ -192,6 +195,40 @@ describe('Mappers FR -> EN', () => {
       expect(normalized.intensity).toBe('moderate')
       expect(normalized.skinType).toBe('combination')
       expect(normalized.mainConcern).toBe('pigmentation')
+    })
+  })
+
+  describe('Display Mappers EN → FR', () => {
+    describe('getSkinTypeLabel', () => {
+      it('should map English skin types to French labels', () => {
+        expect(getSkinTypeLabel('dry')).toBe('Sèche')
+        expect(getSkinTypeLabel('normal')).toBe('Normale')
+        expect(getSkinTypeLabel('combination')).toBe('Mixte')
+        expect(getSkinTypeLabel('oily')).toBe('Grasse')
+        expect(getSkinTypeLabel('sensitive')).toBe('Sensible')
+        expect(getSkinTypeLabel('unknown')).toBe('À définir par l\'IA')
+      })
+
+      it('should handle undefined/unknown values', () => {
+        expect(getSkinTypeLabel(undefined)).toBe('À définir par l\'IA')
+        expect(getSkinTypeLabel('random')).toBe('À définir par l\'IA')
+      })
+    })
+
+    describe('getFrequencyLabel', () => {
+      it('should map frequency values to French labels', () => {
+        expect(getFrequencyLabel('quotidien')).toBe('Quotidien')
+        expect(getFrequencyLabel('hebdomadaire')).toBe('Hebdomadaire')
+        expect(getFrequencyLabel('ponctuel')).toBe('Ponctuel')
+      })
+    })
+
+    describe('getTimingLabel', () => {
+      it('should map timing values to French labels', () => {
+        expect(getTimingLabel('matin')).toBe('Matin')
+        expect(getTimingLabel('soir')).toBe('Soir')
+        expect(getTimingLabel('matin_et_soir')).toBe('Matin et soir')
+      })
     })
   })
 })
