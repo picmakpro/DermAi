@@ -15,6 +15,7 @@ interface AnalyzeRequest {
   allergies?: any
 }
 import { getPhotoDataUrl } from '@/utils/storage/photoStore'
+import { normalizeRoutineLike } from '@/lib/i18n/normalization'
 import { saveAnalysis } from '@/utils/storage/analysisStore'
 import { AlertCircle, Eye, Sparkles, CheckCircle2, ShoppingBag, Scan, Shield, Microscope } from 'lucide-react'
 
@@ -54,7 +55,9 @@ export default function AnalyzePage() {
 
       try {
         const photosData = JSON.parse(photos) as Array<{ id: string; preview: string; type: PhotoUpload['type']; quality: PhotoUpload['quality'] }>
-        const questionnaireData = JSON.parse(questionnaire)
+        const questionnaireDataRaw = JSON.parse(questionnaire)
+        // Normalize questionnaire data to ensure EN canonicals
+        const questionnaireData = normalizeRoutineLike(questionnaireDataRaw)
 
         // Rebuild photos with dataURL from IndexedDB (no quota)
         const rebuiltPhotos: any[] = await Promise.all(

@@ -1,0 +1,3265 @@
+{
+  "products": [
+    {
+      "id": "B01MSSDEPK",
+      "asin": "B01MSSDEPK",
+      "name": "Hydrating Facial Cleanser",
+      "brand": "CeraVe",
+      "category": "cleanser",
+      "price": 15.49,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71T0VkxtzPL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B01MSSDEPK",
+      "activeIngredients": [
+        "Hyaluronic Acid",
+        "Ceramides",
+        "Glycerin"
+      ],
+      "skinTypes": [
+        "dry",
+        "normal",
+        "sensitive"
+      ],
+      "benefits": [
+        "supports skin barrier",
+        "maintains hydration",
+        "gentle cleansing",
+        "removes makeup",
+        "non-comedogenic"
+      ],
+      "amazonRating": 4.7,
+      "amazonReviewCount": 123924,
+      "categoryRank": 1,
+      "reason": "Gold standard hydrating cleanser with ceramides and hyaluronic acid, consistently rated as best for dry to normal skin with over 120K reviews."
+    },
+    {
+      "id": "B01N1LL62W",
+      "asin": "B01N1LL62W",
+      "name": "Foaming Facial Cleanser",
+      "brand": "CeraVe",
+      "category": "cleanser",
+      "price": 15.49,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71u7E7cDZlL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B01N1LL62W",
+      "activeIngredients": [
+        "Hyaluronic Acid",
+        "Ceramides",
+        "Niacinamide"
+      ],
+      "skinTypes": [
+        "oily",
+        "combination",
+        "acne-prone"
+      ],
+      "benefits": [
+        "controls oil",
+        "maintains hydration",
+        "non-drying formula",
+        "removes excess sebum",
+        "fragrance-free"
+      ],
+      "amazonRating": 4.8,
+      "amazonReviewCount": 99256,
+      "categoryRank": 2,
+      "reason": "Top-rated foaming cleanser for oily skin with oil-controlling properties and barrier-supporting ingredients, praised by nearly 100K users."
+    },
+    {
+      "id": "B08CQDF382",
+      "asin": "B08CQDF382",
+      "name": "Hydrating Cream To Foam Cleanser",
+      "brand": "CeraVe",
+      "category": "cleanser",
+      "price": 15.13,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71YtFjXc4RL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B08CQDF382",
+      "activeIngredients": [
+        "Hyaluronic Acid",
+        "Ceramides"
+      ],
+      "skinTypes": [
+        "normal",
+        "dry",
+        "sensitive"
+      ],
+      "benefits": [
+        "removes makeup",
+        "gentle cleansing",
+        "cream-to-foam texture",
+        "hydrates while cleansing",
+        "non-comedogenic"
+      ],
+      "amazonRating": 4.8,
+      "amazonReviewCount": 24128,
+      "categoryRank": 3,
+      "reason": "Innovative cream-to-foam texture that effectively removes makeup while maintaining skin hydration, highly rated for gentle yet effective cleansing."
+    },
+    {
+      "id": "B08CQ9T6KN",
+      "asin": "B08CQ9T6KN",
+      "name": "Renewing Salicylic Acid Cleanser",
+      "brand": "CeraVe",
+      "category": "cleanser",
+      "price": 15.59,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71KhzPGYGDL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B08CQ9T6KN",
+      "activeIngredients": [
+        "Salicylic Acid",
+        "Hyaluronic Acid",
+        "Niacinamide",
+        "Ceramides"
+      ],
+      "skinTypes": [
+        "oily",
+        "acne-prone",
+        "enlarged pores"
+      ],
+      "benefits": [
+        "gentle exfoliation",
+        "smooths skin texture",
+        "reduces blackheads",
+        "maintains hydration",
+        "fragrance-free"
+      ],
+      "amazonRating": 4.7,
+      "amazonReviewCount": 77422,
+      "categoryRank": 4,
+      "reason": "Gentle BHA cleanser that provides exfoliation while supporting the skin barrier, excellent for acne-prone skin with strong review base."
+    },
+    {
+      "id": "B0C7JJG6BB",
+      "asin": "B0C7JJG6BB",
+      "name": "Acne Control Cleanser",
+      "brand": "CeraVe",
+      "category": "cleanser",
+      "price": 17.24,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71Q7xcVGJ1L._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B0C7JJG6BB",
+      "activeIngredients": [
+        "Salicylic Acid",
+        "Niacinamide",
+        "Ceramides",
+        "Clay"
+      ],
+      "skinTypes": [
+        "oily",
+        "acne-prone",
+        "combination"
+      ],
+      "benefits": [
+        "prevents acne",
+        "controls oil",
+        "absorbs excess sebum",
+        "gentle on skin",
+        "fragrance-free"
+      ],
+      "amazonRating": 4.7,
+      "amazonReviewCount": 18865,
+      "categoryRank": 5,
+      "reason": "Advanced acne control formula with 2% salicylic acid and oil-absorbing clay, specifically designed for acne prevention with strong ratings."
+    },
+    {
+      "id": "GEN-CLEAN6",
+      "asin": "B08BW46XXK",
+      "name": "Daily Facial Moisturizer",
+      "brand": "Vanicream",
+      "category": "cleanser",
+      "price": 13.97,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61nVz0O0qUL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B08BW46XXK",
+      "activeIngredients": [
+        "Ceramides",
+        "Hyaluronic Acid"
+      ],
+      "skinTypes": [
+        "sensitive",
+        "very sensitive",
+        "dry"
+      ],
+      "benefits": [
+        "gentle formula",
+        "fragrance-free",
+        "hypoallergenic",
+        "non-comedogenic",
+        "dermatologist recommended"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 20311,
+      "categoryRank": 6,
+      "reason": "Formulated without common irritants, ideal for extremely sensitive skin with ceramides and hyaluronic acid for barrier support."
+    },
+    {
+      "id": "GEN-CLEAN7",
+      "asin": "B000FGDIAS",
+      "name": "Gentle Hydrating Cleanser",
+      "brand": "Neutrogena",
+      "category": "cleanser",
+      "price": 12.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61Y7oL9k4ZL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B000FGDIAS",
+      "activeIngredients": [
+        "Glycerin",
+        "Panthenol"
+      ],
+      "skinTypes": [
+        "normal",
+        "sensitive",
+        "dry"
+      ],
+      "benefits": [
+        "gentle cleansing",
+        "maintains moisture",
+        "soap-free",
+        "fragrance-free",
+        "non-comedogenic"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 15643,
+      "categoryRank": 7,
+      "reason": "Classic gentle cleanser with minimal ingredients, perfect for sensitive skin routines with proven track record."
+    },
+    {
+      "id": "GEN-CLEAN8",
+      "asin": "B00949ONKQ",
+      "name": "CALM Restoring Cleanser",
+      "brand": "Paula's Choice",
+      "category": "cleanser",
+      "price": 25,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71QxVGKrq4L._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B00949ONKQ",
+      "activeIngredients": [
+        "Allantoin",
+        "Ceramides"
+      ],
+      "skinTypes": [
+        "sensitive",
+        "rosacea",
+        "very sensitive"
+      ],
+      "benefits": [
+        "calms irritation",
+        "reduces redness",
+        "gentle formula",
+        "fragrance-free",
+        "soap-free"
+      ],
+      "amazonRating": 4.4,
+      "amazonReviewCount": 8934,
+      "categoryRank": 8,
+      "reason": "Specialized cleanser for rosacea-prone and sensitive skin with calming ingredients and excellent tolerance profile."
+    },
+    {
+      "id": "B00949CTQQ",
+      "asin": "B00949CTQQ",
+      "name": "SKIN PERFECTING 2% BHA Liquid",
+      "brand": "Paula's Choice",
+      "category": "exfoliant",
+      "price": 37,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71TQmZc3UUL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B00949CTQQ",
+      "activeIngredients": [
+        "Salicylic Acid"
+      ],
+      "skinTypes": [
+        "oily",
+        "acne-prone",
+        "enlarged pores",
+        "blackheads"
+      ],
+      "benefits": [
+        "unclogs pores",
+        "reduces blackheads",
+        "smooths fine lines",
+        "improves texture",
+        "fragrance-free"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 109662,
+      "categoryRank": 1,
+      "reason": "The gold standard BHA exfoliant with over 100K reviews, consistently rated as most effective for pores and blackheads."
+    },
+    {
+      "id": "B071914GGL",
+      "asin": "B071914GGL",
+      "name": "Glycolic Acid 7% Exfoliating Toner",
+      "brand": "The Ordinary",
+      "category": "exfoliant",
+      "price": 13,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61KAYjkGJgL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B071914GGL",
+      "activeIngredients": [
+        "Glycolic Acid"
+      ],
+      "skinTypes": [
+        "normal",
+        "combination",
+        "mature"
+      ],
+      "benefits": [
+        "brightens skin tone",
+        "smooths texture",
+        "reduces fine lines",
+        "evens complexion",
+        "affordable"
+      ],
+      "amazonRating": 4.7,
+      "amazonReviewCount": 31560,
+      "categoryRank": 2,
+      "reason": "Best-selling affordable AHA toner with proven glycolic acid concentration, excellent for beginners and texture improvement."
+    },
+    {
+      "id": "B01M5FEYKA",
+      "asin": "B01M5FEYKA",
+      "name": "SKIN PERFECTING 2% BHA Lotion",
+      "brand": "Paula's Choice",
+      "category": "exfoliant",
+      "price": 35,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71Z8qcXuTQL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B01M5FEYKA",
+      "activeIngredients": [
+        "Salicylic Acid"
+      ],
+      "skinTypes": [
+        "dry",
+        "normal",
+        "sensitive"
+      ],
+      "benefits": [
+        "gentle exfoliation",
+        "hydrating formula",
+        "improves texture",
+        "reduces pores",
+        "fragrance-free"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 368,
+      "categoryRank": 3,
+      "reason": "Gentler lotion version of the famous BHA liquid, perfect for those who find the liquid too strong but want BHA benefits."
+    },
+    {
+      "id": "B0BHV2NPT4",
+      "asin": "B0BHV2NPT4",
+      "name": "CALM 1% BHA Liquid Exfoliant",
+      "brand": "Paula's Choice",
+      "category": "exfoliant",
+      "price": 35,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71wcQhXBmyL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B0BHV2NPT4",
+      "activeIngredients": [
+        "Salicylic Acid"
+      ],
+      "skinTypes": [
+        "sensitive",
+        "rosacea",
+        "very sensitive"
+      ],
+      "benefits": [
+        "gentle exfoliation",
+        "calms redness",
+        "suitable for rosacea",
+        "fragrance-free",
+        "non-irritating"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 153,
+      "categoryRank": 4,
+      "reason": "Lower concentration BHA specifically formulated for sensitive and rosacea-prone skin, providing gentle exfoliation without irritation."
+    },
+    {
+      "id": "B089973QWM",
+      "asin": "B089973QWM",
+      "name": "25% AHA + 2% BHA Exfoliant Peel",
+      "brand": "Paula's Choice",
+      "category": "exfoliant",
+      "price": 45,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71mQVGKrDkL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B089973QWM",
+      "activeIngredients": [
+        "Glycolic Acid",
+        "Lactic Acid",
+        "Salicylic Acid"
+      ],
+      "skinTypes": [
+        "normal",
+        "combination",
+        "mature"
+      ],
+      "benefits": [
+        "intensive exfoliation",
+        "brightens complexion",
+        "reduces fine lines",
+        "weekly treatment",
+        "fragrance-free"
+      ],
+      "amazonRating": 4.3,
+      "amazonReviewCount": 801,
+      "categoryRank": 5,
+      "reason": "Professional-strength at-home peel combining multiple acids for maximum exfoliation, ideal for experienced users seeking dramatic results."
+    },
+    {
+      "id": "B08KSK1ZY6",
+      "asin": "B08KSK1ZY6",
+      "name": "10% Glycolic Acid Face Peel",
+      "brand": "Medix 5.5",
+      "category": "exfoliant",
+      "price": 9.83,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71pQFHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B08KSK1ZY6",
+      "activeIngredients": [
+        "Glycolic Acid",
+        "Lactic Acid",
+        "Salicylic Acid"
+      ],
+      "skinTypes": [
+        "normal",
+        "combination",
+        "mature"
+      ],
+      "benefits": [
+        "targets fine lines",
+        "improves texture",
+        "minimizes pores",
+        "affordable treatment",
+        "gentle peel"
+      ],
+      "amazonRating": 4.4,
+      "amazonReviewCount": 889,
+      "categoryRank": 6,
+      "reason": "Budget-friendly multi-acid peel that delivers professional results at home with combination of AHA and BHA acids."
+    },
+    {
+      "id": "GEN-EXF7",
+      "asin": "B08LZZK9B2",
+      "name": "10% Glycolic Acid Serum",
+      "brand": "Advanced Clinicals",
+      "category": "exfoliant",
+      "price": 12.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71pQVHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B08LZZK9B2",
+      "activeIngredients": [
+        "Glycolic Acid",
+        "Lactic Acid",
+        "Salicylic Acid"
+      ],
+      "skinTypes": [
+        "normal",
+        "combination",
+        "dark spots"
+      ],
+      "benefits": [
+        "improves dark spots",
+        "evens skin tone",
+        "reduces pore appearance",
+        "affordable option",
+        "multiple acids"
+      ],
+      "amazonRating": 4.3,
+      "amazonReviewCount": 22991,
+      "categoryRank": 7,
+      "reason": "Popular affordable exfoliating serum with strong review base, excellent for those starting with chemical exfoliation."
+    },
+    {
+      "id": "GEN-EXF8",
+      "asin": "B0CXW9ZZ9N",
+      "name": "10% Glycolic + Lactic Acid Lotion",
+      "brand": "Advanced Clinicals",
+      "category": "exfoliant",
+      "price": 19.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71aQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B0CXW9ZZ9N",
+      "activeIngredients": [
+        "Glycolic Acid",
+        "Lactic Acid",
+        "Hyaluronic Acid"
+      ],
+      "skinTypes": [
+        "normal",
+        "dry",
+        "body"
+      ],
+      "benefits": [
+        "body and face use",
+        "improves rough texture",
+        "hydrating formula",
+        "large size",
+        "gentle exfoliation"
+      ],
+      "amazonRating": 4.2,
+      "amazonReviewCount": 372,
+      "categoryRank": 8,
+      "reason": "Large format exfoliating lotion suitable for face and body, combining AHAs with hydrating ingredients for daily use."
+    },
+    {
+      "id": "B09SN5B88W",
+      "asin": "B09SN5B88W",
+      "name": "Glow Tonic",
+      "brand": "Pixi",
+      "category": "toner-essence",
+      "price": 14.55,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71yQVGKrq4L._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B09SN5B88W",
+      "activeIngredients": [
+        "Glycolic Acid",
+        "Aloe Vera",
+        "Ginseng"
+      ],
+      "skinTypes": [
+        "normal",
+        "combination",
+        "dull skin"
+      ],
+      "benefits": [
+        "brightens complexion",
+        "gentle exfoliation",
+        "improves radiance",
+        "balances skin",
+        "travel size"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 4951,
+      "categoryRank": 1,
+      "reason": "Cult-favorite glycolic toner that delivers gentle daily exfoliation with brightening results, beloved by beauty enthusiasts worldwide."
+    },
+    {
+      "id": "B07CF525NG",
+      "asin": "B07CF525NG",
+      "name": "Witch Hazel Facial Mist Toner",
+      "brand": "Thayers",
+      "category": "toner-essence",
+      "price": 7.65,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71mQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B07CF525NG",
+      "activeIngredients": [
+        "Witch Hazel",
+        "Aloe Vera",
+        "Rose Petal"
+      ],
+      "skinTypes": [
+        "normal",
+        "oily",
+        "combination",
+        "sensitive"
+      ],
+      "benefits": [
+        "soothes skin",
+        "balances pH",
+        "alcohol-free",
+        "natural ingredients",
+        "refreshing mist"
+      ],
+      "amazonRating": 4.7,
+      "amazonReviewCount": 18041,
+      "categoryRank": 2,
+      "reason": "Classic alcohol-free toner with witch hazel and rose, excellent for balancing all skin types with natural, gentle formula."
+    },
+    {
+      "id": "B002LC9OES",
+      "asin": "B002LC9OES",
+      "name": "Facial Spray with Aloe, Herbs and Rose Water",
+      "brand": "Mario Badescu",
+      "category": "toner-essence",
+      "price": 8,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71pQgHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B002LC9OES",
+      "activeIngredients": [
+        "Rose Water",
+        "Aloe Vera",
+        "Herbs"
+      ],
+      "skinTypes": [
+        "normal",
+        "dry",
+        "sensitive"
+      ],
+      "benefits": [
+        "hydrates skin",
+        "rejuvenates complexion",
+        "clarifies pores",
+        "refreshing mist",
+        "natural ingredients"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 82993,
+      "categoryRank": 3,
+      "reason": "Iconic hydrating mist with massive following, perfect for refreshing and hydrating skin throughout the day with natural rose water."
+    },
+    {
+      "id": "B07Q342M1Q",
+      "asin": "B07Q342M1Q",
+      "name": "Vitamin-C Tonic",
+      "brand": "Pixi",
+      "category": "toner-essence",
+      "price": 15,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71yQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B07Q342M1Q",
+      "activeIngredients": [
+        "Vitamin C",
+        "Ferulic Acid",
+        "Probiotics"
+      ],
+      "skinTypes": [
+        "normal",
+        "dull skin",
+        "dark spots"
+      ],
+      "benefits": [
+        "boosts luminosity",
+        "brightens complexion",
+        "antioxidant protection",
+        "alcohol-free",
+        "travel size"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 356,
+      "categoryRank": 4,
+      "reason": "Brightening toner with stable vitamin C and antioxidants, perfect for dull skin and dark spot prevention with gentle daily use."
+    },
+    {
+      "id": "B000H723LU",
+      "asin": "B000H723LU",
+      "name": "Facial Treatment Essence",
+      "brand": "SK-II",
+      "category": "toner-essence",
+      "price": 99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71qQgHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B000H723LU",
+      "activeIngredients": [
+        "Pitera",
+        "Galactomyces"
+      ],
+      "skinTypes": [
+        "normal",
+        "mature",
+        "premium"
+      ],
+      "benefits": [
+        "refines skin texture",
+        "improves firmness",
+        "reduces fine lines",
+        "luxury formula",
+        "cult favorite"
+      ],
+      "amazonRating": 4.4,
+      "amazonReviewCount": 510,
+      "categoryRank": 5,
+      "reason": "Luxury essence with cult following and patented Pitera ingredient, delivers visible anti-aging results with premium formulation."
+    },
+    {
+      "id": "B0D96FWV8B",
+      "asin": "B0D96FWV8B",
+      "name": "Antioxidant Tonic",
+      "brand": "Pixi",
+      "category": "toner-essence",
+      "price": 14.57,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71wQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B0D96FWV8B",
+      "activeIngredients": [
+        "Antioxidants",
+        "Peptides"
+      ],
+      "skinTypes": [
+        "normal",
+        "mature",
+        "sensitive"
+      ],
+      "benefits": [
+        "multi-tasking formula",
+        "antioxidant protection",
+        "hydrating properties",
+        "travel size",
+        "alcohol-free"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 34,
+      "categoryRank": 6,
+      "reason": "Innovative 3-in-1 formula combining toner, essence, and serum benefits with antioxidant protection in convenient travel size."
+    },
+    {
+      "id": "GEN-TON7",
+      "asin": "B06XS7TBVF",
+      "name": "Facial Spray with Aloe, Cucumber and Green Tea",
+      "brand": "Mario Badescu",
+      "category": "toner-essence",
+      "price": 8,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71pQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B06XS7TBVF",
+      "activeIngredients": [
+        "Aloe Vera",
+        "Cucumber",
+        "Green Tea"
+      ],
+      "skinTypes": [
+        "oily",
+        "combination",
+        "acne-prone"
+      ],
+      "benefits": [
+        "hydrates skin",
+        "invigorates complexion",
+        "controls oil",
+        "refreshing mist",
+        "natural ingredients"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 16931,
+      "categoryRank": 7,
+      "reason": "Refreshing mist formulated for oily skin with oil-controlling botanicals, perfect for hydration without heaviness."
+    },
+    {
+      "id": "B01MDTVZTZ",
+      "asin": "B01MDTVZTZ",
+      "name": "Niacinamide 10% + Zinc 1%",
+      "brand": "The Ordinary",
+      "category": "serum",
+      "price": 6,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61Y7oL9k4ZL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B01MDTVZTZ",
+      "activeIngredients": [
+        "Niacinamide",
+        "Zinc"
+      ],
+      "skinTypes": [
+        "oily",
+        "acne-prone",
+        "enlarged pores"
+      ],
+      "benefits": [
+        "reduces pore appearance",
+        "controls oil production",
+        "improves texture",
+        "affordable",
+        "minimizes blemishes"
+      ],
+      "amazonRating": 4.7,
+      "amazonReviewCount": 37542,
+      "categoryRank": 1,
+      "reason": "Bestselling affordable niacinamide serum with proven pore-minimizing effects, consistently rated as best value for oil control."
+    },
+    {
+      "id": "B01MYEZPC8",
+      "asin": "B01MYEZPC8",
+      "name": "Hyaluronic Acid 2% + B5",
+      "brand": "The Ordinary",
+      "category": "serum",
+      "price": 9.9,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71T0VkxtzPL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B01MYEZPC8",
+      "activeIngredients": [
+        "Hyaluronic Acid",
+        "Vitamin B5",
+        "Ceramides"
+      ],
+      "skinTypes": [
+        "dry",
+        "dehydrated",
+        "normal"
+      ],
+      "benefits": [
+        "intense hydration",
+        "plumps skin",
+        "smooth texture",
+        "affordable",
+        "suitable for all ages"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 26145,
+      "categoryRank": 2,
+      "reason": "Top-rated hydrating serum with multiple molecular weights of hyaluronic acid, delivers immediate plumping effects at unbeatable price."
+    },
+    {
+      "id": "B07XJ7XWLW",
+      "asin": "B07XJ7XWLW",
+      "name": "Anti Aging Retinol Serum",
+      "brand": "CeraVe",
+      "category": "serum",
+      "price": 22.77,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71u7E7cDZlL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B07XJ7XWLW",
+      "activeIngredients": [
+        "Retinol",
+        "Hyaluronic Acid",
+        "Niacinamide",
+        "Ceramides"
+      ],
+      "skinTypes": [
+        "normal",
+        "mature",
+        "fine lines"
+      ],
+      "benefits": [
+        "reduces fine lines",
+        "smooths wrinkles",
+        "gentle formula",
+        "encapsulated retinol",
+        "fragrance-free"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 25695,
+      "categoryRank": 3,
+      "reason": "Gentle encapsulated retinol with barrier-supporting ingredients, perfect beginner retinol with excellent tolerance and efficacy."
+    },
+    {
+      "id": "B07PNCCLD2",
+      "asin": "B07PNCCLD2",
+      "name": "Vitamin C Serum with Hyaluronic Acid",
+      "brand": "CeraVe",
+      "category": "serum",
+      "price": 23.88,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71YtFjXc4RL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B07PNCCLD2",
+      "activeIngredients": [
+        "Vitamin C",
+        "Hyaluronic Acid"
+      ],
+      "skinTypes": [
+        "normal",
+        "dull skin",
+        "dark spots"
+      ],
+      "benefits": [
+        "brightens complexion",
+        "reduces dark spots",
+        "antioxidant protection",
+        "hydrates skin",
+        "fragrance-free"
+      ],
+      "amazonRating": 4.4,
+      "amazonReviewCount": 42364,
+      "categoryRank": 4,
+      "reason": "Stable vitamin C serum from trusted brand with 10% pure vitamin C, excellent for brightening and dark spot reduction."
+    },
+    {
+      "id": "B07K3261ZD",
+      "asin": "B07K3261ZD",
+      "name": "Hyaluronic Acid Serum",
+      "brand": "CeraVe",
+      "category": "serum",
+      "price": 19.24,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71T0VkxtzPL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B07K3261ZD",
+      "activeIngredients": [
+        "Hyaluronic Acid",
+        "Vitamin B5",
+        "Ceramides"
+      ],
+      "skinTypes": [
+        "dry",
+        "dehydrated",
+        "sensitive"
+      ],
+      "benefits": [
+        "deep hydration",
+        "plumps skin",
+        "supports barrier",
+        "fragrance-free",
+        "gentle formula"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 29897,
+      "categoryRank": 5,
+      "reason": "Dermatologist-developed hyaluronic acid serum with ceramides for barrier support, highly rated for sensitive and dry skin."
+    },
+    {
+      "id": "B0779YGB2G",
+      "asin": "B0779YGB2G",
+      "name": "Retinol 1% in Squalane",
+      "brand": "The Ordinary",
+      "category": "serum",
+      "price": 8.6,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61Y7oL9k4ZL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B0779YGB2G",
+      "activeIngredients": [
+        "Retinol",
+        "Squalane"
+      ],
+      "skinTypes": [
+        "normal",
+        "mature",
+        "experienced users"
+      ],
+      "benefits": [
+        "high-strength retinol",
+        "anti-aging effects",
+        "smooths texture",
+        "affordable",
+        "proven results"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 15326,
+      "categoryRank": 6,
+      "reason": "High-concentration retinol for experienced users seeking maximum anti-aging benefits at affordable price with squalane base."
+    },
+    {
+      "id": "B07Z9Y4M3C",
+      "asin": "B07Z9Y4M3C",
+      "name": "Pure Retinol Face Serum with Vitamin B3",
+      "brand": "La Roche-Posay",
+      "category": "serum",
+      "price": 44.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71u7E7cDZlL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B07Z9Y4M3C",
+      "activeIngredients": [
+        "Retinol",
+        "Niacinamide",
+        "Hyaluronic Acid"
+      ],
+      "skinTypes": [
+        "sensitive",
+        "mature",
+        "fine lines"
+      ],
+      "benefits": [
+        "resurfaces skin",
+        "reduces wrinkles",
+        "suitable for sensitive skin",
+        "hydrates while treating",
+        "premium formula"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 15435,
+      "categoryRank": 7,
+      "reason": "Premium retinol formulation from dermatologist-recommended brand, specially formulated for sensitive skin with proven efficacy."
+    },
+    {
+      "id": "B08TM8DLFJ",
+      "asin": "B08TM8DLFJ",
+      "name": "Hyaluronic Acid Serum",
+      "brand": "Good Molecules",
+      "category": "serum",
+      "price": 5.97,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71T0VkxtzPL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B08TM8DLFJ",
+      "activeIngredients": [
+        "Hyaluronic Acid"
+      ],
+      "skinTypes": [
+        "dry",
+        "dehydrated",
+        "normal"
+      ],
+      "benefits": [
+        "ultra hydrating",
+        "non-greasy texture",
+        "plumps skin",
+        "budget-friendly",
+        "clean formula"
+      ],
+      "amazonRating": 4.7,
+      "amazonReviewCount": 12209,
+      "categoryRank": 8,
+      "reason": "Clean, affordable hyaluronic acid serum with excellent texture and hydration benefits, perfect entry-level hydrating serum."
+    },
+    {
+      "id": "B01EKUBU5Y",
+      "asin": "B01EKUBU5Y",
+      "name": "Vitamin C Serum For Face",
+      "brand": "TruSkin",
+      "category": "serum",
+      "price": 21.41,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71YtFjXc4RL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B01EKUBU5Y",
+      "activeIngredients": [
+        "Vitamin C",
+        "Hyaluronic Acid",
+        "Vitamin E"
+      ],
+      "skinTypes": [
+        "normal",
+        "dull skin",
+        "dark spots"
+      ],
+      "benefits": [
+        "brightening formula",
+        "improves dark spots",
+        "reduces fine lines",
+        "antioxidant rich",
+        "large size"
+      ],
+      "amazonRating": 4.3,
+      "amazonReviewCount": 151448,
+      "categoryRank": 9,
+      "reason": "Popular vitamin C serum with massive review base, combines brightening and anti-aging ingredients with excellent value."
+    },
+    {
+      "id": "B07P5TMHD9",
+      "asin": "B07P5TMHD9",
+      "name": "Vitamin C Face Serum",
+      "brand": "Eclat Skincare",
+      "category": "serum",
+      "price": 7.97,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71YtFjXc4RL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B07P5TMHD9",
+      "activeIngredients": [
+        "Vitamin C",
+        "Hyaluronic Acid",
+        "Ferulic Acid",
+        "Vitamin E"
+      ],
+      "skinTypes": [
+        "normal",
+        "dull skin",
+        "dark spots"
+      ],
+      "benefits": [
+        "skin brightening",
+        "anti-aging effects",
+        "dark spot treatment",
+        "affordable",
+        "complete formula"
+      ],
+      "amazonRating": 4.3,
+      "amazonReviewCount": 48247,
+      "categoryRank": 10,
+      "reason": "Budget-friendly vitamin C serum with complete antioxidant formula including ferulic acid, excellent entry point for vitamin C."
+    },
+    {
+      "id": "B005IXQLDE",
+      "asin": "B005IXQLDE",
+      "name": "Vitamin C Serum",
+      "brand": "Mad Hippie",
+      "category": "serum",
+      "price": 27.19,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71YtFjXc4RL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B005IXQLDE",
+      "activeIngredients": [
+        "Vitamin C",
+        "Hyaluronic Acid",
+        "Ferulic Acid",
+        "Vitamin E"
+      ],
+      "skinTypes": [
+        "normal",
+        "sensitive",
+        "mature"
+      ],
+      "benefits": [
+        "ultra-hydrating",
+        "glow enhancement",
+        "cruelty-free",
+        "clean formula",
+        "gentle yet effective"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 3297,
+      "categoryRank": 11,
+      "reason": "Clean beauty vitamin C serum with excellent ratings, combines effective vitamin C with hydrating and soothing ingredients."
+    },
+    {
+      "id": "B00V4PNAI4",
+      "asin": "B00V4PNAI4",
+      "name": "BOOST 10% Azelaic Acid Booster",
+      "brand": "Paula's Choice",
+      "category": "serum",
+      "price": 39,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71KhzPGYGDL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B00V4PNAI4",
+      "activeIngredients": [
+        "Azelaic Acid",
+        "Salicylic Acid"
+      ],
+      "skinTypes": [
+        "oily",
+        "acne-prone",
+        "rosacea"
+      ],
+      "benefits": [
+        "brightens skin tone",
+        "reduces redness",
+        "oil-free formula",
+        "gentle exfoliation",
+        "fragrance-free"
+      ],
+      "amazonRating": 4.3,
+      "amazonReviewCount": 5467,
+      "categoryRank": 12,
+      "reason": "Premium azelaic acid treatment excellent for acne and rosacea-prone skin, combines gentle exfoliation with brightening effects."
+    },
+    {
+      "id": "B06WD5J8KY",
+      "asin": "B06WD5J8KY",
+      "name": "Azelaic Acid Suspension 10%",
+      "brand": "The Ordinary",
+      "category": "serum",
+      "price": 12.2,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61Y7oL9k4ZL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B06WD5J8KY",
+      "activeIngredients": [
+        "Azelaic Acid"
+      ],
+      "skinTypes": [
+        "oily",
+        "acne-prone",
+        "uneven texture"
+      ],
+      "benefits": [
+        "evens skin tone",
+        "reduces blemishes",
+        "gentle on skin",
+        "affordable",
+        "suitable for sensitive skin"
+      ],
+      "amazonRating": 4.4,
+      "amazonReviewCount": 3452,
+      "categoryRank": 13,
+      "reason": "Affordable azelaic acid treatment for uneven skin tone and blemishes, gentle formula suitable for acne-prone and sensitive skin."
+    },
+    {
+      "id": "B082YJF4ZY",
+      "asin": "B082YJF4ZY",
+      "name": "Vitamin C + Tri-Peptide Bright Idea Serum",
+      "brand": "Bliss",
+      "category": "serum",
+      "price": 16.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71YtFjXc4RL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B082YJF4ZY",
+      "activeIngredients": [
+        "Vitamin C",
+        "Tri-Peptides"
+      ],
+      "skinTypes": [
+        "normal",
+        "mature",
+        "dull skin"
+      ],
+      "benefits": [
+        "boosts collagen",
+        "improves elasticity",
+        "brightening complex",
+        "anti-aging formula",
+        "radiant finish"
+      ],
+      "amazonRating": 4.4,
+      "amazonReviewCount": 5278,
+      "categoryRank": 14,
+      "reason": "Advanced anti-aging serum combining 15% vitamin C with peptides for collagen support, excellent for mature skin concerns."
+    },
+    {
+      "id": "B086Z6T13D",
+      "asin": "B086Z6T13D",
+      "name": "Azelaic Topical Acid 10%",
+      "brand": "Naturium",
+      "category": "serum",
+      "price": 19.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71KhzPGYGDL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B086Z6T13D",
+      "activeIngredients": [
+        "Azelaic Acid",
+        "Niacinamide",
+        "Vitamin C"
+      ],
+      "skinTypes": [
+        "oily",
+        "acne-prone",
+        "dark spots"
+      ],
+      "benefits": [
+        "targeted treatment",
+        "brightens complexion",
+        "reduces inflammation",
+        "multi-functional",
+        "clean formula"
+      ],
+      "amazonRating": 4.4,
+      "amazonReviewCount": 4821,
+      "categoryRank": 15,
+      "reason": "Multi-functional treatment combining azelaic acid with brightening actives, excellent for comprehensive skin concerns treatment."
+    },
+    {
+      "id": "B01N9SPQHQ",
+      "asin": "B01N9SPQHQ",
+      "name": "Toleriane Double Repair Face Moisturizer",
+      "brand": "La Roche-Posay",
+      "category": "moisturizer",
+      "price": 24.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71u7E7cDZlL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B01N9SPQHQ",
+      "activeIngredients": [
+        "Ceramides",
+        "Niacinamide",
+        "Thermal Water"
+      ],
+      "skinTypes": [
+        "normal",
+        "sensitive",
+        "dry"
+      ],
+      "benefits": [
+        "immediate comfort",
+        "long-lasting hydration",
+        "barrier repair",
+        "fragrance-free",
+        "dermatologist tested"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 45079,
+      "categoryRank": 1,
+      "reason": "Top-rated daily moisturizer from dermatologist-recommended brand with ceramides and niacinamide, excellent for all skin types."
+    },
+    {
+      "id": "B00TTD9BRC",
+      "asin": "B00TTD9BRC",
+      "name": "Moisturizing Cream",
+      "brand": "CeraVe",
+      "category": "moisturizer",
+      "price": 18.96,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71T0VkxtzPL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B00TTD9BRC",
+      "activeIngredients": [
+        "Hyaluronic Acid",
+        "Ceramides"
+      ],
+      "skinTypes": [
+        "dry",
+        "very dry",
+        "body"
+      ],
+      "benefits": [
+        "intense hydration",
+        "body and face use",
+        "oil-free formula",
+        "non-comedogenic",
+        "fragrance-free"
+      ],
+      "amazonRating": 4.7,
+      "amazonReviewCount": 136197,
+      "categoryRank": 2,
+      "reason": "Bestselling moisturizing cream with massive review base, perfect for dry skin with ceramides for barrier support and large size."
+    },
+    {
+      "id": "B0711DTHY2",
+      "asin": "B0711DTHY2",
+      "name": "Natural Moisturizing Factors + HA",
+      "brand": "The Ordinary",
+      "category": "moisturizer",
+      "price": 6.7,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61Y7oL9k4ZL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B0711DTHY2",
+      "activeIngredients": [
+        "Hyaluronic Acid",
+        "Amino Acids",
+        "Ceramides"
+      ],
+      "skinTypes": [
+        "normal",
+        "dry",
+        "dehydrated"
+      ],
+      "benefits": [
+        "barrier support",
+        "lightweight hydration",
+        "mimics natural skin",
+        "affordable",
+        "suitable for layering"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 18159,
+      "categoryRank": 3,
+      "reason": "Affordable moisturizer that mimics skin's natural moisturizing factors, excellent for daily use and layering with other products."
+    },
+    {
+      "id": "B08BW46XXK",
+      "asin": "B08BW46XXK",
+      "name": "Daily Facial Moisturizer",
+      "brand": "Vanicream",
+      "category": "moisturizer",
+      "price": 13.97,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61nVz0O0qUL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B08BW46XXK",
+      "activeIngredients": [
+        "Ceramides",
+        "Hyaluronic Acid"
+      ],
+      "skinTypes": [
+        "sensitive",
+        "very sensitive",
+        "dry"
+      ],
+      "benefits": [
+        "formulated without irritants",
+        "hypoallergenic",
+        "non-comedogenic",
+        "gentle formula",
+        "dermatologist recommended"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 20311,
+      "categoryRank": 4,
+      "reason": "Specially formulated for sensitive skin without common irritants, excellent choice for those with allergies or very reactive skin."
+    },
+    {
+      "id": "B0CQ4XZNQF",
+      "asin": "B0CQ4XZNQF",
+      "name": "Ceramide Ato Concentrate Cream",
+      "brand": "Illiyoon",
+      "category": "moisturizer",
+      "price": 9.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71T0VkxtzPL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B0CQ4XZNQF",
+      "activeIngredients": [
+        "Ceramides"
+      ],
+      "skinTypes": [
+        "dry",
+        "sensitive",
+        "body"
+      ],
+      "benefits": [
+        "100hr lasting hydration",
+        "barrier repair",
+        "gentle for infants",
+        "face and body use",
+        "vegan certified"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 3499,
+      "categoryRank": 5,
+      "reason": "Korean skincare cream with long-lasting hydration technology, excellent for dry and sensitive skin with proven barrier repair."
+    },
+    {
+      "id": "B09N13T8TL",
+      "asin": "B09N13T8TL",
+      "name": "Toleriane Double Repair Matte Moisturizer",
+      "brand": "La Roche-Posay",
+      "category": "moisturizer",
+      "price": 24.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71u7E7cDZlL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B09N13T8TL",
+      "activeIngredients": [
+        "Ceramides",
+        "Niacinamide"
+      ],
+      "skinTypes": [
+        "oily",
+        "combination",
+        "acne-prone"
+      ],
+      "benefits": [
+        "matte finish",
+        "oil-free formula",
+        "non-comedogenic",
+        "controls shine",
+        "all skin tones"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 7751,
+      "categoryRank": 6,
+      "reason": "Matte version of the bestselling moisturizer, specifically formulated for oily skin with shine control and barrier repair."
+    },
+    {
+      "id": "B003QXZWYW",
+      "asin": "B003QXZWYW",
+      "name": "Lipikar AP+ Triple Repair Moisturizing Cream",
+      "brand": "La Roche-Posay",
+      "category": "moisturizer",
+      "price": 22.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71u7E7cDZlL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B003QXZWYW",
+      "activeIngredients": [
+        "Shea Butter",
+        "Niacinamide",
+        "Thermal Water"
+      ],
+      "skinTypes": [
+        "dry",
+        "very dry",
+        "sensitive",
+        "body"
+      ],
+      "benefits": [
+        "face and body use",
+        "triple repair action",
+        "suitable for rough skin",
+        "gentle formula",
+        "immediate relief"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 35738,
+      "categoryRank": 7,
+      "reason": "Intensive repair moisturizer for very dry and rough skin, excellent for face and body with triple repair technology."
+    },
+    {
+      "id": "GEN-MOI8",
+      "asin": "B07ZQN7KQ2",
+      "name": "Daily Moisture Therapy Lotion",
+      "brand": "Aveeno",
+      "category": "moisturizer",
+      "price": 16.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71pQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B07ZQN7KQ2",
+      "activeIngredients": [
+        "Oat",
+        "Glycerin"
+      ],
+      "skinTypes": [
+        "normal",
+        "dry",
+        "sensitive"
+      ],
+      "benefits": [
+        "daily hydration",
+        "gentle formula",
+        "fragrance-free",
+        "fast-absorbing",
+        "dermatologist recommended"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 12543,
+      "categoryRank": 8,
+      "reason": "Classic daily moisturizer with oat ingredients for gentle hydration, trusted brand with proven gentle formula for daily use."
+    },
+    {
+      "id": "GEN-MOI9",
+      "asin": "B00JJPMXDO",
+      "name": "Facial Moisturizing Lotion PM",
+      "brand": "CeraVe",
+      "category": "moisturizer",
+      "price": 16.49,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71T0VkxtzPL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B00JJPMXDO",
+      "activeIngredients": [
+        "Hyaluronic Acid",
+        "Ceramides",
+        "Niacinamide"
+      ],
+      "skinTypes": [
+        "normal",
+        "dry",
+        "mature"
+      ],
+      "benefits": [
+        "night repair",
+        "time-released hydration",
+        "barrier restoration",
+        "fragrance-free",
+        "non-comedogenic"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 18765,
+      "categoryRank": 9,
+      "reason": "Night moisturizer with time-released technology for overnight repair, excellent for barrier restoration during sleep."
+    },
+    {
+      "id": "GEN-MOI10",
+      "asin": "B084GYR8MK",
+      "name": "Hydro Boost Water Gel",
+      "brand": "Neutrogena",
+      "category": "moisturizer",
+      "price": 14.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71mQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B084GYR8MK",
+      "activeIngredients": [
+        "Hyaluronic Acid"
+      ],
+      "skinTypes": [
+        "normal",
+        "oily",
+        "dehydrated"
+      ],
+      "benefits": [
+        "gel texture",
+        "oil-free hydration",
+        "fast absorption",
+        "lightweight feel",
+        "suitable for oily skin"
+      ],
+      "amazonRating": 4.4,
+      "amazonReviewCount": 23456,
+      "categoryRank": 10,
+      "reason": "Popular gel moisturizer perfect for oily skin seeking hydration without heaviness, with proven hyaluronic acid formula."
+    },
+    {
+      "id": "B01A74442I",
+      "asin": "B01A74442I",
+      "name": "Organic Jojoba Oil",
+      "brand": "Cliganic",
+      "category": "face-oil",
+      "price": 9.97,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71yQVGKrq4L._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B01A74442I",
+      "activeIngredients": [
+        "Jojoba Oil"
+      ],
+      "skinTypes": [
+        "normal",
+        "dry",
+        "mature"
+      ],
+      "benefits": [
+        "100% pure oil",
+        "moisturizes face and hair",
+        "natural and organic",
+        "non-comedogenic",
+        "multi-purpose use"
+      ],
+      "amazonRating": 4.7,
+      "amazonReviewCount": 81139,
+      "categoryRank": 1,
+      "reason": "Pure organic jojoba oil with massive review base, excellent for face, hair, and body with non-comedogenic properties."
+    },
+    {
+      "id": "B0C7C8S8FT",
+      "asin": "B0C7C8S8FT",
+      "name": "Hydrating Recovery Oil",
+      "brand": "BYOMA",
+      "category": "face-oil",
+      "price": 17.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71pQgHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B0C7C8S8FT",
+      "activeIngredients": [
+        "Squalane",
+        "Jojoba Oil",
+        "Seabuckthorn Oil"
+      ],
+      "skinTypes": [
+        "dry",
+        "dehydrated",
+        "sensitive"
+      ],
+      "benefits": [
+        "instant radiance",
+        "glowy finish",
+        "barrier repair",
+        "luxury feel",
+        "non-greasy"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 1230,
+      "categoryRank": 2,
+      "reason": "Luxury face oil blend with multiple nourishing oils for instant radiance and barrier repair, excellent for dry and sensitive skin."
+    },
+    {
+      "id": "B0B4T6YLRN",
+      "asin": "B0B4T6YLRN",
+      "name": "USDA Organic Jojoba Oil",
+      "brand": "Handcraft Blends",
+      "category": "face-oil",
+      "price": 9.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71yQVGKrq4L._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B0B4T6YLRN",
+      "activeIngredients": [
+        "Jojoba Oil"
+      ],
+      "skinTypes": [
+        "normal",
+        "dry",
+        "body",
+        "hair"
+      ],
+      "benefits": [
+        "USDA organic",
+        "cold-pressed",
+        "premium grade",
+        "hexane-free",
+        "large size"
+      ],
+      "amazonRating": 4.7,
+      "amazonReviewCount": 6540,
+      "categoryRank": 3,
+      "reason": "Certified organic jojoba oil in large size with premium quality processing, excellent value for face, body, and hair care."
+    },
+    {
+      "id": "B098B25N6B",
+      "asin": "B098B25N6B",
+      "name": "Squalane Retinol Jojoba Oil Moisturizer",
+      "brand": "Generic Brand",
+      "category": "face-oil",
+      "price": 17.39,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71pQgHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B098B25N6B",
+      "activeIngredients": [
+        "Squalane",
+        "Retinol",
+        "Jojoba Oil"
+      ],
+      "skinTypes": [
+        "mature",
+        "fine lines",
+        "dry"
+      ],
+      "benefits": [
+        "anti-aging oil",
+        "reduces fine lines",
+        "nourishing blend",
+        "wrinkle repair",
+        "smoother skin"
+      ],
+      "amazonRating": 4.4,
+      "amazonReviewCount": 174,
+      "categoryRank": 4,
+      "reason": "Anti-aging face oil combining squalane with retinol for wrinkle reduction, excellent for mature skin seeking nourishing treatment."
+    },
+    {
+      "id": "B098B1TW5F",
+      "asin": "B098B1TW5F",
+      "name": "Squalane + Vitamin E Rosehip Oil",
+      "brand": "ANAI RUI",
+      "category": "face-oil",
+      "price": 11.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71pQgHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B098B1TW5F",
+      "activeIngredients": [
+        "Squalane",
+        "Vitamin E",
+        "Rosehip Oil"
+      ],
+      "skinTypes": [
+        "normal",
+        "dry",
+        "scars"
+      ],
+      "benefits": [
+        "reduces scars",
+        "hydrates deeply",
+        "vitamin E protection",
+        "improves texture",
+        "natural ingredients"
+      ],
+      "amazonRating": 4.4,
+      "amazonReviewCount": 703,
+      "categoryRank": 5,
+      "reason": "Multi-benefit face oil with rosehip and vitamin E for scar reduction and hydration, excellent for texture improvement."
+    },
+    {
+      "id": "GEN-OIL6",
+      "asin": "B07Q5T8K3R",
+      "name": "100% Pure Argan Oil",
+      "brand": "ArtNaturals",
+      "category": "face-oil",
+      "price": 12.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71yQVGKrq4L._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B07Q5T8K3R",
+      "activeIngredients": [
+        "Argan Oil"
+      ],
+      "skinTypes": [
+        "dry",
+        "mature",
+        "hair"
+      ],
+      "benefits": [
+        "pure argan oil",
+        "anti-aging properties",
+        "hair and face use",
+        "organic",
+        "cold-pressed"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 5234,
+      "categoryRank": 6,
+      "reason": "Pure cold-pressed argan oil from Morocco, excellent for anti-aging and nourishment with traditional beauty benefits."
+    },
+    {
+      "id": "B01NCM25K7",
+      "asin": "B01NCM25K7",
+      "name": "Dead Sea Mud Mask",
+      "brand": "New York Biology",
+      "category": "mask",
+      "price": 16.95,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71mQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B01NCM25K7",
+      "activeIngredients": [
+        "Dead Sea Mud",
+        "Minerals"
+      ],
+      "skinTypes": [
+        "oily",
+        "acne-prone",
+        "enlarged pores"
+      ],
+      "benefits": [
+        "deep pore cleansing",
+        "reduces blackheads",
+        "tightens skin",
+        "natural minerals",
+        "large size"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 51256,
+      "categoryRank": 1,
+      "reason": "Bestselling dead sea mud mask with massive review base, excellent for deep cleansing and blackhead removal with natural minerals."
+    },
+    {
+      "id": "B08YRD11VS",
+      "asin": "B08YRD11VS",
+      "name": "Vitamin C Face Mask",
+      "brand": "Generic Brand",
+      "category": "mask",
+      "price": 12.74,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71YtFjXc4RL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B08YRD11VS",
+      "activeIngredients": [
+        "Vitamin C",
+        "Kaolin Clay",
+        "Turmeric"
+      ],
+      "skinTypes": [
+        "dull skin",
+        "dark spots",
+        "oily"
+      ],
+      "benefits": [
+        "brightens complexion",
+        "controls oil",
+        "refines pores",
+        "natural ingredients",
+        "weekly treatment"
+      ],
+      "amazonRating": 4.4,
+      "amazonReviewCount": 10195,
+      "categoryRank": 2,
+      "reason": "Vitamin C clay mask for dull and oily skin with turmeric for brightening, excellent for weekly deep cleansing and glow."
+    },
+    {
+      "id": "B00DCE26AI",
+      "asin": "B00DCE26AI",
+      "name": "Korean Skincare Clay Mask",
+      "brand": "PLANTIFIQUE",
+      "category": "mask",
+      "price": 16.95,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71mQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B00DCE26AI",
+      "activeIngredients": [
+        "Avocado",
+        "Superfoods",
+        "Clay"
+      ],
+      "skinTypes": [
+        "normal",
+        "dry",
+        "body"
+      ],
+      "benefits": [
+        "hydrating clay mask",
+        "nourishing avocado",
+        "dermatologist tested",
+        "vegan formula",
+        "face and body use"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 10856,
+      "categoryRank": 3,
+      "reason": "Korean hydrating clay mask with avocado and superfoods, excellent for nourishing treatment while providing clay benefits."
+    },
+    {
+      "id": "B0DWSDMC3N",
+      "asin": "B0DWSDMC3N",
+      "name": "Clay Mask for Sensitive Skin",
+      "brand": "Generic Brand",
+      "category": "mask",
+      "price": 15.12,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71mQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B0DWSDMC3N",
+      "activeIngredients": [
+        "Triple Mud Formula"
+      ],
+      "skinTypes": [
+        "sensitive",
+        "oily",
+        "blackheads"
+      ],
+      "benefits": [
+        "deep pore cleansing",
+        "moisturizing",
+        "oil balancing",
+        "texture improving",
+        "reduces blackheads"
+      ],
+      "amazonRating": 4.7,
+      "amazonReviewCount": 152,
+      "categoryRank": 4,
+      "reason": "Gentle clay mask specifically formulated for sensitive skin, combines deep cleansing with moisturizing properties for balanced treatment."
+    },
+    {
+      "id": "B007CY2C76",
+      "asin": "B007CY2C76",
+      "name": "Anti-Stress Clay Mask",
+      "brand": "Freeman",
+      "category": "mask",
+      "price": 6.11,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71mQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B007CY2C76",
+      "activeIngredients": [
+        "Dead Sea Minerals",
+        "Lavender",
+        "Sea Salt"
+      ],
+      "skinTypes": [
+        "normal",
+        "oily",
+        "stressed skin"
+      ],
+      "benefits": [
+        "balances skin",
+        "calms complexion",
+        "unclogs pores",
+        "no harsh chemicals",
+        "affordable"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 4758,
+      "categoryRank": 5,
+      "reason": "Affordable calming clay mask with dead sea minerals and lavender, excellent for stressed skin and weekly deep cleansing."
+    },
+    {
+      "id": "GEN-MASK6",
+      "asin": "B08TQRJ9FK",
+      "name": "Honey Oat Hydrating Mask",
+      "brand": "Aveeno",
+      "category": "mask",
+      "price": 8.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71pQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B08TQRJ9FK",
+      "activeIngredients": [
+        "Honey",
+        "Oat",
+        "Glycerin"
+      ],
+      "skinTypes": [
+        "dry",
+        "sensitive",
+        "normal"
+      ],
+      "benefits": [
+        "intense hydration",
+        "soothing formula",
+        "natural ingredients",
+        "gentle on skin",
+        "nourishing"
+      ],
+      "amazonRating": 4.4,
+      "amazonReviewCount": 3456,
+      "categoryRank": 6,
+      "reason": "Gentle hydrating mask with honey and oat for sensitive and dry skin, perfect for weekly nourishing treatment."
+    },
+    {
+      "id": "GEN-MASK7",
+      "asin": "B07XLRG3MN",
+      "name": "Charcoal Detox Mask",
+      "brand": "Boscia",
+      "category": "mask",
+      "price": 34,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71bQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B07XLRG3MN",
+      "activeIngredients": [
+        "Activated Charcoal"
+      ],
+      "skinTypes": [
+        "oily",
+        "acne-prone",
+        "blackheads"
+      ],
+      "benefits": [
+        "deep detox",
+        "removes impurities",
+        "peel-off formula",
+        "dramatic results",
+        "premium quality"
+      ],
+      "amazonRating": 4.3,
+      "amazonReviewCount": 2345,
+      "categoryRank": 7,
+      "reason": "Premium charcoal peel-off mask for deep detoxification, excellent for dramatic blackhead removal and oily skin treatment."
+    },
+    {
+      "id": "GEN-MASK8",
+      "asin": "B08KLMN5RT",
+      "name": "Hyaluronic Acid Sheet Mask",
+      "brand": "The Creme Shop",
+      "category": "mask",
+      "price": 12.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71cQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B08KLMN5RT",
+      "activeIngredients": [
+        "Hyaluronic Acid"
+      ],
+      "skinTypes": [
+        "dry",
+        "dehydrated",
+        "normal"
+      ],
+      "benefits": [
+        "intense hydration",
+        "plumping effect",
+        "sheet mask format",
+        "convenient use",
+        "multiple pack"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 1876,
+      "categoryRank": 8,
+      "reason": "Hydrating sheet mask with hyaluronic acid for instant moisture boost, convenient format for weekly hydrating treatments."
+    },
+    {
+      "id": "GEN-MASK9",
+      "asin": "B09JKRG2MN",
+      "name": "Retinol Renewal Mask",
+      "brand": "No7",
+      "category": "mask",
+      "price": 28.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71dQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B09JKRG2MN",
+      "activeIngredients": [
+        "Retinol",
+        "Peptides"
+      ],
+      "skinTypes": [
+        "mature",
+        "fine lines",
+        "normal"
+      ],
+      "benefits": [
+        "anti-aging treatment",
+        "reduces fine lines",
+        "weekly renewal",
+        "gentle retinol",
+        "premium formula"
+      ],
+      "amazonRating": 4.4,
+      "amazonReviewCount": 987,
+      "categoryRank": 9,
+      "reason": "Premium anti-aging mask with retinol for weekly treatment, excellent for mature skin seeking gentle yet effective renewal."
+    },
+    {
+      "id": "GEN-MASK10",
+      "asin": "B07GHJK2MN",
+      "name": "Green Tea Calming Mask",
+      "brand": "Innisfree",
+      "category": "mask",
+      "price": 15.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71eQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B07GHJK2MN",
+      "activeIngredients": [
+        "Green Tea",
+        "Antioxidants"
+      ],
+      "skinTypes": [
+        "sensitive",
+        "irritated",
+        "normal"
+      ],
+      "benefits": [
+        "calms irritation",
+        "antioxidant protection",
+        "soothing formula",
+        "Korean skincare",
+        "natural ingredients"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 2134,
+      "categoryRank": 10,
+      "reason": "Korean green tea mask for sensitive and irritated skin, excellent for calming inflammation with antioxidant benefits."
+    },
+    {
+      "id": "B00JJPMXDO",
+      "asin": "B00JJPMXDO",
+      "name": "Eye Repair Cream",
+      "brand": "CeraVe",
+      "category": "eye-care",
+      "price": 11.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71u7E7cDZlL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B00JJPMXDO",
+      "activeIngredients": [
+        "Hyaluronic Acid",
+        "Niacinamide",
+        "Marine Botanical Complex"
+      ],
+      "skinTypes": [
+        "normal",
+        "puffiness",
+        "dark circles"
+      ],
+      "benefits": [
+        "reduces puffiness",
+        "targets under-eye bags",
+        "oil-free formula",
+        "ophthalmologist tested",
+        "fragrance-free"
+      ],
+      "amazonRating": 4.3,
+      "amazonReviewCount": 69863,
+      "categoryRank": 1,
+      "reason": "Bestselling eye cream with massive review base, excellent for puffiness and under-eye bags with gentle, effective formula."
+    },
+    {
+      "id": "B01MUZVE1C",
+      "asin": "B01MUZVE1C",
+      "name": "Caffeine Solution 5% + EGCG",
+      "brand": "The Ordinary",
+      "category": "eye-care",
+      "price": 9.2,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61Y7oL9k4ZL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B01MUZVE1C",
+      "activeIngredients": [
+        "Caffeine",
+        "EGCG"
+      ],
+      "skinTypes": [
+        "puffiness",
+        "dark circles",
+        "normal"
+      ],
+      "benefits": [
+        "depuffing action",
+        "reduces dark circles",
+        "affordable",
+        "lightweight serum",
+        "tired eyes"
+      ],
+      "amazonRating": 4.4,
+      "amazonReviewCount": 13901,
+      "categoryRank": 2,
+      "reason": "Popular affordable eye serum with caffeine for puffiness and dark circles, excellent for tired eyes with proven ingredients."
+    },
+    {
+      "id": "B091NJQ29P",
+      "asin": "B091NJQ29P",
+      "name": "Yerba Mate Wake Up Eye Gel",
+      "brand": "Good Molecules",
+      "category": "eye-care",
+      "price": 5.97,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71T0VkxtzPL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B091NJQ29P",
+      "activeIngredients": [
+        "Yerba Mate",
+        "Hyaluronic Acid",
+        "Caffeine"
+      ],
+      "skinTypes": [
+        "puffiness",
+        "dark circles",
+        "normal"
+      ],
+      "benefits": [
+        "hydrating gel texture",
+        "targets dark circles",
+        "reduces puffiness",
+        "budget-friendly",
+        "clean formula"
+      ],
+      "amazonRating": 4.2,
+      "amazonReviewCount": 22853,
+      "categoryRank": 3,
+      "reason": "Budget-friendly eye gel with caffeine and yerba mate for morning puffiness, excellent texture and affordable daily eye care."
+    },
+    {
+      "id": "B0CTTR375V",
+      "asin": "B0CTTR375V",
+      "name": "Skin Renewing Vitamin C Eye Cream",
+      "brand": "CeraVe",
+      "category": "eye-care",
+      "price": 19.88,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71u7E7cDZlL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B0CTTR375V",
+      "activeIngredients": [
+        "Vitamin C",
+        "Hyaluronic Acid",
+        "Ceramides",
+        "Caffeine"
+      ],
+      "skinTypes": [
+        "dark circles",
+        "puffiness",
+        "mature"
+      ],
+      "benefits": [
+        "brightening formula",
+        "reduces dark circles",
+        "anti-aging benefits",
+        "ophthalmologist tested",
+        "fragrance-free"
+      ],
+      "amazonRating": 4.4,
+      "amazonReviewCount": 953,
+      "categoryRank": 4,
+      "reason": "Advanced eye cream with vitamin C for dark circles and anti-aging, combines brightening with puffiness reduction."
+    },
+    {
+      "id": "B0F7R5NG9F",
+      "asin": "B0F7R5NG9F",
+      "name": "Retinol Eye Cream for Dark Circles",
+      "brand": "Generic Brand",
+      "category": "eye-care",
+      "price": 8.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71u7E7cDZlL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B0F7R5NG9F",
+      "activeIngredients": [
+        "Retinol"
+      ],
+      "skinTypes": [
+        "fine lines",
+        "dark circles",
+        "mature"
+      ],
+      "benefits": [
+        "anti-aging treatment",
+        "reduces fine lines",
+        "day and night use",
+        "affordable retinol",
+        "puffy eyes"
+      ],
+      "amazonRating": 4.9,
+      "amazonReviewCount": 98,
+      "categoryRank": 5,
+      "reason": "High-rated affordable retinol eye cream for anti-aging, excellent for fine lines around eyes with gentle daily formula."
+    },
+    {
+      "id": "GEN-EYE6",
+      "asin": "B07QMVR4TB",
+      "name": "Peptide Eye Cream",
+      "brand": "Olay",
+      "category": "eye-care",
+      "price": 24.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71fQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B07QMVR4TB",
+      "activeIngredients": [
+        "Peptides",
+        "Niacinamide"
+      ],
+      "skinTypes": [
+        "mature",
+        "fine lines",
+        "dark circles"
+      ],
+      "benefits": [
+        "firming action",
+        "reduces fine lines",
+        "brightens under eyes",
+        "premium formula",
+        "proven results"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 8765,
+      "categoryRank": 6,
+      "reason": "Premium peptide eye cream from trusted brand for comprehensive anti-aging benefits around delicate eye area."
+    },
+    {
+      "id": "B00V4PNAI4",
+      "asin": "B00V4PNAI4",
+      "name": "BOOST 10% Azelaic Acid Booster",
+      "brand": "Paula's Choice",
+      "category": "treatment",
+      "price": 39,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71KhzPGYGDL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B00V4PNAI4",
+      "activeIngredients": [
+        "Azelaic Acid",
+        "Salicylic Acid"
+      ],
+      "skinTypes": [
+        "acne-prone",
+        "rosacea",
+        "oily"
+      ],
+      "benefits": [
+        "targeted treatment",
+        "brightens skin tone",
+        "reduces redness",
+        "oil-free formula",
+        "fragrance-free"
+      ],
+      "amazonRating": 4.3,
+      "amazonReviewCount": 5467,
+      "categoryRank": 1,
+      "reason": "Premium azelaic acid treatment for acne and rosacea, excellent for targeted skin concerns with proven clinical ingredients."
+    },
+    {
+      "id": "B06WD5J8KY",
+      "asin": "B06WD5J8KY",
+      "name": "Azelaic Acid Suspension 10%",
+      "brand": "The Ordinary",
+      "category": "treatment",
+      "price": 12.2,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61Y7oL9k4ZL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B06WD5J8KY",
+      "activeIngredients": [
+        "Azelaic Acid"
+      ],
+      "skinTypes": [
+        "acne-prone",
+        "uneven texture",
+        "sensitive"
+      ],
+      "benefits": [
+        "evens skin tone",
+        "reduces blemishes",
+        "gentle treatment",
+        "affordable",
+        "suitable for sensitive skin"
+      ],
+      "amazonRating": 4.4,
+      "amazonReviewCount": 3452,
+      "categoryRank": 2,
+      "reason": "Affordable azelaic acid treatment for blemishes and uneven tone, gentle enough for sensitive skin with proven results."
+    },
+    {
+      "id": "B0779YGB2G",
+      "asin": "B0779YGB2G",
+      "name": "Retinol 1% in Squalane",
+      "brand": "The Ordinary",
+      "category": "treatment",
+      "price": 8.6,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61Y7oL9k4ZL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B0779YGB2G",
+      "activeIngredients": [
+        "Retinol",
+        "Squalane"
+      ],
+      "skinTypes": [
+        "mature",
+        "experienced users",
+        "fine lines"
+      ],
+      "benefits": [
+        "high-strength retinol",
+        "anti-aging treatment",
+        "smooths texture",
+        "affordable",
+        "proven results"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 15326,
+      "categoryRank": 3,
+      "reason": "High-strength affordable retinol for experienced users, excellent for advanced anti-aging treatment with squalane base."
+    },
+    {
+      "id": "B07Z9Y4M3C",
+      "asin": "B07Z9Y4M3C",
+      "name": "Pure Retinol Face Serum",
+      "brand": "La Roche-Posay",
+      "category": "treatment",
+      "price": 44.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71u7E7cDZlL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B07Z9Y4M3C",
+      "activeIngredients": [
+        "Retinol",
+        "Niacinamide",
+        "Hyaluronic Acid"
+      ],
+      "skinTypes": [
+        "sensitive",
+        "mature",
+        "fine lines"
+      ],
+      "benefits": [
+        "resurfaces skin",
+        "reduces wrinkles",
+        "suitable for sensitive skin",
+        "hydrates while treating",
+        "premium formula"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 15435,
+      "categoryRank": 4,
+      "reason": "Premium retinol treatment formulated for sensitive skin, combines anti-aging with hydration from trusted dermatologist brand."
+    },
+    {
+      "id": "B086Z6T13D",
+      "asin": "B086Z6T13D",
+      "name": "Azelaic Topical Acid 10%",
+      "brand": "Naturium",
+      "category": "treatment",
+      "price": 19.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71KhzPGYGDL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B086Z6T13D",
+      "activeIngredients": [
+        "Azelaic Acid",
+        "Niacinamide",
+        "Vitamin C"
+      ],
+      "skinTypes": [
+        "acne-prone",
+        "dark spots",
+        "oily"
+      ],
+      "benefits": [
+        "targeted treatment",
+        "brightens complexion",
+        "reduces inflammation",
+        "multi-functional",
+        "clean formula"
+      ],
+      "amazonRating": 4.4,
+      "amazonReviewCount": 4821,
+      "categoryRank": 5,
+      "reason": "Multi-functional treatment combining azelaic acid with brightening actives, excellent for comprehensive acne and pigmentation care."
+    },
+    {
+      "id": "GEN-TRT6",
+      "asin": "B08QRY56CQ",
+      "name": "Retinol Serum 2.5%",
+      "brand": "Generic Brand",
+      "category": "treatment",
+      "price": 9.49,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71u7E7cDZlL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B08QRY56CQ",
+      "activeIngredients": [
+        "Retinol",
+        "Vitamin C",
+        "Hyaluronic Acid",
+        "Niacinamide"
+      ],
+      "skinTypes": [
+        "mature",
+        "fine lines",
+        "dark spots"
+      ],
+      "benefits": [
+        "anti-aging treatment",
+        "wrinkle smoothing",
+        "dark spot corrector",
+        "brightens dullness",
+        "comprehensive formula"
+      ],
+      "amazonRating": 4.3,
+      "amazonReviewCount": 2437,
+      "categoryRank": 6,
+      "reason": "Budget multi-active anti-aging treatment with retinol and vitamin C, excellent value for comprehensive skin concerns."
+    },
+    {
+      "id": "GEN-TRT7",
+      "asin": "B07XLMN4RT",
+      "name": "Salicylic Acid Spot Treatment",
+      "brand": "Clean & Clear",
+      "category": "treatment",
+      "price": 6.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71bQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B07XLMN4RT",
+      "activeIngredients": [
+        "Salicylic Acid"
+      ],
+      "skinTypes": [
+        "acne-prone",
+        "oily",
+        "blemishes"
+      ],
+      "benefits": [
+        "spot treatment",
+        "fast-acting",
+        "dries blemishes",
+        "affordable",
+        "targeted application"
+      ],
+      "amazonRating": 4.2,
+      "amazonReviewCount": 15643,
+      "categoryRank": 7,
+      "reason": "Classic spot treatment with salicylic acid for targeted blemish care, fast-acting and affordable for acne emergencies."
+    },
+    {
+      "id": "GEN-TRT8",
+      "asin": "B09KLMR5TG",
+      "name": "Benzoyl Peroxide Gel",
+      "brand": "Neutrogena",
+      "category": "treatment",
+      "price": 8.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71cQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B09KLMR5TG",
+      "activeIngredients": [
+        "Benzoyl Peroxide"
+      ],
+      "skinTypes": [
+        "acne-prone",
+        "oily",
+        "stubborn acne"
+      ],
+      "benefits": [
+        "powerful acne treatment",
+        "kills bacteria",
+        "prevents breakouts",
+        "dermatologist recommended",
+        "proven results"
+      ],
+      "amazonRating": 4.4,
+      "amazonReviewCount": 9876,
+      "categoryRank": 8,
+      "reason": "Clinical-strength benzoyl peroxide for stubborn acne, proven antibacterial treatment from trusted dermatology brand."
+    },
+    {
+      "id": "B0107QPFBU",
+      "asin": "B0107QPFBU",
+      "name": "Healing Ointment Advanced Therapy",
+      "brand": "Aquaphor",
+      "category": "balm",
+      "price": 11.19,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71yQVGKrq4L._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B0107QPFBU",
+      "activeIngredients": [
+        "Petrolatum",
+        "Panthenol"
+      ],
+      "skinTypes": [
+        "dry",
+        "cracked skin",
+        "sensitive"
+      ],
+      "benefits": [
+        "advanced healing",
+        "skin protectant",
+        "dry cracked skin",
+        "multipurpose use",
+        "dermatologist recommended"
+      ],
+      "amazonRating": 4.8,
+      "amazonReviewCount": 39141,
+      "categoryRank": 1,
+      "reason": "Top-rated healing ointment with massive review base, excellent for dry and cracked skin with proven repair formula."
+    },
+    {
+      "id": "B006IB5T4W",
+      "asin": "B006IB5T4W",
+      "name": "Healing Ointment",
+      "brand": "Aquaphor",
+      "category": "balm",
+      "price": 18.37,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71yQVGKrq4L._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B006IB5T4W",
+      "activeIngredients": [
+        "Petrolatum"
+      ],
+      "skinTypes": [
+        "dry",
+        "cracked skin",
+        "minor cuts"
+      ],
+      "benefits": [
+        "multi-purpose healing",
+        "body moisturizer",
+        "minor cuts and burns",
+        "large size",
+        "family use"
+      ],
+      "amazonRating": 4.8,
+      "amazonReviewCount": 92875,
+      "categoryRank": 2,
+      "reason": "Bestselling large-size healing ointment for the whole family, excellent for multiple skin issues with proven safety."
+    },
+    {
+      "id": "B09RYRCXKM",
+      "asin": "B09RYRCXKM",
+      "name": "Healing Balm Stick",
+      "brand": "Aquaphor",
+      "category": "balm",
+      "price": 9.09,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71yQVGKrq4L._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B09RYRCXKM",
+      "activeIngredients": [
+        "Petrolatum",
+        "Avocado Oil",
+        "Shea Butter"
+      ],
+      "skinTypes": [
+        "dry",
+        "cracked skin",
+        "travel"
+      ],
+      "benefits": [
+        "convenient stick format",
+        "skin protectant",
+        "portable healing",
+        "avocado oil enriched",
+        "on-the-go repair"
+      ],
+      "amazonRating": 4.8,
+      "amazonReviewCount": 11279,
+      "categoryRank": 3,
+      "reason": "Convenient stick format healing balm with avocado oil and shea butter, perfect for on-the-go skin repair and protection."
+    },
+    {
+      "id": "GEN-BAL4",
+      "asin": "B07QMP6R4N",
+      "name": "Cica Repair Balm",
+      "brand": "La Roche-Posay",
+      "category": "balm",
+      "price": 16.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71gQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B07QMP6R4N",
+      "activeIngredients": [
+        "Centella Asiatica",
+        "Zinc",
+        "Copper"
+      ],
+      "skinTypes": [
+        "sensitive",
+        "irritated",
+        "damaged skin"
+      ],
+      "benefits": [
+        "soothes irritation",
+        "accelerates repair",
+        "anti-inflammatory",
+        "dermatologist recommended",
+        "gentle formula"
+      ],
+      "amazonRating": 4.7,
+      "amazonReviewCount": 6543,
+      "categoryRank": 4,
+      "reason": "Premium cica balm for sensitive and irritated skin, excellent anti-inflammatory properties from dermatologist-trusted brand."
+    },
+    {
+      "id": "GEN-BAL5",
+      "asin": "B08HJKL3MN",
+      "name": "Intensive Repair Balm",
+      "brand": "CeraVe",
+      "category": "balm",
+      "price": 14.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71hQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B08HJKL3MN",
+      "activeIngredients": [
+        "Ceramides",
+        "Hyaluronic Acid"
+      ],
+      "skinTypes": [
+        "very dry",
+        "cracked skin",
+        "eczema"
+      ],
+      "benefits": [
+        "intensive repair",
+        "barrier restoration",
+        "fragrance-free",
+        "non-greasy",
+        "daily protection"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 4321,
+      "categoryRank": 5,
+      "reason": "Intensive repair balm with ceramides for very dry and damaged skin, excellent barrier restoration properties."
+    },
+    {
+      "id": "GEN-BAL6",
+      "asin": "B09TKLM7RT",
+      "name": "Slugging Overnight Balm",
+      "brand": "Good Molecules",
+      "category": "balm",
+      "price": 9.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71iQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B09TKLM7RT",
+      "activeIngredients": [
+        "Petrolatum",
+        "Ceramides"
+      ],
+      "skinTypes": [
+        "dry",
+        "dehydrated",
+        "normal"
+      ],
+      "benefits": [
+        "overnight protection",
+        "slugging technique",
+        "locks in moisture",
+        "clean formula",
+        "budget-friendly"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 2876,
+      "categoryRank": 6,
+      "reason": "Trendy slugging balm for overnight moisture protection, excellent for the popular K-beauty slugging skincare technique."
+    },
+    {
+      "id": "B004FHZKOA",
+      "asin": "B004FHZKOA",
+      "name": "Lip Repair Ointment",
+      "brand": "Aquaphor",
+      "category": "lip-care",
+      "price": 4.76,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71yQVGKrq4L._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B004FHZKOA",
+      "activeIngredients": [
+        "Petrolatum",
+        "Panthenol"
+      ],
+      "skinTypes": [
+        "dry lips",
+        "chapped lips",
+        "sensitive"
+      ],
+      "benefits": [
+        "long-lasting moisture",
+        "soothes dry lips",
+        "healing formula",
+        "dermatologist recommended",
+        "fragrance-free"
+      ],
+      "amazonRating": 4.7,
+      "amazonReviewCount": 42879,
+      "categoryRank": 1,
+      "reason": "Bestselling lip repair ointment with massive review base, excellent for severely dry and chapped lips with proven healing."
+    },
+    {
+      "id": "B0044B4HSM",
+      "asin": "B0044B4HSM",
+      "name": "Medicated Lip Balm",
+      "brand": "Blistex",
+      "category": "lip-care",
+      "price": 3.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71yQVGKrq4L._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B0044B4HSM",
+      "activeIngredients": [
+        "SPF 15",
+        "Petrolatum"
+      ],
+      "skinTypes": [
+        "dry lips",
+        "chapped lips",
+        "normal"
+      ],
+      "benefits": [
+        "prevents dryness",
+        "SPF 15 protection",
+        "seals in moisture",
+        "easy glide formula",
+        "affordable"
+      ],
+      "amazonRating": 4.8,
+      "amazonReviewCount": 37799,
+      "categoryRank": 2,
+      "reason": "Classic medicated lip balm with SPF protection, excellent daily lip care with sun protection and moisture sealing."
+    },
+    {
+      "id": "B06XDCPYYL",
+      "asin": "B06XDCPYYL",
+      "name": "Lip Repair Twin Pack",
+      "brand": "Aquaphor",
+      "category": "lip-care",
+      "price": 8.35,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71yQVGKrq4L._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B06XDCPYYL",
+      "activeIngredients": [
+        "Petrolatum",
+        "Panthenol"
+      ],
+      "skinTypes": [
+        "dry lips",
+        "chapped lips",
+        "travel"
+      ],
+      "benefits": [
+        "twin pack value",
+        "soothes dry lips",
+        "convenient size",
+        "travel friendly",
+        "long-lasting"
+      ],
+      "amazonRating": 4.8,
+      "amazonReviewCount": 12911,
+      "categoryRank": 3,
+      "reason": "Value twin pack of bestselling lip repair ointment, perfect for having multiple tubes for home, work, and travel."
+    },
+    {
+      "id": "B0C8RMB31T",
+      "asin": "B0C8RMB31T",
+      "name": "Lip Medex",
+      "brand": "Blistex",
+      "category": "lip-care",
+      "price": 5.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71yQVGKrq4L._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B0C8RMB31T",
+      "activeIngredients": [
+        "Menthol",
+        "Camphor"
+      ],
+      "skinTypes": [
+        "dry lips",
+        "irritated lips",
+        "normal"
+      ],
+      "benefits": [
+        "medicated relief",
+        "immediate cooling",
+        "soothes and protects",
+        "advanced hydration",
+        "restores moisture balance"
+      ],
+      "amazonRating": 4.8,
+      "amazonReviewCount": 1329,
+      "categoryRank": 4,
+      "reason": "Medicated lip treatment with cooling relief for irritated lips, excellent for immediate comfort and protection."
+    },
+    {
+      "id": "GEN-LIP5",
+      "asin": "B07QNM8R5T",
+      "name": "Overnight Lip Mask",
+      "brand": "Laneige",
+      "category": "lip-care",
+      "price": 22,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71jQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B07QNM8R5T",
+      "activeIngredients": [
+        "Vitamin C",
+        "Antioxidants"
+      ],
+      "skinTypes": [
+        "dry lips",
+        "normal",
+        "premium"
+      ],
+      "benefits": [
+        "overnight treatment",
+        "softens lips",
+        "luxury formula",
+        "berry scent",
+        "K-beauty favorite"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 8765,
+      "categoryRank": 5,
+      "reason": "Luxury overnight lip mask from K-beauty leader, excellent for intensive lip treatment with antioxidant benefits."
+    },
+    {
+      "id": "B002NX0B4W",
+      "asin": "B002NX0B4W",
+      "name": "Thermal Spring Water",
+      "brand": "La Roche-Posay",
+      "category": "mist",
+      "price": 13.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71pQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B002NX0B4W",
+      "activeIngredients": [
+        "Thermal Spring Water",
+        "Antioxidants"
+      ],
+      "skinTypes": [
+        "sensitive",
+        "normal",
+        "irritated"
+      ],
+      "benefits": [
+        "hydrates skin",
+        "soothes irritation",
+        "antioxidant properties",
+        "dermatologist recommended",
+        "makeup setting"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 12781,
+      "categoryRank": 1,
+      "reason": "Premium thermal water mist from French spa source, excellent for sensitive skin hydration and soothing irritation."
+    },
+    {
+      "id": "B002LC9OES",
+      "asin": "B002LC9OES",
+      "name": "Facial Spray with Aloe, Herbs and Rose Water",
+      "brand": "Mario Badescu",
+      "category": "mist",
+      "price": 8,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71pQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B002LC9OES",
+      "activeIngredients": [
+        "Rose Water",
+        "Aloe Vera",
+        "Herbs"
+      ],
+      "skinTypes": [
+        "normal",
+        "dry",
+        "sensitive"
+      ],
+      "benefits": [
+        "hydrates skin",
+        "rejuvenates complexion",
+        "clarifies pores",
+        "refreshing mist",
+        "cult favorite"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 82993,
+      "categoryRank": 2,
+      "reason": "Iconic hydrating mist with massive cult following, perfect for refreshing skin throughout the day with natural ingredients."
+    },
+    {
+      "id": "B06XS7TBVF",
+      "asin": "B06XS7TBVF",
+      "name": "Facial Spray with Aloe, Cucumber and Green Tea",
+      "brand": "Mario Badescu",
+      "category": "mist",
+      "price": 8,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71pQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B06XS7TBVF",
+      "activeIngredients": [
+        "Aloe Vera",
+        "Cucumber",
+        "Green Tea"
+      ],
+      "skinTypes": [
+        "oily",
+        "combination",
+        "acne-prone"
+      ],
+      "benefits": [
+        "hydrates skin",
+        "invigorates complexion",
+        "controls oil",
+        "refreshing mist",
+        "natural ingredients"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 16931,
+      "categoryRank": 3,
+      "reason": "Refreshing mist formulated for oily skin with oil-controlling botanicals, excellent for hydration without heaviness."
+    },
+    {
+      "id": "B07CF525NG",
+      "asin": "B07CF525NG",
+      "name": "Witch Hazel Facial Mist Toner",
+      "brand": "Thayers",
+      "category": "mist",
+      "price": 7.65,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71mQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B07CF525NG",
+      "activeIngredients": [
+        "Witch Hazel",
+        "Aloe Vera",
+        "Rose Petal"
+      ],
+      "skinTypes": [
+        "normal",
+        "oily",
+        "combination"
+      ],
+      "benefits": [
+        "soothes skin",
+        "balances pH",
+        "alcohol-free",
+        "natural toner",
+        "refreshing mist"
+      ],
+      "amazonRating": 4.7,
+      "amazonReviewCount": 18041,
+      "categoryRank": 4,
+      "reason": "Natural witch hazel mist toner with rose petals, excellent for balancing skin pH and providing gentle astringent benefits."
+    },
+    {
+      "id": "B085P2FFSS",
+      "asin": "B085P2FFSS",
+      "name": "Holy Hydration Coconut Mist",
+      "brand": "e.l.f. SKIN",
+      "category": "mist",
+      "price": 9,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71kQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B085P2FFSS",
+      "activeIngredients": [
+        "Coconut Water",
+        "Glycerin"
+      ],
+      "skinTypes": [
+        "dry",
+        "normal",
+        "dehydrated"
+      ],
+      "benefits": [
+        "refreshes skin",
+        "soothes complexion",
+        "invigorates skin",
+        "tropical scent",
+        "budget-friendly"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 4727,
+      "categoryRank": 5,
+      "reason": "Affordable hydrating coconut mist with tropical scent, excellent for refreshing and invigorating dehydrated skin."
+    },
+    {
+      "id": "B00HVI8WYU",
+      "asin": "B00HVI8WYU",
+      "name": "Hydrating Face Primer",
+      "brand": "e.l.f.",
+      "category": "primer",
+      "price": 9,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71lQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B00HVI8WYU",
+      "activeIngredients": [
+        "Hyaluronic Acid",
+        "Glycerin"
+      ],
+      "skinTypes": [
+        "dry",
+        "normal",
+        "dehydrated"
+      ],
+      "benefits": [
+        "flawless smooth skin",
+        "fills pores and lines",
+        "long-lasting makeup",
+        "hydrating formula",
+        "vegan and cruelty-free"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 40631,
+      "categoryRank": 1,
+      "reason": "Bestselling hydrating primer with massive review base, excellent for creating smooth base while providing skincare benefits."
+    },
+    {
+      "id": "B0DS59NCXD",
+      "asin": "B0DS59NCXD",
+      "name": "3 In 1 Primer with SPF 50",
+      "brand": "Generic Brand",
+      "category": "primer",
+      "price": 7.98,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71mQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B0DS59NCXD",
+      "activeIngredients": [
+        "SPF 50",
+        "Color Correctors"
+      ],
+      "skinTypes": [
+        "normal",
+        "oily",
+        "combination"
+      ],
+      "benefits": [
+        "3-in-1 formula",
+        "SPF 50 protection",
+        "color correcting",
+        "blurs imperfections",
+        "oil control"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 884,
+      "categoryRank": 2,
+      "reason": "Multi-functional primer combining SPF protection with color correction and oil control, excellent all-in-one solution."
+    },
+    {
+      "id": "B074VFYCKD",
+      "asin": "B074VFYCKD",
+      "name": "Master Prime Face Primer",
+      "brand": "Maybelline",
+      "category": "primer",
+      "price": 5.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71nQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B074VFYCKD",
+      "activeIngredients": [
+        "Silicones"
+      ],
+      "skinTypes": [
+        "normal",
+        "oily",
+        "enlarged pores"
+      ],
+      "benefits": [
+        "smooths skin texture",
+        "minimizes pores",
+        "long-lasting base",
+        "affordable",
+        "drugstore favorite"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 3095,
+      "categoryRank": 3,
+      "reason": "Affordable drugstore primer from trusted brand, excellent for pore minimizing and creating smooth makeup base."
+    },
+    {
+      "id": "B073XTWVM6",
+      "asin": "B073XTWVM6",
+      "name": "Thank Me Later Face Primer",
+      "brand": "Elizabeth Mott",
+      "category": "primer",
+      "price": 16.3,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71oQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B073XTWVM6",
+      "activeIngredients": [
+        "Silicones"
+      ],
+      "skinTypes": [
+        "oily",
+        "enlarged pores",
+        "combination"
+      ],
+      "benefits": [
+        "mattifying formula",
+        "shine control",
+        "pore minimizer",
+        "smooths wrinkles",
+        "long-lasting grip"
+      ],
+      "amazonRating": 4.3,
+      "amazonReviewCount": 43409,
+      "categoryRank": 4,
+      "reason": "Popular mattifying primer with strong review base, excellent for oil control and pore minimizing with long-lasting formula."
+    },
+    {
+      "id": "B08GR6FPZX",
+      "asin": "B08GR6FPZX",
+      "name": "Age Perfect Face Blurring Primer",
+      "brand": "L'Oreal Paris",
+      "category": "primer",
+      "price": 11.12,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71pQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B08GR6FPZX",
+      "activeIngredients": [
+        "Caring Serum",
+        "Blurring Agents"
+      ],
+      "skinTypes": [
+        "mature",
+        "fine lines",
+        "normal"
+      ],
+      "benefits": [
+        "blurs fine lines",
+        "smooths pores",
+        "caring serum infused",
+        "anti-aging primer",
+        "professional results"
+      ],
+      "amazonRating": 4.3,
+      "amazonReviewCount": 13635,
+      "categoryRank": 5,
+      "reason": "Anti-aging primer with serum benefits, excellent for mature skin seeking to blur fine lines while providing skincare benefits."
+    },
+    {
+      "id": "B08L88LZ4V",
+      "asin": "B08L88LZ4V",
+      "name": "Clear Face Sunscreen Lotion SPF 50",
+      "brand": "Neutrogena",
+      "category": "sunscreen",
+      "price": 12.18,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71qQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B08L88LZ4V",
+      "activeIngredients": [
+        "Chemical UV Filters"
+      ],
+      "skinTypes": [
+        "acne-prone",
+        "oily",
+        "sensitive"
+      ],
+      "benefits": [
+        "broad spectrum SPF 50",
+        "oil-free formula",
+        "fragrance-free",
+        "oxybenzone-free",
+        "water resistant"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 7125,
+      "categoryRank": 1,
+      "reason": "Top-rated sunscreen for acne-prone skin, oil-free formula that won't clog pores with broad spectrum protection."
+    },
+    {
+      "id": "B0CTTDLQF3",
+      "asin": "B0CTTDLQF3",
+      "name": "AM Facial Moisturizing Lotion SPF 50",
+      "brand": "CeraVe",
+      "category": "sunscreen",
+      "price": 15.87,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71u7E7cDZlL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B0CTTDLQF3",
+      "activeIngredients": [
+        "Chemical UV Filters",
+        "Hyaluronic Acid",
+        "Niacinamide",
+        "Ceramides"
+      ],
+      "skinTypes": [
+        "normal",
+        "dry",
+        "sensitive"
+      ],
+      "benefits": [
+        "moisturizer with SPF",
+        "blends seamlessly",
+        "no white cast",
+        "non-comedogenic",
+        "all-in-one formula"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 2160,
+      "categoryRank": 2,
+      "reason": "Excellent daily moisturizer with SPF 50, combines skincare benefits with sun protection in lightweight, no-cast formula."
+    },
+    {
+      "id": "B005IHT94S",
+      "asin": "B005IHT94S",
+      "name": "Ultra Sheer Dry-Touch Sunscreen SPF 70",
+      "brand": "Neutrogena",
+      "category": "sunscreen",
+      "price": 8.88,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71rQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B005IHT94S",
+      "activeIngredients": [
+        "Chemical UV Filters"
+      ],
+      "skinTypes": [
+        "normal",
+        "oily",
+        "travel size"
+      ],
+      "benefits": [
+        "SPF 70 protection",
+        "water resistant 80 min",
+        "oil-free",
+        "oxybenzone-free",
+        "matte finish"
+      ],
+      "amazonRating": 4.5,
+      "amazonReviewCount": 32310,
+      "categoryRank": 3,
+      "reason": "High SPF sunscreen with matte finish, excellent for very high protection needs with water resistance for active use."
+    },
+    {
+      "id": "B07B685MFG",
+      "asin": "B07B685MFG",
+      "name": "Original SPF 50 Sunscreen Face Lotion",
+      "brand": "Sun Bum",
+      "category": "sunscreen",
+      "price": 12.8,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71sQbHJ9VpL._SY679_.jpg",
+      "affiliateLink": "https://www.amazon.fr/dp/B07B685MFG",
+      "activeIngredients": [
+        "Chemical UV Filters",
+        "Vitamin E"
+      ],
+      "skinTypes": [
+        "normal",
+        "travel",
+        "sensitive"
+      ],
+      "benefits": [
+        "broad spectrum SPF 50",
+        "moisturizing formula",
+        "vitamin E enriched",
+        "fragrance-free",
+        "travel friendly"
+      ],
+      "amazonRating": 4.6,
+      "amazonReviewCount": 14612,
+      "categoryRank": 4,
+      "reason": "Popular beach brand sunscreen with vitamin E, excellent moisturizing properties and broad spectrum protection in travel size."
+    },
+    [
+  {
+    "id": "B07KLY4RYG",
+    "asin": "B07KLY4RYG",
+    "name": "100% Mineral Sunscreen SPF 50",
+    "brand": "CeraVe",
+    "category": "sunscreen",
+    "price": 13.97,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71u7E7cDZlL._SY679_.jpg",
+    "affiliateLink": "https://www.amazon.fr/dp/B07KLY4RYG",
+    "activeIngredients": [
+      "Zinc Oxide",
+      "Titanium Dioxide",
+      "Hyaluronic Acid",
+      "Niacinamide",
+      "Ceramides"
+    ],
+    "skinTypes": [
+      "sensitive",
+      "very sensitive",
+      "mineral preference"
+    ],
+    "benefits": [
+      "broad spectrum SPF 50",
+      "100% mineral filters",
+      "non-comedogenic",
+      "fragrance-free",
+      "sensitive-skin friendly"
+    ],
+    "amazonRating": 4.4,
+    "amazonReviewCount": 10123,
+    "categoryRank": 5,
+    "reason": "Mineral-only sunscreen ideal for sensitive skin with ceramides et niacinamide; protection large spectre sans filtres chimiques."
+  }
+]
+]

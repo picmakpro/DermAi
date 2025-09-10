@@ -1,6 +1,61 @@
 # 📚 DermAI V2 Documentation Rules
-YOU HAVE TO CODE IN ENGLISH EVEN YOU RECEIVE FRENCH INSTRUCTION
-## 🎯 Fundamental Principle
+YOU MUST WRITE ALL CODE IN ENGLISH. EVEN IF THE USER SPEAKS FRENCH, YOU MUST CODE, COMMENT, NAME, AND DOCUMENT IN ENGLISH.
+
+Scope (EN-only):
+
+Source code (identifiers, function/type names, filenames, folders)
+
+Code comments, docstrings, JSDoc/TSDoc
+
+Commit messages, PR titles/descriptions, branch names
+
+Technical documentation in /docs/** (unless explicitly specified otherwise)
+
+Allowed French (exceptions only):
+
+UI copy/labels handled via i18n resources (e.g. /locales/**, translation.json)
+
+User-facing marketing copy if instructed (kept in content/i18n files, never as logic keys)
+
+Existing historical docs that you are explicitly asked to preserve
+
+When instructions arrive in French:
+
+Translate requirements to English internally, then act.
+
+Confirm in English what you will implement.
+
+Produce all code/comments/commits in English (keep any FR text only in i18n resources).
+
+Never do:
+
+❌ French identifiers, comments, or logic comparisons
+
+❌ French canonical values (use EN canonicals from src/constants/canonicals.ts)
+
+❌ French strings outside i18n content files
+
+Canonical language choices:
+
+Use American English spelling (e.g., “color”, “behavior”, “personalize”).
+
+Acceptance checks (must pass):
+
+No French words/diacritics in code/comments/commits/PRs (outside /locales/**, /public/**, /docs/** if explicitly bilingual)
+
+All enums/logic use EN canonicals (frequency, timeOfDay, intensity, gender, skinType)
+
+Any FR input is normalized at boundaries via toCanonical() / normalizeRoutineLike()
+
+If someone asks you to code in French:
+Politely refuse and explain the project’s English-only coding policy, offering to add FR strings only via i18n files.
+
+Canonical enums are English-only (frequency, timeOfDay, intensity, gender, skinType).
+
+Normalize any FR input with toCanonical()/normalizeRoutineLike() at boundaries (forms, AI responses, caches).
+
+Never compare logic to FR literals; keep FR solely in i18n labels or content.
+Il ## 🎯 Fundamental Principle
 **`spec.md` is the central hub** that summarizes **ALL** application specifics and references **ALL** documentation.
 
 ## 📁 Mandatory Documentation Structure

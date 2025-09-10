@@ -1,4 +1,4 @@
-// Service pour l'intégration future des APIs d'affiliation
+// Service for future affiliate API integrations
 
 export interface AffiliateProduct {
   id: string
@@ -28,64 +28,64 @@ export interface ProductSearchCriteria {
 }
 
 /**
- * Service d'intégration avec les APIs d'affiliation
- * TODO: Intégrer avec les vraies APIs (Sephora, Douglas, etc.)
+ * Affiliate API integration service
+ * TODO: Integrate with real APIs (Sephora, Douglas, etc.)
  */
 export class ProductService {
-  
   /**
-   * Recherche de produits via API Sephora
-   * TODO: Remplacer par vraie intégration API
+   * Search products via Sephora API
+   * TODO: Replace with real API integration
    */
   static async searchSephoraProducts(criteria: ProductSearchCriteria): Promise<AffiliateProduct[]> {
-    // Future: Intégration API Sephora
-    console.log('Recherche Sephora pour:', criteria)
+    // Future: Sephora API integration
+    console.log('Sephora search for:', criteria)
     return []
   }
 
   /**
-   * Recherche de produits via API Douglas
-   * TODO: Remplacer par vraie intégration API
+   * Search products via Douglas API
+   * TODO: Replace with real API integration
    */
   static async searchDouglasProducts(criteria: ProductSearchCriteria): Promise<AffiliateProduct[]> {
-    // Future: Intégration API Douglas
-    console.log('Recherche Douglas pour:', criteria)
+    // Future: Douglas API integration
+    console.log('Douglas search for:', criteria)
     return []
   }
 
   /**
-   * Recherche de produits via API Amazon
-   * TODO: Remplacer par vraie intégration API
+   * Search products via Amazon API
+   * TODO: Replace with real API integration
    */
   static async searchAmazonProducts(criteria: ProductSearchCriteria): Promise<AffiliateProduct[]> {
-    // Future: Intégration API Amazon
-    console.log('Recherche Amazon pour:', criteria)
+    // Future: Amazon API integration
+    console.log('Amazon search for:', criteria)
     return []
   }
 
   /**
-   * Recherche agrégée dans toutes les sources
+   * Aggregated search across all sources
    */
   static async findRecommendedProducts(criteria: ProductSearchCriteria): Promise<AffiliateProduct[]> {
     const [sephoraProducts, douglasProducts, amazonProducts] = await Promise.all([
       this.searchSephoraProducts(criteria),
       this.searchDouglasProducts(criteria),
-      this.searchAmazonProducts(criteria)
+      this.searchAmazonProducts(criteria),
     ])
 
-    // Fusionner et trier par pertinence/commission
+    // Merge and sort by relevance/commission
     const allProducts = [...sephoraProducts, ...douglasProducts, ...amazonProducts]
-    
+
     return allProducts
-      .sort((a, b) => b.commission - a.commission) // Trier par commission
-      .slice(0, 6) // Limiter les résultats
+      .sort((a, b) => b.commission - a.commission) // Sort by commission
+      .slice(0, 6) // Limit results
   }
 
   /**
-   * Conversion des critères basés sur l'analyse DermAI
+   * Convert DermAI analysis into search criteria
    */
   static analysisToSearchCriteria(analysis: any): ProductSearchCriteria {
-    const skinType = analysis.diagnostic?.primaryCondition || 'normale'
+    // value used in logic; keep as-is if upstream emits French tokens
+    const skinType = analysis.diagnostic?.primaryCondition || 'normale' // logic-bound default
     const concerns = analysis.diagnostic?.affectedAreas || []
     const budget = this.extractBudgetFromAnalysis(analysis)
 
@@ -93,35 +93,35 @@ export class ProductService {
       skinType,
       concerns,
       budgetRange: budget,
-      excludeIngredients: analysis.allergies?.ingredients || []
+      excludeIngredients: analysis.allergies?.ingredients || [],
     }
   }
 
   private static extractBudgetFromAnalysis(analysis: any): [number, number] {
-    // Logique pour extraire le budget depuis le questionnaire
-    // TODO: Accéder aux données du questionnaire original
-    return [20, 100] // Valeur par défaut
+    // Logic to extract budget from the questionnaire
+    // TODO: Access original questionnaire data
+    return [20, 100] // Default value
   }
 }
 
 /**
- * Configuration des APIs d'affiliation
+ * Affiliate API configuration
  */
 export const AFFILIATE_CONFIG = {
   sephora: {
     apiKey: process.env.SEPHORA_API_KEY,
     baseUrl: 'https://api.sephora.com/v1',
-    commissionRate: 0.08 // 8%
+    commissionRate: 0.08, // 8%
   },
   douglas: {
     apiKey: process.env.DOUGLAS_API_KEY,
     baseUrl: 'https://api.douglas.de/v1',
-    commissionRate: 0.06 // 6%
+    commissionRate: 0.06, // 6%
   },
   amazon: {
     accessKey: process.env.AMAZON_ACCESS_KEY,
     secretKey: process.env.AMAZON_SECRET_KEY,
     associateTag: process.env.AMAZON_ASSOCIATE_TAG,
-    commissionRate: 0.04 // 4%
-  }
+    commissionRate: 0.04, // 4%
+  },
 }

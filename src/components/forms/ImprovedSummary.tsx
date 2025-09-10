@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { getPhotoDataUrl } from '@/utils/storage/photoStore'
+import { toCanonical } from '@/lib/i18n/normalization'
 
 interface SummaryProps {
   photosCount: number
@@ -48,37 +49,36 @@ export default function ImprovedSummary({
   const [photos, setPhotos] = useState<string[]>([])
   const [isLoadingPhotos, setIsLoadingPhotos] = useState(true)
 
+  // Canonicalize profile values (compat FR → EN)
+  const canonicalGender = toCanonical(data?.userProfile?.gender || '') as string
+  const canonicalSkinType = toCanonical(data?.userProfile?.skinType || '') as string
+
   useEffect(() => {
     const loadPhotos = async () => {
       try {
-        // Retrieve metadata from sessionStorage
         const photosData = sessionStorage.getItem('dermai_photos')
         if (photosData) {
           const photoMetas = JSON.parse(photosData)
-          console.log('Photo metadata:', photoMetas)
-          
           if (Array.isArray(photoMetas)) {
-            // Fetch actual photos from IndexedDB
-            const photoPromises = photoMetas.map(async (meta) => {
-              try {
-                const dataUrl = await getPhotoDataUrl(meta.id)
-                return dataUrl
-              } catch (error) {
-                console.warn(`Unable to load photo ${meta.id}:`, error)
-                return null
-              }
-            })
-            
-            const loadedPhotos = await Promise.all(photoPromises)
-            const validPhotos = loadedPhotos.filter((photo): photo is string => 
-              photo !== null && 
-              typeof photo === 'string' && 
-              photo.trim() !== '' && 
-              photo.startsWith('data:image/')
+            const loadedPhotos = await Promise.all(
+              photoMetas.map(async (meta: any) => {
+                try {
+                  const dataUrl = await getPhotoDataUrl(meta.id)
+                  return dataUrl
+                } catch (error) {
+                  console.warn(`Unable to load photo ${meta.id}:`, error)
+                  return null
+                }
+              })
             )
-            
+            const validPhotos = loadedPhotos.filter(
+              (p): p is string =>
+                p !== null &&
+                typeof p === 'string' &&
+                p.trim() !== '' &&
+                p.startsWith('data:image/')
+            )
             setPhotos(validPhotos)
-            console.log(`Photos loaded from IndexedDB: ${validPhotos.length}/${photoMetas.length}`)
           }
         }
       } catch (error) {
@@ -87,7 +87,6 @@ export default function ImprovedSummary({
         setIsLoadingPhotos(false)
       }
     }
-    
     loadPhotos()
   }, [])
 
@@ -96,15 +95,14 @@ export default function ImprovedSummary({
       <h3 className="font-semibold font-display text-dermai-neutral-800 mb-6 flex items-center">
         <div className="w-8 h-8 bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 rounded-full flex items-center justify-center mr-3 shadow-glow">
           <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" clipRule="evenodd" />
-            <path fillRule="evenodd" d="M4 5a2 2 0 012-2v1a1 1 0 001 1h6a1 1 0 001-1V3a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V5zM8 8a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1zm1 3a1 1 0 100 2h2a1 1 0 100-2H9z" clipRule="evenodd" />
+            <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
           </svg>
         </div>
         Your profile
       </h3>
-      
+
       <div className="space-y-4">
-        {/* Photos with thumbnails */}
+        {/* Photos */}
         <div className="bg-dermai-nude-50 rounded-xl p-4">
           <div className="flex items-center mb-3">
             <div className="w-6 h-6 bg-dermai-ai-500 rounded-full flex items-center justify-center mr-3">
@@ -114,11 +112,10 @@ export default function ImprovedSummary({
             </div>
             <span className="font-medium text-dermai-neutral-800">Photos ({photosCount})</span>
           </div>
-          
-          {/* Thumbnails display */}
+
           {isLoadingPhotos ? (
             <div className="ml-9 flex items-center space-x-2">
-              <div className="animate-spin w-4 h-4 border-2 border-dermai-ai-500 border-t-transparent rounded-full"></div>
+              <div className="animate-spin w-4 h-4 border-2 border-dermai-ai-500 border-t-transparent rounded-full" />
               <p className="text-sm text-dermai-neutral-500">Loading photos…</p>
             </div>
           ) : photos.length > 0 ? (
@@ -131,9 +128,7 @@ export default function ImprovedSummary({
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 50px, 60px"
-                    onError={(e) => {
-                      console.warn(`Load error for photo ${index + 1}`)
-                    }}
+                    onError={() => console.warn(`Load error for photo ${index + 1}`)}
                   />
                   <div className="absolute bottom-0 right-0 bg-dermai-ai-500 text-white text-xs px-1 py-0.5 rounded-tl-md">
                     {index + 1}
@@ -161,14 +156,14 @@ export default function ImprovedSummary({
             </div>
             <div className="text-sm text-dermai-neutral-600 ml-9 space-y-1">
               <p><span className="font-medium text-dermai-neutral-700">Age:</span> {selectedAgeRange}</p>
-              {/* value used in logic; keep as-is (French) */}
-              {data.userProfile.gender !== 'Ne souhaite pas préciser' && (
+              {canonicalGender !== 'prefer_not_to_say' && (
                 <p><span className="font-medium text-dermai-neutral-700">Gender:</span> {data.userProfile.gender}</p>
               )}
               <p>
                 <span className="font-medium text-dermai-neutral-700">Skin type:</span>{' '}
-                {/* value used in logic; keep as-is (French) */}
-                {data.userProfile.skinType === 'Je ne sais pas' ? 'The AI will determine automatically' : data.userProfile.skinType}
+                {canonicalSkinType === 'unknown'
+                  ? 'The AI will determine automatically'
+                  : data.userProfile.skinType}
               </p>
             </div>
           </div>
@@ -188,11 +183,9 @@ export default function ImprovedSummary({
             <div className="text-sm text-dermai-neutral-600 ml-9">
               <p><span className="font-medium text-dermai-neutral-700">Primary concerns:</span></p>
               <p className="mt-1">
-                {/* value used in logic; keep as-is (French) */}
-                {data.skinConcerns.primary.includes('Je ne sais pas') ? 
-                  'The AI will automatically analyze your photos to determine your concerns' : 
-                  getConcernsDisplay()
-                }
+                {data.skinConcerns.primary.includes('Je ne sais pas')
+                  ? 'The AI will automatically analyze your photos to determine your concerns'
+                  : getConcernsDisplay()}
               </p>
             </div>
           </div>
@@ -250,11 +243,9 @@ export default function ImprovedSummary({
             <div className="text-sm text-red-700 ml-9">
               <p><span className="font-medium text-red-800">Ingredients to avoid:</span></p>
               <p className="mt-1">
-                {/* value used in logic; keep as-is (French) */}
-                {data.allergies.ingredients.includes('Aucune allergie connue') 
-                  ? 'No allergies declared'
-                  : data.allergies.ingredients.filter(i => i !== 'Aucune allergie connue').join(', ')
-                }
+                {data.allergies.ingredients.includes('Aucune allergie connue')
+                  ? 'No known allergies'
+                  : data.allergies.ingredients.join(', ')}
               </p>
             </div>
           </div>
@@ -306,28 +297,26 @@ export default function ImprovedSummary({
         )}
       </div>
 
-      {/* Analyze button – Desktop */}
+      {/* Analyze buttons */}
       {isFormComplete() && (
-        <div className="mt-4 hidden md:block">
-          <button
-            onClick={handleSubmit}
-            className="w-full bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 text-white font-semibold py-4 px-6 rounded-2xl shadow-premium hover:shadow-glow transition-all duration-300 hover-lift"
-          >
-            🚀 Start DermAI analysis
-          </button>
-        </div>
-      )}
-
-      {/* Analyze button – Mobile */}
-      {isFormComplete() && (
-        <div className="mt-4 md:hidden">
-          <button
-            onClick={handleSubmit}
-            className="w-full bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 text-white font-semibold py-4 px-6 rounded-2xl shadow-premium hover:shadow-glow transition-all duration-300 hover-lift"
-          >
-            🚀 Start DermAI analysis
-          </button>
-        </div>
+        <>
+          <div className="mt-4 hidden md:block">
+            <button
+              onClick={handleSubmit}
+              className="w-full bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 text-white font-semibold py-4 px-6 rounded-2xl shadow-premium hover:shadow-glow transition-all duration-300 hover-lift"
+            >
+              🚀 Start DermAI analysis
+            </button>
+          </div>
+          <div className="mt-4 md:hidden">
+            <button
+              onClick={handleSubmit}
+              className="w-full bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-400 text-white font-semibold py-4 px-6 rounded-2xl shadow-premium hover:shadow-glow transition-all duration-300 hover-lift"
+            >
+              🚀 Start DermAI analysis
+            </button>
+          </div>
+        </>
       )}
     </div>
   )

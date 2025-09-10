@@ -9,7 +9,8 @@ import type {
   ZoneSpecificIssue
 } from '@/types'
 import type { AnalyzeRequest } from '@/types/api'
-import { 
+import { normalizeRoutineLike } from '@/lib/i18n/normalization'
+import {
   normalizeAssessmentFRtoEN,
   normalizeGender,
   normalizeSkinType,
@@ -25,57 +26,33 @@ export class AnalysisService {
     try {
       console.log('🔧 Initializing OpenAI client...')
 
-      // Check environment variables
       if (!process.env.OPENAI_API_KEY) {
         throw new Error('OPENAI_API_KEY is missing in Vercel environment variables')
       }
 
-      // Create OpenAI client server-side
       const openai = createOpenAIClient()
       console.log('✅ OpenAI client initialized successfully')
 
-      // Normalize input request from FR to EN at the boundary
-      const normalizedRequest = {
-        ...request,
-        userProfile: {
-          ...request.userProfile,
-          gender: normalizeGender(request.userProfile.gender) || request.userProfile.gender,
-          skinType: normalizeSkinType(request.userProfile.skinType) || request.userProfile.skinType
-        },
-        currentRoutine: {
-          ...request.currentRoutine,
-          routinePreference: normalizeRoutinePreference(request.currentRoutine.routinePreference) || request.currentRoutine.routinePreference,
-          monthlyBudget: normalizeBudget(request.currentRoutine.monthlyBudget) || request.currentRoutine.monthlyBudget
-        }
-      }
+      // Normalize input to EN at the boundary using comprehensive normalization
+      const normalizedRequest = normalizeRoutineLike(request) as AnalyzeRequest
 
       // Images are already base64 from client
       const imageContents = normalizedRequest.photos
         .map((photo) => {
-          // Extract base64 part if it contains a data: prefix
           let base64Data = ''
-
           if (typeof photo.file === 'string') {
-            if (photo.file.includes('base64,')) {
-              base64Data = photo.file.split('base64,')[1]
-            } else {
-              base64Data = photo.file
-            }
+            base64Data = photo.file.includes('base64,') ? photo.file.split('base64,')[1] : photo.file
           }
-
           return base64Data
         })
         .filter((base64) => base64.length > 0)
 
-      // Image validation
       if (imageContents.length === 0) {
         throw new Error('No valid images found for analysis')
       }
 
       console.log('🔍 STEP 1: Pure diagnostic analysis (without catalog)')
-
-      // STEP 1: Pure diagnostic analysis WITHOUT catalog
-      const diagnosticResult = await this.performDiagnosticAnalysis(openai, imageContents, request)
+      const diagnosticResult = await this.performDiagnosticAnalysis(openai, imageContents, normalizedRequest)
 
       console.log('✅ Diagnosis established:', {
         mainConcern: diagnosticResult.beautyAssessment?.mainConcern,
@@ -84,10 +61,7 @@ export class AnalysisService {
       })
 
       console.log('🛍️ STEP 2: Product selection based on diagnosis')
-
-      // STEP 2: Product selection based on established diagnosis
-      const productRecommendations = await this.selectProductsBasedOnDiagnosis(openai, diagnosticResult, request)
-
+      const productRecommendations = await this.selectProductsBasedOnDiagnosis(openai, diagnosticResult, normalizedRequest)
       console.log('✅ Products selected:', productRecommendations)
 
       // STEP 3: Unified routine generation
@@ -95,7 +69,6 @@ export class AnalysisService {
       const unifiedRoutine = this.generateUnifiedRoutine(diagnosticResult.beautyAssessment, productRecommendations)
       console.log('✅ Unified routine generated:', unifiedRoutine.length, 'steps')
 
-      // Merge results with unified routine
       const finalAnalysis: SkinAnalysis = {
         id: this.generateId(),
         userId: 'temp-user',
@@ -104,7 +77,7 @@ export class AnalysisService {
         beautyAssessment: diagnosticResult.beautyAssessment,
         recommendations: {
           ...productRecommendations,
-          unifiedRoutine // Add unified routine
+          unifiedRoutine
         },
         createdAt: new Date()
       }
@@ -113,27 +86,21 @@ export class AnalysisService {
     } catch (error) {
       console.error('❌ Full AI analysis error:', error)
 
-      // Specific diagnostics for Vercel
       if (error instanceof Error) {
-        const errorMessage = error.message.toLowerCase()
-
-        if (errorMessage.includes('api key') || errorMessage.includes('unauthorized')) {
+        const msg = error.message.toLowerCase()
+        if (msg.includes('api key') || msg.includes('unauthorized')) {
           throw new Error('Invalid OpenAI configuration – check OPENAI_API_KEY in Vercel')
         }
-
-        if (errorMessage.includes('rate limit') || errorMessage.includes('quota')) {
+        if (msg.includes('rate limit') || msg.includes('quota')) {
           throw new Error('OpenAI limit reached – please try again in a few minutes')
         }
-
-        if (errorMessage.includes('network') || errorMessage.includes('fetch')) {
+        if (msg.includes('network') || msg.includes('fetch')) {
           throw new Error('Network connection issue from Vercel to OpenAI')
         }
-
-        if (errorMessage.includes('timeout')) {
+        if (msg.includes('timeout')) {
           throw new Error('Analysis timeout – image too large or slow connection')
         }
-
-        if (errorMessage.includes('expected pattern') || errorMessage.includes('json')) {
+        if (msg.includes('expected pattern') || msg.includes('json')) {
           throw new Error('OpenAI response parsing error – unexpected format')
         }
       }
@@ -147,54 +114,39 @@ export class AnalysisService {
    */
   private static async loadCatalogForPrompt(): Promise<string> {
     try {
-      // Load catalog from file system
       const fs = await import('fs').then((m) => m.promises)
       const path = await import('path')
-
       const catalogPath = path.join(process.cwd(), 'public', 'affiliateCatalog.json')
       const catalogData = await fs.readFile(catalogPath, 'utf-8')
       const catalog = JSON.parse(catalogData)
       const products = catalog.products || []
 
-      // Format for the prompt (diverse selection per category)
-      const categorizedProducts = products.reduce((acc: any, product: any) => {
-        if (!acc[product.category]) acc[product.category] = []
-        acc[product.category].push(product)
+      const categorized = products.reduce((acc: any, p: any) => {
+        if (!acc[p.category]) acc[p.category] = []
+        acc[p.category].push(p)
         return acc
       }, {})
 
-      // Take 3–5 products per main category
-      const importantCategories = ['cleanser', 'serum', 'moisturizer', 'sunscreen', 'exfoliant', 'treatment', 'mist']
-      const selectedProducts: any[] = []
-
-      importantCategories.forEach((category) => {
-        if (categorizedProducts[category]) {
-          selectedProducts.push(...categorizedProducts[category].slice(0, 4))
+      const important = ['cleanser', 'serum', 'moisturizer', 'sunscreen', 'exfoliant', 'treatment', 'mist']
+      const selected: any[] = []
+      important.forEach((cat) => {
+        if (categorized[cat]) {
+          selected.push(...categorized[cat].slice(0, 4))
         }
       })
 
-      // Limit overall to avoid an overly long prompt
-      const catalogText = selectedProducts
+      const catalogText = selected
         .slice(0, 40)
-        .map((product: any) => {
-          const benefits = Array.isArray(product.benefits)
-            ? product.benefits.slice(0, 2).join(', ')
-            : 'Targeted care'
-          return `- ${product.id} : ${product.name} (${product.brand}, ${product.category}) - ${benefits}`
+        .map((p: any) => {
+          const benefits = Array.isArray(p.benefits) ? p.benefits.slice(0, 2).join(', ') : 'Targeted care'
+          return `- ${p.id} : ${p.name} (${p.brand}, ${p.category}) - ${benefits}`
         })
         .join('\n')
 
-      console.log(
-        '📦 Catalog loaded for ChatGPT:',
-        selectedProducts.length,
-        'products selected out of',
-        products.length,
-        'total'
-      )
+      console.log('📦 Catalog loaded for ChatGPT:', selected.length, 'products selected out of', products.length, 'total')
       return catalogText
     } catch (error) {
       console.error('❌ Error loading catalog for prompt:', error)
-      // Fallback with a few baseline products from the real catalog
       return `- B01MSSDEPK : CeraVe Hydrating Cleanser (CeraVe, cleanser) - cleanses while hydrating, barrier support
 - B01MDTVZTZ : The Ordinary Niacinamide 10% + Zinc 1% (The Ordinary, serum) - sebum regulation, pore-minimizing
 - B00949CTQQ : Paula's Choice SKIN PERFECTING 2% BHA (Paula's Choice, exfoliant) - unclogs pores, reduces blackheads
@@ -247,9 +199,7 @@ export class AnalysisService {
           max_tokens: 3000,
           temperature: 0.3
         },
-        {
-          signal: controller.signal
-        }
+        { signal: controller.signal }
       )
 
       clearTimeout(timeoutId)
@@ -271,11 +221,9 @@ export class AnalysisService {
       }
     } catch (apiError) {
       clearTimeout(timeoutId)
-
       if (apiError instanceof Error && apiError.name === 'AbortError') {
         throw new Error('Timeout: Diagnostic analysis took too long')
       }
-
       throw apiError
     }
   }
@@ -288,9 +236,7 @@ export class AnalysisService {
     diagnostic: { scores: SkinScores; beautyAssessment: BeautyAssessment },
     request: AnalyzeRequest
   ): Promise<ProductRecommendations> {
-    // Load the full catalog
     const catalogText = await this.loadCatalogForPrompt()
-
     const systemPrompt = this.buildProductSelectionSystemPrompt(catalogText)
     const userPrompt = this.buildProductSelectionUserPrompt(diagnostic, request)
 
@@ -312,11 +258,9 @@ export class AnalysisService {
             { role: 'user', content: userPrompt }
           ],
           max_tokens: 2000,
-          temperature: 0.2 // More deterministic for selection
+          temperature: 0.2
         },
-        {
-          signal: controller.signal
-        }
+        { signal: controller.signal }
       )
 
       clearTimeout(timeoutId)
@@ -329,29 +273,26 @@ export class AnalysisService {
       return this.parseProductSelectionResponse(response.choices[0]?.message?.content)
     } catch (apiError) {
       clearTimeout(timeoutId)
-
       if (apiError instanceof Error && apiError.name === 'AbortError') {
         throw new Error('Timeout: Product selection took too long')
       }
-
       throw apiError
     }
   }
 
   /**
    * Compute a weighted overall score from sub-scores
-   * Weights chosen for consumer-friendly meaning (sum = 1)
    */
   private static computeWeightedOverall(scores: Record<string, { value: number }>): number {
     const weights: Record<string, number> = {
-      hydration: 0.15, // Hydration
-      wrinkles: 0.2, // Wrinkles
-      firmness: 0.12, // Firmness
-      radiance: 0.12, // Radiance
-      pores: 0.15, // Pores
-      spots: 0.08, // Spots
-      darkCircles: 0.08, // Dark circles
-      skinAge: 0.1 // Skin age
+      hydration: 0.15,
+      wrinkles: 0.2,
+      firmness: 0.12,
+      radiance: 0.12,
+      pores: 0.15,
+      spots: 0.08,
+      darkCircles: 0.08,
+      skinAge: 0.1
     }
 
     let weightedSum = 0
@@ -361,17 +302,13 @@ export class AnalysisService {
       const weight = weights[key]
       const detail = scores?.[key]
       const value: number | undefined = detail && typeof detail.value === 'number' ? detail.value : undefined
-
       if (typeof value === 'number' && !Number.isNaN(value)) {
         weightedSum += value * weight
         usedWeightSum += weight
       }
     }
 
-    if (usedWeightSum === 0) {
-      return 0
-    }
-
+    if (usedWeightSum === 0) return 0
     return Math.round(weightedSum / usedWeightSum)
   }
 
@@ -384,17 +321,17 @@ You are BeautyAI, an AI dermatology expert focused on visual skin analysis. You 
 
 ## TASK – STEP 1: PURE DIAGNOSTIC
 Analyze ONLY the photos to establish an accurate assessment of the skin's condition.
-DO NOT recommend products at this stage — focus 100% on diagnostic analysis.
+Do NOT recommend products at this stage — focus 100% on diagnostic analysis.
 
 ## CONTEXT
 Professional skin analysis app. You analyze the skin visually to produce an objective diagnostic based on observable cosmetic characteristics.
 
 ## REQUIRED ANALYSIS
-1. **DETAILED SCORES**: Rate each criterion out of 100
-2. **PRIMARY CONCERN**: Identify the main concern
-3. **CONCERNED ZONES**: Precisely locate issues
-4. **VISUAL FINDINGS**: Describe what you objectively see
-5. **IMPROVEMENT ESTIMATE**: Estimate realistic time to reach 90/100 based on current state
+1. DETAILED SCORES: Rate each criterion out of 100
+2. PRIMARY CONCERN: Identify the main concern
+3. CONCERNED ZONES: Precisely locate issues
+4. VISUAL FINDINGS: Describe what you objectively see
+5. IMPROVEMENT ESTIMATE: Estimate realistic time to reach 90/100 based on current state
 
 ## OUTPUT – MANDATORY JSON FORMAT
 Respond ONLY with valid JSON matching this exact shape:
@@ -421,7 +358,7 @@ Respond ONLY with valid JSON matching this exact shape:
       {"name": "pigmentation", "intensity": "mild", "zones": ["forehead", "cheeks"]}
     ],
     "visualFindings": [
-      "Presence of ingrown hairs on shaving zone",
+      "Presence of ingrowns on shaving zone",
       "Redness and minor post-shave blemishes",
       "Overall healthy texture outside concerned zones",
       "Subtle post-irritation pigment marks"
@@ -459,7 +396,7 @@ Respond ONLY with valid JSON matching this exact shape:
 - Be precise and objective in observations
 - Base yourself only on what is visible in the photos
 - Avoid medical jargon; stay in the beauty/cosmetic domain
-- **CRITICAL**: Return VALID JSON in English canonical values only
+- CRITICAL: Return VALID JSON in English canonical values only
 - intensity must be: "mild", "moderate", or "severe"
 - zones must be: "chin", "cheeks", "forehead", "nose", "neck", "eye-contour"
 - concerns must be: "redness", "pigmentation", "wrinkles", "blackheads", "enlarged-pores", "dehydration", "ingrowns", "blemishes"
@@ -506,19 +443,18 @@ IMPORTANT: Use ONLY the real references from the catalog above (e.g., B01MSSDEPK
 
 ## BEAUTY ROUTINE PILLARS
 - Cleanse (cleanser)
-- Prep (tonic/toner)
+- Prep (toner/mist)
 - Treat (serum, treatment)
 - Moisturize (moisturizer)
-- Nourish (face_oil, balm if needed)
+- Nourish (face oil / balm if needed)
 - Protect (sunscreen)
 
 ## OUTPUT – MANDATORY JSON FORMAT
 Respond ONLY with valid JSON matching this exact shape.
-IMPORTANT: Keep these exact French tokens for interoperability:
-- frequency: "quotidien" | "hebdomadaire" | "ponctuel"
-- timing: "matin" | "soir" | "matin_et_soir"
-**CRITICAL**: For all other fields use English canonical values:
-- intensity: "mild" | "moderate" | "severe"  
+Use English canonical tokens everywhere:
+- frequency: "daily" | "weekly" | "as_needed"
+- timing: "morning" | "evening" | "morning_and_evening"
+- intensity: "mild" | "moderate" | "severe"
 - zones: "chin" | "cheeks" | "forehead" | "nose" | "neck" | "eye-contour"
 - concerns: "redness" | "pigmentation" | "wrinkles" | "blackheads" | "enlarged-pores" | "dehydration" | "ingrowns" | "blemishes"
 
@@ -532,52 +468,52 @@ IMPORTANT: Keep these exact French tokens for interoperability:
     "immediate": [
       {
         "name": "Gentle cleansing",
-        "frequency": "quotidien",
-        "timing": "matin_et_soir",
+        "frequency": "daily",
+        "timing": "morning_and_evening",
         "catalogId": "B01MSSDEPK",
         "application": "Massage gently, rinse with lukewarm water",
-        "startDate": "maintenant"
+        "startDate": "now"
       }
     ],
     "adaptation": [
       {
         "name": "Gentle exfoliation",
-        "frequency": "hebdomadaire",
-        "timing": "soir",
+        "frequency": "weekly",
+        "timing": "evening",
         "catalogId": "B00949CTQQ",
         "application": "Start once a week, increase progressively",
-        "startDate": "après_2_semaines"
+        "startDate": "after_2_weeks"
       }
     ],
     "maintenance": [
       {
         "name": "Sun protection",
-        "frequency": "quotidien",
-        "timing": "matin",
+        "frequency": "daily",
+        "timing": "morning",
         "catalogId": "B004W55086",
         "application": "Reapply every 2h if exposed",
-        "startDate": "maintenant"
+        "startDate": "now"
       }
     ]
   },
   "localizedRoutine": [
     {
-      "zone": "menton",
-      "priority": "haute",
+      "zone": "chin",
+      "priority": "high",
       "steps": [
         {
           "name": "Soothing care",
-          "frequency": "quotidien",
-          "timing": "soir",
+          "frequency": "daily",
+          "timing": "evening",
           "catalogId": "B00BNUY3HE",
           "application": "Thin layer on sensitive zones",
-          "duration": "jusqu'à amélioration",
-          "resume": "quand sensibilité disparue"
+          "duration": "until improvement",
+          "resume": "when sensitivity disappears"
         }
       ]
     }
   ],
-  "overview": "Progressive routine focused on soothing then prevention",
+  "overview": "Progressive routine focused first on soothing, then prevention",
   "zoneSpecificCare": "Zone-specific care prioritized for sensitive areas",
   "restrictions": "Avoid exfoliants on sensitized zones until improved"
 }
@@ -601,18 +537,16 @@ IMPORTANT: Keep these exact French tokens for interoperability:
 ${request.skinConcerns.primary.join(', ')}${
       request.skinConcerns.otherText ? ` (Other: ${request.skinConcerns.otherText})` : ''
     }
-**Routine preference:** ${request.currentRoutine.routinePreference || 'Équilibrée'}
+**Routine preference:** ${request.currentRoutine.routinePreference || 'Balanced'}
 
 ## CURRENT ROUTINE
 **Morning:** ${request.currentRoutine.morningProducts.join(', ') || 'No routine'}
 **Evening:** ${request.currentRoutine.eveningProducts.join(', ') || 'No routine'}
-**Routine preference (complexity):** ${request.currentRoutine.routinePreference || 'Équilibrée'}
+**Routine preference (complexity):** ${request.currentRoutine.routinePreference || 'Balanced'}
 **Monthly budget:** ${request.currentRoutine.monthlyBudget}
 
 ## ALLERGIES & SENSITIVITIES
-**Ingredients to avoid:** ${
-      request.allergies?.ingredients?.join(', ') || 'No known allergies'
-    }
+**Ingredients to avoid:** ${request.allergies?.ingredients?.join(', ') || 'No known allergies'}
 **Past reactions:** ${request.allergies?.pastReactions || 'No reactions reported'}
 
 ## PRODUCT CATALOG (STRUCTURED)
@@ -626,17 +560,14 @@ Analyze these ${request.photos.length} photos with maximum expert beauty advice.
 
 **PAY SPECIAL ATTENTION TO:**
 - Mentioned beauty concerns: ${request.skinConcerns.primary.join(', ')}
-// (Note: user selected routine preference: ${request.currentRoutine.routinePreference || 'Équilibrée'})
-- Sensitivities to consider: ${
-      request.allergies?.ingredients?.filter((i) => i !== 'Aucune allergie connue').join(', ') || 'None'
-    }
+- Sensitivities to consider: ${request.allergies?.ingredients?.join(', ') || 'None'}
 - Available budget: ${request.currentRoutine.monthlyBudget}
 
 **YOU MUST DETERMINE:**
 - Real intensity based only on visual analysis (ignore self-assessment)
 - Precise skin concerns observed
 - Cosmetic recommendations adapted to budget and sensitivities
-- An overview (max 3 points) + a localized view by zones (forehead, cheeks, nose, eye contour, beard, lips...) with concerns and intensity
+- An overview (max 3 points) + a localized view by zones (forehead, cheeks, nose, eye-contour, beard, lips...) with concerns and intensity
 - A routine organized by pillars (Cleanse, Prep, Treat, Moisturize, Nourish, Protect), adapted to the complexity preference.
 
 Provide precise personalized analysis + justified scores + actionable recommendations.
@@ -669,10 +600,7 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
 ${diagnostic.beautyAssessment.visualFindings?.map((f) => `- ${f}`).join('\n') || 'No specific findings'}
 
 **Overview:**
-${
-  diagnostic.beautyAssessment.overview?.map((item) => `- ${item}`).join('\n') ||
-  "No overview"
-}
+${diagnostic.beautyAssessment.overview?.map((item) => `- ${item}`).join('\n') || 'No overview'}
 
 **Zone specifics:**
 ${
@@ -685,7 +613,7 @@ ${
 **Profile:** ${request.userProfile.gender}, ${request.userProfile.age} years
 **Declared skin type:** ${request.userProfile.skinType}
 **Monthly budget:** ${request.currentRoutine.monthlyBudget}
-**Routine preference:** ${request.currentRoutine.routinePreference || 'Équilibrée'}
+**Routine preference:** ${request.currentRoutine.routinePreference || 'Balanced'}
 
 ## ALLERGIES & SENSITIVITIES
 **Ingredients to avoid:** ${request.allergies?.ingredients?.join(', ') || 'No known allergies'}
@@ -701,79 +629,64 @@ Based on this precise diagnosis, select the most relevant products from the cata
 REPLY IN JSON ONLY – NO FREE TEXT.`
   }
 
-  /**
-   * Parse diagnostic response (STEP 1)
-   */
+  /** Parse diagnostic response (STEP 1) */
   private static parseDiagnosticResponse(content: string | null): Record<string, unknown> {
-    if (!content) {
-      throw new Error('Empty diagnostic response from AI')
-    }
-
+    if (!content) throw new Error('Empty diagnostic response from AI')
     try {
-      // Clean response (strip markdown fences if present)
-      const cleanContent = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+      const clean = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+      console.log('Diagnostic content to parse:', clean.substring(0, 200) + '...')
+      const parsed = JSON.parse(clean)
+      
+      // Normalize AI response to ensure EN canonicals
+      const normalizedParsed = normalizeRoutineLike(parsed)
 
-      console.log('Diagnostic content to parse:', cleanContent.substring(0, 200) + '...')
-
-      const parsed = JSON.parse(cleanContent)
-
-      // Basic validation of diagnostic structure
-      if (!parsed.scores || !parsed.beautyAssessment) {
+      if (!normalizedParsed.scores || !normalizedParsed.beautyAssessment) {
         throw new Error('Invalid diagnostic response structure')
       }
 
-      // Normalize FR to EN at the boundary
-      if (parsed.beautyAssessment) {
-        parsed.beautyAssessment = normalizeAssessmentFRtoEN(parsed.beautyAssessment)
+      // Additional specific normalization for beauty assessment
+      if (normalizedParsed.beautyAssessment) {
+        normalizedParsed.beautyAssessment = normalizeAssessmentFRtoEN(normalizedParsed.beautyAssessment)
       }
 
-      return parsed
-    } catch (error) {
-      console.error('Diagnostic JSON parsing error:', error)
+      return normalizedParsed
+    } catch (e) {
+      console.error('Diagnostic JSON parsing error:', e)
       console.error('Raw content received:', content)
       throw new Error('Invalid diagnostic response format from AI')
     }
   }
 
-  /**
-   * Parse product selection response (STEP 2)
-   */
+  /** Parse product selection response (STEP 2) */
   private static parseProductSelectionResponse(content: string | null): ProductRecommendations {
-    if (!content) {
-      throw new Error('Empty product-selection response from AI')
-    }
-
+    if (!content) throw new Error('Empty product-selection response from AI')
     try {
-      // Clean response (strip markdown fences if present)
-      const cleanContent = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+      const clean = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+      console.log('Product selection content to parse:', clean.substring(0, 200) + '...')
+      const parsed = JSON.parse(clean)
+      
+      // Normalize AI response to ensure EN canonicals  
+      const normalizedParsed = normalizeRoutineLike(parsed)
 
-      console.log('Product selection content to parse:', cleanContent.substring(0, 200) + '...')
-
-      const parsed = JSON.parse(cleanContent)
-
-      // Basic validation of recommendations structure
-      if (!parsed.routine) {
+      if (!normalizedParsed.routine) {
         throw new Error('Invalid product-selection response structure')
       }
 
-      return parsed as ProductRecommendations
-    } catch (error) {
-      console.error('Product selection JSON parsing error:', error)
+      return normalizedParsed as ProductRecommendations
+    } catch (e) {
+      console.error('Product selection JSON parsing error:', e)
       console.error('Raw content received:', content)
       throw new Error('Invalid product selection response format from AI')
     }
   }
 
-  /**
-   * Generate unique ID
-   */
+  /** Generate unique ID */
   private static generateId(): string {
     return `analysis_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
   }
 
   /**
    * STEP 3: Generate unified routine with smart product grouping
-   * Removes separate “zones to monitor” section + avoids redundant steps
    */
   private static generateUnifiedRoutine(
     beautyAssessment: BeautyAssessment,
@@ -785,12 +698,10 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
       routine: productRecommendations.routine ? 'present' : 'missing'
     })
 
-    // Generate all 3 phases with smart transitions
     const immediateSteps = this.generateImmediatePhase(beautyAssessment, productRecommendations)
     const adaptationSteps = this.generateAdaptationPhase(beautyAssessment, productRecommendations, immediateSteps)
     const maintenanceSteps = this.generateMaintenancePhase(beautyAssessment, productRecommendations, adaptationSteps)
 
-    // Combine
     const allSteps = [...immediateSteps, ...adaptationSteps, ...maintenanceSteps]
 
     console.log('✅ Unified 3-phase routine created:', {
@@ -803,9 +714,7 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
     return allSteps
   }
 
-  /**
-   * Generate immediate phase (urgent issues, simple routine)
-   */
+  /** Immediate phase (urgent issues, simple routine) */
   private static generateImmediatePhase(
     beautyAssessment: BeautyAssessment,
     productRecommendations: ProductRecommendations
@@ -830,34 +739,23 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
       steps.push(this.createSunProtectionStep(stepCounter++, beautyAssessment, productRecommendations))
     }
 
-    // Filter empty steps, add visual criteria, and mark as immediate phase
+    // Filter, add visual criteria, mark as immediate phase
     return this.filterRedundantSteps(steps)
-      .map((step) => this.addVisualCriteria(step))
-      .map((step) => ({
-        ...step,
-        phase: 'immediate' as const
-      }))
+      .map((s) => this.addVisualCriteria(s))
+      .map((s) => ({ ...s, phase: 'immediate' as const }))
   }
 
-  /**
-   * Generate adaptation phase (weeks 2–4, stronger actives)
-   */
+  /** Adaptation phase (weeks 2–4, stronger actives) */
   private static generateAdaptationPhase(
     beautyAssessment: BeautyAssessment,
     productRecommendations: ProductRecommendations,
     immediatePhase: UnifiedRoutineStep[]
   ): UnifiedRoutineStep[] {
     const steps: UnifiedRoutineStep[] = []
-    let stepCounter = 1 // CORRECTION: numbering 1,2,3 per phase
 
-    // NEW DERMATOLOGIC LOGIC: smart transition of products
-
-    // 1) Identify durable base from immediate phase
+    // 1) Durable base from immediate phase
     const baseDurable = this.identifyLongTermBase(immediatePhase)
-    console.log(
-      '📊 Durable base identified:',
-      baseDurable.map((b) => `${b.title} (${b.category})`).join(', ')
-    )
+    console.log('📊 Durable base identified:', baseDurable.map((b) => `${b.title} (${b.category})`).join(', '))
 
     // 2) Evolve the base
     const evolvedBase = this.evolveBaseProducts(baseDurable, beautyAssessment)
@@ -865,16 +763,12 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
     // 3) Add progressive actives per AI diagnosis
     const progressiveActives = this.generateProgressiveActives(beautyAssessment, evolvedBase.length + 1)
 
-    // 4) Combine and order logically (cleansing → treatments → moisturization → protection)
-    const allSteps = [...evolvedBase, ...progressiveActives]
-    const orderedSteps = this.orderStepsLogically(allSteps)
+    // 4) Combine/order logically
+    const all = [...evolvedBase, ...progressiveActives]
+    const ordered = this.orderStepsLogically(all)
 
-    // 5) Renumber properly
-    const finalSteps = orderedSteps.map((step, index) => ({
-      ...step,
-      stepNumber: index + 1
-    }))
-
+    // 5) Renumber per phase
+    const finalSteps = ordered.map((step, index) => ({ ...step, stepNumber: index + 1 }))
     steps.push(...finalSteps)
 
     console.log('✨ Adaptation phase generated:', {
@@ -886,35 +780,26 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
     return steps
   }
 
-  /**
-   * Generate maintenance phase (optimized routine + weekly care)
-   */
+  /** Maintenance phase (optimized routine + weekly care) */
   private static generateMaintenancePhase(
     beautyAssessment: BeautyAssessment,
     productRecommendations: ProductRecommendations,
     adaptationPhase: UnifiedRoutineStep[]
   ): UnifiedRoutineStep[] {
     const steps: UnifiedRoutineStep[] = []
-    let stepCounter = 1 // CORRECTION: numbering 1,2,3 per phase
 
-    // NEW DERMATOLOGIC LOGIC: continued evolved base + preventive care
-
-    // 1) Transfer & optimize evolved base from adaptation
+    // 1) Transfer & optimize evolved base
     const finalBase = this.transferAndOptimizeBase(adaptationPhase)
 
     // 2) Add preventive/optimization care
     const preventiveCare = this.generatePreventiveCare(beautyAssessment, finalBase.length + 1)
 
-    // 3) Combine and order logically
-    const allSteps = [...finalBase, ...preventiveCare]
-    const orderedSteps = this.orderStepsLogically(allSteps)
+    // 3) Combine/order
+    const all = [...finalBase, ...preventiveCare]
+    const ordered = this.orderStepsLogically(all)
 
-    // 4) Renumber properly
-    const finalSteps = orderedSteps.map((step, index) => ({
-      ...step,
-      stepNumber: index + 1
-    }))
-
+    // 4) Renumber per phase
+    const finalSteps = ordered.map((step, index) => ({ ...step, stepNumber: index + 1 }))
     steps.push(...finalSteps)
 
     console.log('🏥 Maintenance phase generated:', {
@@ -926,78 +811,47 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
     return steps
   }
 
-  /**
-   * Helper methods to analyze needs
-   * (supports French + English keywords to remain compatible)
-   */
+  // -------- Analysis helpers (English canonicals only) --------
+
   private static hasAgingConcerns(beautyAssessment: BeautyAssessment): boolean {
-    const agingKeywords = [
-      'wrinkles',
-      'fine lines',
-      'aging',
-      'firmness',
-      'elasticity'
-    ]
+    const aging = ['wrinkles', 'fine lines', 'aging', 'firmness', 'elasticity']
     return (
-      agingKeywords.some((k) => beautyAssessment.mainConcern?.toLowerCase().includes(k)) ||
-      beautyAssessment.zoneSpecific?.some((zone) =>
-        zone.problems?.some((problem) => agingKeywords.some((k) => problem.name.toLowerCase().includes(k)))
+      aging.some((k) => beautyAssessment.mainConcern?.toLowerCase().includes(k)) ||
+      beautyAssessment.zoneSpecific?.some((z) =>
+        z.problems?.some((p) => aging.some((k) => p.name.toLowerCase().includes(k)))
       ) ||
       false
     )
   }
 
   private static hasAcneConcerns(beautyAssessment: BeautyAssessment): boolean {
-    const acneKeywords = [
-      'blemishes',
-      'pimples',
-      'acne',
-      'blackheads',
-      'comedones',
-      'congestion'
-    ]
+    const acne = ['blemishes', 'pimples', 'acne', 'blackheads', 'comedones', 'congestion']
     return (
-      acneKeywords.some((k) => beautyAssessment.mainConcern?.toLowerCase().includes(k)) ||
-      beautyAssessment.zoneSpecific?.some((zone) =>
-        zone.problems?.some((problem) => acneKeywords.some((k) => problem.name.toLowerCase().includes(k)))
+      acne.some((k) => beautyAssessment.mainConcern?.toLowerCase().includes(k)) ||
+      beautyAssessment.zoneSpecific?.some((z) =>
+        z.problems?.some((p) => acne.some((k) => p.name.toLowerCase().includes(k)))
       ) ||
       false
     )
   }
 
   private static hasPigmentationConcerns(beautyAssessment: BeautyAssessment): boolean {
-    const pigmentationKeywords = [
-      'spots',
-      'pigment',
-      'pigmentation',
-      'hyperpigmentation',
-      'melasma',
-      'discoloration',
-      'dark spots'
-    ]
+    const pigm = ['spots', 'pigment', 'pigmentation', 'hyperpigmentation', 'melasma', 'discoloration', 'dark spots']
     return (
-      pigmentationKeywords.some((k) => beautyAssessment.mainConcern?.toLowerCase().includes(k)) ||
-      beautyAssessment.zoneSpecific?.some((zone) =>
-        zone.problems?.some((problem) => pigmentationKeywords.some((k) => problem.name.toLowerCase().includes(k)))
+      pigm.some((k) => beautyAssessment.mainConcern?.toLowerCase().includes(k)) ||
+      beautyAssessment.zoneSpecific?.some((z) =>
+        z.problems?.some((p) => pigm.some((k) => p.name.toLowerCase().includes(k)))
       ) ||
       false
     )
   }
 
   private static needsExfoliation(beautyAssessment: BeautyAssessment): boolean {
-    const exfoliationKeywords = [
-      'pores',
-      'enlarged-pores',
-      'texture',
-      'roughness',
-      'dullness',
-      'glow',
-      'radiance'
-    ]
+    const exf = ['pores', 'enlarged-pores', 'texture', 'roughness', 'dullness', 'glow', 'radiance']
     return (
-      exfoliationKeywords.some((k) => beautyAssessment.mainConcern?.toLowerCase().includes(k)) ||
-      beautyAssessment.zoneSpecific?.some((zone) =>
-        zone.problems?.some((problem) => exfoliationKeywords.some((k) => problem.name.toLowerCase().includes(k)))
+      exf.some((k) => beautyAssessment.mainConcern?.toLowerCase().includes(k)) ||
+      beautyAssessment.zoneSpecific?.some((z) =>
+        z.problems?.some((p) => exf.some((k) => p.name.toLowerCase().includes(k)))
       ) ||
       false
     )
@@ -1007,51 +861,37 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
    * Filter redundant or low-value steps
    */
   private static filterRedundantSteps(steps: UnifiedRoutineStep[]): UnifiedRoutineStep[] {
-    const filteredSteps = steps.filter((step) => {
+    const filtered = steps.filter((step) => {
       // Always keep essentials (cleansing, hydration, protection)
-      if (['cleansing', 'hydration', 'protection'].includes(step.category)) {
-        return true
-      }
+      if (['cleansing', 'hydration', 'protection'].includes(step.category)) return true
 
       // Filter treatment steps without specific products
-      if (
-        step.treatmentType === 'treatment' &&
-        (!step.recommendedProducts || step.recommendedProducts.length === 0)
-      ) {
+      if (step.treatmentType === 'treatment' && (!step.recommendedProducts || step.recommendedProducts.length === 0)) {
         console.log(`🚫 Step filtered (no specific products): ${step.title}`)
         return false
       }
 
       // Filter steps with generic/fallback products
       if (step.treatmentType === 'treatment' && step.recommendedProducts.length > 0) {
-        const hasGenericProducts = step.recommendedProducts.some((product) => {
+        const hasGeneric = step.recommendedProducts.some((p) => {
           const isGeneric =
-            product.name.includes('Soin ciblé adapté') ||
-            product.name.includes('Sélection DermAI') ||
-            product.brand === 'Sélection DermAI' ||
-            !product.catalogId ||
-            product.catalogId === 'fallback'
+            p.name.includes('Targeted care') ||
+            p.brand === 'DermAI Selection' ||
+            !p.catalogId ||
+            p.catalogId === 'fallback'
           return isGeneric
         })
-
-        if (hasGenericProducts) {
+        if (hasGeneric) {
           console.log(
-            `🚫 Step filtered (generic products): ${step.title} - ${step.recommendedProducts
-              .map((p) => p.name)
-              .join(', ')}`
+            `🚫 Step filtered (generic products): ${step.title} - ${step.recommendedProducts.map((p) => p.name).join(', ')}`
           )
           return false
         }
       }
-      // Keep the rest
       return true
     })
 
-    // Renumber after filtering
-    return filteredSteps.map((step, index) => ({
-      ...step,
-      stepNumber: index + 1
-    }))
+    return filtered.map((s, i) => ({ ...s, stepNumber: i + 1 }))
   }
 
   /**
@@ -1062,41 +902,28 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
 
     if (!beautyAssessment.zoneSpecific || !Array.isArray(beautyAssessment.zoneSpecific)) {
       console.log('⚠️ No specific zones found, using fallback')
-      // Fallback based on mainConcern
-      const mainConcern = beautyAssessment.mainConcern || 'hydratation'
+      const mainConcern = beautyAssessment.mainConcern || 'hydration'
       grouped.set(mainConcern.toLowerCase(), beautyAssessment.concernedZones || [])
       return grouped
     }
 
     for (const zone of beautyAssessment.zoneSpecific) {
       if (!zone.zone) continue
-
-      // New structure with problems array
       if (Array.isArray(zone.problems)) {
         for (const problem of zone.problems) {
-          const issueType = problem.name?.toLowerCase() || 'soin général'
-          if (!grouped.has(issueType)) {
-            grouped.set(issueType, [])
-          }
+          const issueType = problem.name?.toLowerCase() || 'targeted-care'
+          if (!grouped.has(issueType)) grouped.set(issueType, [])
           grouped.get(issueType)!.push(zone.zone)
         }
-      }
-      // Fallback for older structure
-      else if (Array.isArray((zone as any).concerns)) {
+      } else if (Array.isArray((zone as any).concerns)) {
         for (const concern of (zone as any).concerns) {
           const issueType = concern.toLowerCase()
-          if (!grouped.has(issueType)) {
-            grouped.set(issueType, [])
-          }
+          if (!grouped.has(issueType)) grouped.set(issueType, [])
           grouped.get(issueType)!.push(zone.zone)
         }
-      }
-      // Last resort
-      else {
-        const issueType = 'soin ciblé'
-        if (!grouped.has(issueType)) {
-          grouped.set(issueType, [])
-        }
+      } else {
+        const issueType = 'targeted-care'
+        if (!grouped.has(issueType)) grouped.set(issueType, [])
         grouped.get(issueType)!.push(zone.zone)
       }
     }
@@ -1108,37 +935,32 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
     return grouped
   }
 
-  /**
-   * Create cleansing step (always first)
-   */
-  private static createCleansingStep(stepNumber: number, beautyAssessment: BeautyAssessment): UnifiedRoutineStep {
+  /** Create cleansing step (always first) */
+  private static createCleansingStep(stepNumber: number, _beautyAssessment: BeautyAssessment): UnifiedRoutineStep {
     return {
       stepNumber,
-      title: 'Nettoyage doux',
+      title: 'Gentle cleansing',
       targetArea: 'global',
       recommendedProducts: [
         {
           id: 'B01MSSDEPK',
-          name: 'CeraVe Nettoyant Hydratant',
+          name: 'CeraVe Hydrating Cleanser',
           brand: 'CeraVe',
           category: 'cleanser',
           catalogId: 'B01MSSDEPK'
         }
       ],
-      applicationAdvice:
-        "Masser délicatement sur tout le visage humide, rincer à l'eau tiède. Éviter le contour des yeux.",
+      applicationAdvice: 'Massage gently onto damp skin, rinse with lukewarm water. Avoid the eye contour.',
       treatmentType: 'cleansing',
       priority: 10,
       phase: 'immediate',
       frequency: 'daily',
-      timeOfDay: 'both',
+      timeOfDay: 'morning_and_evening',
       category: 'cleansing'
     }
   }
 
-  /**
-   * Create a targeted treatment step
-   */
+  /** Create a targeted treatment step */
   private static createTargetedTreatmentStep(
     stepNumber: number,
     issueType: string,
@@ -1146,16 +968,9 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
     beautyAssessment: BeautyAssessment,
     productRecommendations: ProductRecommendations
   ): UnifiedRoutineStep {
-    // Select targeted products by issue type
     const products = this.selectProductsForIssue(issueType, zones, productRecommendations)
-
-    // Smart title
     const title = this.generateStepTitle(issueType, zones)
-
-    // Application tips
     const applicationAdvice = this.generateApplicationAdvice(issueType, zones, products)
-
-    // Restrictions
     const restrictions = this.generateRestrictions(issueType, beautyAssessment)
 
     return {
@@ -1175,49 +990,44 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
     }
   }
 
-  /**
-   * Create global moisturization step
-   */
+  /** Global moisturization step */
   private static createMoisturizingStep(
     stepNumber: number,
-    beautyAssessment: BeautyAssessment,
-    productRecommendations: ProductRecommendations
+    _beautyAssessment: BeautyAssessment,
+    _productRecommendations: ProductRecommendations
   ): UnifiedRoutineStep {
     return {
       stepNumber,
-      title: 'Hydratation globale',
+      title: 'Global hydration',
       targetArea: 'global',
       recommendedProducts: [
         {
           id: 'TOLERIANE_SENSITIVE',
-          name: 'Tolériane Sensitive',
+          name: 'Toleriane Sensitive',
           brand: 'La Roche-Posay',
           category: 'moisturizer',
           catalogId: 'B00BNUY3HE'
         }
       ],
-      applicationAdvice:
-        "Appliquer sur l'ensemble du visage en évitant les zones déjà traitées. Masser jusqu'à absorption complète.",
+      applicationAdvice: 'Apply to the whole face, avoiding recently treated zones. Massage until fully absorbed.',
       treatmentType: 'moisturizing',
       priority: 9,
       phase: 'immediate',
       frequency: 'daily',
-      timeOfDay: 'both',
+      timeOfDay: 'morning_and_evening',
       category: 'hydration'
     }
   }
 
-  /**
-   * Create sun protection step
-   */
+  /** Sun protection step */
   private static createSunProtectionStep(
     stepNumber: number,
-    beautyAssessment: BeautyAssessment,
-    productRecommendations: ProductRecommendations
+    _beautyAssessment: BeautyAssessment,
+    _productRecommendations: ProductRecommendations
   ): UnifiedRoutineStep {
     return {
       stepNumber,
-      title: 'Protection solaire quotidienne',
+      title: 'Daily sun protection',
       targetArea: 'global',
       recommendedProducts: [
         {
@@ -1228,8 +1038,7 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
           catalogId: 'B004W55086'
         }
       ],
-      applicationAdvice:
-        "Appliquer généreusement le matin, 20 minutes avant l'exposition. Renouveler toutes les 2h si exposition prolongée.",
+      applicationAdvice: 'Apply generously in the morning, 20 minutes before exposure. Reapply every 2h if exposed.',
       treatmentType: 'protection',
       priority: 10,
       phase: 'immediate',
@@ -1240,83 +1049,33 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
   }
 
   /**
-   * Generate step title based on issue type (zones are displayed separately in UI)
-   * (Accepts French or English issue tokens)
+   * Generate step title based on issue type (zones are shown separately in UI)
    */
-  private static generateStepTitle(issueType: string, zones: string[]): string {
+  private static generateStepTitle(issueType: string, _zones: string[]): string {
     const map: Record<string, string> = {
-      // fr
-      'rougeurs': 'Traitement des rougeurs',
-      'poils incarnés': 'Traitement des poils incarnés',
-      'imperfections': 'Traitement des imperfections',
-      'hyperpigmentation': 'Traitement des taches pigmentaires',
-      'taches pigmentaires': 'Traitement des taches pigmentaires',
-      'pores dilatés': 'Resserrement des pores',
-      'déshydratation': 'Hydratation ciblée',
-      'rides': "Traitement anti-âge",
-      'points noirs': 'Désobstruction des pores',
-      // en
-      'redness': 'Traitement des rougeurs',
-      'ingrown hairs': 'Traitement des poils incarnés',
-      'blemishes': 'Traitement des imperfections',
-      'acne': 'Traitement des imperfections',
-      'pigmentation': 'Traitement des taches pigmentaires',
-      'dark spots': 'Traitement des taches pigmentaires',
-      'enlarged pores': 'Resserrement des pores',
-      'dehydration': 'Hydratation ciblée',
-      'wrinkles': "Traitement anti-âge",
-      'blackheads': 'Désobstruction des pores'
+      // EN canonicals only (keys can be synonyms)
+      'redness': 'Redness treatment',
+      'ingrowns': 'Ingrowns treatment',
+      'blemishes': 'Blemishes treatment',
+      'acne': 'Blemishes treatment',
+      'pigmentation': 'Pigmentation treatment',
+      'dark spots': 'Pigmentation treatment',
+      'enlarged-pores': 'Pore-refining treatment',
+      'enlarged pores': 'Pore-refining treatment',
+      'dehydration': 'Targeted hydration',
+      'wrinkles': 'Anti-aging treatment',
+      'blackheads': 'Pore decongestion'
     }
-
-    return map[issueType.toLowerCase()] || `Traitement ${issueType}`
+    return map[issueType.toLowerCase()] || `Targeted treatment (${issueType})`
   }
 
-  /**
-   * Select appropriate products for an issue type
-   */
+  /** Select appropriate products for an issue type */
   private static selectProductsForIssue(
     issueType: string,
-    zones: string[],
-    productRecommendations: ProductRecommendations
+    _zones: string[],
+    _productRecommendations: ProductRecommendations
   ): RecommendedProduct[] {
     const productMapping: Record<string, RecommendedProduct> = {
-      // fr
-      'rougeurs': {
-        id: 'B000O7PH34',
-        name: 'Avène Thermal Spring Water',
-        brand: 'Avène',
-        category: 'treatment',
-        catalogId: 'B000O7PH34'
-      },
-      'poils incarnés': {
-        id: 'B00BNUY3HE',
-        name: 'La Roche-Posay Cicaplast Baume B5',
-        brand: 'La Roche-Posay',
-        category: 'treatment',
-        catalogId: 'B00BNUY3HE'
-      },
-      'imperfections': {
-        id: 'B01MDTVZTZ',
-        name: 'The Ordinary Niacinamide 10% + Zinc 1%',
-        brand: 'The Ordinary',
-        category: 'serum',
-        catalogId: 'B01MDTVZTZ'
-      },
-      'pores dilatés': {
-        id: 'B01MDTVZTZ',
-        name: 'The Ordinary Niacinamide 10% + Zinc 1%',
-        brand: 'The Ordinary',
-        category: 'serum',
-        catalogId: 'B01MDTVZTZ'
-      },
-      'points noirs': {
-        id: 'B00949CTQQ',
-        name: "Paula's Choice SKIN PERFECTING 2% BHA",
-        brand: "Paula's Choice",
-        category: 'exfoliant',
-        catalogId: 'B00949CTQQ'
-      },
-      // en aliases
       'redness': {
         id: 'B000O7PH34',
         name: 'Avène Thermal Spring Water',
@@ -1324,7 +1083,7 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
         category: 'treatment',
         catalogId: 'B000O7PH34'
       },
-      'ingrown hairs': {
+      'ingrowns': {
         id: 'B00BNUY3HE',
         name: 'La Roche-Posay Cicaplast Baume B5',
         brand: 'La Roche-Posay',
@@ -1338,7 +1097,7 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
         category: 'serum',
         catalogId: 'B01MDTVZTZ'
       },
-      'enlarged pores': {
+      'enlarged-pores': {
         id: 'B01MDTVZTZ',
         name: 'The Ordinary Niacinamide 10% + Zinc 1%',
         brand: 'The Ordinary',
@@ -1360,104 +1119,59 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
       : [
           {
             id: 'B01MSSDEPK',
-            name: 'Soin ciblé adapté',
-            brand: 'Sélection DermAI',
+            name: 'Targeted care',
+            brand: 'DermAI Selection',
             category: 'treatment',
             catalogId: 'B01MSSDEPK'
           }
         ]
   }
 
-  /**
-   * Generate application tips by issue
-   */
-  private static generateApplicationAdvice(
-    issueType: string,
-    zones: string[],
-    products: RecommendedProduct[]
-  ): string {
+  /** Generate application tips by issue */
+  private static generateApplicationAdvice(issueType: string, zones: string[], _products: RecommendedProduct[]): string {
     const zoneText =
-      zones.length === 1
-        ? `sur le ${zones[0]}`
-        : zones.length > 1
-        ? `sur les zones : ${zones.join(', ')}`
-        : 'sur les zones concernées'
+      zones.length === 1 ? `on the ${zones[0]}` : zones.length > 1 ? `on: ${zones.join(', ')}` : 'on concerned zones'
 
-    const adviceMapping: Record<string, string> = {
-      // fr
-      'rougeurs': `Vaporiser délicatement ${zoneText}, tapoter sans frotter. Laisser sécher naturellement.`,
-      'poils incarnés': `Appliquer en fine couche ${zoneText} après rasage. Éviter massage agressif.`,
-      'imperfections': `Appliquer 2-3 gouttes ${zoneText} le soir uniquement. Commencer par une application tous les 2 jours.`,
-      'pores dilatés': `Appliquer sur peau propre ${zoneText}. Utiliser le soir, commencer progressivement.`,
-      'points noirs': `Appliquer avec un coton-tige ${zoneText}. 2-3 fois par semaine maximum.`,
-      // en
-      'redness': `Vaporiser délicatement ${zoneText}, tapoter sans frotter. Laisser sécher naturellement.`,
-      'ingrown hairs': `Appliquer en fine couche ${zoneText} après rasage. Éviter massage agressif.`,
-      'blemishes': `Appliquer 2-3 gouttes ${zoneText} le soir uniquement. Commencer tous les 2 jours.`,
-      'enlarged pores': `Appliquer sur peau propre ${zoneText}, le soir, progressivement.`,
-      'blackheads': `Appliquer avec un coton ${zoneText}, 2-3 fois/semaine max, le soir.`
+    const advice: Record<string, string> = {
+      'redness': `Mist gently ${zoneText}, pat without rubbing. Let it air dry.`,
+      'ingrowns': `Apply a thin layer ${zoneText} after shaving. Avoid aggressive massage.`,
+      'blemishes': `Apply 2–3 drops ${zoneText} in the evening only. Start every other day.`,
+      'enlarged-pores': `Apply on clean skin ${zoneText}. Use at night, start progressively.`,
+      'blackheads': `Apply with a cotton pad ${zoneText}, 2–3×/week max, at night.`
     }
 
-    return (
-      adviceMapping[issueType.toLowerCase()] ||
-      `Appliquer selon les instructions du produit ${zoneText}. Surveiller la tolérance cutanée.`
-    )
+    return advice[issueType.toLowerCase()] || `Apply per product instructions ${zoneText}. Monitor skin tolerance.`
   }
 
-  /**
-   * Generate restrictions by issue
-   */
-  private static generateRestrictions(issueType: string, beautyAssessment: BeautyAssessment): string[] | undefined {
-    const restrictionsMapping: Record<string, string[]> = {
-      // fr
-      'rougeurs': ["Éviter AHA/BHA et rétinoïdes jusqu'à amélioration", "Pas d'exfoliation mécanique sur zones irritées"],
-      'poils incarnés': ['Éviter rasage à sec', 'Préférer tondeuse ou rasage avec mousse', "Pas d'exfoliation agressive"],
-      'imperfections': [
-        'Commencer progressivement (tous les 2 jours)',
-        'Utiliser protection solaire obligatoire',
-        "Éviter association avec rétinoïdes au début"
-      ],
-      // en aliases
-      'redness': ["Éviter AHA/BHA et rétinoïdes jusqu'à amélioration", "Pas d'exfoliation mécanique sur zones irritées"],
-      'ingrown hairs': ['Éviter rasage à sec', 'Préférer tondeuse ou rasage avec mousse', "Pas d'exfoliation agressive"],
+  /** Generate restrictions by issue */
+  private static generateRestrictions(issueType: string, _beautyAssessment: BeautyAssessment): string[] | undefined {
+    const restrictions: Record<string, string[]> = {
+      'redness': ['Avoid AHA/BHA and retinoids until improvement', 'No mechanical exfoliation on irritated zones'],
+      'ingrowns': ['Avoid dry shaving', 'Prefer trimmer or shaving with foam', 'Avoid aggressive exfoliation'],
       'blemishes': [
-        'Commencer progressivement (tous les 2 jours)',
-        'Utiliser protection solaire obligatoire',
-        "Éviter association avec rétinoïdes au début"
+        'Start progressively (every other day)',
+        'Daily sun protection required',
+        'Avoid combining with retinoids initially'
       ]
     }
-
-    return restrictionsMapping[issueType.toLowerCase()]
+    return restrictions[issueType.toLowerCase()]
   }
 
-  /**
-   * Priority by issue
-   */
+  /** Priority by issue */
   private static calculatePriority(issueType: string): number {
-    const priorityMapping: Record<string, number> = {
-      // fr + en
-      'rougeurs': 8,
+    const mapping: Record<string, number> = {
       'redness': 8,
-      'poils incarnés': 7,
-      'ingrown hairs': 7,
-      'imperfections': 6,
+      'ingrowns': 7,
       'blemishes': 6,
-      'pores dilatés': 5,
-      'enlarged pores': 5,
-      'points noirs': 4,
+      'enlarged-pores': 5,
       'blackheads': 4,
-      'rides': 3,
       'wrinkles': 3
     }
-
-    return priorityMapping[issueType.toLowerCase()] || 5
+    return mapping[issueType.toLowerCase()] || 5
   }
 
-  /**
-   * Include sun protection?
-   */
+  /** Always include sun protection (business rule) */
   private static includesSunProtection(_beautyAssessment: BeautyAssessment): boolean {
-    // Always include sun protection (except very specific cases)
     return true
   }
 
@@ -1469,26 +1183,23 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
       console.log('⚠️ No specific zones, fallback to general treatment')
       return [
         {
-          issues: [beautyAssessment.mainConcern || 'hydratation'],
+          issues: [beautyAssessment.mainConcern || 'hydration'],
           zones: beautyAssessment.concernedZones || [],
-          catalogId: 'B01MSSDEPK', // default CeraVe
+          catalogId: 'B01MSSDEPK', // default cleanser as safe fallback
           priority: 5
         }
       ]
     }
 
-    // 1) Extract all problems with zones
     const allProblems: { issue: string; zone: string; intensity: string }[] = []
-
     for (const zoneData of beautyAssessment.zoneSpecific) {
       if (!zoneData.zone) continue
-
       if (Array.isArray(zoneData.problems)) {
         for (const problem of zoneData.problems) {
           allProblems.push({
-            issue: problem.name?.toLowerCase() || 'soin général',
+            issue: problem.name?.toLowerCase() || 'targeted-care',
             zone: zoneData.zone,
-            intensity: problem.intensity || 'modérée'
+            intensity: problem.intensity || 'moderate'
           })
         }
       }
@@ -1496,15 +1207,9 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
 
     console.log('🔍 Extracted problems:', allProblems)
 
-    // 2) Group by recommended product (same catalogId)
-    const productGroups = new Map<
-      string,
-      { issues: string[]; zones: string[]; priority: number; intensity: string }
-    >()
-
+    const productGroups = new Map<string, { issues: string[]; zones: string[]; priority: number; intensity: string }>()
     for (const problem of allProblems) {
       const catalogId = this.getProductIdForIssue(problem.issue)
-
       if (!productGroups.has(catalogId)) {
         productGroups.set(catalogId, {
           issues: [],
@@ -1513,20 +1218,13 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
           intensity: problem.intensity
         })
       }
-
       const group = productGroups.get(catalogId)!
       if (!group.issues.includes(problem.issue)) group.issues.push(problem.issue)
       if (!group.zones.includes(problem.zone)) group.zones.push(problem.zone)
     }
 
-    // 3) Convert to OptimizedTreatment sorted by priority
     const treatments: OptimizedTreatment[] = Array.from(productGroups.entries())
-      .map(([catalogId, data]) => ({
-        issues: data.issues,
-        zones: data.zones,
-        catalogId,
-        priority: data.priority
-      }))
+      .map(([catalogId, data]) => ({ issues: data.issues, zones: data.zones, catalogId, priority: data.priority }))
       .sort((a, b) => b.priority - a.priority)
 
     console.log(
@@ -1537,59 +1235,34 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
     return treatments
   }
 
-  /**
-   * Get catalogId for issue type (supports fr + en)
-   */
+  /** Get catalogId for issue type (EN canonicals only) */
   private static getProductIdForIssue(issueType: string): string {
     const map: Record<string, string> = {
-      // fr
-      'rougeurs': 'B000O7PH34',
-      'poils incarnés': 'B00BNUY3HE',
-      'imperfections': 'B01MDTVZTZ',
-      'taches pigmentaires': 'B01MDTVZTZ',
-      'hyperpigmentation': 'B01MDTVZTZ',
-      'pores dilatés': 'B01MDTVZTZ',
-      'points noirs': 'B00949CTQQ',
-      'comédons': 'B00949CTQQ',
-      'rides': 'B01MSSDEPK',
-      "rides d'expression": 'B01MSSDEPK',
-      'déshydratation': 'B01MSSDEPK',
-      // en
       'redness': 'B000O7PH34',
-      'ingrown hairs': 'B00BNUY3HE',
+      'ingrowns': 'B00BNUY3HE',
       'blemishes': 'B01MDTVZTZ',
       'pigmentation': 'B01MDTVZTZ',
       'dark spots': 'B01MDTVZTZ',
-      'enlarged pores': 'B01MDTVZTZ',
+      'enlarged-pores': 'B01MDTVZTZ',
       'blackheads': 'B00949CTQQ',
       'comedones': 'B00949CTQQ',
       'wrinkles': 'B01MSSDEPK',
       'dehydration': 'B01MSSDEPK'
     }
-
     return map[issueType.toLowerCase()] || 'B01MSSDEPK'
   }
 
-  /**
-   * Create optimized grouped treatment step
-   */
+  /** Create optimized grouped treatment step */
   private static createOptimizedTreatmentStep(
     stepNumber: number,
     treatment: OptimizedTreatment,
-    beautyAssessment: BeautyAssessment,
-    productRecommendations: ProductRecommendations
+    _beautyAssessment: BeautyAssessment,
+    _productRecommendations: ProductRecommendations
   ): UnifiedRoutineStep {
-    // Smart title for grouped treatment
     const title = this.generateOptimizedStepTitle(treatment.issues, treatment.zones)
-
-    // Select product by catalogId
     const product = this.getProductByCatalogId(treatment.catalogId)
-
-    // Application tips
     const applicationAdvice = this.generateGroupedApplicationAdvice(treatment)
-
-    // Restrictions
-    const restrictions = this.generateGroupedRestrictions(treatment.issues, beautyAssessment)
+    const restrictions = this.generateGroupedRestrictions(treatment.issues)
 
     return {
       stepNumber,
@@ -1608,72 +1281,57 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
     }
   }
 
-  /**
-   * Smart title for grouped treatment (zones displayed separately in UI)
-   */
-  private static generateOptimizedStepTitle(issues: string[], zones: string[]): string {
+  /** Smart title for grouped treatment */
+  private static generateOptimizedStepTitle(issues: string[], _zones: string[]): string {
     const labels: Record<string, string> = {
-      // fr
-      'rougeurs': 'rougeurs',
-      'poils incarnés': 'poils incarnés',
-      'imperfections': 'imperfections',
-      'taches pigmentaires': 'taches pigmentaires',
-      'hyperpigmentation': 'taches pigmentaires',
-      'pores dilatés': 'pores dilatés',
-      'points noirs': 'points noirs',
-      'comédons': 'points noirs',
-      'rides': 'rides',
-      "rides d'expression": "rides d'expression",
-      // en
-      'redness': 'rougeurs',
-      'ingrown hairs': 'poils incarnés',
-      'blemishes': 'imperfections',
-      'pigmentation': 'taches pigmentaires',
-      'dark spots': 'taches pigmentaires',
-      'enlarged pores': 'pores dilatés',
-      'blackheads': 'points noirs',
-      'wrinkles': 'rides'
+      'redness': 'redness',
+      'ingrowns': 'ingrowns',
+      'blemishes': 'blemishes',
+      'pigmentation': 'pigmentation',
+      'dark spots': 'pigmentation',
+      'enlarged-pores': 'enlarged pores',
+      'blackheads': 'blackheads',
+      'comedones': 'blackheads',
+      'wrinkles': 'wrinkles'
     }
 
-    const friendlyIssues = issues
-      .map((issue) => labels[issue.toLowerCase()] || issue)
+    const friendly = issues
+      .map((i) => labels[i.toLowerCase()] || i)
       .filter((v, i, arr) => arr.indexOf(v) === i)
 
-    let issuesText = ''
-    if (friendlyIssues.length === 1) issuesText = `Traitement des ${friendlyIssues[0]}`
-    else if (friendlyIssues.length === 2) issuesText = `Traitement des ${friendlyIssues[0]} et ${friendlyIssues[1]}`
-    else issuesText = `Traitement des ${friendlyIssues.slice(0, -1).join(', ')} et ${friendlyIssues[friendlyIssues.length - 1]}`
+    let text = ''
+    if (friendly.length === 1) text = `Treat ${friendly[0]}`
+    else if (friendly.length === 2) text = `Treat ${friendly[0]} and ${friendly[1]}`
+    else text = `Treat ${friendly.slice(0, -1).join(', ')} and ${friendly[friendly.length - 1]}`
 
-    return issuesText
+    return text.charAt(0).toUpperCase() + text.slice(1)
   }
 
-  /**
-   * Get product by catalogId
-   */
+  /** Get product by catalogId */
   private static getProductByCatalogId(catalogId: string): RecommendedProduct {
     const map: Record<string, RecommendedProduct> = {
-      'B000O7PH34': {
+      B000O7PH34: {
         id: 'B000O7PH34',
         name: 'Avène Thermal Spring Water',
         brand: 'Avène',
         category: 'treatment',
         catalogId: 'B000O7PH34'
       },
-      'B00BNUY3HE': {
+      B00BNUY3HE: {
         id: 'B00BNUY3HE',
         name: 'La Roche-Posay Cicaplast Baume B5',
         brand: 'La Roche-Posay',
         category: 'treatment',
         catalogId: 'B00BNUY3HE'
       },
-      'B01MDTVZTZ': {
+      B01MDTVZTZ: {
         id: 'B01MDTVZTZ',
         name: 'The Ordinary Niacinamide 10% + Zinc 1%',
         brand: 'The Ordinary',
         category: 'serum',
         catalogId: 'B01MDTVZTZ'
       },
-      'B00949CTQQ': {
+      B00949CTQQ: {
         id: 'B00949CTQQ',
         name: "Paula's Choice SKIN PERFECTING 2% BHA",
         brand: "Paula's Choice",
@@ -1685,71 +1343,49 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
     return (
       map[catalogId] || {
         id: 'B01MSSDEPK',
-        name: 'Soin ciblé adapté',
-        brand: 'Sélection DermAI',
+        name: 'Targeted care',
+        brand: 'DermAI Selection',
         category: 'treatment',
         catalogId: 'B01MSSDEPK'
       }
     )
   }
 
-  /**
-   * Grouped treatment – application tips
-   */
-  private static generateGroupedApplicationAdvice(treatment: OptimizedTreatment): string {
-    const zoneText =
-      treatment.zones.length === 1
-        ? `sur le ${treatment.zones[0]}`
-        : `sur les zones concernées : ${treatment.zones.join(', ')}`
+  /** Grouped treatment – application tips */
+  private static generateGroupedApplicationAdvice(t: OptimizedTreatment): string {
+    const zoneText = t.zones.length === 1 ? `on the ${t.zones[0]}` : `on: ${t.zones.join(', ')}`
+    const id = t.catalogId
 
-    const catalogId = treatment.catalogId
+    if (id === 'B000O7PH34') return `Mist gently ${zoneText}, pat without rubbing. Let it air dry.`
+    if (id === 'B00BNUY3HE') return `Apply a thin layer ${zoneText}. Massage very gently until absorbed.`
+    if (id === 'B01MDTVZTZ') return `Apply 2–3 drops ${zoneText} in the evening only. Start every other day.`
+    if (id === 'B00949CTQQ') return `Apply with a cotton pad ${zoneText}. 2–3×/week max, always at night.`
 
-    if (catalogId === 'B000O7PH34') return `Vaporiser délicatement ${zoneText}, tapoter sans frotter. Laisser sécher.`
-    if (catalogId === 'B00BNUY3HE')
-      return `Appliquer en fine couche ${zoneText}. Masser très délicatement jusqu'à absorption.`
-    if (catalogId === 'B01MDTVZTZ')
-      return `Appliquer 2-3 gouttes ${zoneText} le soir uniquement. Commencer progressivement (tous les 2 jours).`
-    if (catalogId === 'B00949CTQQ')
-      return `Appliquer avec un coton ${zoneText}. 2-3 fois par semaine max, toujours le soir.`
-
-    return `Appliquer selon les instructions du produit ${zoneText}. Surveiller la tolérance cutanée.`
+    return `Apply per product instructions ${zoneText}. Monitor skin tolerance.`
   }
 
-  /**
-   * Grouped treatment – restrictions
-   * (supports fr + en tokens)
-   */
-  private static generateGroupedRestrictions(
-    issues: string[],
-    beautyAssessment: BeautyAssessment
-  ): string[] | undefined {
-    const restrictions = new Set<string>()
-
+  /** Grouped treatment – restrictions */
+  private static generateGroupedRestrictions(issues: string[]): string[] | undefined {
+    const s = new Set<string>()
     for (const issue of issues) {
-      const s = issue.toLowerCase()
-
-      if (s.includes('rougeur') || s.includes('irritat') || s.includes('redness') || s.includes('irritat')) {
-        restrictions.add("Éviter AHA/BHA et rétinoïdes jusqu'à amélioration")
-        restrictions.add("Pas d'exfoliation mécanique sur zones irritées")
+      const k = issue.toLowerCase()
+      if (k.includes('redness') || k.includes('irritat')) {
+        s.add('Avoid AHA/BHA and retinoids until improvement')
+        s.add('No mechanical exfoliation on irritated zones')
       }
-
-      if (s.includes('poils incarnés') || s.includes('ingrown')) {
-        restrictions.add('Éviter rasage à sec')
-        restrictions.add('Préférer tondeuse ou rasage avec mousse')
+      if (k.includes('ingrown')) {
+        s.add('Avoid dry shaving')
+        s.add('Prefer trimmer or shaving with foam')
       }
-
-      if (s.includes('imperfection') || s.includes('tache') || s.includes('blemish') || s.includes('spot')) {
-        restrictions.add('Utiliser protection solaire obligatoire')
-        restrictions.add('Commencer progressivement (tous les 2 jours)')
+      if (k.includes('blemish') || k.includes('spot') || k.includes('pigment')) {
+        s.add('Daily sun protection required')
+        s.add('Start progressively (every other day)')
       }
     }
-
-    return restrictions.size > 0 ? Array.from(restrictions) : undefined
+    return s.size > 0 ? Array.from(s) : undefined
   }
 
-  /**
-   * NEW LOGIC: Identify durable base in immediate phase
-   */
+  /** NEW LOGIC: Identify durable base in immediate phase */
   private static identifyLongTermBase(immediatePhase: UnifiedRoutineStep[]): LongTermBaseProduct[] {
     console.log(
       '🔍 Analyzing immediate phase to identify durable base:',
@@ -1762,7 +1398,6 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
           step.frequency === 'daily' &&
           ['cleansing', 'hydration', 'protection'].includes(step.category) &&
           !this.isTemporaryTreatment(step)
-
         console.log(
           `  - ${step.title}: ${isDurable ? '✓ Durable base' : '✗ Temporary'} (${step.category}, ${step.frequency})`
         )
@@ -1773,7 +1408,7 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
         title: step.title,
         catalogId: step.recommendedProducts[0]?.catalogId || step.recommendedProducts[0]?.id || '',
         productName: step.recommendedProducts[0]?.name || step.title,
-        productBrand: step.recommendedProducts[0]?.brand || 'Sélection DermAI',
+        productBrand: step.recommendedProducts[0]?.brand || 'DermAI Selection',
         canBeMaintainedMonths: true,
         isTemporaryTreatment: false,
         frequency: step.frequency,
@@ -1781,57 +1416,30 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
         phase: step.phase
       }))
 
-    console.log(
-      '📊 Final durable base:',
-      longTermBase.map((b) => `${b.title} - ${b.productName} (${b.catalogId})`).join(', ')
-    )
+    console.log('📊 Final durable base:', longTermBase.map((b) => `${b.title} - ${b.productName} (${b.catalogId})`).join(', '))
     return longTermBase
   }
 
-  /**
-   * Determine if a treatment is temporary
-   */
+  /** Determine if a treatment is temporary */
   private static isTemporaryTreatment(step: UnifiedRoutineStep): boolean {
-    const keywords = [
-      // fr
-      'poils incarnés',
-      'cicatrisation',
-      'réparation barriere',
-      'inflammation',
-      'irritation aigu',
-      'urgence',
-      // en
-      'ingrown hairs',
-      'healing',
-      'barrier repair',
-      'inflammation',
-      'acute irritation',
-      'emergency'
-    ]
-
+    const keywords = ['ingrowns', 'healing', 'barrier repair', 'inflammation', 'acute irritation', 'emergency']
     const t = `${step.title} ${step.applicationAdvice}`.toLowerCase()
     return keywords.some((k) => t.includes(k))
   }
 
-  /**
-   * Evolve base products based on AI needs
-   * (keeps French UX strings like “En continu”, “Quotidien” for UI compatibility)
-   */
-  private static evolveBaseProducts(
-    baseDurable: LongTermBaseProduct[],
-    beautyAssessment: BeautyAssessment
-  ): UnifiedRoutineStep[] {
+  /** Evolve base products based on AI needs */
+  private static evolveBaseProducts(baseDurable: LongTermBaseProduct[], beautyAssessment: BeautyAssessment): UnifiedRoutineStep[] {
     const originalProductMapping: Record<string, RecommendedProduct> = {
       B01MSSDEPK: {
         id: 'B01MSSDEPK',
-        name: 'CeraVe Nettoyant Hydratant',
+        name: 'CeraVe Hydrating Cleanser',
         brand: 'CeraVe',
         category: 'cleanser',
         catalogId: 'B01MSSDEPK'
       },
       B00BNUY3HE: {
         id: 'B00BNUY3HE',
-        name: 'Tolériane Sensitive',
+        name: 'Toleriane Sensitive',
         brand: 'La Roche-Posay',
         category: 'moisturizer',
         catalogId: 'B00BNUY3HE'
@@ -1845,94 +1453,83 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
       }
     }
 
-    return baseDurable.map((baseProduct, index) => {
-      const newStepNumber = index + 1
+    return baseDurable.map((base, i) => {
+      const newStepNumber = i + 1
 
-      if (baseProduct.category === 'hydration') {
+      if (base.category === 'hydration') {
         if (this.needsReinforcedHydration(beautyAssessment)) {
           return {
             stepNumber: newStepNumber,
-            title: baseProduct.title.replace('globale', 'renforcée'),
+            title: base.title.replace(/global/i, 'reinforced'),
             targetArea: 'global' as const,
             recommendedProducts: this.getReinforcedHydrationProducts(),
-            applicationAdvice:
-              "Appliquer généreusement pour contrebalancer l'introduction des actifs plus forts.",
+            applicationAdvice: 'Apply generously to offset introduction of stronger actives.',
             treatmentType: 'moisturizing' as const,
             priority: 9,
             phase: 'adaptation' as const,
             frequency: 'daily' as const,
-            timeOfDay: 'both' as const,
+            timeOfDay: 'morning_and_evening' as const,
             category: 'hydration' as const,
-            // UX fields (French strings kept intentionally)
-            applicationDuration: 'En continu',
-            timingBadge: 'Quotidien ☀️🌙',
-            timingDetails: 'Matin et soir'
+            applicationDuration: 'Ongoing',
+            timingBadge: 'Daily ☀️🌙',
+            timingDetails: 'Morning and evening'
           }
         }
       }
 
-      if (baseProduct.category === 'protection') {
+      if (base.category === 'protection') {
         if (this.hasProgressiveActives(beautyAssessment) || this.hasHighExposure(beautyAssessment)) {
           return {
             stepNumber: newStepNumber,
-            title: 'Protection solaire renforcée',
+            title: 'Reinforced sun protection',
             targetArea: 'global' as const,
             recommendedProducts: this.getHigherSPFProducts(),
-            applicationAdvice:
-              "Application quotidienne indispensable avec actifs. Renouveler toutes les 2h si exposition.",
+            applicationAdvice: 'Daily application is essential with actives. Reapply every 2h if exposed.',
             treatmentType: 'protection' as const,
             priority: 10,
             phase: 'adaptation' as const,
             frequency: 'daily' as const,
             timeOfDay: 'morning' as const,
             category: 'protection' as const,
-            // UX fields (French)
-            applicationDuration: 'En continu',
-            timingBadge: 'Quotidien ☀️',
-            timingDetails: 'Matin uniquement'
+            applicationDuration: 'Ongoing',
+            timingBadge: 'Daily ☀️',
+            timingDetails: 'Morning only'
           }
         }
       }
 
-      const originalProduct =
-        originalProductMapping[baseProduct.catalogId] || ({
-          id: baseProduct.catalogId,
-          name: baseProduct.productName,
-          brand: baseProduct.productBrand,
-          category: baseProduct.category,
-          catalogId: baseProduct.catalogId
+      const original =
+        originalProductMapping[base.catalogId] ||
+        ({
+          id: base.catalogId,
+          name: base.productName,
+          brand: base.productBrand,
+          category: base.category,
+          catalogId: base.catalogId
         } as RecommendedProduct)
 
       return {
         stepNumber: newStepNumber,
-        title: baseProduct.title,
+        title: base.title,
         targetArea: 'global' as const,
-        recommendedProducts: [originalProduct],
-        applicationAdvice:
-          'Routine maintenant établie. Continuer l’application selon les instructions précédentes.',
-        treatmentType: this.mapCategoryToTreatmentType(baseProduct.category),
+        recommendedProducts: [original],
+        applicationAdvice: 'Routine established. Continue application as previously instructed.',
+        treatmentType: this.mapCategoryToTreatmentType(base.category),
         priority: 9,
         phase: 'adaptation' as const,
-        frequency: baseProduct.frequency as any,
-        timeOfDay: 'both' as const,
-        category: baseProduct.category as any,
-        // UX fields (French)
-        applicationDuration: 'En continu',
-        timingBadge: 'Quotidien ☀️🌙',
-        timingDetails: 'Matin et soir'
+        frequency: base.frequency as any,
+        timeOfDay: 'morning_and_evening' as const,
+        category: base.category as any,
+        applicationDuration: 'Ongoing',
+        timingBadge: 'Daily ☀️🌙',
+        timingDetails: 'Morning and evening'
       }
     })
   }
 
-  /**
-   * Progressive actives per diagnosis
-   */
-  private static generateProgressiveActives(
-    beautyAssessment: BeautyAssessment,
-    stepCounter: number
-  ): UnifiedRoutineStep[] {
+  /** Progressive actives per diagnosis */
+  private static generateProgressiveActives(beautyAssessment: BeautyAssessment, stepCounter: number): UnifiedRoutineStep[] {
     const actives: UnifiedRoutineStep[] = []
-
     const hasAging = this.hasAgingConcerns(beautyAssessment)
     const hasAcne = this.hasAcneConcerns(beautyAssessment)
     const hasPigmentation = this.hasPigmentationConcerns(beautyAssessment)
@@ -1940,7 +1537,7 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
     if (hasAging) {
       actives.push({
         stepNumber: stepCounter++,
-        title: 'Sérum anti-âge progressif',
+        title: 'Progressive anti-aging serum',
         targetArea: 'global',
         recommendedProducts: [
           {
@@ -1951,28 +1548,26 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
             catalogId: 'B08KGXQY2R'
           }
         ],
-        applicationAdvice:
-          'Commencer 1 soir sur 3, puis augmenter selon tolérance. Appliquer sur peau sèche.',
-        restrictions: ['Protection solaire obligatoire le lendemain', 'Commencer très progressivement'],
+        applicationAdvice: 'Start every 3 nights, then increase per tolerance. Apply on dry skin.',
+        restrictions: ['Daily sun protection required', 'Start very progressively'],
         treatmentType: 'treatment',
         priority: 8,
         phase: 'adaptation',
-        frequency: 'progressive',
+        frequency: 'weekly',
         timeOfDay: 'evening',
         category: 'treatment',
         startAfterDays: 14,
-        frequencyDetails: '1x tous les 3 soirs, puis augmenter',
-        // UX
-        applicationDuration: 'Introduction progressive selon tolérance',
-        timingBadge: 'Progressif 📈',
-        timingDetails: '1x tous les 3 soirs, puis augmenter'
+        frequencyDetails: 'Once every 3 nights, then increase',
+        applicationDuration: 'Progressive introduction per tolerance',
+        timingBadge: 'Progressive 📈',
+        timingDetails: 'Every 3 nights, then increase'
       })
     }
 
     if (hasAcne || hasPigmentation) {
       actives.push({
         stepNumber: stepCounter++,
-        title: 'Traitement actif ciblé (Niacinamide)',
+        title: 'Targeted active treatment (Niacinamide)',
         targetArea: 'specific',
         zones: beautyAssessment.concernedZones || [],
         recommendedProducts: [
@@ -1984,7 +1579,7 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
             catalogId: 'B077RZ5LPG'
           }
         ],
-        applicationAdvice: '2-3 gouttes le soir uniquement sur zones concernées.',
+        applicationAdvice: '2–3 drops in the evening only on concerned zones.',
         treatmentType: 'treatment',
         priority: 7,
         phase: 'adaptation',
@@ -1992,82 +1587,70 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
         timeOfDay: 'evening',
         category: 'treatment',
         startAfterDays: 14,
-        // UX
-        applicationDuration: 'En continu pour maintenir les résultats',
-        timingBadge: 'Quotidien 🌙',
-        timingDetails: 'Soir uniquement'
+        applicationDuration: 'Ongoing to maintain results',
+        timingBadge: 'Daily 🌙',
+        timingDetails: 'Evening only'
       })
     }
 
     return actives
   }
 
-  /**
-   * Add visual criteria AND timing/duration fields
-   * (French strings kept for UI compatibility)
-   */
+  /** Add visual criteria AND timing/duration fields */
   private static addVisualCriteria(step: UnifiedRoutineStep): UnifiedRoutineStep {
-    const visualCriteria = this.getVisualCriteriaForTreatment(step.title)
-    const timingInfo = this.generateTimingBadge(step)
+    const visual = this.getVisualCriteriaForTreatment(step.title)
+    const timing = this.generateTimingBadge(step)
 
     return {
       ...step,
-      applicationDuration: this.generateApplicationDuration(step, visualCriteria),
-      timingBadge: timingInfo.badge,
-      timingDetails: timingInfo.details
+      applicationDuration: this.generateApplicationDuration(step, visual),
+      timingBadge: timing.badge,
+      timingDetails: timing.details
     }
   }
 
-  /**
-   * Visual criteria by treatment (supports fr titles)
-   */
+  /** Visual criteria by treatment (EN titles) */
   private static getVisualCriteriaForTreatment(title: string): VisualCriteria | null {
-    const criteriaMapping: Record<string, VisualCriteria> = {
-      'poils incarnés': {
-        goal: 'disparition des inflammations',
-        observation: 'Vérifier absence de rougeurs et gonflements',
-        estimatedDays: '1-2 semaines',
-        nextStep: 'Continuer prévention rasage puis phase suivante'
+    const criteria: Record<string, VisualCriteria> = {
+      'ingrowns': {
+        goal: 'inflammation resolved',
+        observation: 'Check absence of redness and swelling',
+        estimatedDays: '1–2 weeks',
+        nextStep: 'Continue shaving prevention, then move to next phase'
       },
-      'imperfections': {
-        goal: 'réduction visible des lésions',
-        observation: 'Compter diminution nombre boutons actifs',
-        estimatedDays: '2-3 semaines',
-        nextStep: 'Introduire prévention récidive'
+      'blemishes': {
+        goal: 'visible reduction of lesions',
+        observation: 'Count reduction in number of active spots',
+        estimatedDays: '2–3 weeks',
+        nextStep: 'Introduce recurrence prevention'
       },
-      'rougeurs': {
-        goal: 'apaisement et uniformisation',
-        observation: 'Teint plus homogène, moins de réactivité',
-        estimatedDays: '1-2 semaines',
-        nextStep: 'Renforcer barrière cutanée'
+      'redness': {
+        goal: 'soothing and tone evening',
+        observation: 'More even tone, less reactivity',
+        estimatedDays: '1–2 weeks',
+        nextStep: 'Strengthen skin barrier'
       },
-      'cicatrisation': {
-        goal: 'fermeture complète plaies',
-        observation: 'Peau lisse, couleur normalisée',
-        estimatedDays: '1-3 semaines',
-        nextStep: 'Prévention cicatrices'
+      'healing': {
+        goal: 'complete closure of lesions',
+        observation: 'Skin smooth, color normalized',
+        estimatedDays: '1–3 weeks',
+        nextStep: 'Scar prevention'
       }
     }
 
     const lower = title.toLowerCase()
-    for (const [k, v] of Object.entries(criteriaMapping)) {
+    for (const [k, v] of Object.entries(criteria)) {
       if (lower.includes(k)) return v
     }
     return null
   }
 
-  /**
-   * Need reinforced hydration?
-   */
+  /** Need reinforced hydration? */
   private static needsReinforcedHydration(beautyAssessment: BeautyAssessment): boolean {
     const s = beautyAssessment.mainConcern?.toLowerCase() || ''
     return (
-      s.includes('sécheresse') ||
-      s.includes('déshydratation') ||
       s.includes('dehydration') ||
-      beautyAssessment.zoneSpecific?.some((zone) =>
-        zone.problems?.some((p) => p.name.toLowerCase().includes('sécheresse') || p.name.toLowerCase().includes('dehydration'))
-      ) ||
+      beautyAssessment.zoneSpecific?.some((zone) => zone.problems?.some((p) => p.name.toLowerCase().includes('dehydration'))) ||
       false
     )
   }
@@ -2078,7 +1661,7 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
 
   private static hasHighExposure(beautyAssessment: BeautyAssessment): boolean {
     const s = beautyAssessment.mainConcern?.toLowerCase() || ''
-    return s.includes('tache') || s.includes('pigment') || s.includes('photoaging') || s.includes('photovieillissement')
+    return s.includes('spot') || s.includes('pigment') || s.includes('photoaging')
   }
 
   private static getReinforcedHydrationProducts(): RecommendedProduct[] {
@@ -2117,69 +1700,49 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
     return mapping[category] || 'treatment'
   }
 
-  /**
-   * Order steps by dermatologic logic
-   */
+  /** Order steps by dermatologic logic */
   private static orderStepsLogically(steps: UnifiedRoutineStep[]): UnifiedRoutineStep[] {
-    const categoryOrder = {
-      cleansing: 1,
-      treatment: 2,
-      hydration: 3,
-      protection: 4
-    }
-
+    const order = { cleansing: 1, treatment: 2, hydration: 3, protection: 4 } as const
     return steps.sort((a, b) => {
-      const orderA = (categoryOrder as any)[a.category] || 5
-      const orderB = (categoryOrder as any)[b.category] || 5
-
-      if (orderA !== orderB) return orderA - orderB
-      // If same category, sort by priority desc
+      const aO = (order as any)[a.category] || 5
+      const bO = (order as any)[b.category] || 5
+      if (aO !== bO) return aO - bO
       return b.priority - a.priority
     })
   }
 
-  /**
-   * Transfer & optimize base from adaptation to maintenance
-   */
+  /** Transfer & optimize base from adaptation to maintenance */
   private static transferAndOptimizeBase(adaptationPhase: UnifiedRoutineStep[]): UnifiedRoutineStep[] {
     console.log(
       '🔄 Transferring adaptation base to maintenance:',
       adaptationPhase.map((s) => `${s.stepNumber}. ${s.title}`).join(', ')
     )
 
-    const baseProducts = adaptationPhase.filter(
-      (step) => step.frequency === 'daily' && ['cleansing', 'hydration', 'protection'].includes(step.category)
+    const base = adaptationPhase.filter(
+      (s) => s.frequency === 'daily' && ['cleansing', 'hydration', 'protection'].includes(s.category)
     )
 
-    console.log('🏠 Base to transfer:', baseProducts.map((s) => s.title).join(', '))
+    console.log('🏠 Base to transfer:', base.map((s) => s.title).join(', '))
 
-    // Optimize for maintenance (same efficacy, smoother gesture)
-    return baseProducts.map((step) => ({
+    return base.map((step) => ({
       ...step,
       phase: 'maintenance' as const,
-      title: step.title.includes('renforcé') || step.title.toLowerCase().includes('reinforc')
-        ? step.title
-        : `${step.title} optimisée`,
-      applicationAdvice: `Routine établie et maîtrisée. ${step.applicationAdvice.replace(
-        'Routine maintenant établie. ',
+      title: step.title.toLowerCase().includes('reinforc') ? step.title : `${step.title} (optimized)`,
+      applicationAdvice: `Routine established and mastered. ${step.applicationAdvice.replace(
+        'Routine established. ',
         ''
       )}`
     }))
   }
 
-  /**
-   * Preventive care for long-term needs
-   */
-  private static generatePreventiveCare(
-    beautyAssessment: BeautyAssessment,
-    stepCounter: number
-  ): UnifiedRoutineStep[] {
-    const preventiveCare: UnifiedRoutineStep[] = []
+  /** Preventive care for long-term needs */
+  private static generatePreventiveCare(beautyAssessment: BeautyAssessment, stepCounter: number): UnifiedRoutineStep[] {
+    const out: UnifiedRoutineStep[] = []
 
     if (this.needsExfoliation(beautyAssessment)) {
-      preventiveCare.push({
+      out.push({
         stepNumber: stepCounter++,
-        title: 'Exfoliation préventive',
+        title: 'Preventive exfoliation',
         targetArea: 'global',
         recommendedProducts: [
           {
@@ -2190,9 +1753,8 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
             catalogId: 'B07XDQJV2P'
           }
         ],
-        applicationAdvice:
-          "Appliquer pour maintenir le renouvellement cellulaire et prévenir l'accumulation de cellules mortes.",
-        restrictions: ['Ne pas combiner avec rétinol le même soir', 'Protection solaire indispensable'],
+        applicationAdvice: 'Apply to maintain cell turnover and prevent dead cell buildup.',
+        restrictions: ['Do not combine with retinol on the same night', 'Daily sun protection is essential'],
         treatmentType: 'treatment',
         priority: 6,
         phase: 'maintenance',
@@ -2200,20 +1762,19 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
         timeOfDay: 'evening',
         category: 'exfoliation',
         startAfterDays: 42,
-        frequencyDetails: '1x/semaine, soir sans rétinol',
-        // UX (French)
-        applicationDuration: 'Entretien hebdomadaire',
-        timingBadge: 'Hebdomadaire 🌙',
-        timingDetails: '1x/semaine, soir sans rétinol'
+        frequencyDetails: 'Once/week, evening without retinol',
+        applicationDuration: 'Weekly maintenance',
+        timingBadge: 'Weekly 🌙',
+        timingDetails: 'Once/week, evening without retinol'
       })
     }
 
-    const mainConcern = beautyAssessment.mainConcern?.toLowerCase() || ''
+    const main = (beautyAssessment.mainConcern || '').toLowerCase()
 
-    if (mainConcern.includes('tache') || mainConcern.includes('pigment') || mainConcern.includes('spot')) {
-      preventiveCare.push({
+    if (main.includes('spot') || main.includes('pigment')) {
+      out.push({
         stepNumber: stepCounter++,
-        title: 'Prévention taches pigmentaires',
+        title: 'Pigment-spot prevention',
         targetArea: 'specific',
         zones: beautyAssessment.concernedZones || [],
         recommendedProducts: [
@@ -2225,25 +1786,23 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
             catalogId: 'B077RZ5LPG'
           }
         ],
-        applicationAdvice:
-          "Application continue pour maintenir l'uniformité du teint et prévenir nouvelles taches.",
+        applicationAdvice: 'Continued application to maintain even tone and prevent new spots.',
         treatmentType: 'treatment',
         priority: 7,
         phase: 'maintenance',
         frequency: 'daily',
         timeOfDay: 'evening',
         category: 'treatment',
-        // UX
-        applicationDuration: 'En continu pour prévention',
-        timingBadge: 'Quotidien 🌙',
-        timingDetails: 'Soir uniquement'
+        applicationDuration: 'Ongoing for prevention',
+        timingBadge: 'Daily 🌙',
+        timingDetails: 'Evening only'
       })
     }
 
-    if (mainConcern.includes('ride') || mainConcern.includes('âge') || mainConcern.includes('wrinkle')) {
-      preventiveCare.push({
+    if (main.includes('wrinkle') || main.includes('aging')) {
+      out.push({
         stepNumber: stepCounter++,
-        title: 'Prévention vieillissement',
+        title: 'Aging prevention',
         targetArea: 'global',
         recommendedProducts: [
           {
@@ -2254,101 +1813,74 @@ REPLY IN JSON ONLY – NO FREE TEXT.`
             catalogId: 'B08KGXQY2R'
           }
         ],
-        applicationAdvice:
-          'Maintenir 3-4 applications par semaine pour prévenir nouveaux signes de vieillissement.',
-        restrictions: ['Protection solaire obligatoire'],
+        applicationAdvice: 'Maintain 3–4 applications/week to prevent new signs of aging.',
+        restrictions: ['Daily sun protection required'],
         treatmentType: 'treatment',
         priority: 8,
         phase: 'maintenance',
         frequency: 'weekly',
         timeOfDay: 'evening',
         category: 'treatment',
-        frequencyDetails: '3-4x/semaine',
-        // UX
-        applicationDuration: 'En continu pour prévention',
-        timingBadge: 'Varié ⚡',
-        timingDetails: '3-4x/semaine'
+        frequencyDetails: '3–4×/week',
+        applicationDuration: 'Ongoing for prevention',
+        timingBadge: 'Varied ⚡',
+        timingDetails: '3–4×/week'
       })
     }
 
-    return preventiveCare
+    return out
   }
 
-  /**
-   * Generate application duration string
-   * (kept in French to match UI logic)
-   */
-  private static generateApplicationDuration(
-    step: UnifiedRoutineStep,
-    visualCriteria: VisualCriteria | null
-  ): string {
-    if (visualCriteria) {
-      return `Jusqu'à ${visualCriteria.observation.toLowerCase()} (${visualCriteria.estimatedDays})`
-    }
-
-    if (['cleansing', 'hydration', 'protection'].includes(step.category)) {
-      return 'En continu'
-    }
-
-    if (step.frequency === 'weekly') {
-      return 'Entretien hebdomadaire'
-    }
-
-    if (step.frequency === 'progressive') {
-      return 'Introduction progressive selon tolérance'
-    }
-
-    return 'Selon besoin'
+  /** Generate application duration string (EN) */
+  private static generateApplicationDuration(step: UnifiedRoutineStep, visual: VisualCriteria | null): string {
+    if (visual) return `Until ${visual.observation.toLowerCase()} (${visual.estimatedDays})`
+    if (['cleansing', 'hydration', 'protection'].includes(step.category)) return 'Ongoing'
+    if (step.frequency === 'weekly') return 'Weekly maintenance'
+    if (step.frequencyDetails?.toLowerCase().includes('progressive') || step.applicationDuration?.toLowerCase().includes('progressive')) return 'Progressive introduction per tolerance'
+    return 'As needed'
   }
 
-  /**
-   * Generate timing badge (kept in French for UI)
-   */
+  /** Generate timing badge (EN) */
   private static generateTimingBadge(step: UnifiedRoutineStep): TimingBadgeResult {
     const { frequency, timeOfDay, frequencyDetails } = step
-
-    const icons = {
-      morning: '☀️',
-      evening: '🌙',
-      both: '☀️🌙'
-    }
+    const icons = { morning: '☀️', evening: '🌙', morning_and_evening: '☀️🌙' }
 
     if (frequency === 'daily') {
       const icon = (icons as any)[timeOfDay] || ''
       return {
-        badge: `Quotidien ${icon}`,
-        details:
-          timeOfDay === 'evening' ? 'Soir uniquement' : timeOfDay === 'morning' ? 'Matin uniquement' : 'Matin et soir'
+        badge: `Daily ${icon}`,
+        details: timeOfDay === 'evening' ? 'Evening only' : timeOfDay === 'morning' ? 'Morning only' : 'Morning and evening'
       }
     }
 
     if (frequency === 'weekly') {
       const icon = (icons as any)[timeOfDay] || '🌙'
-      let details = '1x/semaine'
+      let details = 'Once/week'
       if (step.title.toLowerCase().includes('exfoliation')) {
-        details = '1x/semaine, soir sans rétinol'
+        details = 'Once/week, evening without retinol'
       } else if (frequencyDetails) {
         details = frequencyDetails
       }
-      return { badge: `Hebdomadaire ${icon}`, details }
+      return { badge: `Weekly ${icon}`, details }
     }
 
-    if (frequency === 'progressive') {
+    if (frequencyDetails?.toLowerCase().includes('progressive') || step.applicationDuration?.toLowerCase().includes('progressive')) {
       return {
-        badge: 'Progressif 📈',
-        details: frequencyDetails || 'Commencer 1x tous les 3 jours, puis augmenter'
+        badge: 'Progressive 📈',
+        details: frequencyDetails || 'Start once every 3 days, then increase'
       }
     }
 
-    if (frequency === 'as-needed') {
-      return { badge: 'Au besoin 🎯', details: 'Selon apparition des problèmes' }
+    if (frequency === 'as_needed') {
+      return { badge: 'As needed 🎯', details: 'According to issue appearance' }
     }
 
-    return { badge: 'Varié ⚡', details: frequencyDetails || 'Fréquence variable' }
+    return { badge: 'Varied ⚡', details: frequencyDetails || 'Variable frequency' }
   }
 }
 
-// Optimized treatment interface
+// -------- Internal helper interfaces --------
+
 interface OptimizedTreatment {
   issues: string[]
   zones: string[]
@@ -2356,7 +1888,6 @@ interface OptimizedTreatment {
   priority: number
 }
 
-// Durable base interface
 interface LongTermBaseProduct {
   stepNumber: number
   title: string
@@ -2370,7 +1901,6 @@ interface LongTermBaseProduct {
   phase: 'immediate' | 'adaptation' | 'maintenance'
 }
 
-// Visual criteria interface
 interface VisualCriteria {
   goal: string
   observation: string
@@ -2378,7 +1908,6 @@ interface VisualCriteria {
   nextStep: string
 }
 
-// Timing badge interface
 interface TimingBadgeResult {
   badge: string
   details?: string

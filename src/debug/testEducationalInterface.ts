@@ -95,7 +95,7 @@ try {
       priority: 1,
       phase: 'immediate',
       frequency: 'daily',
-      timeOfDay: 'both',
+      timeOfDay: 'morning_and_evening',
       category: 'cleansing'
     }
   ]

@@ -1,7 +1,6 @@
 'use client'
 
 import Image from 'next/image'
-import { useState, useEffect } from 'react'
 import { Brain } from 'lucide-react'
 
 interface SimilarConcernsProofScreenProps {
@@ -11,38 +10,64 @@ interface SimilarConcernsProofScreenProps {
 }
 
 /**
- * Social proof screen - displayed after main concerns selection
- * Reassures user by showing they're not alone with their skin problems
+ * Social proof screen — displayed after main concerns selection.
+ * Logic now supports FR/EN inputs and maps them to EN categories.
  */
 export default function SimilarConcernsProofScreen({
   onContinue,
   onBack,
   userConcerns = []
 }: SimilarConcernsProofScreenProps) {
+  // Normalize FR/EN concerns to EN buckets for the message
+  const normalizeConcern = (raw: string): 'acne'|'aging'|'pigmentation'|'redness'|'dryness'|'ingrown'|'unknown' => {
+    const v = (raw || '').toLowerCase().trim()
 
-  // Determine personalized message based on concerns
-  // value used in logic; keep as-is (French) for comparisons below
+    // Unknown
+    if (v === 'je ne sais pas' || v === 'unknown') return 'unknown'
+
+    // Acne / blemishes
+    if (
+      v.includes('acné') || v.includes('bouton') || v.includes('blemish') || v.includes('acne') ||
+      v.includes('imperfection')
+    ) return 'acne'
+
+    // Aging / wrinkles
+    if (
+      v.includes('ride') || v.includes('vieillissement') || v.includes('aging') || v.includes('wrinkle')
+    ) return 'aging'
+
+    // Pigmentation / dark spots
+    if (
+      v.includes('tache') || v.includes('taches') || v.includes('pigment') || v.includes('hyperpig') ||
+      v.includes('dark spot') || v.includes('spot')
+    ) return 'pigmentation'
+
+    // Redness / irritation / sensitivity
+    if (
+      v.includes('rougeur') || v.includes('irritation') || v.includes('sensibilit') || v.includes('redness') ||
+      v.includes('sensitivity')
+    ) return 'redness'
+
+    // Dryness
+    if (v.includes('peau sèche') || v.includes('sèche') || v.includes('seche') || v.includes('dry')) return 'dryness'
+
+    // Ingrown hairs / shaving issues
+    if (v.includes('poils incarn') || v.includes('ingrown')) return 'ingrown'
+
+    return 'unknown'
+  }
+
   const getPersonalizedMessage = () => {
-    if (userConcerns.includes('Je ne sais pas')) {
-      return 'similar concerns'
-    }
-    
-    const mainConcern = userConcerns[0]
-    switch (mainConcern) {
-      case 'Acné/Boutons':
-        return 'acne problems'
-      case 'Rides/Vieillissement':
-        return 'anti-aging concerns'
-      case 'Taches pigmentaires':
-        return 'pigmentation problems'
-      case 'Rougeurs/Irritations':
-        return 'sensitivity problems'
-      case 'Peau sèche':
-        return 'dryness problems'
-      case 'Poils incarnés':
-        return 'ingrown hair problems'
-      default:
-        return 'similar concerns'
+    const first = userConcerns[0]
+    const key = normalizeConcern(first || '')
+    switch (key) {
+      case 'acne':         return 'acne problems'
+      case 'aging':        return 'anti-aging concerns'
+      case 'pigmentation': return 'pigmentation problems'
+      case 'redness':      return 'sensitivity/redness issues'
+      case 'dryness':      return 'dryness problems'
+      case 'ingrown':      return 'ingrown-hair problems'
+      default:             return 'similar concerns'
     }
   }
 

@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  Calendar, 
-  Clock, 
-  Sun, 
-  Moon, 
-  Info, 
-  CheckCircle, 
+import {
+  Calendar,
+  Clock,
+  Sun,
+  Moon,
+  Info,
+  CheckCircle,
   AlertCircle,
   Repeat,
   Target,
@@ -20,7 +20,6 @@ import {
   TrendingUp,
   Heart
 } from 'lucide-react'
-import { getFrequencyLabel, getTimingLabel } from '@/lib/i18n/mappers'
 import type { UnifiedRoutineStep, BeautyAssessment } from '@/types'
 import { PhaseTimingCalculator, type PhaseTiming } from '@/services/educational/phaseTimingCalculator'
 import { EducationalTooltip, MobileEducationalTooltip } from '@/components/shared/EducationalTooltip'
@@ -36,22 +35,16 @@ const timeIcons = {
   both: <Clock className="w-4 h-4" />
 }
 
+// Canonical EN only
 const frequencyLabels = {
-  // API values (FR) → display labels (FR)
-  quotidien: 'Quotidien',
-  hebdomadaire: 'Hebdomadaire', 
-  ponctuel: 'Ponctuel',
-  // Legacy EN values
-  daily: 'Quotidien',
-  weekly: 'Hebdomadaire', 
-  monthly: 'Mensuel',
-  'as-needed': 'Au besoin',
-  progressive: 'Progressif'
-}
+  daily: 'Daily',
+  weekly: 'Weekly',
+  'as_needed': 'As needed'
+} as const
 
 const phaseColors = {
   immediate: 'from-green-50 to-green-100 border-green-200',
-  adaptation: 'from-blue-50 to-blue-100 border-blue-200', 
+  adaptation: 'from-blue-50 to-blue-100 border-blue-200',
   maintenance: 'from-purple-50 to-purple-100 border-purple-200'
 }
 
@@ -60,8 +53,6 @@ const phaseLabels = {
   adaptation: 'Adaptation Phase',
   maintenance: 'Maintenance Phase'
 }
-
-// Removed unused categoryIcons
 
 export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRoutineSectionProps) {
   const [activePhase, setActivePhase] = useState<'immediate' | 'adaptation' | 'maintenance'>('immediate')
@@ -89,7 +80,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
     return null
   }
 
-  // Organize by phases
+  // Organize by phases (canonical EN)
   const organizeByPhases = () => {
     return {
       immediate: routine.filter(step => step.phase === 'immediate'),
@@ -102,59 +93,61 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
   const organizeBySchedule = () => {
     const deduplicateByProduct = (steps: UnifiedRoutineStep[]) => {
       const productGroups = new Map<string, UnifiedRoutineStep[]>()
-      
-      // Group by category AND function, not exact product
+
       steps.forEach(step => {
         let groupKey = step.recommendedProducts[0]?.name || step.title
         let displayTitle = groupKey
 
-        // Smart grouping for similar products
-        // value used in logic; keep FR checks, add EN checks for robustness
-        if (step.category === 'protection' || step.title.includes('Protection solaire') || step.title.toLowerCase().includes('sun protection')) {
-          groupKey = 'Protection solaire'
+        // Smart grouping for similar products (canonical EN-only logic)
+        if (
+          step.category === 'protection' ||
+          /sun\s*protection|sunscreen|spf/i.test(step.title)
+        ) {
+          groupKey = 'Sun protection'
           displayTitle = 'Sun protection'
-        } else if (step.category === 'cleansing' || step.title.includes('Nettoyage') || step.title.toLowerCase().includes('cleansing')) {
-          groupKey = 'Nettoyage doux'
+        } else if (
+          step.category === 'cleansing' ||
+          /cleansing|cleanser|face\s*wash/i.test(step.title)
+        ) {
+          groupKey = 'Gentle cleansing'
           displayTitle = 'Gentle cleansing'
-        } else if (step.category === 'hydration' || step.title.includes('Hydratation') || step.title.toLowerCase().includes('hydration')) {
-          groupKey = 'Hydratation globale'
+        } else if (
+          step.category === 'hydration' ||
+          /hydration|moisturiz(e|a)r|hydrating/i.test(step.title)
+        ) {
+          groupKey = 'Overall hydration'
           displayTitle = 'Overall hydration'
         }
-        
+
         if (!productGroups.has(groupKey)) {
           productGroups.set(groupKey, [])
         }
-        // Store displayTitle on a temporary field if we need it later
         productGroups.get(groupKey)!.push({ ...step, title: displayTitle })
       })
-      
-      // Create merged steps per unique group
+
       const deduplicatedSteps: UnifiedRoutineStep[] = []
-      
-      productGroups.forEach((stepsGroup, _groupKey) => {
+
+      productGroups.forEach((stepsGroup) => {
         if (stepsGroup.length === 1) {
           deduplicatedSteps.push(stepsGroup[0])
         } else {
           const baseStep = stepsGroup[0]
           const allPhases = stepsGroup.map(s => s.phase).filter((p, i, arr) => arr.indexOf(p) === i)
-          // Keep phase names for potential future use
-          // const phaseNames = allPhases.map(p => phaseLabels[p as keyof typeof phaseLabels])
 
-          // Clean title from evolution hints
+          // Clean title from evolution hints (EN only)
           const cleanTitle = baseStep.title.replace(
-            // value used in logic; support FR and EN markers
-            /(optimisée?|renforcée?|→\s*(évolutif|optimisé)|optimized?|strengthened?|→\s*(evolved|optimized))/gi,
+            /(optimized?|strengthened?|→\s*(evolved|optimized))/gi,
             ''
           ).trim()
-          
+
           // Merge application advices (favor the simplest/first)
           const uniqueAdvices = stepsGroup
             .map(s => s.applicationAdvice)
             .filter((advice, i, arr) => arr.indexOf(advice) === i)
-          
+
           const finalAdvice = uniqueAdvices[0]
-          
-          // Duration: keep "continuous" for base-care products across phases, else original duration
+
+          // Duration: keep "Continuous" for base-care products across phases, else original duration
           const isBaseCareProduct =
             baseStep.category === 'cleansing' ||
             baseStep.category === 'hydration' ||
@@ -164,39 +157,38 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
             allPhases.length > 1 && isBaseCareProduct
               ? 'Continuous'
               : baseStep.applicationDuration
-          
+
           const evolvedStep: UnifiedRoutineStep = {
             ...baseStep,
             title: cleanTitle || baseStep.title,
             applicationAdvice: finalAdvice,
             applicationDuration: finalDuration,
             stepNumber: Math.min(...stepsGroup.map(s => s.stepNumber)),
-            phase: 'immediate', // base phase for display
+            phase: 'immediate' // base phase for display
           }
-          
+
           deduplicatedSteps.push(evolvedStep)
         }
       })
-      
+
       return deduplicatedSteps.sort((a, b) => a.stepNumber - b.stepNumber)
     }
-    
-    // Smart filtering: avoid duplicates across sections
-    const morningSteps = routine.filter(step => 
-      (step.timeOfDay === 'morning' || step.timeOfDay === 'both') && 
-      (step.frequency === 'quotidien' || step.frequency === 'daily') // daily steps only
+
+    // Smart filtering: avoid duplicates across sections (canonical EN only)
+    const morningSteps = routine.filter(step =>
+      (step.timeOfDay === 'morning' || step.timeOfDay === 'morning_and_evening') &&
+      step.frequency === 'daily' // daily steps only
     )
-    const eveningSteps = routine.filter(step => 
-      (step.timeOfDay === 'evening' || step.timeOfDay === 'both') && 
-      (step.frequency === 'quotidien' || step.frequency === 'daily') // daily steps only
+    const eveningSteps = routine.filter(step =>
+      (step.timeOfDay === 'evening' || step.timeOfDay === 'morning_and_evening') &&
+      step.frequency === 'daily' // daily steps only
     )
-    
+
     return {
       morning: deduplicateByProduct(morningSteps),
       evening: deduplicateByProduct(eveningSteps),
-      weekly: routine.filter(step => step.frequency === 'hebdomadaire' || step.frequency === 'weekly'),
-      monthly: routine.filter(step => step.frequency === 'monthly'),
-      asNeeded: routine.filter(step => step.frequency === 'ponctuel' || step.frequency === 'as-needed')
+      weekly: routine.filter(step => step.frequency === 'weekly'),
+      asNeeded: routine.filter(step => step.frequency === 'as_needed')
     }
   }
 
@@ -204,15 +196,13 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
   const scheduleData = organizeBySchedule()
 
   const renderStep = (step: UnifiedRoutineStep, index: number, resetNumbering: boolean = false) => {
-    // Temporary steps detection for badge only
-    const isTemporary = step.applicationDuration && !/continu|continuous|ongoing/i.test(step.applicationDuration)
-    
-    // Unified style for all steps
-    const className = "bg-white rounded-xl p-3 md:p-4 border border-gray-100 hover:shadow-md transition-all"
-    
-    // Reset numbering per schedule section
+    // Temporary steps detection for badge only (EN only)
+    const isTemporary =
+      !!step.applicationDuration && !/(continuous|ongoing)/i.test(step.applicationDuration)
+
+    const className = 'bg-white rounded-xl p-3 md:p-4 border border-gray-100 hover:shadow-md transition-all'
     const displayNumber = resetNumbering ? index + 1 : step.stepNumber
-    
+
     return (
       <motion.div
         key={`${step.title}-${index}`}
@@ -227,7 +217,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
               {displayNumber}
             </div>
           </div>
-          
+
           <div className="flex-1">
             {/* Title on one line, badges below on mobile */}
             <div className="mb-2">
@@ -238,15 +228,14 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                   {timeIcons[step.timeOfDay as keyof typeof timeIcons]}
                   <span className="hidden sm:inline">{frequencyLabels[step.frequency as keyof typeof frequencyLabels]}</span>
                   <span className="sm:hidden">
-                    {(step.frequency === 'quotidien' || step.frequency === 'daily') && 'Quot'}
-                    {(step.frequency === 'hebdomadaire' || step.frequency === 'weekly') && 'Hebdo'}
-                    {step.frequency === 'monthly' && 'Mens'}
-                    {(step.frequency === 'ponctuel' || step.frequency === 'as-needed') && 'Besoin'}
-                    {step.frequency === 'progressive' && 'Prog'}
+                    {step.frequency === 'daily' && 'Daily'}
+                    {step.frequency === 'weekly' && 'Weekly'}
+                    {step.frequency === 'as_needed' && 'Need'}
+                    {(step.frequencyDetails?.toLowerCase().includes('progressive') || step.applicationDuration?.toLowerCase().includes('progressive')) && 'Prog'}
                   </span>
                 </div>
               </div>
-              
+
               {/* Temporary badge under title on mobile */}
               {isTemporary && (
                 <div className="flex items-center space-x-1 px-2 py-1 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700 rounded-full text-xs font-medium w-fit">
@@ -255,14 +244,14 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                 </div>
               )}
             </div>
-            
+
             {step.frequencyDetails && (
               <div className="flex items-center space-x-1 text-xs text-blue-600 mb-2">
                 <Repeat className="w-3 h-3" />
                 <span>{step.frequencyDetails}</span>
               </div>
             )}
-            
+
             {step.startAfterDays && (
               <div className="flex items-center space-x-1 text-xs text-orange-600 mb-2">
                 <Calendar className="w-3 h-3" />
@@ -275,12 +264,12 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
               <div className="flex items-center gap-1 px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium w-fit mb-2">
                 <MapPin className="w-3 h-3 flex-shrink-0" />
                 <span className="truncate">
-                  <span className="hidden sm:inline">Zones: </span>
+                  <span className="hidden sm:inline">Areas: </span>
                   {step.zones.join(', ')}
                 </span>
               </div>
             )}
-            
+
             {/* Recommended products – mobile-optimized */}
             <div className="bg-dermai-ai-50 rounded-lg p-2 md:p-3 mb-2 md:mb-3 border border-dermai-ai-200">
               <div className="flex items-center space-x-1 text-xs text-dermai-ai-700 mb-1 md:mb-2">
@@ -309,7 +298,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                 </div>
               ))}
             </div>
-            
+
             {/* Application tips – mobile-optimized */}
             <div className="space-y-1 mb-2 md:mb-3">
               <div className="flex items-center space-x-1 text-xs text-green-700">
@@ -325,7 +314,6 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
             {(() => {
               const criteria = PhaseTimingCalculator.getVisualCriteria(step)
               if (criteria) {
-                // Simplified format for treatments with visual criteria – mobile-optimized
                 return (
                   <div className="space-y-1 mb-2 md:mb-3">
                     <div className="flex items-center space-x-1 text-xs text-blue-700">
@@ -338,7 +326,6 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                   </div>
                 )
               } else if (step.applicationDuration) {
-                // Classic format – mobile-optimized
                 return (
                   <div className="space-y-1 mb-2 md:mb-3">
                     <div className="flex items-center space-x-1 text-xs text-blue-700">
@@ -402,13 +389,13 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
             <p className="text-xs md:text-sm text-dermai-neutral-600">Powered by DermAI</p>
           </div>
         </div>
-        
+
         <div className="flex bg-gray-100 rounded-lg p-1 w-fit">
           <button
             onClick={() => setViewMode('phases')}
             className={`px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm rounded-md transition-all font-medium ${
-              viewMode === 'phases' 
-                ? 'bg-white text-dermai-ai-400 shadow-sm' 
+              viewMode === 'phases'
+                ? 'bg-white text-dermai-ai-400 shadow-sm'
                 : 'text-gray-600 hover:text-gray-800'
             }`}
           >
@@ -417,8 +404,8 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
           <button
             onClick={() => setViewMode('schedule')}
             className={`px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm rounded-md transition-all font-medium ${
-              viewMode === 'schedule' 
-                ? 'bg-white text-dermai-ai-400 shadow-sm' 
+              viewMode === 'schedule'
+                ? 'bg-white text-dermai-ai-400 shadow-sm'
                 : 'text-gray-600 hover:text-gray-800'
             }`}
           >
@@ -433,7 +420,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
           <div className="flex flex-wrap gap-1.5 md:gap-2 mb-4 md:mb-6">
             {Object.keys(phaseData).map((phase) => {
               const stepCount = phaseData[phase as keyof typeof phaseData].length
-              
+
               return (
                 <button
                   key={phase}
@@ -452,9 +439,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                       {phase === 'maintenance' && 'Maintenance'}
                     </span>
                   </span>
-                  <span className="ml-1 text-xs opacity-70">
-                    ({stepCount})
-                  </span>
+                  <span className="ml-1 text-xs opacity-70">({stepCount})</span>
                 </button>
               )
             })}
@@ -488,7 +473,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                   )}
                 </div>
               </div>
-              
+
               {/* Educational tooltip */}
               {phaseTimings[activePhase] && (
                 <div className="flex-shrink-0">
@@ -553,7 +538,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                     <span className="ml-1 text-gray-600">({phaseTimings[activePhase].duration})</span>
                   )}
                 </div>
-                
+
                 <div className="flex items-center justify-center sm:justify-end space-x-2">
                   {/* Previous phase button */}
                   {activePhase !== 'immediate' && (
@@ -573,7 +558,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                       <span className="hidden sm:inline">Previous</span>
                     </button>
                   )}
-                  
+
                   {/* Next phase button */}
                   {activePhase !== 'maintenance' && (
                     <button
@@ -601,7 +586,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                       </svg>
                     </button>
                   )}
-                  
+
                   {/* Final message for last phase */}
                   {activePhase === 'maintenance' && (
                     <div className="flex items-center space-x-1 px-2.5 md:px-3 py-1.5 md:py-2 bg-green-100 text-green-700 rounded-lg text-xs md:text-sm font-medium">
@@ -657,20 +642,6 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
             </div>
           )}
 
-          {/* Monthly routine */}
-          {scheduleData.monthly.length > 0 && (
-            <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-4 md:p-6 border border-amber-100 md:col-span-2">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center">
-                  <Calendar className="w-4 h-4 text-white" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900">Monthly routine</h3>
-              </div>
-              <div className="space-y-3">
-                {scheduleData.monthly.map((step, index) => renderStep(step, index, true))}
-              </div>
-            </div>
-          )}
 
           {/* As needed */}
           {scheduleData.asNeeded.length > 0 && (

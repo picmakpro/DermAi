@@ -18,6 +18,7 @@ This centralized documentation contains all specifications, strategies and techn
 
 ### **🚀 Improvement & Optimization**
 - **[Diagnostic_Improvement_Strategy_EN.md](./Diagnostic_Improvement_Strategy_EN.md)** - AI diagnostic improvement strategy
+- **[v2-pipeline-implementation.md](./v2-pipeline-implementation.md)** - V2 Pipeline implementation guide
 
 ## 🎯 **Quick Navigation**
 
@@ -29,7 +30,7 @@ This centralized documentation contains all specifications, strategies and techn
 ### **For development:**
 - **Frontend/UI** → `spec-english.md` + `Educational_Interface_EN.md`
 - **Backend/API** → `spec-english.md` + `Database_Architecture_EN.md`
-- **AI/Diagnosis** → `Diagnostic_Improvement_Strategy_EN.md`
+- **AI/Diagnosis** → `Diagnostic_Improvement_Strategy_EN.md` + `v2-pipeline-implementation.md`
 - **Business** → `monetization-strategy.md`
 
 ### **For maintenance:**
@@ -46,6 +47,9 @@ This centralized documentation contains all specifications, strategies and techn
 - ✅ Scientifically validated dermatological logic
 - ✅ Consistent phase numbering (1,2,3...)
 - ✅ Visual evolution criteria (vs arbitrary timing)
+- ✅ V2 Pipeline with 3-step AI orchestration (Vision → Routine → Products)
+- ✅ Legacy UI compatibility with zero breaking changes
+- ✅ A/B testing flags for pipeline optimization
 
 ### **🔄 In Progress**
 - User dashboard/history interface

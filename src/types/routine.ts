@@ -1,21 +1,17 @@
-// Types for an advanced dermatological routine system
+// Types for an advanced dermatological routine system (EN canonicals)
+import type { FrequencyCanonical, TimeOfDayCanonical } from '@/constants/canonicals'
 
-export type FrequencyType =
-  | 'quotidien'    // Daily (from API)
-  | 'hebdomadaire' // Weekly (from API)
-  | 'ponctuel'     // As needed (from API)
-  | 'daily'        // Daily (legacy)
-  | 'weekly'       // Weekly (legacy)
-  | 'monthly'      // Monthly (legacy)
-  | 'as-needed'    // As needed (legacy)
-  | 'progressive'  // Progressive (legacy)
+/** Canonical frequency values */
+export type FrequencyType = FrequencyCanonical
 
-export type TimeOfDay = 'morning' | 'evening' | 'both'
+/** Time-of-day buckets */
+export type TimeOfDay = TimeOfDayCanonical
 
+/** Routine phases */
 export type RoutinePhase =
   | 'immediate'     // Start right away
-  | 'adaptation'    // After adaptation (2–4 weeks)
-  | 'maintenance'   // Maintenance phase (after 6–8 weeks)
+  | 'adaptation'    // After adaptation (≈2–4 weeks)
+  | 'maintenance'   // Maintenance (after ≈6–8 weeks)
   | 'seasonal'      // Seasonal adjustments
 
 export interface RoutineStep {

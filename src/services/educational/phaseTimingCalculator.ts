@@ -41,9 +41,10 @@ export class PhaseTimingCalculator {
         const criteria = this.getVisualCriteria(step)
         if (criteria) {
           // Extract the max from a range (e.g., "14–21 days" -> 21)
-          const match = criteria.estimatedDays.match(/(\d+)-(\d+)/)
+          // Support both hyphen '-' and en dash '–'
+          const match = criteria.estimatedDays.match(/(\d+)[-–](\d+)/)
           if (match) {
-            treatmentDurations.push(parseInt(match[2])) // take max
+            treatmentDurations.push(parseInt(match[2], 10)) // take max
           }
         }
       })
@@ -56,7 +57,7 @@ export class PhaseTimingCalculator {
     }
 
     // Age factor (slower healing)
-    const estimatedAge = assessment.estimatedSkinAge || 30
+    const estimatedAge = assessment.estimatedSkinAge ?? 30
     if (estimatedAge > 50) baseDuration += 7
     if (estimatedAge > 65) baseDuration += 7
 
@@ -67,8 +68,8 @@ export class PhaseTimingCalculator {
       ).length || 0
     baseDuration += severeProblemCount * 2 // reduced from 3 to 2
 
-    // Skin type factor
-    const skinType = assessment.skinType?.toLowerCase() || ''
+    // Skin type factor (canonical EN, but keep robust check)
+    const skinType = (assessment.skinType || '').toString().toLowerCase()
     if (skinType.includes('sensitive')) baseDuration += 5
 
     return this.formatDurationRange(baseDuration)
@@ -85,7 +86,8 @@ export class PhaseTimingCalculator {
     const complexTreatments = treatments.filter((t) =>
       ['retinol', 'aha', 'bha', 'vitamin-c', 'niacinamide'].some(
         (active) =>
-          t.title.toLowerCase().includes(active) || t.applicationAdvice.toLowerCase().includes(active)
+          t.title?.toLowerCase().includes(active) ||
+          t.applicationAdvice?.toLowerCase().includes(active)
       )
     ).length
     baseDuration += complexTreatments * 7
@@ -94,9 +96,15 @@ export class PhaseTimingCalculator {
     const totalZones = new Set(treatments.flatMap((t) => t.zones || [])).size
     baseDuration += totalZones * 2
 
-    // Progressive frequency factor
+    // Progressive ramp-up factor (compatibility: detect legacy "progressive")
     const progressiveTreatments = treatments.filter(
-      (t) => t.frequency === 'progressive' || t.frequencyDetails?.includes('progressive')
+      (t) =>
+        (t as any).frequency === 'progressive' ||
+        (t as any).frequency === 'progressif' ||
+        (t as any).frequencyDetails?.toLowerCase?.().includes('progress') ||
+        t.applicationAdvice?.toLowerCase().includes('increase gradually') ||
+        t.applicationAdvice?.toLowerCase().includes('progressive') ||
+        t.applicationAdvice?.toLowerCase().includes('ramp')
     ).length
     baseDuration += progressiveTreatments * 5
 
@@ -126,7 +134,7 @@ export class PhaseTimingCalculator {
   /**
    * Educational objectives per phase.
    */
-  static getPhaseObjectives(): Record<string, PhaseObjective> {
+  static getPhaseObjectives(): Record<'immediate' | 'adaptation' | 'maintenance', PhaseObjective> {
     return {
       immediate: {
         title: 'Soothe and protect the skin, restore the barrier',
@@ -184,7 +192,7 @@ A well-established routine ensures lasting results.`
   static calculateCompleteTiming(
     assessment: BeautyAssessment,
     routine: UnifiedRoutineStep[]
-  ): Record<string, PhaseTiming> {
+  ): Record<'immediate' | 'adaptation' | 'maintenance', PhaseTiming> {
     const objectives = this.getPhaseObjectives()
 
     // Guard against undefined/null
@@ -269,27 +277,34 @@ A well-established routine ensures lasting results.`
       }
     }
 
-    // Standard time badges
-    if (step.frequency === 'daily') {
-      return step.timeOfDay === 'morning'
+    // Standard time badges (canonical EN + legacy compatibility)
+    const freq = (step as any).frequency
+    const tod = (step as any).timeOfDay
+
+    if (freq === 'daily') {
+      return tod === 'morning'
         ? '⏰ Daily morning'
-        : step.timeOfDay === 'evening'
+        : tod === 'evening'
         ? '⏰ Daily evening'
+        : (tod === 'morning_and_evening' || tod === 'both')
+        ? '⏰ Daily (AM & PM)'
         : '⏰ Daily'
     }
 
-    if (step.frequency === 'weekly') {
+    if (freq === 'weekly') {
       return '⏱️ Weekly'
     }
 
-    if (step.frequency === 'progressive') {
+    // Compatibility: legacy progressive/as-needed strings
+    if (freq === 'progressive') {
       return '📈 Progressive'
     }
 
-    if (step.frequency === 'as-needed') {
+    if (freq === 'as_needed' || freq === 'as-needed') {
       return '🎯 As needed'
     }
 
+    // Default
     return '⏰ Daily'
   }
 
@@ -303,7 +318,7 @@ A well-established routine ensures lasting results.`
     estimatedDays: string
     nextStep: string
   } | null {
-    const title = step.title.toLowerCase()
+    const title = (step.title || '').toLowerCase()
 
     if (title.includes('poils incarnés') || title.includes('ingrown')) {
       return {

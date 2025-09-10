@@ -200,34 +200,42 @@ describe('Mappers FR -> EN', () => {
 
   describe('Display Mappers EN → FR', () => {
     describe('getSkinTypeLabel', () => {
-      it('should map English skin types to French labels', () => {
-        expect(getSkinTypeLabel('dry')).toBe('Sèche')
-        expect(getSkinTypeLabel('normal')).toBe('Normale')
-        expect(getSkinTypeLabel('combination')).toBe('Mixte')
-        expect(getSkinTypeLabel('oily')).toBe('Grasse')
-        expect(getSkinTypeLabel('sensitive')).toBe('Sensible')
-        expect(getSkinTypeLabel('unknown')).toBe('À définir par l\'IA')
+      it('should map skin types to English labels', () => {
+        expect(getSkinTypeLabel('dry')).toBe('Dry')
+        expect(getSkinTypeLabel('normal')).toBe('Normal')
+        expect(getSkinTypeLabel('combination')).toBe('Combination')
+        expect(getSkinTypeLabel('oily')).toBe('Oily')
+        expect(getSkinTypeLabel('sensitive')).toBe('Sensitive')
+        expect(getSkinTypeLabel('unknown')).toBe('To be set by AI')
       })
 
       it('should handle undefined/unknown values', () => {
-        expect(getSkinTypeLabel(undefined)).toBe('À définir par l\'IA')
-        expect(getSkinTypeLabel('random')).toBe('À définir par l\'IA')
+        expect(getSkinTypeLabel(undefined)).toBe('To be set by AI')
+        expect(getSkinTypeLabel('random')).toBe('To be set by AI')
       })
     })
 
     describe('getFrequencyLabel', () => {
-      it('should map frequency values to French labels', () => {
-        expect(getFrequencyLabel('quotidien')).toBe('Quotidien')
-        expect(getFrequencyLabel('hebdomadaire')).toBe('Hebdomadaire')
-        expect(getFrequencyLabel('ponctuel')).toBe('Ponctuel')
+      it('should map frequency values to English labels', () => {
+        expect(getFrequencyLabel('daily')).toBe('Daily')
+        expect(getFrequencyLabel('weekly')).toBe('Weekly')
+        expect(getFrequencyLabel('as_needed')).toBe('As needed')
+        // Test backward compatibility with FR values
+        expect(getFrequencyLabel('quotidien')).toBe('Daily')
+        expect(getFrequencyLabel('hebdomadaire')).toBe('Weekly')
+        expect(getFrequencyLabel('ponctuel')).toBe('As needed')
       })
     })
 
     describe('getTimingLabel', () => {
-      it('should map timing values to French labels', () => {
-        expect(getTimingLabel('matin')).toBe('Matin')
-        expect(getTimingLabel('soir')).toBe('Soir')
-        expect(getTimingLabel('matin_et_soir')).toBe('Matin et soir')
+      it('should map timing values to English labels', () => {
+        expect(getTimingLabel('morning')).toBe('Morning')
+        expect(getTimingLabel('evening')).toBe('Evening')
+        expect(getTimingLabel('morning_and_evening')).toBe('Morning and evening')
+        // Test backward compatibility with FR values
+        expect(getTimingLabel('matin')).toBe('Morning')
+        expect(getTimingLabel('soir')).toBe('Evening')
+        expect(getTimingLabel('matin_et_soir')).toBe('Morning and evening')
       })
     })
   })

@@ -1,0 +1,162 @@
+{
+  "photos": [
+    {
+      "id": "test-photo-1",
+      "file": "data:image/jpeg;base64,test",
+      "preview": "test",
+      "type": "face-frontal",
+      "quality": "good"
+    }
+  ],
+  "userProfile": {
+    "age": 29,
+    "gender": "female",
+    "skinType": "combination"
+  },
+  "skinConcerns": {
+    "primary": [
+      "acne",
+      "pores"
+    ]
+  },
+  "currentRoutine": {
+    "morningProducts": [],
+    "eveningProducts": [],
+    "monthlyBudget": "50-100"
+  },
+  "catalog": {
+    "products": [
+      {
+        "id": "p_cleanser_combo_budget",
+        "name": "Gel Nettoyant Doux",
+        "brand": "DemoBrand",
+        "category": "cleanser",
+        "price": 8.9,
+        "priority_score": 90,
+        "in_stock": true,
+        "skin_types": [
+          "combination",
+          "oily",
+          "normal"
+        ],
+        "target_concerns": [
+          "pores",
+          "acne",
+          "oil_control"
+        ],
+        "budget_tier": "budget",
+        "clinical_proven": false,
+        "dermatologist_recommended": false
+      },
+      {
+        "id": "p_moisturizer_combo",
+        "name": "Hydratant Équilibrant",
+        "brand": "DemoBrand",
+        "category": "moisturizer",
+        "price": 12.9,
+        "priority_score": 85,
+        "in_stock": true,
+        "skin_types": [
+          "combination",
+          "normal",
+          "sensitive"
+        ],
+        "target_concerns": [
+          "dehydration",
+          "barrier_support"
+        ],
+        "budget_tier": "mid",
+        "clinical_proven": false,
+        "dermatologist_recommended": true
+      },
+      {
+        "id": "p_sunscreen_face",
+        "name": "Crème Solaire Visage SPF50",
+        "brand": "DemoBrand",
+        "category": "sunscreen",
+        "price": 14.9,
+        "priority_score": 95,
+        "in_stock": true,
+        "skin_types": [
+          "oily",
+          "combination",
+          "normal",
+          "sensitive"
+        ],
+        "target_concerns": [
+          "uv_protection",
+          "pigmentation"
+        ],
+        "budget_tier": "mid",
+        "clinical_proven": true,
+        "dermatologist_recommended": true
+      },
+      {
+        "id": "p_niacinamide_serum",
+        "name": "Sérum Niacinamide 10%",
+        "brand": "DemoBrand",
+        "category": "treatment",
+        "subcategory": "niacinamide",
+        "price": 15.9,
+        "priority_score": 88,
+        "in_stock": true,
+        "skin_types": [
+          "oily",
+          "combination",
+          "normal"
+        ],
+        "target_concerns": [
+          "pores",
+          "oil_control",
+          "texture"
+        ],
+        "budget_tier": "mid",
+        "clinical_proven": false,
+        "dermatologist_recommended": true
+      },
+      {
+        "id": "p_retinoid_low",
+        "name": "Rétinoïde Faible",
+        "brand": "DemoBrand",
+        "category": "treatment",
+        "subcategory": "retinoid",
+        "price": 19.9,
+        "priority_score": 80,
+        "in_stock": true,
+        "skin_types": [
+          "normal",
+          "combination"
+        ],
+        "target_concerns": [
+          "wrinkles",
+          "texture",
+          "acne"
+        ],
+        "budget_tier": "mid",
+        "clinical_proven": false,
+        "dermatologist_recommended": false
+      },
+      {
+        "id": "p_spot_bha",
+        "name": "Soin Local BHA",
+        "brand": "DemoBrand",
+        "category": "spot_treatment",
+        "price": 9.5,
+        "priority_score": 78,
+        "in_stock": true,
+        "skin_types": [
+          "oily",
+          "combination",
+          "normal"
+        ],
+        "target_concerns": [
+          "acne",
+          "blemishes"
+        ],
+        "budget_tier": "budget",
+        "clinical_proven": false,
+        "dermatologist_recommended": false
+      }
+    ]
+  }
+}

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { AnalysisService } from '@/services/ai/analysis.service'
+import { runV2Pipeline } from '@/services/ai/orchestrator'
 import type { AnalyzeRequest } from '@/types'
 
 export async function POST(request: NextRequest) {
@@ -60,13 +61,53 @@ export async function POST(request: NextRequest) {
 
     // Analyse avec IA (les photos sont déjà en base64)
     try {
-      const analysis = await AnalysisService.analyzeSkin(body)
+      // Check pipeline version from environment
+      const pipelineVersion = process.env.DERMAI_PIPELINE || 'legacy'
+      console.log(`🔧 Using pipeline version: ${pipelineVersion}`)
 
-      console.log('Analyse terminée avec succès')
+      let analysis
+      let processingTimeMs = 0
+      let aiModelUsed = 'gpt-4o'
+      let analysisVersion = 'legacy'
+
+      const startTime = Date.now()
+
+      if (pipelineVersion === 'v2') {
+        console.log('🚀 Running V2 Pipeline (3-step orchestration)')
+        analysis = await runV2Pipeline(body)
+        analysisVersion = 'v2-prompts'
+        aiModelUsed = 'gpt-4o-vision'
+      } else {
+        console.log('🔄 Running Legacy Pipeline')
+        analysis = await AnalysisService.analyzeSkin(body)
+        analysisVersion = 'legacy'
+        aiModelUsed = 'gpt-4o'
+      }
+
+      processingTimeMs = Date.now() - startTime
+
+      console.log('Analyse terminée avec succès', {
+        pipelineVersion,
+        processingTimeMs,
+        aiModelUsed,
+        analysisVersion
+      })
+
+      // Add metadata to analysis for database persistence
+      const analysisWithMetadata = {
+        ...analysis,
+        metadata: {
+          analysis_version: analysisVersion,
+          processing_time_ms: processingTimeMs,
+          ai_model_used: aiModelUsed,
+          pipeline_version: pipelineVersion,
+          timestamp: new Date().toISOString()
+        }
+      }
 
       return NextResponse.json({
         success: true,
-        data: analysis
+        data: analysisWithMetadata
       })
     } catch (analysisError) {
       console.error('Erreur spécifique analyse IA:', analysisError)
@@ -126,16 +167,19 @@ export async function POST(request: NextRequest) {
     }
 
   } catch (error) {
-    console.error('Erreur API /analyze:', error)
+    console.error('🚨 API /analyze ERROR:', error)
     
-    return NextResponse.json(
-      { 
-        success: false, 
-        error: 'Erreur interne du serveur',
-        message: process.env.NODE_ENV === 'development' ? String(error) : 'Service temporairement indisponible'
+    const errorResponse = {
+      error: {
+        name: error instanceof Error ? error.name : 'UnknownError',
+        message: error instanceof Error ? error.message : String(error),
+        stack: (error instanceof Error && error.stack) ? error.stack.slice(0, 2000) : ''
       },
-      { status: 500 }
-    )
+      hint: "Set DERMAI_AI_PROVIDER=mock for local tests or provide OPENAI_API_KEY",
+      pipeline: process.env.DERMAI_PIPELINE || 'legacy'
+    }
+    
+    return NextResponse.json(errorResponse, { status: 500 })
   }
 }
 

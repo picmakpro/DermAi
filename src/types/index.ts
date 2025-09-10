@@ -34,6 +34,18 @@ export interface SkinAnalysis {
   beautyAssessment: BeautyAssessment
   recommendations: ProductRecommendations
   createdAt: Date
+  v2Metrics?: {
+    noFallbacks: boolean
+    utilization_pct: number
+  }
+  metadata?: {
+    analysis_version: string
+    processing_time_ms: number
+    ai_model_used: string
+    pipeline_version: string
+    timestamp: string
+    stepProviders?: { 1: string; 2: string; 3: string }
+  }
 }
 
 /** Model scores (0–100) + overall */
@@ -138,8 +150,8 @@ export interface NewRoutineStructure {
 
 export interface NewRoutineStep {
   name: string
-  frequency: 'quotidien' | 'hebdomadaire' | 'ponctuel'
-  timing: 'matin' | 'soir' | 'matin_et_soir'
+  frequency: import('@/constants/canonicals').FrequencyCanonical
+  timing: import('@/constants/canonicals').TimeOfDayCanonical
   catalogId: string // Mandatory catalog ID
   application: string
   startDate: string
@@ -154,8 +166,8 @@ export interface LocalizedRoutineStep {
 
 export interface LocalizedStep {
   name: string
-  frequency: 'quotidien' | 'hebdomadaire' | 'ponctuel'
-  timing: 'matin' | 'soir' | 'selon_besoin'
+  frequency: import('@/constants/canonicals').FrequencyCanonical
+  timing: import('@/constants/canonicals').TimeOfDayCanonical
   catalogId: string // Mandatory catalog ID
   application: string
   duration: string
@@ -172,8 +184,8 @@ export interface AdvancedRoutine {
 export interface AdvancedRoutineStep {
   title: string
   description: string
-  frequency: 'quotidien' | 'hebdomadaire' | 'ponctuel' | 'daily' | 'weekly' | 'monthly' | 'as-needed' | 'progressive'
-  timeOfDay: 'morning' | 'evening' | 'both'
+  frequency: import('@/constants/canonicals').FrequencyCanonical
+  timeOfDay: import('@/constants/canonicals').TimeOfDayCanonical
   frequencyDetails?: string
   phase: 'immediate' | 'adaptation' | 'maintenance'
   startAfterDays?: number
@@ -245,8 +257,8 @@ export interface UnifiedRoutineStep {
   phase: 'immediate' | 'adaptation' | 'maintenance'
 
   // New properties for phase/temporal UI
-  frequency: 'quotidien' | 'hebdomadaire' | 'ponctuel' | 'daily' | 'weekly' | 'monthly' | 'as-needed' | 'progressive'
-  timeOfDay: 'morning' | 'evening' | 'both'
+  frequency: import('@/constants/canonicals').FrequencyCanonical
+  timeOfDay: import('@/constants/canonicals').TimeOfDayCanonical
   frequencyDetails?: string
   startAfterDays?: number
   category: 'cleansing' | 'treatment' | 'hydration' | 'protection' | 'exfoliation'

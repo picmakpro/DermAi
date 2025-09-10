@@ -1,29 +1,29 @@
 /**
- * Exemples concrets du système éducatif DermAI
- * Illustre comment les durées personnalisées s'adaptent selon le profil utilisateur
+ * DermAI Educational System — Concrete examples
+ * Shows how personalized durations adapt to the user profile
  */
 
 import { PhaseTimingCalculator } from '../phaseTimingCalculator'
 import type { BeautyAssessment, UnifiedRoutineStep } from '@/types'
 
-// EXEMPLE 1: Utilisateur jeune avec problèmes légers
+// EXAMPLE 1: Young user with mild issues
 export const youngUserProfile: BeautyAssessment = {
-  mainConcern: 'Imperfections légères zone T',
+  mainConcern: 'Mild T-zone blemishes',
   intensity: 'mild',
-  concernedZones: ['front', 'nez'],
-  skinType: 'Peau mixte',
+  concernedZones: ['forehead', 'nose'],
+  skinType: 'combination',
   estimatedSkinAge: 24,
   visualFindings: [
-    'Quelques comédons sur le front',
-    'Léger excès de sébum zone T',
-    'Texture globalement lisse'
+    'A few comedones on the forehead',
+    'Slight excess sebum on the T-zone',
+    'Overall smooth texture'
   ],
-  expectedImprovement: 'Amélioration rapide en 2-3 semaines',
+  expectedImprovement: 'Quick improvement in 2–3 weeks',
   zoneSpecific: [
     {
-      zone: 'front',
-      problems: [{ name: 'Comédons', intensity: 'mild' }],
-      description: 'Quelques points noirs ponctuels'
+      zone: 'forehead',
+      problems: [{ name: 'Comedones', intensity: 'mild' }],
+      description: 'A few punctual blackheads'
     }
   ]
 }
@@ -31,65 +31,65 @@ export const youngUserProfile: BeautyAssessment = {
 export const youngUserRoutine: UnifiedRoutineStep[] = [
   {
     stepNumber: 1,
-    title: 'Nettoyage doux quotidien',
+    title: 'Gentle daily cleanse',
     targetArea: 'global',
     zones: [],
     recommendedProducts: [],
-    applicationAdvice: 'Matin et soir, massage circulaire doux',
+    applicationAdvice: 'Morning and evening, gentle circular massage',
     treatmentType: 'cleansing',
     priority: 10,
     phase: 'immediate',
     frequency: 'daily',
-    timeOfDay: 'both',
+    timeOfDay: 'morning_and_evening',
     category: 'cleansing'
   },
   {
     stepNumber: 2,
-    title: 'Traitement imperfections — Zone : front',
+    title: 'Blemish treatment — Area: forehead',
     targetArea: 'specific',
-    zones: ['front'],
+    zones: ['forehead'],
     recommendedProducts: [],
-    applicationAdvice: 'Le soir, en couche fine sur les zones concernées',
+    applicationAdvice: 'Evening, thin layer on concerned areas',
     treatmentType: 'treatment',
     priority: 8,
     phase: 'immediate',
     frequency: 'daily',
     timeOfDay: 'evening',
     category: 'treatment',
-    applicationDuration: 'Jusqu\'à réduction notable des comédons'
+    applicationDuration: 'Until a noticeable reduction in comedones'
   }
 ]
 
-// EXEMPLE 2: Utilisateur mature avec problèmes complexes
+// EXAMPLE 2: Mature user with complex concerns
 export const matureUserProfile: BeautyAssessment = {
-  mainConcern: 'Vieillissement cutané avec taches pigmentaires',
+  mainConcern: 'Skin aging with dark spots',
   intensity: 'moderate',
-  concernedZones: ['visage complet', 'contour des yeux'],
-  skinType: 'Peau sèche sensible',
+  concernedZones: ['full_face', 'eye_contour'],
+  skinType: 'dry',
   estimatedSkinAge: 58,
   visualFindings: [
-    'Rides d\'expression marquées',
-    'Taches pigmentaires sur les pommettes',
-    'Perte de fermeté générale',
-    'Sécheresse importante'
+    'Pronounced expression lines',
+    'Dark spots on the cheekbones',
+    'General loss of firmness',
+    'Marked dryness'
   ],
-  expectedImprovement: 'Amélioration progressive en 3-4 mois',
+  expectedImprovement: 'Gradual improvement over 3–4 months',
   zoneSpecific: [
     {
-      zone: 'contour des yeux',
+      zone: 'eye_contour',
       problems: [
-        { name: 'Rides fines', intensity: 'moderate' },
-        { name: 'Cernes', intensity: 'mild' }
+        { name: 'Fine lines', intensity: 'moderate' },
+        { name: 'Dark circles', intensity: 'mild' }
       ],
-      description: 'Zone délicate avec signes de fatigue'
+      description: 'Delicate area with fatigue signs'
     },
     {
-      zone: 'joues',
+      zone: 'cheeks',
       problems: [
-        { name: 'Taches pigmentaires', intensity: 'severe' },
-        { name: 'Perte de fermeté', intensity: 'moderate' }
+        { name: 'Dark spots', intensity: 'severe' },
+        { name: 'Loss of firmness', intensity: 'moderate' }
       ],
-      description: 'Hyperpigmentation solaire ancienne'
+      description: 'Old sun-induced hyperpigmentation'
     }
   ]
 }
@@ -97,79 +97,79 @@ export const matureUserProfile: BeautyAssessment = {
 export const matureUserRoutine: UnifiedRoutineStep[] = [
   {
     stepNumber: 1,
-    title: 'Nettoyage très doux',
+    title: 'Very gentle cleansing',
     targetArea: 'global',
     zones: [],
     recommendedProducts: [],
-    applicationAdvice: 'Huile démaquillante puis nettoyant crème',
+    applicationAdvice: 'Oil cleanser then cream cleanser',
     treatmentType: 'cleansing',
     priority: 10,
     phase: 'immediate',
     frequency: 'daily',
-    timeOfDay: 'both',
+    timeOfDay: 'morning_and_evening',
     category: 'cleansing'
   },
   {
     stepNumber: 2,
-    title: 'Réparation barrière cutanée',
+    title: 'Barrier repair',
     targetArea: 'global',
     zones: [],
     recommendedProducts: [],
-    applicationAdvice: 'Sérum réparateur matin et soir',
+    applicationAdvice: 'Repairing serum, morning and evening',
     treatmentType: 'treatment',
     priority: 9,
     phase: 'immediate',
     frequency: 'daily',
-    timeOfDay: 'both',
+    timeOfDay: 'morning_and_evening',
     category: 'treatment',
-    applicationDuration: 'Jusqu\'à apaisement de la sensibilité'
+    applicationDuration: 'Until sensitivity is calmed'
   },
   {
     stepNumber: 3,
-    title: 'Rétinol progressif — Zones : visage',
+    title: 'Progressive retinol — Area: face',
     targetArea: 'global',
-    zones: ['visage'],
+    zones: ['full_face'],
     recommendedProducts: [],
-    applicationAdvice: 'Commencer 1x/semaine le soir, augmenter progressivement',
+    applicationAdvice: 'Start once/week at night, then increase gradually',
     treatmentType: 'treatment',
     priority: 7,
     phase: 'adaptation',
-    frequency: 'progressive',
+    frequency: 'weekly', // start weekly; progression handled by guidance
     timeOfDay: 'evening',
     category: 'treatment'
   }
 ]
 
-// EXEMPLE 3: Utilisateur avec problèmes de rasage
+// EXAMPLE 3: Shaving-related issues
 export const shavingIssuesProfile: BeautyAssessment = {
-  mainConcern: 'Poils incarnés et irritations post-rasage',
+  mainConcern: 'Ingrown hairs and post-shave irritation',
   intensity: 'severe',
-  concernedZones: ['menton', 'cou', 'joues basses'],
-  skinType: 'Peau mixte sensible',
+  concernedZones: ['chin', 'neck', 'lower_cheeks'],
+  skinType: 'combination',
   estimatedSkinAge: 32,
   visualFindings: [
-    'Poils incarnés multiples',
-    'Inflammations post-rasage',
-    'Hyperpigmentation post-inflammatoire',
-    'Sensibilité cutanée élevée'
+    'Multiple ingrown hairs',
+    'Post-shave inflammation',
+    'Post-inflammatory hyperpigmentation',
+    'High skin sensitivity'
   ],
-  expectedImprovement: 'Amélioration notable en 6-8 semaines avec technique adaptée',
+  expectedImprovement: 'Notable improvement in 6–8 weeks with proper technique',
   zoneSpecific: [
     {
-      zone: 'menton',
+      zone: 'chin',
       problems: [
-        { name: 'Poils incarnés', intensity: 'severe' },
-        { name: 'Rougeurs', intensity: 'severe' }
+        { name: 'Ingrown hairs', intensity: 'severe' },
+        { name: 'Redness', intensity: 'severe' }
       ],
-      description: 'Zone de rasage la plus problématique'
+      description: 'Most problematic shaving area'
     },
     {
-      zone: 'cou',
+      zone: 'neck',
       problems: [
-        { name: 'Poils incarnés', intensity: 'moderate' },
-        { name: 'Cicatrisation', intensity: 'moderate' }
+        { name: 'Ingrown hairs', intensity: 'moderate' },
+        { name: 'Healing', intensity: 'moderate' }
       ],
-      description: 'Inflammations récurrentes'
+      description: 'Recurrent inflammation'
     }
   ]
 }
@@ -177,26 +177,26 @@ export const shavingIssuesProfile: BeautyAssessment = {
 export const shavingRoutine: UnifiedRoutineStep[] = [
   {
     stepNumber: 1,
-    title: 'Traitement poils incarnés — Zones : menton, cou',
+    title: 'Ingrown-hair treatment — Areas: chin, neck',
     targetArea: 'specific',
-    zones: ['menton', 'cou'],
+    zones: ['chin', 'neck'],
     recommendedProducts: [],
-    applicationAdvice: 'Matin et soir, après nettoyage doux',
+    applicationAdvice: 'Morning and evening, after gentle cleansing',
     treatmentType: 'treatment',
     priority: 10,
     phase: 'immediate',
     frequency: 'daily',
-    timeOfDay: 'both',
+    timeOfDay: 'morning_and_evening',
     category: 'treatment',
-    applicationDuration: 'Jusqu\'à cicatrisation des inflammations'
+    applicationDuration: 'Until inflammatory lesions have healed'
   },
   {
     stepNumber: 2,
-    title: 'Exfoliation douce préventive',
+    title: 'Gentle preventive exfoliation',
     targetArea: 'specific',
-    zones: ['zone de rasage'],
+    zones: ['beard_area'],
     recommendedProducts: [],
-    applicationAdvice: '1-2x/semaine, jamais le jour du rasage',
+    applicationAdvice: '1–2×/week, never on shaving day',
     treatmentType: 'treatment',
     priority: 6,
     phase: 'adaptation',
@@ -206,48 +206,48 @@ export const shavingRoutine: UnifiedRoutineStep[] = [
   }
 ]
 
-// Fonction de démonstration des calculs
+// Demo function for calculations
 export function demonstrateEducationalSystem() {
-  console.log('=== SYSTÈME ÉDUCATIF DERMAI - EXEMPLES ===\n')
+  console.log('=== DERMAI EDUCATIONAL SYSTEM — EXAMPLES ===\n')
   
-  // Exemple 1: Utilisateur jeune
+  // Example 1: Young user
   const youngTimings = PhaseTimingCalculator.calculateCompleteTiming(
     youngUserProfile, 
     youngUserRoutine
   )
   
-  console.log('👦 UTILISATEUR JEUNE (24 ans, problèmes légers):')
-  console.log(`   Phase Immédiate: ${youngTimings.immediate.duration}`)
-  console.log(`   Objectif: ${youngTimings.immediate.objective.title}`)
-  console.log(`   Phase Adaptation: ${youngTimings.adaptation.duration}`)
-  console.log(`   Phase Maintenance: ${youngTimings.maintenance.duration}\n`)
+  console.log('👦 YOUNG USER (24 y/o, mild issues):')
+  console.log(`   Immediate Phase: ${youngTimings.immediate.duration}`)
+  console.log(`   Objective: ${youngTimings.immediate.objective.title}`)
+  console.log(`   Adaptation Phase: ${youngTimings.adaptation.duration}`)
+  console.log(`   Maintenance Phase: ${youngTimings.maintenance.duration}\n`)
   
-  // Exemple 2: Utilisateur mature
+  // Example 2: Mature user
   const matureTimings = PhaseTimingCalculator.calculateCompleteTiming(
     matureUserProfile,
     matureUserRoutine
   )
   
-  console.log('👩 UTILISATRICE MATURE (58 ans, problèmes complexes):')
-  console.log(`   Phase Immédiate: ${matureTimings.immediate.duration}`)
-  console.log(`   Objectif: ${matureTimings.immediate.objective.title}`)
-  console.log(`   Phase Adaptation: ${matureTimings.adaptation.duration}`)
-  console.log(`   Phase Maintenance: ${matureTimings.maintenance.duration}\n`)
+  console.log('👩 MATURE USER (58 y/o, complex concerns):')
+  console.log(`   Immediate Phase: ${matureTimings.immediate.duration}`)
+  console.log(`   Objective: ${matureTimings.immediate.objective.title}`)
+  console.log(`   Adaptation Phase: ${matureTimings.adaptation.duration}`)
+  console.log(`   Maintenance Phase: ${matureTimings.maintenance.duration}\n`)
   
-  // Exemple 3: Problèmes de rasage
+  // Example 3: Shaving issues
   const shavingTimings = PhaseTimingCalculator.calculateCompleteTiming(
     shavingIssuesProfile,
     shavingRoutine
   )
   
-  console.log('🪒 PROBLÈMES DE RASAGE (32 ans, intensité élevée):')
-  console.log(`   Phase Immédiate: ${shavingTimings.immediate.duration}`)
-  console.log(`   Objectif: ${shavingTimings.immediate.objective.title}`)
-  console.log(`   Phase Adaptation: ${shavingTimings.adaptation.duration}`)
-  console.log(`   Phase Maintenance: ${shavingTimings.maintenance.duration}\n`)
+  console.log('🪒 SHAVING ISSUES (32 y/o, high intensity):')
+  console.log(`   Immediate Phase: ${shavingTimings.immediate.duration}`)
+  console.log(`   Objective: ${shavingTimings.immediate.objective.title}`)
+  console.log(`   Adaptation Phase: ${shavingTimings.adaptation.duration}`)
+  console.log(`   Maintenance Phase: ${shavingTimings.maintenance.duration}\n`)
   
-  // Démonstration badges temporels
-  console.log('🏷️ BADGES TEMPORELS GÉNÉRÉS:')
+  // Timing badges demo
+  console.log('🏷️ GENERATED TIMING BADGES:')
   youngUserRoutine.forEach(step => {
     const badge = PhaseTimingCalculator.generateTimingBadge(step)
     console.log(`   "${step.title}" → ${badge}`)
@@ -259,35 +259,35 @@ export function demonstrateEducationalSystem() {
     const criteria = PhaseTimingCalculator.getVisualCriteria(step)
     console.log(`   "${step.title}" → ${badge}`)
     if (criteria) {
-      console.log(`      Critère visuel: ${criteria.observation}`)
+      console.log(`      Visual criterion: ${criteria.observation}`)
     }
   })
 }
 
-// Comparaison avant/après implémentation
+// Before/After comparison
 export const beforeAfterComparison = {
   before: {
     phaseLabels: [
-      'Phase Immédiate (5)',
-      'Phase Adaptation (3)', 
-      'Phase Maintenance (2)'
+      'Immediate Phase (5)',
+      'Adaptation Phase (3)', 
+      'Maintenance Phase (2)'
     ],
-    timing: 'Durées fixes et arbitraires',
-    education: 'Aucune explication du "pourquoi"',
-    badges: 'Simples: "Quotidien", "Hebdomadaire"',
-    userAutonomy: 'Faible - suit aveuglément'
+    timing: 'Fixed, arbitrary durations',
+    education: 'No explanation of the “why”',
+    badges: 'Simple: "Daily", "Weekly"',
+    userAutonomy: 'Low — blindly follows'
   },
   
   after: {
     phaseLabels: [
-      'Phase Immédiate (1-2 semaines)',
-      'Phase Adaptation (4-6 semaines)',
-      'Phase Maintenance (En continu)'
+      'Immediate Phase (1–2 weeks)',
+      'Adaptation Phase (4–6 weeks)',
+      'Maintenance Phase (Ongoing)'
     ],
-    timing: 'Durées personnalisées selon diagnostic',
-    education: 'Objectifs clairs + info-bulles dermatologiques',
-    badges: 'Enrichis: "👁️ Jusqu\'à cicatrisation", "📈 Progressif"',
-    userAutonomy: 'Élevée - comprend la logique'
+    timing: 'Personalized durations based on diagnosis',
+    education: 'Clear objectives + dermatology tooltips',
+    badges: 'Enriched: "👁️ Until healed", "📈 Progressive"',
+    userAutonomy: 'High — understands the logic'
   }
 }
 
