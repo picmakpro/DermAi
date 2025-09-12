@@ -1,0 +1,78 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - link "DermAI" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - img "DermAI" [ref=e8] [cursor=pointer]
+      - generic [ref=e15]: Étape 1 sur 4
+    - generic [ref=e19]:
+      - generic [ref=e20]:
+        - img [ref=e22]
+        - heading "Capturez votre peau" [level=1] [ref=e25]
+        - paragraph [ref=e26]:
+          - text: Prenez quelques photos de votre visage pour que DermAI puisse analyser votre peau avec une
+          - strong [ref=e27]: précision dermatologique
+      - generic [ref=e28]:
+        - generic [ref=e29]:
+          - img [ref=e32]
+          - heading "Photos sécurisées" [level=3] [ref=e34]
+          - paragraph [ref=e35]: Vos données restent privées et ne sont jamais partagées
+        - generic [ref=e36]:
+          - img [ref=e39]
+          - heading "Analyse rapide" [level=3] [ref=e41]
+          - paragraph [ref=e42]: Résultats en moins de 2 minutes après l'upload
+        - generic [ref=e43]:
+          - img [ref=e46]
+          - heading "Qualité optimale" [level=3] [ref=e49]
+          - paragraph [ref=e50]: Guides intégrés pour prendre les meilleures photos
+    - generic [ref=e51]:
+      - generic [ref=e52]:
+        - generic [ref=e54]:
+          - generic [ref=e55]:
+            - heading "Ajoutez vos photos" [level=2] [ref=e56]
+            - paragraph [ref=e57]: Glissez-déposez vos photos ou utilisez le bouton ci-dessous
+          - generic [ref=e60] [cursor=pointer]:
+            - img [ref=e62] [cursor=pointer]
+            - generic [ref=e64] [cursor=pointer]:
+              - heading "Ajoutez vos photos" [level=3] [ref=e65] [cursor=pointer]
+              - paragraph [ref=e66] [cursor=pointer]: Glissez-déposez ou cliquez pour sélectionner (0/5)
+              - paragraph [ref=e67] [cursor=pointer]: JPG, PNG, WebP, HEIC/HEIF, AVIF • Max 5MB par photo
+          - button "Ajouter vos photos" [ref=e69] [cursor=pointer]:
+            - img [ref=e70] [cursor=pointer]
+            - generic [ref=e73] [cursor=pointer]: Ajouter vos photos
+        - generic [ref=e74]:
+          - heading "Conseils pour prendre vos photos" [level=3] [ref=e75]:
+            - img [ref=e77]
+            - text: Conseils pour prendre vos photos
+          - generic [ref=e79]:
+            - generic [ref=e80]:
+              - img [ref=e81]
+              - generic [ref=e84]: Éclairage naturel de face
+            - generic [ref=e85]:
+              - img [ref=e86]
+              - generic [ref=e89]: Visage propre, sans maquillage
+            - generic [ref=e90]:
+              - img [ref=e91]
+              - generic [ref=e94]: Plusieurs angles différents
+            - generic [ref=e95]:
+              - img [ref=e96]
+              - generic [ref=e99]: Photos nettes et claires
+        - generic [ref=e100]:
+          - button "Retour à l'accueil" [ref=e101] [cursor=pointer]:
+            - img [ref=e102] [cursor=pointer]
+            - generic [ref=e104] [cursor=pointer]: Retour à l'accueil
+          - button "Continuer vers le questionnaire →" [disabled] [ref=e105]:
+            - generic [ref=e106]: Continuer vers le questionnaire
+            - generic [ref=e108]: →
+      - generic [ref=e111]:
+        - img [ref=e112]
+        - generic [ref=e114]:
+          - strong [ref=e115]: "Confidentialité garantie :"
+          - text: Vos photos sont sécurisées et ne sont utilisées que pour votre diagnostic
+  - button "Open Next.js Dev Tools" [ref=e121] [cursor=pointer]:
+    - img [ref=e122] [cursor=pointer]
+  - alert [ref=e125]
+```

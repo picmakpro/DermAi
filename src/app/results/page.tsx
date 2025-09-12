@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, useRef } from 'react'
 import LZString from 'lz-string'
 import { useRouter } from 'next/navigation'
 import { getProductInfoByCatalogId, RecommendedProductCard as CatalogRecommendedProductCard, findAlternativeProduct } from '@/services/catalog/catalogService'
+import { extractAllCatalogIds as extractCatalogIdsEnhanced, ensureProductSync } from '@/utils/ProductMappingHelpers'
 import { motion } from 'framer-motion'
 import { 
   ArrowLeft, 
@@ -32,6 +33,148 @@ import {
 } from 'lucide-react'
 import type { SkinAnalysis, SkinScores, ScoreDetail } from '@/types'
 import { getAnalysis } from '@/utils/storage/analysisStore'
+
+// Convertit la routine V2 (3 phases) vers le format UnifiedRoutineStep[]
+function convertV2RoutineToUnified(routineV2: any, productsV2: any): any[] {
+  if (!routineV2?.phases) return []
+  
+  const unifiedSteps: any[] = []
+  let stepNumber = 1
+  
+  // Créer un mapping des produits par routineStepId
+  const productsByStep = new Map()
+  if (productsV2?.selectedProducts) {
+    productsV2.selectedProducts.forEach((product: any) => {
+      productsByStep.set(product.routineStepId, product)
+    })
+  }
+  
+  // Convertir chaque phase
+  Object.entries(routineV2.phases).forEach(([phaseName, phase]: [string, any]) => {
+    if (phase?.steps) {
+      phase.steps.forEach((step: any) => {
+        const product = productsByStep.get(step.stepNumber)
+        
+        unifiedSteps.push({
+          stepNumber: stepNumber++,
+          title: `${step.careType} - ${phaseName}`,
+          targetArea: (step.targetZones && step.targetZones.length > 0) ? 'specific' : 'global',
+          zones: step.targetZones || [],
+          recommendedProducts: product ? [{
+            id: product.catalogId,
+            name: product.productName,
+            brand: product.brand,
+            price: product.price,
+            justification: product.justification || `Adapté pour ${step.careType}`
+          }] : [],
+          applicationAdvice: product?.applicationAdvice || step.progressiveIntroduction || 'Appliquer selon les instructions',
+          restrictions: step.restrictions || [],
+          treatmentType: step.careType === 'nettoyage' ? 'cleansing' : 
+                        step.careType === 'traitement' ? 'treatment' :
+                        step.careType === 'hydratation' ? 'moisturizing' : 'protection',
+          priority: phaseName === 'immediate' ? 1 : phaseName === 'adaptation' ? 2 : 3,
+          phase: phaseName,
+          frequency: step.timing === 'both' ? 'daily' : 'daily', // Simplifier pour l'instant
+          timeOfDay: step.timing === 'matin' ? 'morning' : 
+                    step.timing === 'soir' ? 'evening' : 'both',
+          category: step.careType === 'nettoyage' ? 'cleansing' : 
+                   step.careType === 'traitement' ? 'treatment' :
+                   step.careType === 'hydratation' ? 'hydration' : 'protection',
+          // Champs additionnels pour compatibilité
+          duration: phase.duration,
+          targetProblem: step.targetProblem
+        })
+      })
+    }
+  })
+  
+  return unifiedSteps
+}
+
+// Adaptateur pour la V2
+function adaptV2ToV1Format(analysisData: any): any {
+  console.log('🔄 Adaptateur V2→V1 appelé avec:', {
+    hasBeautyAssessment: !!analysisData?.beautyAssessment,
+    hasDiagnostic: !!analysisData?.diagnostic,
+    hasRoutine: !!analysisData?.routine,
+    hasProducts: !!analysisData?.products,
+    dataKeys: Object.keys(analysisData || {}),
+    dataType: typeof analysisData
+  })
+  
+  // Si c'est déjà au format V1, retourner tel quel
+  if (analysisData?.beautyAssessment) {
+    console.log('✅ Format V1 détecté, pas d\'adaptation nécessaire')
+    return analysisData
+  }
+  
+  // Si c'est au format V2, adapter
+  if (analysisData?.diagnostic && analysisData?.routine && analysisData?.products) {
+    console.log('🔄 Format V2 détecté, adaptation en cours...')
+    return {
+      beautyAssessment: {
+        skinType: analysisData.diagnostic.skinType,
+        mainConcern: analysisData.diagnostic.generalObservation,
+        intensity: 'modérée', // Valeur par défaut
+        concernedZones: analysisData.diagnostic.zoneSpecificIssues?.map((issue: any) => issue.zone) || [],
+        visualFindings: [analysisData.diagnostic.generalObservation], // Convertir en array
+        expectedImprovement: "Amélioration visible avec routine personnalisée",
+        zoneSpecific: analysisData.diagnostic.zoneSpecificIssues?.map((issue: any) => ({
+          zone: issue.zone,
+          problems: [{
+            type: issue.problem,
+            intensity: issue.intensity,
+            description: issue.description
+          }]
+        })) || []
+      },
+      scores: {
+        overall: analysisData.diagnostic.scores.overall,
+        hydration: analysisData.diagnostic.scores.hydration,
+        wrinkles: analysisData.diagnostic.scores.wrinkles,
+        firmness: analysisData.diagnostic.scores.firmness,
+        radiance: analysisData.diagnostic.scores.radiance,
+        pores: analysisData.diagnostic.scores.pores,
+        spots: analysisData.diagnostic.scores.spots,
+        darkCircles: analysisData.diagnostic.scores.darkCircles,
+        skinAge: analysisData.diagnostic.scores.skinAge
+      },
+      routine: {
+        phases: analysisData.routine.phases,
+        globalAdvice: analysisData.routine.globalAdvice || [],
+        dermatologicalRationale: analysisData.routine.dermatologicalRationale || ""
+      },
+      recommendedProducts: analysisData.products.selectedProducts?.map((product: any) => ({
+        catalogId: product.catalogId,
+        name: product.productName,
+        brand: product.brand,
+        price: product.price,
+        justification: product.justification,
+        applicationAdvice: product.applicationAdvice,
+        timing: product.timing,
+        targetZones: product.targetZones,
+        temporaryLabel: product.temporaryLabel,
+        progressiveIntroduction: product.progressiveIntroduction,
+        restrictions: product.restrictions
+      })) || [],
+      recommendations: {
+        unifiedRoutine: convertV2RoutineToUnified(analysisData.routine, analysisData.products),
+        localizedRoutine: [] // Pour compatibilité
+      },
+      metadata: {
+        version: 'v2-adapted',
+        coherenceScore: analysisData.coherenceValidation?.overallScore,
+        qualityScore: analysisData.qualityMetrics?.overallQuality,
+        ...analysisData.metadata
+      }
+    }
+  }
+  
+  // Fallback - format inconnu
+  console.log('⚠️ Format inconnu, retour des données brutes:', analysisData)
+  return analysisData
+}
+
 import ChatWidget from './ChatWidget'
 import ScoreCircle from './components/ScoreCircle'
 import ProductCard from './components/ProductCard'
@@ -138,8 +281,10 @@ const extractCatalogIds = (analysis: SkinAnalysis): string[] => {
   return result
 }
 
-// Génération de produits recommandés basée sur l'analyse
+// Génération de produits recommandés basée sur l'analyse - SPRINT 2 AMÉLIORÉ
 const getProductRecommendations = async (analysis: SkinAnalysis): Promise<CatalogRecommendedProductCard[]> => {
+  console.log('🔄 SPRINT 2: Génération produits avec synchronisation améliorée')
+  
   // Si l'analyse contient des produits détaillés (type léger), les convertir vers le format catalogue
   if (analysis.recommendations?.productsDetailed && analysis.recommendations.productsDetailed.length > 0) {
     const mapped = analysis.recommendations.productsDetailed.map((p: any): CatalogRecommendedProductCard => {
@@ -163,38 +308,69 @@ const getProductRecommendations = async (analysis: SkinAnalysis): Promise<Catalo
     return mapped
   }
 
-  // Extraire les catalogId de l'analyse
-  const catalogIds = extractCatalogIds(analysis)
- 
-  // Ajouter les catalogId issus du fallback de routine localisée (générée côté UI)
+  // 🔥 SPRINT 2: Utiliser la nouvelle fonction d'extraction améliorée
   try {
-    const localizedComputed = getLocalizedRoutine(analysis) as any[]
-    const extraIds: string[] = []
-    localizedComputed.forEach((zone: any) => {
-      ;(zone.steps || []).forEach((s: any) => {
-        if (s?.catalogId) extraIds.push(s.catalogId)
-      })
+    const syncResult = await ensureProductSync(analysis)
+    console.log(`✅ SPRINT 2: Synchronisation complète - ${syncResult.syncedProducts.length} produits`)
+    
+    // Convertir les produits synchronisés au format attendu
+    const products = syncResult.syncedProducts.map((product: any): CatalogRecommendedProductCard => {
+      const safePrice = typeof product.price === 'number' ? product.price : 0
+      const originalPrice = Math.round(safePrice * 1.2 * 100) / 100
+      const discount = originalPrice > 0 ? Math.max(0, Math.min(99, Math.round(((originalPrice - safePrice) / originalPrice) * 100))) : 0
+      
+      return {
+        name: product.name,
+        brand: product.brand,
+        price: safePrice,
+        originalPrice,
+        imageUrl: product.imageUrl || "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop",
+        discount,
+        frequency: 'Selon routine',
+        benefits: Array.isArray(product.benefits) ? product.benefits : ['Sélectionné pour votre peau'],
+        instructions: "Suivre les instructions de la routine personnalisée",
+        whyThisProduct: "Produit sélectionné spécifiquement pour vos besoins par l'IA DermAI",
+        affiliateLink: product.affiliateLink || '#'
+      }
     })
-    if (extraIds.length) {
-      const merged = Array.from(new Set([...catalogIds, ...extraIds]))
-      console.log('➕ Ajout IDs depuis fallback localizedRoutine:', extraIds, '→ total:', merged.length)
-      return await getProductsFromCatalogIds(merged)
-    }
-  } catch (e) {
-    console.warn('Fallback localizedRoutine non disponible pour extraction:', e)
-  }
-
-  // Si on a des catalogId, créer des produits avec référence au catalogue
-  if (catalogIds.length > 0) {
-    console.log('🎯 CatalogIds trouvés:', catalogIds)
-    const products = await getProductsFromCatalogIds(catalogIds)
-    console.log('📦 Produits générés:', products.length, products.map(p => `${p.brand} ${p.name}`))
+    
     return products
-  }
+  } catch (error) {
+    console.warn('❌ SPRINT 2: Erreur synchronisation, fallback vers ancienne méthode:', error)
+    
+    // Fallback vers ancienne méthode
+    const catalogIds = extractCatalogIds(analysis)
+ 
+    // Ajouter les catalogId issus du fallback de routine localisée (générée côté UI)
+    try {
+      const localizedComputed = getLocalizedRoutine(analysis) as any[]
+      const extraIds: string[] = []
+      localizedComputed.forEach((zone: any) => {
+        ;(zone.steps || []).forEach((s: any) => {
+          if (s?.catalogId) extraIds.push(s.catalogId)
+        })
+      })
+      if (extraIds.length) {
+        const merged = Array.from(new Set([...catalogIds, ...extraIds]))
+        console.log('➕ Ajout IDs depuis fallback localizedRoutine:', extraIds, '→ total:', merged.length)
+        return await getProductsFromCatalogIds(merged)
+      }
+    } catch (e) {
+      console.warn('Fallback localizedRoutine non disponible pour extraction:', e)
+    }
 
-  // Fallback vers produits génériques
-  console.log('Aucun catalogId trouvé, utilisation des produits génériques')
-  return getGenericProducts(analysis)
+    // Si on a des catalogId, créer des produits avec référence au catalogue
+    if (catalogIds.length > 0) {
+      console.log('🎯 CatalogIds trouvés:', catalogIds)
+      const products = await getProductsFromCatalogIds(catalogIds)
+      console.log('📦 Produits générés:', products.length, products.map(p => `${p.brand} ${p.name}`))
+      return products
+    }
+
+    // Fallback vers produits génériques
+    console.log('Aucun catalogId trouvé, utilisation des produits génériques')
+    return getGenericProducts(analysis)
+  }
 }
 
 // Créer des produits basés sur les catalogId trouvés
@@ -750,7 +926,7 @@ export default function ResultsPage() {
           const json = LZString.decompressFromEncodedURIComponent(dParam)
           if (json) {
             const shared = JSON.parse(json)
-            setAnalysis(shared)
+            setAnalysis(adaptV2ToV1Format(shared))
             if (questionnaireData) {
               const q = JSON.parse(questionnaireData)
               if (q?.userProfile?.age) setUserAge(q.userProfile.age)
@@ -774,7 +950,7 @@ export default function ResultsPage() {
           router.push('/upload')
           return
         }
-        setAnalysis(stored)
+        setAnalysis(adaptV2ToV1Format(stored))
         if (questionnaireData) {
           const q = JSON.parse(questionnaireData)
           if (q?.userProfile?.age) setUserAge(q.userProfile.age)
@@ -1034,7 +1210,7 @@ export default function ResultsPage() {
                   <span className="font-semibold text-sm">Type de Peau</span>
                 </div>
                 <div className="text-lg md:text-xl font-bold font-display mb-1">
-                  {analysis.beautyAssessment.skinType || analysis.beautyAssessment.mainConcern}
+                  {analysis?.beautyAssessment?.skinType || analysis?.beautyAssessment?.mainConcern || 'Type de peau en cours d\'analyse...'}
                 </div>
               </div>
 

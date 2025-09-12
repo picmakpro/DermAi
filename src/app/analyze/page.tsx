@@ -597,7 +597,7 @@ export default function AnalyzePage() {
                     </div>
                     <div className="flex justify-between items-center p-3 bg-dermai-pure rounded-2xl border border-dermai-nude-200">
                       <span className="text-dermai-neutral-600">Durée estimée :</span>
-                      <span className="font-display font-semibold text-dermai-neutral-900">≈ 45–90 s</span>
+                      <span className="font-display font-semibold text-dermai-neutral-900">≈ 30–60 s</span>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-dermai-pure rounded-2xl border border-dermai-nude-200 md:col-span-2">
                       <span className="text-dermai-neutral-600">Type de peau détecté :</span>

@@ -1,0 +1,113 @@
+{
+  "version": "1.0",
+  "generatedAt": "2025-09-12T14:41:52.509Z",
+  "totalProducts": 110,
+  "categories": [
+    {
+      "name": "cleanser",
+      "count": 10,
+      "file": "cleanser.json"
+    },
+    {
+      "name": "exfoliant",
+      "count": 8,
+      "file": "exfoliant.json"
+    },
+    {
+      "name": "toner",
+      "count": 7,
+      "file": "toner.json"
+    },
+    {
+      "name": "serum",
+      "count": 15,
+      "file": "serum.json"
+    },
+    {
+      "name": "moisturizer",
+      "count": 10,
+      "file": "moisturizer.json"
+    },
+    {
+      "name": "face-oil",
+      "count": 6,
+      "file": "face-oil.json"
+    },
+    {
+      "name": "mask",
+      "count": 8,
+      "file": "mask.json"
+    },
+    {
+      "name": "eye-care",
+      "count": 6,
+      "file": "eye-care.json"
+    },
+    {
+      "name": "treatment",
+      "count": 8,
+      "file": "treatment.json"
+    },
+    {
+      "name": "balm",
+      "count": 6,
+      "file": "balm.json"
+    },
+    {
+      "name": "lip-care",
+      "count": 5,
+      "file": "lip-care.json"
+    },
+    {
+      "name": "mist",
+      "count": 5,
+      "file": "mist.json"
+    },
+    {
+      "name": "primer",
+      "count": 5,
+      "file": "primer.json"
+    },
+    {
+      "name": "sunscreen",
+      "count": 11,
+      "file": "sunscreen.json"
+    }
+  ],
+  "problemMapping": {
+    "acne": [
+      "cleanser",
+      "serum",
+      "treatment",
+      "moisturizer"
+    ],
+    "pores": [
+      "cleanser",
+      "exfoliant",
+      "serum",
+      "moisturizer"
+    ],
+    "hydration": [
+      "cleanser",
+      "serum",
+      "moisturizer",
+      "face-oil"
+    ],
+    "aging": [
+      "serum",
+      "treatment",
+      "moisturizer",
+      "eye-care"
+    ],
+    "sensitivity": [
+      "cleanser",
+      "moisturizer",
+      "mist"
+    ],
+    "spots": [
+      "serum",
+      "treatment",
+      "moisturizer"
+    ]
+  }
+}

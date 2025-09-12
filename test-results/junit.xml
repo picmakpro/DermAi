@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="25" failures="8" errors="0" time="3.61">
+  <testsuite name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES" errors="0" failures="4" skipped="0" timestamp="2025-09-12T13:18:28" time="1.254" tests="21">
+    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 1: Validation JSON valide → parsing OK ✅ Devrait valider une routine complète valide" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 1: Validation JSON valide → parsing OK ✅ Devrait valider une routine complète valide" time="0.013">
+    </testcase>
+    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 1: Validation JSON valide → parsing OK ✅ Devrait valider une sélection produits complète valide" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 1: Validation JSON valide → parsing OK ✅ Devrait valider une sélection produits complète valide" time="0.003">
+    </testcase>
+    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 1: Validation JSON valide → parsing OK ✅ Devrait valider les schémas Zod directement" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 1: Validation JSON valide → parsing OK ✅ Devrait valider les schémas Zod directement" time="0.001">
+    </testcase>
+    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 2: JSON invalide → erreurs détaillées ❌ Devrait échouer avec routine incomplète" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 2: JSON invalide → erreurs détaillées ❌ Devrait échouer avec routine incomplète" time="0.007">
+    </testcase>
+    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 2: JSON invalide → erreurs détaillées ❌ Devrait échouer avec produits invalides" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 2: JSON invalide → erreurs détaillées ❌ Devrait échouer avec produits invalides" time="0.005">
+    </testcase>
+    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 2: JSON invalide → erreurs détaillées ❌ Devrait échouer avec version incorrecte" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 2: JSON invalide → erreurs détaillées ❌ Devrait échouer avec version incorrecte" time="0.007">
+    </testcase>
+    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 3: Pipeline validation avec retry ✅ Devrait valider directement un output valide" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 3: Pipeline validation avec retry ✅ Devrait valider directement un output valide" time="0.005">
+      <failure>Error: expect(received).toBeGreaterThan(expected)
+
+Expected: &gt; 0
+Received:   0
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/services/ai/__tests__/validation.test.ts:280:37)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 3: Pipeline validation avec retry ❌ Devrait échouer avec output invalide" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 3: Pipeline validation avec retry ❌ Devrait échouer avec output invalide" time="0.004">
+    </testcase>
+    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 4: Fallback algorithmique ✅ Devrait générer un template routine fallback valide" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 4: Fallback algorithmique ✅ Devrait générer un template routine fallback valide" time="0.005">
+    </testcase>
+    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 4: Fallback algorithmique ✅ Devrait générer un template produits fallback valide" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 4: Fallback algorithmique ✅ Devrait générer un template produits fallback valide" time="0.009">
+    </testcase>
+    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 4: Fallback algorithmique ✅ Templates fallback devraient avoir scores cohérents" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 4: Fallback algorithmique ✅ Templates fallback devraient avoir scores cohérents" time="0.004">
+    </testcase>
+    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 5: A/B Testing - modification contenu sans casser structure ✅ Devrait permettre modification contenu variable" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 5: A/B Testing - modification contenu sans casser structure ✅ Devrait permettre modification contenu variable" time="0.003">
+    </testcase>
+    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 5: A/B Testing - modification contenu sans casser structure ✅ Devrait permettre A/B testing des justifications produits" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 5: A/B Testing - modification contenu sans casser structure ✅ Devrait permettre A/B testing des justifications produits" time="0.002">
+    </testcase>
+    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 6: Fonctions utilitaires ✅ sanitizeAndParseJSON devrait nettoyer JSON markdown" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 6: Fonctions utilitaires ✅ sanitizeAndParseJSON devrait nettoyer JSON markdown" time="0.008">
+    </testcase>
+    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 6: Fonctions utilitaires ✅ validateRoutineProductCoherence devrait détecter incohérences" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 6: Fonctions utilitaires ✅ validateRoutineProductCoherence devrait détecter incohérences" time="0.003">
+      <failure>Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: true
+Received: false
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/services/ai/__tests__/validation.test.ts:456:69)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 6: Fonctions utilitaires ✅ generateValidationMetrics devrait calculer métriques" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 6: Fonctions utilitaires ✅ generateValidationMetrics devrait calculer métriques" time="0.001">
+    </testcase>
+    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 7: Configuration pipeline ✅ Devrait permettre configuration validation" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 7: Configuration pipeline ✅ Devrait permettre configuration validation" time="0">
+    </testcase>
+    <testcase classname="🚀 TESTS INTÉGRATION SPRINT 3 ✅ CRITÈRE SUCCÈS: Formats JSON documentés et stables (100%)" name="🚀 TESTS INTÉGRATION SPRINT 3 ✅ CRITÈRE SUCCÈS: Formats JSON documentés et stables (100%)" time="0.009">
+    </testcase>
+    <testcase classname="🚀 TESTS INTÉGRATION SPRINT 3 ✅ CRITÈRE SUCCÈS: Validation Zod fonctionnelle sur tous outputs" name="🚀 TESTS INTÉGRATION SPRINT 3 ✅ CRITÈRE SUCCÈS: Validation Zod fonctionnelle sur tous outputs" time="0.001">
+      <failure>ReferenceError: validRoutineJSON is not defined
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/services/ai/__tests__/validation.test.ts:528:49)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="🚀 TESTS INTÉGRATION SPRINT 3 ✅ CRITÈRE SUCCÈS: Prêt pour A/B testing prompts sans casser parsing" name="🚀 TESTS INTÉGRATION SPRINT 3 ✅ CRITÈRE SUCCÈS: Prêt pour A/B testing prompts sans casser parsing" time="0.001">
+      <failure>ReferenceError: validRoutineJSON is not defined
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/services/ai/__tests__/validation.test.ts:544:10)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="🚀 TESTS INTÉGRATION SPRINT 3 ✅ CRITÈRE SUCCÈS: Fallback algorithmique robuste" name="🚀 TESTS INTÉGRATION SPRINT 3 ✅ CRITÈRE SUCCÈS: Fallback algorithmique robuste" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="🔥 VALIDATION SPRINT 1 REFONTE IA-FIRST" errors="0" failures="4" skipped="0" timestamp="2025-09-12T13:18:29" time="0.34" tests="4">
+    <testcase classname="🔥 VALIDATION SPRINT 1 REFONTE IA-FIRST ✅ CRITÈRE 1: Routine 100% générée par IA (zéro algorithme)" name="🔥 VALIDATION SPRINT 1 REFONTE IA-FIRST ✅ CRITÈRE 1: Routine 100% générée par IA (zéro algorithme)" time="0.018">
+      <failure>TypeError: Cannot read properties of undefined (reading &apos;budget&apos;)
+    at Function.generatePersonalizedRoutine (/Users/mak/dermai-v2/src/services/ai/AIRoutineGenerator.ts:84:45)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/services/ai/__tests__/refonte-validation.test.ts:135:46)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="🔥 VALIDATION SPRINT 1 REFONTE IA-FIRST ✅ CRITÈRE 2: Contenu personnalisé unique par utilisateur" name="🔥 VALIDATION SPRINT 1 REFONTE IA-FIRST ✅ CRITÈRE 2: Contenu personnalisé unique par utilisateur" time="0.007">
+      <failure>TypeError: Cannot read properties of undefined (reading &apos;budget&apos;)
+    at Function.generatePersonalizedRoutine (/Users/mak/dermai-v2/src/services/ai/AIRoutineGenerator.ts:84:45)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/services/ai/__tests__/refonte-validation.test.ts:216:51)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="🔥 VALIDATION SPRINT 1 REFONTE IA-FIRST ✅ CRITÈRE 3: Logique dermatologique respectée (3 phases + cycle cellulaire)" name="🔥 VALIDATION SPRINT 1 REFONTE IA-FIRST ✅ CRITÈRE 3: Logique dermatologique respectée (3 phases + cycle cellulaire)" time="0.011">
+      <failure>TypeError: Cannot read properties of undefined (reading &apos;budget&apos;)
+    at Function.generatePersonalizedRoutine (/Users/mak/dermai-v2/src/services/ai/AIRoutineGenerator.ts:84:45)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/services/ai/__tests__/refonte-validation.test.ts:315:46)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="🔥 VALIDATION SPRINT 1 REFONTE IA-FIRST ✅ CRITÈRE 4: Validation Zod stricte fonctionnelle" name="🔥 VALIDATION SPRINT 1 REFONTE IA-FIRST ✅ CRITÈRE 4: Validation Zod stricte fonctionnelle" time="0.01">
+      <failure>TypeError: Cannot read properties of undefined (reading &apos;budget&apos;)
+    at Function.generatePersonalizedRoutine (/Users/mak/dermai-v2/src/services/ai/AIRoutineGenerator.ts:84:45)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/services/ai/__tests__/refonte-validation.test.ts:411:46)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+  </testsuite>
+</testsuites>

@@ -12,15 +12,50 @@
 
 ### **Documents centraux autorisés dans /docs/**
 1. **spec.md** - Point central, résumé complet application
-2. **architecture-database.md** - Architecture base de données
-3. **planning-dermai-v2.md** - Roadmap et planning
-4. **monetization-strategy.md** - Stratégie business et revenus
-5. **dermatological-logic.md** - Logique métier dermatologique
-6. **educational-interface.md** - Interface éducative utilisateur
-7. **dermai-diagnostic-improvement-strategy.md** - Amélioration IA
-8. **README.md** - Index navigation documentation
+2. **diagnostic-technique-complet.md** - 🔬 **RÉFÉRENCE OFFICIELLE** - Fiche technique évolutive
+3. **architecture-fiabilite.md** - Architecture de fiabilité détaillée
+4. **dermatological-logic.md** - Logique métier dermatologique
+5. **planning-dermai-v2.md** - Roadmap et planning
+6. **monetization-strategy.md** - Stratégie business et revenus
+7. **educational-interface.md** - Interface éducative utilisateur
+8. **dermai-diagnostic-improvement-strategy.md** - Amélioration IA
+9. **README.md** - Index navigation documentation
 
-## 🚨 RÈGLES STRICTES DE CRÉATION
+## 🔬 **RÈGLE FICHE TECHNIQUE ÉVOLUTIVE - RÉFÉRENCE OFFICIELLE**
+
+### **DOCUMENT DE RÉFÉRENCE OBLIGATOIRE**
+**`docs/diagnostic-technique-refonte-ia-complete.md`** est la RÉFÉRENCE OFFICIELLE du projet DermAI V2.
+
+⚠️ **OBSOLÈTE** : `docs/diagnostic-technique-complet.md` (architecture hybride remplacée)
+
+### **OBLIGATIONS DÉVELOPPEMENT**
+- **Consulter SYSTÉMATIQUEMENT** avant tout développement
+- **S'appuyer sur les prompts opérationnels** fournis dans la fiche technique
+- **Respecter la priorisation** et le planning définis (4 sprints de 2 semaines)
+- **Utiliser les schémas de validation** Zod spécifiés
+- **Suivre l'architecture cible** : Logique 4 étapes IA-First pure
+
+### **OBLIGATIONS MISE À JOUR**
+- **Mettre à jour après chaque sprint** : métriques, problèmes résolus
+- **Ajouter nouveaux problèmes** découverts avec solutions
+- **Modifier architecture** → mise à jour documentation
+- **Versioning obligatoire** : 1.0, 1.1, 1.2...
+
+### **INTERDICTIONS STRICTES**
+- **Développer sans consulter** la fiche technique
+- **Modifier l'architecture** sans mise à jour documentation
+- **Ajouter features** non priorisées dans la roadmap
+- **Ignorer les points de vigilance** identifiés
+- **Dévier du focus fiabilité** avant stabilisation complète
+
+### **PROMPTS OPÉRATIONNELS À UTILISER**
+La fiche technique contient des prompts prêts à l'emploi pour chaque étape :
+- **Étape 1** : Diagnostic pur IA (photos uniquement)
+- **Étape 2** : Routine personnalisée IA (diagnostic + profil)
+- **Étape 3** : Sélection produits IA (routine + catalogue)
+- **Étape 4** : Assemblage et validation (algorithmique)
+
+## 🚨 **RÈGLES STRICTES DE CRÉATION**
 
 ### **AVANT de créer un nouveau document :**
 1. **OBLIGATOIRE** : Vérifier si l'information peut être intégrée dans un document existant
@@ -38,269 +73,59 @@
 ❌ `UPDATE_*.md` - Mettre à jour le document principal directement
 ❌ Tout fichier temporaire de correction ou de travail
 
-### **Cas autorisés pour NOUVEAU document :**
-✅ **Nouvelle fonctionnalité majeure** (ex: Dashboard utilisateur)
-✅ **Nouveau compartiment technique** (ex: Système de paiement)
-✅ **Nouvelle intégration externe** (ex: API Shopify)
-✅ **Nouvelle stratégie business** (ex: Modèle SaaS)
+## 🧬 **RÈGLES SPÉCIFIQUES DERMAI V2**
 
-## 📝 PROCÉDURE OBLIGATOIRE NOUVELLE FONCTIONNALITÉ
+### **🏥 CONFORMITÉ DERMATOLOGIQUE**
+- ❌ **JAMAIS de diagnostic médical** - Rester dans l'univers cosmétique
+- ❌ **JAMAIS de termes anxiogènes** : "maladie", "pathologie", "traitement médical"
+- ✅ **Toujours utiliser** : "soin", "amélioration", "optimisation", "routine beauté"
 
-### **Étape 1 : Mise à jour spec.md**
-```markdown
-## X. [NOUVEAU] Nom de la fonctionnalité
+### **🎯 PRIORITÉ ABSOLUE : FIABILITÉ**
+- **Focus total** sur stabilité et MVP solide
+- **Pas de dispersion** sur nouvelles features tant que base pas stable
+- **Allocation ressources** concentrée sur développement fiabilité
+- **Métriques cibles** : 95% reproductibilité, <2% erreur, 90% cohérence
 
-### X.1. Vue d'ensemble
-[Description courte de la fonctionnalité]
+### **🔧 ARCHITECTURE TECHNIQUE OBLIGATOIRE**
+- **Déterminisme IA** : Température 0.0 + seed fixe
+- **Validation Zod** : Schémas stricts pour tous inputs/outputs
+- **Retry intelligent** : Backoff exponentiel avec classification erreurs
+- **Fallback maîtrisé** : Mode dégradé transparent basé profil statistique
+- **Monitoring** : Métriques temps réel + alerting intelligent
 
-### X.2. Architecture technique
-[Résumé technique]
+### **📅 PLANNING STRICT**
+- **Sprint 1** (Sem 1-2) : Stabilisation critique (déterminisme + timeouts + validation)
+- **Sprint 2** (Sem 3-4) : Robustesse (retry + fallback + observabilité)
+- **Sprint 3** (Sem 5-6) : Qualité (cohérence + tests unitaires + monitoring)
+- **Sprint 4** (Sem 7-8) : Validation (tests E2E + optimisations + documentation)
 
-### X.3. Documentation détaillée
-Voir [nom-fonctionnalite.md](./nom-fonctionnalite.md) pour les spécifications complètes.
-```
-
-### **Étape 2 : Création document détaillé**
-- Nom : `docs/nom-fonctionnalite.md`
-- Structure obligatoire :
-```markdown
-# Nom de la Fonctionnalité
-
-## Vue d'ensemble
-[Lien avec l'écosystème DermAI]
-
-## Spécifications techniques
-[Détails complets]
-
-## Intégration
-[Comment s'intègre avec l'existant]
-```
-
-### **Étape 3 : Mise à jour README.md**
-Ajouter dans la section appropriée de `docs/README.md`
-
-## 🛠️ RÈGLES DE MODIFICATION
-
-### **Modification existante :**
-- Modifier DIRECTEMENT le document principal concerné
-- PAS de document intermédiaire de correction
-- Si changement majeur : noter dans spec.md section concernée
-
-### **Correction de bug/problème :**
-- Corriger le code directement
-- Si impact sur architecture : mettre à jour spec.md
-- PAS de document de correction séparé
-
-### **Amélioration UX/UI :**
-- Si mineure : pas de documentation
-- Si majeure : section dans spec.md + mise à jour document concerné
-
-## 🎯 RESPONSABILITÉS PAR DOCUMENT
-
-### **spec.md doit contenir :**
-- Vue d'ensemble complète de l'application
-- Toutes les fonctionnalités (résumé)
-- Architecture technique globale
-- Stack technologique complète
-- Configuration déploiement
-- Références à TOUS les autres documents
-
-### **Documents spécialisés contiennent :**
-- Détails approfondis de leur domaine
-- Spécifications techniques précises
-- Exemples et cas d'usage
-- Procédures spécifiques
-
-## ⚠️ SANCTIONS AUTOMATIQUES
+## ⚠️ **SANCTIONS AUTOMATIQUES**
 
 Si ces règles ne sont pas respectées :
 1. **Document mal placé** → Déplacer immédiatement dans /docs/
 2. **Document temporaire** → Intégrer contenu et supprimer
 3. **spec.md non mis à jour** → Ajouter référence obligatoire
-4. **Information dupliquée** → Consolider dans document principal
+4. **Fiche technique ignorée** → Retour aux spécifications officielles
+5. **Développement sans consultation** → Review obligatoire avec fiche technique
 
-## 🔄 MAINTENANCE DOCUMENTATION
+## 🔄 **MAINTENANCE DOCUMENTATION**
 
-### **Révision mensuelle obligatoire :**
-- Vérifier que spec.md référence tout
-- Supprimer documents obsolètes
-- Consolider informations éparpillées
-- Mettre à jour liens et références
+### **Révision après chaque sprint :**
+- Vérifier que diagnostic-technique-complet.md est à jour
+- Mettre à jour métriques et statuts problèmes
+- Ajouter nouveaux problèmes découverts
+- Valider cohérence entre tous documents
 
-### **Avant chaque release majeure :**
+### **Avant chaque release :**
 - Validation complète de spec.md
-- Vérification cohérence entre documents
-- Mise à jour des exemples et procédures
+- Vérification cohérence fiche technique
+- Mise à jour exemples et procédures
+- Synchronisation avec état réel du code
 
-## 📊 EXEMPLE CONCRET
-
-**❌ MAUVAIS :**
-```
-/DASHBOARD_IMPLEMENTATION.md
-/USER_PROFILE_FIXES.md
-/PAYMENT_SYSTEM_DRAFT.md
-```
-
-**✅ BON :**
-```
-/docs/spec.md (avec section Dashboard référençant dashboard.md)
-/docs/dashboard.md (spécifications complètes Dashboard)
-Code corrigé directement (pas de doc séparé)
-/docs/payment-integration.md (si vraiment nouveau système)
-```
-
-Cette organisation documentaire est **NON-NÉGOCIABLE** et doit être respectée par tous les contributeurs pour maintenir la clarté et la maintenabilité du projet DermAI V2.
+Cette organisation documentaire est **NON-NÉGOCIABLE** et doit être respectée par tous les contributeurs pour maintenir la clarté, la fiabilité et la maintenabilité du projet DermAI V2.
 
 ---
 
-# 🧬 RÈGLES SPÉCIFIQUES DERMAI V2
-
-## 🏥 **CONFORMITÉ DERMATOLOGIQUE**
-
-### **Principes Médicaux Non-Négociables**
-- ❌ **JAMAIS de diagnostic médical** - Rester dans l'univers cosmétique
-- ❌ **JAMAIS de termes anxiogènes** : "maladie", "pathologie", "traitement médical"
-- ✅ **Toujours utiliser** : "soin", "amélioration", "optimisation", "routine beauté"
-- ✅ **Validation scientifique** : Respecter cycle cellulaire 28 jours dans la logique des phases
-
-### **Vocabulaire Autorisé/Interdit**
-```
-❌ INTERDIT                    ✅ AUTORISÉ
-"Votre peau est abîmée"    →   "Votre peau montre des zones à optimiser"
-"Traitement médical"       →   "Soin ciblé"
-"Pathologie cutanée"       →   "Préoccupation beauté"
-"Diagnostic médical"       →   "Analyse personnalisée"
-```
-
-## 🎨 **COHÉRENCE UI/UX**
-
-### **Design System Obligatoire**
-- **Couleurs** : Palette définie dans `spec.md` section 6.1.1
-- **Typographie** : Inter pour UI, Neue Haas Grotesk pour branding
-- **Composants** : Réutiliser les composants existants `/src/components/`
-- **Responsive** : Mobile-first obligatoire
-
-### **Règles d'Interface**
-- **Numérotation phases** : Toujours 1,2,3... par phase (jamais 100, 200...)
-- **Badges temporels** : Icônes cohérentes ☀️🌙📈⚡
-- **Messages** : Ton bienveillant et expert, jamais anxiogène
-- **Loading states** : Toujours prévoir états de chargement
-
-## 🤖 **LOGIQUE IA ET PROMPTS**
-
-### **Génération de Routines**
-- **3 Phases obligatoires** : Immédiate → Adaptation → Maintenance
-- **Transition intelligente** : Base durable identifiée et conservée
-- **Critères visuels** : Jamais de timing arbitraire, toujours critères observables
-- **Déduplication** : Éviter produits en double dans vue horaires
-
-### **Prompts GPT-4o Vision**
-- **Non-directif** : "Analysez objectivement" vs "Cherchez des poils incarnés"
-- **Adaptatif** : Prompt selon profil utilisateur (âge, genre, type peau)
-- **Scoring cohérent** : Pondération dynamique selon contexte
-- **Seuils sécurité** : Jamais >85/100 si incertitude, suggérer consultation si sévère
-
-## 🔧 **ARCHITECTURE TECHNIQUE**
-
-### **Structure de Code Obligatoire**
-```
-src/
-├── app/              # Pages Next.js 15 App Router
-├── components/       # Composants réutilisables
-│   ├── forms/       # Formulaires et questionnaires
-│   ├── results/     # Affichage résultats
-│   ├── shared/      # Composants partagés
-│   └── upload/      # Upload de photos
-├── services/        # Logique métier
-│   ├── ai/         # Services IA
-│   ├── affiliate/  # Affiliation produits
-│   └── educational/ # Interface éducative
-├── types/          # Types TypeScript
-└── utils/          # Utilitaires
-```
-
-### **Convention de Nommage**
-- **Composants** : PascalCase (`AnalysisService`, `PhotoUploadZone`)
-- **Fichiers** : kebab-case (`analysis.service.ts`, `photo-upload-zone.tsx`)
-- **Variables** : camelCase (`beautyAssessment`, `routineSteps`)
-- **Types** : PascalCase avec suffixe (`UnifiedRoutineStep`, `BeautyAssessment`)
-
-### **Performance Obligatoire**
-- **Images** : Compression automatique selon nombre (voir `utils/images/compressForAPI.ts`)
-- **API** : Timeout 30s max, gestion erreurs gracieuse
-- **Bundle** : Code splitting par route, lazy loading composants lourds
-- **Types** : TypeScript strict, pas de `any`
-
-## 📱 **MOBILE-FIRST**
-
-### **Responsive Design**
-- **Breakpoints** : `sm:` (640px), `md:` (768px), `lg:` (1024px), `xl:` (1280px)
-- **Touch-friendly** : Boutons minimum 44px, espacements suffisants
-- **Performance mobile** : Images WebP, compression aggressive
-- **Offline** : IndexedDB pour cache, graceful degradation
-
-### **Export Mobile**
-- **Format fixe** : 512x512px pour réseaux sociaux
-- **Qualité** : High-DPI, logo DermAI visible
-- **Contenu** : Condensé mais lisible, branding professionnel
-
-## 💰 **AFFILIATION ET BUSINESS**
-
-### **Catalogue Interne**
-- **Produits curés** : Jamais de produits génériques ("Soin ciblé adapté")
-- **Prix réels** : Toujours afficher prix et liens d'achat
-- **Tracking** : Événements analytics pour conversions
-- **Fallback** : Si API externe fail, utiliser catalogue interne
-
-### **Recommandations**
-- **Contextuel** : Selon âge, budget, type peau, préférences
-- **Éviter surdosage** : Maximum 5 produits par routine
-- **Transparence** : Indiquer si lien d'affiliation
-
-## 🧪 **TESTS ET VALIDATION**
-
-### **Tests Obligatoires**
-- **Unit tests** : Services critiques (`analysis.service.ts`, calculs de phases)
-- **E2E tests** : Parcours complet upload → diagnostic → routine
-- **Mobile testing** : Tous devices, export fonctionnel
-- **Performance** : Lighthouse score >90 mobile
-
-### **Validation Dermatologique**
-- **Cas de test** : Profils variés (jeune/mature, homme/femme, sensible)
-- **Cohérence scores** : Vérification écart vs expert <10%
-- **Timing phases** : Validation durées selon profil
-- **Feedback loop** : Collecte retours utilisateurs
-
-## 🌍 **INTERNATIONALISATION**
-
-### **Préparation i18n**
-- **Textes externalisés** : Pas de strings hard-codées
-- **Format dates** : Locale-aware
-- **Responsive texte** : Gestion longueurs variables
-- **RTL ready** : Structure compatible droite-à-gauche
-
-### **Accessibilité (A11y)**
-- **ARIA labels** : Composants interactifs étiquetés
-- **Contrast** : Minimum AA (4.5:1)
-- **Keyboard navigation** : Tous les flows navigables au clavier
-- **Screen readers** : Contenu structuré sémantiquement
-
-## 📊 **ANALYTICS ET TRACKING**
-
-### **Événements Critiques**
-- `photo_uploaded` : Photos analysées
-- `questionnaire_completed` : Questionnaire terminé
-- `analysis_completed` : Diagnostic généré
-- `product_clicked` : Interaction produit
-- `routine_viewed` : Vue routine par phase
-- `export_mobile` : Partage mobile
-
-### **Privacy-First**
-- **RGPD compliant** : Consentement explicite
-- **Data minimization** : Collecter minimum nécessaire
-- **Anonymisation** : Pas d'identification personnelle
-- **Retention** : Purge automatique données anciennes
-
----
-
-**Ces règles complémentent l'organisation documentaire et garantissent la qualité, cohérence et conformité du projet DermAI V2.**
+**STATUT FICHE TECHNIQUE : ACTIVE**  
+**VERSION ACTUELLE : 1.0**  
+**PROCHAINE MISE À JOUR : Fin Sprint 1**

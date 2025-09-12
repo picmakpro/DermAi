@@ -1,0 +1,113 @@
+{
+  "category": "lip-care",
+  "count": 5,
+  "products": [
+    {
+      "id": "B06XDCPYYL",
+      "name": "Aquaphor Lip Repair",
+      "brand": "Aquaphor",
+      "category": "lip-care",
+      "price": 8.35,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61jUF1tFgbL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B06XDCPYYL/",
+      "activeIngredients": [
+        "Panthénol",
+        "Vitamines",
+        "Cire d'abeille"
+      ],
+      "skinTypes": [
+        "lèvres très sèches",
+        "gercées"
+      ],
+      "benefits": [
+        "réparation immédiate",
+        "hydratation longue durée"
+      ]
+    },
+    {
+      "id": "B004FHZKOA",
+      "name": "Aquaphor Lip Repair Ointment",
+      "brand": "Aquaphor",
+      "category": "lip-care",
+      "price": 4.49,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71E0r7aurgL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B004FHZKOA/",
+      "activeIngredients": [
+        "Pétrolatum",
+        "Panthénol"
+      ],
+      "skinTypes": [
+        "lèvres très abîmées"
+      ],
+      "benefits": [
+        "texture baume riche",
+        "guérison rapide"
+      ]
+    },
+    {
+      "id": "B07SRRLVQ1",
+      "name": "Aquaphor Lip Repair Stick",
+      "brand": "Aquaphor",
+      "category": "lip-care",
+      "price": 8.36,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/81SQR9M+xUL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B07SRRLVQ1/",
+      "activeIngredients": [
+        "Beurre de Karité",
+        "Cires"
+      ],
+      "skinTypes": [
+        "lèvres sèches",
+        "quotidien"
+      ],
+      "benefits": [
+        "format stick pratique",
+        "soulage sécheresse"
+      ]
+    },
+    {
+      "id": "B0D14XMH8R",
+      "name": "Aquaphor Lip Repair with SPF 30",
+      "brand": "Aquaphor",
+      "category": "lip-care",
+      "price": 8.98,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/51VyHDqBElL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0D14XMH8R/",
+      "activeIngredients": [
+        "SPF 30",
+        "agents réparateurs"
+      ],
+      "skinTypes": [
+        "lèvres exposées soleil"
+      ],
+      "benefits": [
+        "réparation + protection solaire"
+      ]
+    },
+    {
+      "id": "B008SQSBJK",
+      "name": "Aquaphor Lip Protectant SPF 30",
+      "brand": "Aquaphor",
+      "category": "lip-care",
+      "price": 4.49,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/31HrnpdbMeL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B008SQSBJK/",
+      "activeIngredients": [
+        "SPF 30 large spectre"
+      ],
+      "skinTypes": [
+        "lèvres gercées",
+        "protection"
+      ],
+      "benefits": [
+        "soulage gerçures",
+        "protection UV"
+      ]
+    }
+  ]
+}

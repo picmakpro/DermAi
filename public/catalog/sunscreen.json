@@ -1,0 +1,251 @@
+{
+  "category": "sunscreen",
+  "count": 11,
+  "products": [
+    {
+      "id": "B004W55086",
+      "name": "La Roche-Posay Anthelios Fluid SPF 50",
+      "brand": "La Roche-Posay",
+      "category": "sunscreen",
+      "price": 39.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/51ktFW0Lo-L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B004W55086/",
+      "activeIngredients": [
+        "Dioxyde de Titane minéral"
+      ],
+      "skinTypes": [
+        "tous types",
+        "quotidien"
+      ],
+      "benefits": [
+        "ultra-léger",
+        "absorption rapide",
+        "fini mat"
+      ]
+    },
+    {
+      "id": "B002CML1VG",
+      "name": "La Roche-Posay Anthelios Melt-In Milk SPF 60",
+      "brand": "La Roche-Posay",
+      "category": "sunscreen",
+      "price": 37.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61H-DTdM-5L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B002CML1VG/",
+      "activeIngredients": [
+        "large spectre",
+        "antioxydants"
+      ],
+      "skinTypes": [
+        "corps et visage",
+        "sport"
+      ],
+      "benefits": [
+        "absorption rapide",
+        "résistant eau/sueur"
+      ]
+    },
+    {
+      "id": "B0C6V719TC",
+      "name": "La Roche-Posay Anthelios Clear Skin SPF 60",
+      "brand": "La Roche-Posay",
+      "category": "sunscreen",
+      "price": 26.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/712-UPRPfoL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0C6V719TC/",
+      "activeIngredients": [
+        "filtres chimiques",
+        "agents matifiants"
+      ],
+      "skinTypes": [
+        "grasse",
+        "acnéique"
+      ],
+      "benefits": [
+        "absorbe sébum",
+        "toucher sec",
+        "antioxydants"
+      ]
+    },
+    {
+      "id": "B083VTP119",
+      "name": "Blue Lizard Sensitive Mineral Stick SPF 50+",
+      "brand": "Blue Lizard",
+      "category": "sunscreen",
+      "price": 8.77,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/51ktFW0Lo-L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B083VTP119/",
+      "activeIngredients": [
+        "Oxyde de Zinc minéral"
+      ],
+      "skinTypes": [
+        "très sensible",
+        "enfants"
+      ],
+      "benefits": [
+        "résistant eau",
+        "sans parfum",
+        "application facile"
+      ]
+    },
+    {
+      "id": "B00CICLTAI",
+      "name": "CeraVe Mineral Sunscreen Stick SPF 50",
+      "brand": "CeraVe",
+      "category": "sunscreen",
+      "price": 8.97,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71jdcrAdwbL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B00CICLTAI/",
+      "activeIngredients": [
+        "Zinc + Dioxyde Titane",
+        "Céramides"
+      ],
+      "skinTypes": [
+        "sensible",
+        "application facile"
+      ],
+      "benefits": [
+        "100% minéral",
+        "format stick pratique"
+      ]
+    },
+    {
+      "id": "B083VT9WN3",
+      "name": "Blue Lizard Baby Mineral Stick SPF 50+",
+      "brand": "Blue Lizard",
+      "category": "sunscreen",
+      "price": 8.74,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61H-DTdM-5L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B083VT9WN3/",
+      "activeIngredients": [
+        "Oxyde de Zinc"
+      ],
+      "skinTypes": [
+        "bébé",
+        "très sensible"
+      ],
+      "benefits": [
+        "résistant eau",
+        "sans parfum",
+        "ultra-doux"
+      ]
+    },
+    {
+      "id": "B084ZP848Y",
+      "name": "Blue Lizard Sensitive Mineral SPF 50",
+      "brand": "Blue Lizard",
+      "category": "sunscreen",
+      "price": 14.98,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/712-UPRPfoL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B084ZP848Y/",
+      "activeIngredients": [
+        "Oxyde de Zinc 50+"
+      ],
+      "skinTypes": [
+        "sensible",
+        "quotidien"
+      ],
+      "benefits": [
+        "protection UVA/UVB",
+        "technologie Smart Cap"
+      ]
+    },
+    {
+      "id": "B0CSPP8MML",
+      "name": "Blue Lizard Mineral SPF 15 Lip Balm 3-Pack",
+      "brand": "Blue Lizard",
+      "category": "sunscreen",
+      "price": 8.89,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/51ktFW0Lo-L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0CSPP8MML/",
+      "activeIngredients": [
+        "minéraux",
+        "8 huiles naturelles",
+        "Kakadu Plum"
+      ],
+      "skinTypes": [
+        "lèvres",
+        "protection"
+      ],
+      "benefits": [
+        "riche Vitamine C",
+        "végan",
+        "saveur coco"
+      ]
+    },
+    {
+      "id": "B09NR1DMVT",
+      "name": "La Roche-Posay Anthelios UV Correct SPF 70",
+      "brand": "La Roche-Posay",
+      "category": "sunscreen",
+      "price": 39.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61WCfKRaveL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B09NR1DMVT/",
+      "activeIngredients": [
+        "SPF 70",
+        "Niacinamide"
+      ],
+      "skinTypes": [
+        "anti-âge",
+        "taches"
+      ],
+      "benefits": [
+        "unifie teint",
+        "anti-âge",
+        "protection maximale"
+      ]
+    },
+    {
+      "id": "B0CF7VZQ3V",
+      "name": "La Roche-Posay Anthelios Melt-In Milk SPF 100",
+      "brand": "La Roche-Posay",
+      "category": "sunscreen",
+      "price": 38.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/712-UPRPfoL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0CF7VZQ3V/",
+      "activeIngredients": [
+        "SPF 100",
+        "antioxydants"
+      ],
+      "skinTypes": [
+        "peau sensible au soleil"
+      ],
+      "benefits": [
+        "protection maximale",
+        "sans oxybenzone"
+      ]
+    },
+    {
+      "id": "B002CML1XE",
+      "name": "La Roche-Posay Anthelios Light Fluid SPF 60",
+      "brand": "La Roche-Posay",
+      "category": "sunscreen",
+      "price": 35.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61WCfKRaveL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B002CML1XE/",
+      "activeIngredients": [
+        "large spectre",
+        "antioxydants"
+      ],
+      "skinTypes": [
+        "visage",
+        "texture fluide"
+      ],
+      "benefits": [
+        "léger",
+        "sans oxybenzone",
+        "format voyage"
+      ]
+    }
+  ]
+}

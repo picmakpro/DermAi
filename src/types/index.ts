@@ -255,3 +255,90 @@ export interface TimingBadgeInfo {
   details?: string // Détails comme "1x/semaine, soir sans rétinol"
   color: 'blue' | 'purple' | 'green' | 'orange' // Couleur du badge
 }
+
+// 🔥 NOUVEAUX TYPES - SPRINT 1 REFONTE IA-FIRST
+// Types pour profil utilisateur et contraintes (input AIRoutineGenerator)
+export interface UserProfile {
+  age: number
+  gender?: 'homme' | 'femme' | 'autre'
+  skinType: string
+  lifestyle?: string
+}
+
+export interface SkinConcerns {
+  primary?: string[]
+  secondary?: string[]
+  intensity?: 'légère' | 'modérée' | 'intense'
+}
+
+// Import des types de routine personnalisée depuis schemas/refonte.ts
+export type { 
+  PersonalizedRoutine, 
+  RoutinePhase, 
+  RoutineStepPersonnalisee, 
+  PersonalizedTiming,
+  UserConstraints,
+  // 🔥 NOUVEAUX TYPES - SPRINT 2 REFONTE IA-FIRST
+  ProductSelection,
+  SelectedProduct,
+  BudgetBreakdown,
+  DermatologicalCoherence,
+  ProductJustification
+} from '@/schemas/refonte'
+
+// 🔥 NOUVEAUX TYPES - SPRINT 2 REFONTE IA-FIRST
+// Types pour sélection produits IA
+
+export interface BudgetConstraints {
+  maxBudget: number // Budget maximum en euros
+  priority: 'essential' | 'balanced' | 'premium' // Priorité budgétaire
+  flexibility: number // Flexibilité 0-20% du budget
+}
+
+export interface UserPreferences {
+  brandPreferences?: string[] // Marques préférées
+  avoidIngredients?: string[] // Ingrédients à éviter
+  texturePreferences?: string[] // Préférences de texture
+  lifestyle?: 'busy' | 'standard' | 'thorough' // Mode de vie
+  travelFrequent?: boolean // Voyage fréquent
+  sensitivityLevel?: 'low' | 'medium' | 'high' // Niveau de sensibilité
+}
+
+export interface ProductCatalog {
+  products: CatalogProduct[]
+  lastUpdated: Date
+  version: string
+}
+
+export interface CatalogProduct {
+  id: string
+  name: string
+  brand: string
+  category: string
+  price: number
+  currency: string
+  imageUrl?: string
+  affiliateLink?: string
+  activeIngredients?: string[]
+  skinTypes?: string[]
+  benefits?: string[]
+  // 🔥 NOUVEAUX CHAMPS - ENRICHISSEMENT CATALOGUE SPRINT 2
+  pH?: number // pH du produit
+  concentration?: string // Concentration des actifs
+  compatibilities?: string[] // Compatibilités avec autres ingrédients
+  contraindications?: string[] // Contre-indications
+  applicationOrder?: number // Ordre d'application recommandé
+  photosensitizing?: boolean // Produit photosensibilisant
+  pregnancySafe?: boolean // Sûr pendant grossesse
+  targetZones?: string[] // Zones d'application spécifiques
+  potency?: 'gentle' | 'medium' | 'strong' // Puissance du produit
+  texture?: string // Texture du produit
+  finishType?: string // Type de fini
+  volumeSize?: number // Taille en ml
+  usageDuration?: string // Durée d'usage estimée
+  clinicallyTested?: boolean // Testé cliniquement
+  dermatologistRecommended?: boolean // Recommandé par dermatologues
+  awards?: string[] // Prix ou certifications
+  reviewScore?: number // Score d'avis clients
+  availability?: 'in-stock' | 'limited' | 'out-of-stock' // Disponibilité
+}

@@ -1,0 +1,167 @@
+{
+  "category": "toner",
+  "count": 7,
+  "products": [
+    {
+      "id": "B00KH6QX08",
+      "name": "Pixi Glow Tonic",
+      "brand": "Pixi",
+      "category": "toner",
+      "price": 29,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61lw7881TNL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B00KH6QX08/",
+      "activeIngredients": [
+        "Acide Glycolique",
+        "Ginseng",
+        "Aloe Vera"
+      ],
+      "skinTypes": [
+        "tous types",
+        "terne"
+      ],
+      "benefits": [
+        "éclat immédiat",
+        "lisse",
+        "équilibre"
+      ]
+    },
+    {
+      "id": "B072JKKXW2",
+      "name": "Pixi Glow Tonic To-Go",
+      "brand": "Pixi",
+      "category": "toner",
+      "price": 18,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61A4jPLmgsL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B072JKKXW2/",
+      "activeIngredients": [
+        "Acide Glycolique"
+      ],
+      "skinTypes": [
+        "tous types",
+        "voyage"
+      ],
+      "benefits": [
+        "format pratique",
+        "éclat quotidien"
+      ]
+    },
+    {
+      "id": "B07Q342M1Q",
+      "name": "Pixi Vitamin-C Tonic",
+      "brand": "Pixi",
+      "category": "toner",
+      "price": 15,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71szvtL1qxL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B07Q342M1Q/",
+      "activeIngredients": [
+        "Vitamine C",
+        "Acide Férulique"
+      ],
+      "skinTypes": [
+        "terne",
+        "fatiguée"
+      ],
+      "benefits": [
+        "éclat",
+        "luminosité",
+        "antioxydant"
+      ]
+    },
+    {
+      "id": "B07JGGTCS3",
+      "name": "Pixi Glow Tonic Travel Size",
+      "brand": "Pixi",
+      "category": "toner",
+      "price": 12,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71pSHes3q7L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B07JGGTCS3/",
+      "activeIngredients": [
+        "Acide Glycolique",
+        "Ginseng"
+      ],
+      "skinTypes": [
+        "tous types",
+        "format voyage"
+      ],
+      "benefits": [
+        "éclat",
+        "format 100ml",
+        "pratique"
+      ]
+    },
+    {
+      "id": "B0BHV1PBLY",
+      "name": "Paula's Choice CALM Nourishing Milky Toner",
+      "brand": "Paula's Choice",
+      "category": "toner",
+      "price": 29,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71BgHPmzoXL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0BHV1PBLY/",
+      "activeIngredients": [
+        "Céramides",
+        "Cholestérol"
+      ],
+      "skinTypes": [
+        "sensible",
+        "sèche",
+        "rosacée"
+      ],
+      "benefits": [
+        "apaise rougeurs",
+        "hydrate",
+        "restaure"
+      ]
+    },
+    {
+      "id": "B00949CII0",
+      "name": "Paula's Choice Skin Recovery Calming Toner",
+      "brand": "Paula's Choice",
+      "category": "toner",
+      "price": 29,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61RHq4MT34L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B00949CII0/",
+      "activeIngredients": [
+        "antioxydants",
+        "agents apaisants"
+      ],
+      "skinTypes": [
+        "sèche",
+        "sensible",
+        "mature"
+      ],
+      "benefits": [
+        "calme irritations",
+        "prépare la peau"
+      ]
+    },
+    {
+      "id": "B00CJWACX2",
+      "name": "Paula's Choice RESIST Advanced Replenishing Toner",
+      "brand": "Paula's Choice",
+      "category": "toner",
+      "price": 29,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71EIkbcXEhL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B00CJWACX2/",
+      "activeIngredients": [
+        "Acide Hyaluronique",
+        "Vitamines C & E"
+      ],
+      "skinTypes": [
+        "mature",
+        "sèche"
+      ],
+      "benefits": [
+        "anti-âge",
+        "hydratation légère",
+        "antioxydant"
+      ]
+    }
+  ]
+}

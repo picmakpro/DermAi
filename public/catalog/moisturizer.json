@@ -1,0 +1,232 @@
+{
+  "category": "moisturizer",
+  "count": 10,
+  "products": [
+    {
+      "id": "B000YJ2SLG",
+      "name": "CeraVe Crème Hydratante Quotidienne",
+      "brand": "CeraVe",
+      "category": "moisturizer",
+      "price": 11.26,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61jeXEEvGAL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B000YJ2SLG/",
+      "activeIngredients": [
+        "Céramides",
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "sèche",
+        "tous types"
+      ],
+      "benefits": [
+        "hydratation 24h",
+        "restaure barrière cutanée"
+      ]
+    },
+    {
+      "id": "B00TTD9BRC",
+      "name": "CeraVe Crème Réparatrice",
+      "brand": "CeraVe",
+      "category": "moisturizer",
+      "price": 18.39,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61pIL2maVKL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B00TTD9BRC/",
+      "activeIngredients": [
+        "Céramides",
+        "Acide Hyaluronique",
+        "Cholestérol"
+      ],
+      "skinTypes": [
+        "très sèche",
+        "abîmée"
+      ],
+      "benefits": [
+        "réparation intense",
+        "texture riche"
+      ]
+    },
+    {
+      "id": "B00365DABC",
+      "name": "CeraVe PM Lotion Hydratante Nuit",
+      "brand": "CeraVe",
+      "category": "moisturizer",
+      "price": 14.97,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71jdcrAdwbL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B00365DABC/",
+      "activeIngredients": [
+        "Niacinamide",
+        "Céramides",
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "tous types",
+        "sensible"
+      ],
+      "benefits": [
+        "régénération nocturne",
+        "texture légère"
+      ]
+    },
+    {
+      "id": "B00F97FHAW",
+      "name": "CeraVe AM Lotion Hydratante SPF 30",
+      "brand": "CeraVe",
+      "category": "moisturizer",
+      "price": 14.97,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61PcGo1BiJL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B00F97FHAW/",
+      "activeIngredients": [
+        "SPF 30",
+        "Niacinamide",
+        "Céramides"
+      ],
+      "skinTypes": [
+        "tous types",
+        "quotidien"
+      ],
+      "benefits": [
+        "hydratation + protection solaire",
+        "non comédogène"
+      ]
+    },
+    {
+      "id": "B0CX3CCJWV",
+      "name": "Neutrogena Hydro Boost Gel Cream Set",
+      "brand": "Neutrogena",
+      "category": "moisturizer",
+      "price": 18.4,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71h8bcec4eL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0CX3CCJWV/",
+      "activeIngredients": [
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "sèche",
+        "normale"
+      ],
+      "benefits": [
+        "kit découverte",
+        "hydratation intense"
+      ]
+    },
+    {
+      "id": "B00NR1YQHM",
+      "name": "Neutrogena Hydro Boost Water Gel",
+      "brand": "Neutrogena",
+      "category": "moisturizer",
+      "price": 14.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71jXZS3BjsL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B00NR1YQHM/",
+      "activeIngredients": [
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "normale",
+        "grasse"
+      ],
+      "benefits": [
+        "hydratation 24h",
+        "texture gel non grasse"
+      ]
+    },
+    {
+      "id": "B07GRBQXTV",
+      "name": "Neutrogena Hydro Boost City Shield SPF 25",
+      "brand": "Neutrogena",
+      "category": "moisturizer",
+      "price": 19.97,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61pljs9R+8L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B07GRBQXTV/",
+      "activeIngredients": [
+        "Acide Hyaluronique",
+        "SPF 25"
+      ],
+      "skinTypes": [
+        "urbaine",
+        "pollution"
+      ],
+      "benefits": [
+        "protection urbaine",
+        "hydrate",
+        "bouclier anti-pollution"
+      ]
+    },
+    {
+      "id": "B07DJPC8JB",
+      "name": "Neutrogena Hydro Boost Body Gel Cream",
+      "brand": "Neutrogena",
+      "category": "moisturizer",
+      "price": 12.29,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61tWVPPaqKL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B07DJPC8JB/",
+      "activeIngredients": [
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "normale",
+        "sèche",
+        "corps"
+      ],
+      "benefits": [
+        "absorption rapide",
+        "non grasse",
+        "corps et visage"
+      ]
+    },
+    {
+      "id": "B00SNPCSUY",
+      "name": "Olay Regenerist Night Recovery Cream",
+      "brand": "Olay",
+      "category": "moisturizer",
+      "price": 17.44,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71wZCEu0P0L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B00SNPCSUY/",
+      "activeIngredients": [
+        "Niacinamide",
+        "Complexe Peptides",
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "mature",
+        "anti-âge"
+      ],
+      "benefits": [
+        "régénération nocturne",
+        "anti-rides"
+      ]
+    },
+    {
+      "id": "B0C7HHKH3G",
+      "name": "CeraVe Ultra-Light Moisturizing Gel",
+      "brand": "CeraVe",
+      "category": "moisturizer",
+      "price": 16.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71cpGfSXMfL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0C7HHKH3G/",
+      "activeIngredients": [
+        "Niacinamide",
+        "Céramides",
+        "Vitamine B3"
+      ],
+      "skinTypes": [
+        "grasse",
+        "mixte"
+      ],
+      "benefits": [
+        "ultra-léger",
+        "matifiant",
+        "hydratation gel"
+      ]
+    }
+  ]
+}

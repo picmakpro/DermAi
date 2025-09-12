@@ -18,15 +18,34 @@ import {
   BookOpen,
   Shield,
   TrendingUp,
-  Heart
+  Heart,
+  Globe
 } from 'lucide-react'
 import type { UnifiedRoutineStep, BeautyAssessment } from '@/types'
 import { PhaseTimingCalculator, type PhaseTiming } from '@/services/educational/phaseTimingCalculator'
 import { EducationalTooltip, MobileEducationalTooltip } from '@/components/shared/EducationalTooltip'
+import { 
+  isTemporaryTreatment, 
+  isContinuousTreatment, 
+  validateAndCleanTitle, 
+  getDetailedTiming, 
+  renderZoneBadge 
+} from '@/utils/RoutineDisplayHelpers'
+import { 
+  ensureProductMapping, 
+  applyFullCoherence 
+} from '@/utils/ProductMappingHelpers'
 
 interface UnifiedRoutineSectionProps {
   routine: UnifiedRoutineStep[]
   beautyAssessment?: BeautyAssessment // Nécessaire pour calcul durées personnalisées
+  // 🔥 SPRINT 3: Support contenu IA dynamique
+  isAIGenerated?: boolean // Indique si le contenu vient de l'IA
+  personalizedContent?: {
+    phaseDescriptions?: Record<string, string>
+    globalAdvice?: string[]
+    personalizationSummary?: string
+  }
 }
 
 const timeIcons = {
@@ -57,11 +76,45 @@ const phaseLabels = {
 
 // Removed unused categoryIcons
 
-export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRoutineSectionProps) {
+export function UnifiedRoutineSection({ 
+  routine, 
+  beautyAssessment, 
+  isAIGenerated = false,
+  personalizedContent 
+}: UnifiedRoutineSectionProps) {
   const [activePhase, setActivePhase] = useState<'immediate' | 'adaptation' | 'maintenance'>('immediate')
   const [viewMode, setViewMode] = useState<'phases' | 'schedule'>('phases')
   const [isMobile, setIsMobile] = useState(false)
   const [phaseTimings, setPhaseTimings] = useState<Record<string, PhaseTiming>>({})
+  const [coherentRoutine, setCoherentRoutine] = useState<UnifiedRoutineStep[]>(routine)
+
+  // 🔥 SPRINT 3: Détection du contenu dynamique IA
+  const isDynamicContent = isAIGenerated && routine.some(step => 
+    step.title.length > 50 || // Titre long personnalisé
+    step.applicationAdvice.includes('votre') || // Personnalisation
+    step.applicationAdvice.includes('selon') || // Adaptation
+    /[éàùç🧴💧]/.test(step.applicationAdvice) // Caractères spéciaux ou émojis
+  )
+
+  // Helper pour tronquer le texte long de manière intelligente
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length <= maxLength) return text
+    
+    // Chercher la dernière phrase complète avant la limite
+    const truncated = text.substring(0, maxLength)
+    const lastSentence = truncated.lastIndexOf('.')
+    const lastSpace = truncated.lastIndexOf(' ')
+    
+    const cutPoint = lastSentence > maxLength * 0.7 ? lastSentence + 1 : lastSpace
+    return text.substring(0, cutPoint) + '...'
+  }
+
+  // Helper pour détecter si le contenu nécessite un affichage spécial
+  const needsSpecialRendering = (step: UnifiedRoutineStep) => {
+    return step.title.length > 80 || 
+           step.applicationAdvice.length > 300 ||
+           /[🧴💧✨🌟💆‍♀️]/.test(step.applicationAdvice) // Émojis cosmétiques
+  }
 
   // Détection mobile
   useEffect(() => {
@@ -71,13 +124,28 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
+  // 🔥 SPRINT 2: Application cohérence produits
+  useEffect(() => {
+    if (routine.length > 0) {
+      try {
+        console.log('🔄 Application cohérence produits à la routine')
+        const enhancedRoutine = applyFullCoherence(routine)
+        setCoherentRoutine(enhancedRoutine)
+        console.log(`✅ Cohérence appliquée: ${enhancedRoutine.length} étapes`)
+      } catch (error) {
+        console.warn('❌ Erreur application cohérence:', error)
+        setCoherentRoutine(routine) // Fallback vers routine originale
+      }
+    }
+  }, [routine])
+
   // Calcul des durées personnalisées
   useEffect(() => {
-    if (beautyAssessment && routine.length > 0) {
-      const timings = PhaseTimingCalculator.calculateCompleteTiming(beautyAssessment, routine)
+    if (beautyAssessment && coherentRoutine.length > 0) {
+      const timings = PhaseTimingCalculator.calculateCompleteTiming(beautyAssessment, coherentRoutine)
       setPhaseTimings(timings)
     }
-  }, [beautyAssessment, routine])
+  }, [beautyAssessment, coherentRoutine])
 
   if (!routine || routine.length === 0) {
     return null
@@ -86,9 +154,9 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
   // Organiser par phases
   const organizeByPhases = () => {
     return {
-      immediate: routine.filter(step => step.phase === 'immediate'),
-      adaptation: routine.filter(step => step.phase === 'adaptation'),
-      maintenance: routine.filter(step => step.phase === 'maintenance')
+      immediate: coherentRoutine.filter(step => step.phase === 'immediate'),
+      adaptation: coherentRoutine.filter(step => step.phase === 'adaptation'),
+      maintenance: coherentRoutine.filter(step => step.phase === 'maintenance')
     }
   }
 
@@ -164,11 +232,11 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
     }
     
     // Filtrage intelligent : éviter les doublons entre sections
-    const morningSteps = routine.filter(step => 
+    const morningSteps = coherentRoutine.filter(step => 
       (step.timeOfDay === 'morning' || step.timeOfDay === 'both') && 
       step.frequency === 'daily' // Seulement les étapes quotidiennes
     )
-    const eveningSteps = routine.filter(step => 
+    const eveningSteps = coherentRoutine.filter(step => 
       (step.timeOfDay === 'evening' || step.timeOfDay === 'both') && 
       step.frequency === 'daily' // Seulement les étapes quotidiennes
     )
@@ -176,9 +244,9 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
     return {
       morning: deduplicateByProduct(morningSteps),
       evening: deduplicateByProduct(eveningSteps),
-      weekly: routine.filter(step => step.frequency === 'weekly'),
-      monthly: routine.filter(step => step.frequency === 'monthly'),
-      asNeeded: routine.filter(step => step.frequency === 'as-needed')
+      weekly: coherentRoutine.filter(step => step.frequency === 'weekly'),
+      monthly: coherentRoutine.filter(step => step.frequency === 'monthly'),
+      asNeeded: coherentRoutine.filter(step => step.frequency === 'as-needed')
     }
   }
 
@@ -186,8 +254,18 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
   const scheduleData = organizeBySchedule()
 
   const renderStep = (step: UnifiedRoutineStep, index: number, resetNumbering: boolean = false) => {
-    // Détection des étapes temporaires pour le badge uniquement
-    const isTemporary = step.applicationDuration && !step.applicationDuration.includes('continu')
+    // CORRECTION 1: Badges temporaires précis basés sur logique métier
+    const isTemporary = isTemporaryTreatment(step)
+    const isContinuous = isContinuousTreatment(step)
+    
+    // CORRECTION 2: Titres cohérents nettoyés
+    const cleanTitle = validateAndCleanTitle(step.title, step.category)
+    
+    // CORRECTION 3: Timing précis et détaillé
+    const detailedTiming = getDetailedTiming(step)
+    
+    // CORRECTION 4: Badge zones différencié
+    const zoneBadge = renderZoneBadge(step)
     
     // Style uniforme pour toutes les étapes
     const className = "bg-white rounded-xl p-3 md:p-4 border border-gray-100 hover:shadow-md transition-all"
@@ -214,36 +292,36 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
             {/* Titre sur une ligne, badges en dessous sur mobile */}
             <div className="mb-2">
               <div className="flex items-start justify-between mb-1">
-                <h4 className="font-medium text-gray-900 text-sm md:text-base leading-tight pr-2">{step.title}</h4>
-                {/* Badge timing - mieux adapté mobile */}
+                <h4 className="font-medium text-gray-900 text-sm md:text-base leading-tight pr-2">{cleanTitle}</h4>
+                {/* Badge timing précis - CORRECTION FINALE */}
                 <div className="flex items-center space-x-1 text-xs text-gray-500 flex-shrink-0">
                   {timeIcons[step.timeOfDay as keyof typeof timeIcons]}
-                  <span className="hidden sm:inline">{frequencyLabels[step.frequency as keyof typeof frequencyLabels]}</span>
+                  <span className="hidden sm:inline">
+                    {step.timeOfDay === 'morning' && 'Matin'}
+                    {step.timeOfDay === 'evening' && 'Soir'}
+                    {step.timeOfDay === 'both' && 'Matin et soir'}
+                  </span>
                   <span className="sm:hidden">
-                    {step.frequency === 'daily' && 'Jour'}
-                    {step.frequency === 'weekly' && 'Sem'}
-                    {step.frequency === 'monthly' && 'Mois'}
-                    {step.frequency === 'as-needed' && 'Besoin'}
-                    {step.frequency === 'progressive' && 'Prog'}
+                    {step.timeOfDay === 'morning' && '☀️'}
+                    {step.timeOfDay === 'evening' && '🌙'}
+                    {step.timeOfDay === 'both' && '🕐'}
                   </span>
                 </div>
               </div>
               
-              {/* Badge temporaire en dessous du titre sur mobile */}
-              {isTemporary && (
-                <div className="flex items-center space-x-1 px-2 py-1 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700 rounded-full text-xs font-medium w-fit">
-                  <Clock className="w-3 h-3" />
-                  <span>Temporaire</span>
-                </div>
-              )}
+              {/* Badge temporaire UNIQUEMENT si nécessaire */}
+              <div className="flex items-center gap-2 flex-wrap">
+                {isTemporary && (
+                  <div className="flex items-center space-x-1 px-2 py-1 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700 rounded-full text-xs font-medium">
+                    <Clock className="w-3 h-3" />
+                    <span>Temporaire</span>
+                  </div>
+                )}
+                {/* PAS de badge "Continu" - redondant avec durée d'application */}
+              </div>
             </div>
             
-            {step.frequencyDetails && (
-              <div className="flex items-center space-x-1 text-xs text-blue-600 mb-2">
-                <Repeat className="w-3 h-3" />
-                <span>{step.frequencyDetails}</span>
-              </div>
-            )}
+            {/* Supprimer badge frequencyDetails redondant - déjà affiché en haut à droite */}
             
             {step.startAfterDays && (
               <div className="flex items-center space-x-1 text-xs text-orange-600 mb-2">
@@ -252,44 +330,53 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
               </div>
             )}
 
-            {/* Zones ciblées - version mobile optimisée */}
+            {/* Zones ciblées - Affichage complet sans troncature */}
             {step.targetArea === 'specific' && step.zones && step.zones.length > 0 && (
-              <div className="flex items-center gap-1 px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium w-fit mb-2">
-                <MapPin className="w-3 h-3 flex-shrink-0" />
-                <span className="truncate">
-                  <span className="hidden sm:inline">Zones : </span>
-                  {step.zones.join(', ')}
-                </span>
+              <div className="flex items-center gap-1 px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium mb-2 w-fit">
+                <MapPin className="w-3 h-3" />
+                <span>Zones : {step.zones.join(', ')}</span>
+              </div>
+            )}
+            {step.targetArea === 'global' && (
+              <div className="flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium mb-2 w-fit">
+                <Globe className="w-3 h-3" />
+                <span>Visage entier</span>
               </div>
             )}
             
-            {/* Produits recommandés - optimisé mobile */}
+            {/* Produits recommandés - CORRECTION FINALE avec fallback */}
             <div className="bg-dermai-ai-50 rounded-lg p-2 md:p-3 mb-2 md:mb-3 border border-dermai-ai-200">
               <div className="flex items-center space-x-1 text-xs text-dermai-ai-700 mb-1 md:mb-2">
                 <ShoppingBag className="w-3 h-3 flex-shrink-0" />
                 <span className="font-medium">Produit recommandé</span>
               </div>
-              {step.recommendedProducts.map((product, productIndex) => (
-                <div key={productIndex} className="mb-1 md:mb-2 last:mb-0">
-                  <div className="font-medium text-sm text-dermai-ai-800 leading-tight">
-                    {product.name}
+              {step.recommendedProducts && step.recommendedProducts.length > 0 ? (
+                step.recommendedProducts.map((product, productIndex) => (
+                  <div key={productIndex} className="mb-1 md:mb-2 last:mb-0">
+                    <div className="font-medium text-sm text-dermai-ai-800 leading-tight">
+                      {product.name}
+                    </div>
+                    <div className="text-xs text-gray-600 mb-1">
+                      {product.brand} • {product.category}
+                    </div>
+                    {product.affiliateLink && (
+                      <a
+                        href={product.affiliateLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-xs text-dermai-ai-600 hover:underline font-medium"
+                      >
+                        <span>Voir le produit</span>
+                        <span className="ml-1">→</span>
+                      </a>
+                    )}
                   </div>
-                  <div className="text-xs text-gray-600 mb-1">
-                    {product.brand} • {product.category}
-                  </div>
-                  {product.affiliateLink && (
-                    <a
-                      href={product.affiliateLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center text-xs text-dermai-ai-600 hover:underline font-medium"
-                    >
-                      <span>Voir le produit</span>
-                      <span className="ml-1">→</span>
-                    </a>
-                  )}
+                ))
+              ) : (
+                <div className="text-xs text-gray-500 italic">
+                  Produit en cours de sélection...
                 </div>
-              ))}
+              )}
             </div>
             
             {/* Conseils d'application - optimisé mobile */}
@@ -303,11 +390,25 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
               </div>
             </div>
 
-            {/* Durée d'application simplifiée */}
+            {/* Durée d'application - CORRECTION FINALE */}
             {(() => {
-              const criteria = PhaseTimingCalculator.getVisualCriteria(step)
-              if (criteria) {
-                // Format simplifié pour les traitements avec critères visuels - mobile optimisé
+              let duration = step.applicationDuration
+              
+              // Logique cohérente pour la durée
+              if (isTemporary) {
+                // Pour les traitements temporaires, utiliser critères visuels ou durée spécifique
+                const criteria = PhaseTimingCalculator.getVisualCriteria(step)
+                if (criteria) {
+                  duration = `${criteria.observation} (${criteria.estimatedDays})`
+                } else if (!duration) {
+                  duration = "Jusqu'à amélioration"
+                }
+              } else {
+                // Pour les produits continus, toujours "En continu"
+                duration = "En continu"
+              }
+              
+              if (duration) {
                 return (
                   <div className="space-y-1 mb-2 md:mb-3">
                     <div className="flex items-center space-x-1 text-xs text-blue-700">
@@ -315,20 +416,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                       <span className="font-medium">Durée d'application</span>
                     </div>
                     <div className="text-xs text-blue-600 leading-relaxed font-medium">
-                      {criteria.observation} ({criteria.estimatedDays})
-                    </div>
-                  </div>
-                )
-              } else if (step.applicationDuration) {
-                // Format classique - mobile optimisé
-                return (
-                  <div className="space-y-1 mb-2 md:mb-3">
-                    <div className="flex items-center space-x-1 text-xs text-blue-700">
-                      <Clock className="w-3 h-3 flex-shrink-0" />
-                      <span className="font-medium">Durée d'application</span>
-                    </div>
-                    <div className="text-xs text-blue-600 leading-relaxed font-medium">
-                      {step.applicationDuration}
+                      {duration}
                     </div>
                   </div>
                 )
@@ -336,18 +424,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
               return null
             })()}
 
-            {/* Timing détaillé - mobile optimisé */}
-            {step.timingDetails && (
-              <div className="space-y-1 mb-2 md:mb-3">
-                <div className="flex items-center space-x-1 text-xs text-purple-700">
-                  <Calendar className="w-3 h-3 flex-shrink-0" />
-                  <span className="font-medium">Timing</span>
-                </div>
-                <div className="text-xs text-purple-600 leading-relaxed">
-                  {step.timingDetails}
-                </div>
-              </div>
-            )}
+            {/* Supprimer timing détaillé - redondant avec badge en haut à droite */}
 
             {/* Restrictions - mobile optimisé */}
             {step.restrictions && step.restrictions.length > 0 && (

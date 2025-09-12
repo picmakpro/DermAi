@@ -1,0 +1,186 @@
+{
+  "category": "treatment",
+  "count": 8,
+  "products": [
+    {
+      "id": "B0779QRV23",
+      "name": "The Ordinary Retinol 0.2% in Squalane",
+      "brand": "The Ordinary",
+      "category": "treatment",
+      "price": 8.9,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0779QRV23/",
+      "activeIngredients": [
+        "Rétinol 0,2%",
+        "Squalane"
+      ],
+      "skinTypes": [
+        "débutants rétinol",
+        "sensible"
+      ],
+      "benefits": [
+        "introduction douce au rétinol",
+        "anti-âge"
+      ]
+    },
+    {
+      "id": "B0779QGTV8",
+      "name": "The Ordinary Retinol 0.5% in Squalane",
+      "brand": "The Ordinary",
+      "category": "treatment",
+      "price": 9.4,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0779QGTV8/",
+      "activeIngredients": [
+        "Rétinol 0,5%",
+        "Squalane"
+      ],
+      "skinTypes": [
+        "intermédiaire rétinol"
+      ],
+      "benefits": [
+        "anti-âge modéré",
+        "progression rétinol"
+      ]
+    },
+    {
+      "id": "B0779YGB2G",
+      "name": "The Ordinary Retinol 1% in Squalane",
+      "brand": "The Ordinary",
+      "category": "treatment",
+      "price": 9.9,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0779YGB2G/",
+      "activeIngredients": [
+        "Rétinol 1%",
+        "Squalane"
+      ],
+      "skinTypes": [
+        "mature",
+        "expérimentés rétinol"
+      ],
+      "benefits": [
+        "anti-âge puissant",
+        "lisse rides",
+        "renouvellement"
+      ]
+    },
+    {
+      "id": "B01MUZQ7GQ",
+      "name": "The Ordinary Alpha Arbutin 2% + HA",
+      "brand": "The Ordinary",
+      "category": "treatment",
+      "price": 9.9,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B01MUZQ7GQ/",
+      "activeIngredients": [
+        "Alpha Arbutine 2%",
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "taches",
+        "hyperpigmentation"
+      ],
+      "benefits": [
+        "éclaircit taches",
+        "unifie teint"
+      ]
+    },
+    {
+      "id": "B0779VRTRC",
+      "name": "The Ordinary Azelaic Acid Suspension 10%",
+      "brand": "The Ordinary",
+      "category": "treatment",
+      "price": 9.9,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0779VRTRC/",
+      "activeIngredients": [
+        "Acide Azélaïque 10%"
+      ],
+      "skinTypes": [
+        "acné",
+        "rosacée",
+        "taches"
+      ],
+      "benefits": [
+        "anti-acné",
+        "anti-inflammatoire",
+        "unifie"
+      ]
+    },
+    {
+      "id": "B01MUZQ8GH",
+      "name": "The Ordinary Vitamin C Suspension 23% + HA",
+      "brand": "The Ordinary",
+      "category": "treatment",
+      "price": 11.9,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B01MUZQ8GH/",
+      "activeIngredients": [
+        "Vitamine C pure 23%",
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "résistante",
+        "expérimentée"
+      ],
+      "benefits": [
+        "antioxydant maximum",
+        "éclat intense"
+      ]
+    },
+    {
+      "id": "B0CKR3XWPC",
+      "name": "Retinol Serum Liposome Delivery System",
+      "brand": "Generic",
+      "category": "treatment",
+      "price": 9.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61FQmT6QklL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0CKR3XWPC/",
+      "activeIngredients": [
+        "Rétinol Liposome",
+        "Acide Hyaluronique",
+        "Vitamine E"
+      ],
+      "skinTypes": [
+        "mature",
+        "ridules"
+      ],
+      "benefits": [
+        "réparation peau",
+        "anti-rides",
+        "système avancé"
+      ]
+    },
+    {
+      "id": "B00LXFVMZG",
+      "name": "La Roche-Posay Effaclar Duo+",
+      "brand": "La Roche-Posay",
+      "category": "treatment",
+      "price": 16.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61Ze3zqMLTL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B00LXFVMZG/",
+      "activeIngredients": [
+        "Niacinamide",
+        "LHA",
+        "Zinc"
+      ],
+      "skinTypes": [
+        "acnéique",
+        "pores obstrués"
+      ],
+      "benefits": [
+        "anti-imperfections",
+        "prévient marques"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "category": "eye-care",
+  "count": 6,
+  "products": [
+    {
+      "id": "B0F6VGGDGC",
+      "name": "Under Eye Cream for Dark Circles and Puffiness",
+      "brand": "Generic",
+      "category": "eye-care",
+      "price": 14.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71E0r7aurgL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0F6VGGDGC/",
+      "activeIngredients": [
+        "Caféine",
+        "Rétinol",
+        "Peptides",
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "tous types",
+        "cernes"
+      ],
+      "benefits": [
+        "réduit cernes",
+        "anti-poches",
+        "anti-âge"
+      ]
+    },
+    {
+      "id": "B0FC1W53QN",
+      "name": "Retinol & Caffeine Eye Cream",
+      "brand": "Generic",
+      "category": "eye-care",
+      "price": 9.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61jUF1tFgbL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0FC1W53QN/",
+      "activeIngredients": [
+        "Rétinol",
+        "Caféine"
+      ],
+      "skinTypes": [
+        "tous types",
+        "rides"
+      ],
+      "benefits": [
+        "anti-rides",
+        "décongestionnant",
+        "testé dermato"
+      ]
+    },
+    {
+      "id": "B0F6CZZCFM",
+      "name": "Retinol Eye Cream with Caffeine",
+      "brand": "Generic",
+      "category": "eye-care",
+      "price": 9.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71RnHuqXYtL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0F6CZZCFM/",
+      "activeIngredients": [
+        "Rétinol",
+        "Caféine",
+        "Acide Hyaluronique",
+        "Vitamine C"
+      ],
+      "skinTypes": [
+        "mature",
+        "cernes",
+        "poches"
+      ],
+      "benefits": [
+        "anti-âge global yeux",
+        "réduit cernes et rides"
+      ]
+    },
+    {
+      "id": "B0F24FGXRB",
+      "name": "Caffeine Eye Cream Under Eye Brightener",
+      "brand": "Generic",
+      "category": "eye-care",
+      "price": 14.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/51VyHDqBElL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0F24FGXRB/",
+      "activeIngredients": [
+        "Caféine",
+        "Rétinol"
+      ],
+      "skinTypes": [
+        "cernes foncés",
+        "femmes"
+      ],
+      "benefits": [
+        "éclaircit cernes",
+        "texture crème"
+      ]
+    },
+    {
+      "id": "B0FKLYN5JK",
+      "name": "Eye Cream Retinol for Dark Circles",
+      "brand": "Generic",
+      "category": "eye-care",
+      "price": 15.98,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/31HrnpdbMeL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0FKLYN5JK/",
+      "activeIngredients": [
+        "Rétinol",
+        "Acide Hyaluronique",
+        "Peptides",
+        "Caféine"
+      ],
+      "skinTypes": [
+        "mature",
+        "cernes"
+      ],
+      "benefits": [
+        "réduit poches",
+        "lisse rides",
+        "anti-cernes"
+      ]
+    },
+    {
+      "id": "B01N3Y9J54",
+      "name": "CeraVe Eye Repair Cream",
+      "brand": "CeraVe",
+      "category": "eye-care",
+      "price": 16.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71jdcrAdwbL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B01N3Y9J54/",
+      "activeIngredients": [
+        "Céramides",
+        "Acide Hyaluronique",
+        "Niacinamide"
+      ],
+      "skinTypes": [
+        "sensible",
+        "tous types"
+      ],
+      "benefits": [
+        "hydratation douce",
+        "restaure barrière"
+      ]
+    }
+  ]
+}

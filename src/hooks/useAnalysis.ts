@@ -32,25 +32,44 @@ export function useAnalysis(): UseAnalysisReturn {
       // Les photos sont déjà en base64 depuis le sessionStorage
       const requestForAPI = request
 
-      // Appel API au lieu du service direct
-      const response = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestForAPI)
-      })
+      // V2 PURE: Timeout étendu 180s pour architecture IA-First 4 étapes
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 180000) // 3 minutes
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Erreur de l\'API')
+      try {
+        // Appel API au lieu du service direct
+        const response = await fetch('/api/analyze', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestForAPI),
+          signal: controller.signal // SPRINT 1: Gestion timeout cohérente
+        })
+
+        clearTimeout(timeoutId)
+
+        if (!response.ok) {
+          const errorData = await response.json()
+          throw new Error(errorData.error || 'Erreur de l\'API')
+        }
+
+        const result = await response.json()
+        
+        if (progressInterval) clearInterval(progressInterval)
+        setProgress(100)
+        setAnalysis(result.data)
+
+      } catch (fetchError) {
+        clearTimeout(timeoutId)
+        
+        // Gestion spécifique des timeouts
+        if (fetchError instanceof Error && fetchError.name === 'AbortError') {
+          throw new Error('Timeout: L\'analyse a pris trop de temps (>180s). Veuillez réessayer avec des images plus petites.')
+        }
+        
+        throw fetchError
       }
-
-      const result = await response.json()
-      
-      if (progressInterval) clearInterval(progressInterval)
-      setProgress(100)
-      setAnalysis(result.data)
 
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Erreur inconnue'

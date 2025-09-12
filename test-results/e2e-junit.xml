@@ -1,0 +1,1235 @@
+<testsuites id="" name="" tests="54" failures="27" skipped="27" errors="0" time="352.024109">
+<testsuite name="refonte-ia-first.spec.ts" timestamp="2025-09-11T23:33:21.089Z" hostname="chromium" tests="9" failures="9" skipped="0" time="170.105" errors="0">
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › parcours complet upload → questionnaire → analyse → résultats personnalisés" classname="refonte-ia-first.spec.ts" time="19.347">
+<failure message="refonte-ia-first.spec.ts:137:7 parcours complet upload → questionnaire → analyse → résultats personnalisés" type="FAILURE">
+<![CDATA[  [chromium] › refonte-ia-first.spec.ts:137:7 › Refonte IA-First - Parcours Utilisateur Complet › parcours complet upload → questionnaire → analyse → résultats personnalisés 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('h1')
+    Expected string: "DermAI"
+    Received string: "Partenaire IABeauté Fondé enScience"
+    Timeout: 10000ms
+
+    Call log:
+      - Expect "toContainText" with timeout 10000ms
+      - waiting for locator('h1')
+        12 × locator resolved to <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold leading-tight text-dermai-neutral-900">…</h1>
+           - unexpected value "Partenaire IABeauté Fondé enScience"
+
+
+      137 |   test('parcours complet upload → questionnaire → analyse → résultats personnalisés', async ({ page }) => {
+      138 |     // 1. Page d'accueil
+    > 139 |     await expect(page.locator('h1')).toContainText('DermAI')
+          |                                      ^
+      140 |     await page.click('[data-testid="start-analysis"]')
+      141 |
+      142 |     // 2. Upload de photos
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:139:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-chromium/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › rendu dynamique du contenu IA variable" classname="refonte-ia-first.spec.ts" time="19.384">
+<failure message="refonte-ia-first.spec.ts:198:7 rendu dynamique du contenu IA variable" type="FAILURE">
+<![CDATA[  [chromium] › refonte-ia-first.spec.ts:198:7 › Refonte IA-First - Parcours Utilisateur Complet › rendu dynamique du contenu IA variable 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator:  locator('[data-testid="routine-step"]:first-child [data-testid="step-title"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  10000ms
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for locator('[data-testid="routine-step"]:first-child [data-testid="step-title"]')
+
+
+      232 |     // Vérifier que le contenu long s'affiche correctement
+      233 |     const longTitle = page.locator('[data-testid="routine-step"]:first-child [data-testid="step-title"]')
+    > 234 |     await expect(longTitle).toBeVisible()
+          |                             ^
+      235 |     await expect(longTitle).toContainText('Titre très long')
+      236 |     
+      237 |     // Vérifier que la description longue est lisible
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:234:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-chromium/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › performance - analyse complète sous 45 secondes" classname="refonte-ia-first.spec.ts" time="14.293">
+<failure message="refonte-ia-first.spec.ts:248:7 performance - analyse complète sous 45 secondes" type="FAILURE">
+<![CDATA[  [chromium] › refonte-ia-first.spec.ts:248:7 › Refonte IA-First - Parcours Utilisateur Complet › performance - analyse complète sous 45 secondes 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="start-analysis"]')
+
+
+      250 |     
+      251 |     // Parcours complet optimisé
+    > 252 |     await page.click('[data-testid="start-analysis"]')
+          |                ^
+      253 |     await uploadTestPhoto(page)
+      254 |     await page.click('[data-testid="continue-to-questionnaire"]')
+      255 |     await completeQuestionnaire(page)
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:252:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-chromium/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › cache - deuxième analyse identique plus rapide" classname="refonte-ia-first.spec.ts" time="19.001">
+<failure message="refonte-ia-first.spec.ts:270:7 cache - deuxième analyse identique plus rapide" type="FAILURE">
+<![CDATA[  [chromium] › refonte-ia-first.spec.ts:270:7 › Refonte IA-First - Parcours Utilisateur Complet › cache - deuxième analyse identique plus rapide 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="start-analysis"]')
+
+
+      272 |     const startTime1 = Date.now()
+      273 |     
+    > 274 |     await page.click('[data-testid="start-analysis"]')
+          |                ^
+      275 |     await uploadTestPhoto(page)
+      276 |     await page.click('[data-testid="continue-to-questionnaire"]')
+      277 |     await completeQuestionnaire(page)
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:274:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-chromium/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › gestion erreurs - budget OpenAI dépassé" classname="refonte-ia-first.spec.ts" time="15.581">
+<failure message="refonte-ia-first.spec.ts:302:7 gestion erreurs - budget OpenAI dépassé" type="FAILURE">
+<![CDATA[  [chromium] › refonte-ia-first.spec.ts:302:7 › Refonte IA-First - Parcours Utilisateur Complet › gestion erreurs - budget OpenAI dépassé 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="start-analysis"]')
+
+
+      312 |     })
+      313 |
+    > 314 |     await page.click('[data-testid="start-analysis"]')
+          |                ^
+      315 |     await uploadTestPhoto(page)
+      316 |     await page.click('[data-testid="continue-to-questionnaire"]')
+      317 |     await completeQuestionnaire(page)
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:314:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-chromium/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › accessibilité - navigation au clavier" classname="refonte-ia-first.spec.ts" time="19.95">
+<failure message="refonte-ia-first.spec.ts:327:7 accessibilité - navigation au clavier" type="FAILURE">
+<![CDATA[  [chromium] › refonte-ia-first.spec.ts:327:7 › Refonte IA-First - Parcours Utilisateur Complet › accessibilité - navigation au clavier 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator:  locator(':focus')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  10000ms
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for locator(':focus')
+
+
+      336 |     // Vérifier que les éléments sont focusables
+      337 |     const focusedElement = page.locator(':focus')
+    > 338 |     await expect(focusedElement).toBeVisible()
+          |                                  ^
+      339 |     
+      340 |     // Tester activation avec Enter/Space
+      341 |     await page.keyboard.press('Enter')
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:338:34
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-chromium/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › responsive - affichage mobile" classname="refonte-ia-first.spec.ts" time="19.289">
+<failure message="refonte-ia-first.spec.ts:345:7 responsive - affichage mobile" type="FAILURE">
+<![CDATA[  [chromium] › refonte-ia-first.spec.ts:345:7 › Refonte IA-First - Parcours Utilisateur Complet › responsive - affichage mobile 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator:  locator('[data-testid="routine-section"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  10000ms
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for locator('[data-testid="routine-section"]')
+
+
+      351 |     // Vérifier que les éléments s'adaptent
+      352 |     const routineSection = page.locator('[data-testid="routine-section"]')
+    > 353 |     await expect(routineSection).toBeVisible()
+          |                                  ^
+      354 |     
+      355 |     // Vérifier que le texte reste lisible
+      356 |     const stepTitle = page.locator('[data-testid="step-title"]').first()
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:353:34
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-chromium/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › partage - génération URL de partage" classname="refonte-ia-first.spec.ts" time="20.898">
+<failure message="refonte-ia-first.spec.ts:364:7 partage - génération URL de partage" type="FAILURE">
+<![CDATA[  [chromium] › refonte-ia-first.spec.ts:364:7 › Refonte IA-First - Parcours Utilisateur Complet › partage - génération URL de partage 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="share-button"]')
+
+
+      366 |     
+      367 |     // Cliquer sur le bouton de partage
+    > 368 |     await page.click('[data-testid="share-button"]')
+          |                ^
+      369 |     
+      370 |     // Vérifier que l'URL de partage est générée
+      371 |     await expect(page.locator('[data-testid="share-url"]')).toBeVisible()
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:368:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-chromium/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Tests de Charge et Performance › simulation charge - 10 analyses simultanées" classname="refonte-ia-first.spec.ts" time="22.362">
+<failure message="refonte-ia-first.spec.ts:387:7 simulation charge - 10 analyses simultanées" type="FAILURE">
+<![CDATA[  [chromium] › refonte-ia-first.spec.ts:387:7 › Tests de Charge et Performance › simulation charge - 10 analyses simultanées 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="start-analysis"]')
+
+
+      400 |     const analysisPromises = pages.map(async (page, index) => {
+      401 |       await page.goto('/')
+    > 402 |       await page.click('[data-testid="start-analysis"]')
+          |                  ^
+      403 |       await uploadTestPhoto(page)
+      404 |       await page.click('[data-testid="continue-to-questionnaire"]')
+      405 |       await completeQuestionnaire(page)
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:402:18
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:411:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-chromium/test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-chromium/test-failed-5.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-chromium/test-failed-8.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #4: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-chromium/test-failed-6.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-chromium/test-failed-3.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-chromium/test-failed-5.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-chromium/test-failed-8.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-chromium/test-failed-6.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="refonte-ia-first.spec.ts" timestamp="2025-09-11T23:33:21.089Z" hostname="firefox" tests="9" failures="9" skipped="0" time="259.992" errors="0">
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › parcours complet upload → questionnaire → analyse → résultats personnalisés" classname="refonte-ia-first.spec.ts" time="25.203">
+<failure message="refonte-ia-first.spec.ts:137:7 parcours complet upload → questionnaire → analyse → résultats personnalisés" type="FAILURE">
+<![CDATA[  [firefox] › refonte-ia-first.spec.ts:137:7 › Refonte IA-First - Parcours Utilisateur Complet › parcours complet upload → questionnaire → analyse → résultats personnalisés 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('h1')
+    Expected string: "DermAI"
+    Received string: "Partenaire IABeauté Fondé enScience"
+    Timeout: 10000ms
+
+    Call log:
+      - Expect "toContainText" with timeout 10000ms
+      - waiting for locator('h1')
+        11 × locator resolved to <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold leading-tight text-dermai-neutral-900">…</h1>
+           - unexpected value "Partenaire IABeauté Fondé enScience"
+
+
+      137 |   test('parcours complet upload → questionnaire → analyse → résultats personnalisés', async ({ page }) => {
+      138 |     // 1. Page d'accueil
+    > 139 |     await expect(page.locator('h1')).toContainText('DermAI')
+          |                                      ^
+      140 |     await page.click('[data-testid="start-analysis"]')
+      141 |
+      142 |     // 2. Upload de photos
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:139:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-firefox/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-firefox/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-firefox/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-firefox/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › rendu dynamique du contenu IA variable" classname="refonte-ia-first.spec.ts" time="30.5">
+<failure message="refonte-ia-first.spec.ts:198:7 rendu dynamique du contenu IA variable" type="FAILURE">
+<![CDATA[  [firefox] › refonte-ia-first.spec.ts:198:7 › Refonte IA-First - Parcours Utilisateur Complet › rendu dynamique du contenu IA variable 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator:  locator('[data-testid="routine-step"]:first-child [data-testid="step-title"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  10000ms
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for locator('[data-testid="routine-step"]:first-child [data-testid="step-title"]')
+
+
+      232 |     // Vérifier que le contenu long s'affiche correctement
+      233 |     const longTitle = page.locator('[data-testid="routine-step"]:first-child [data-testid="step-title"]')
+    > 234 |     await expect(longTitle).toBeVisible()
+          |                             ^
+      235 |     await expect(longTitle).toContainText('Titre très long')
+      236 |     
+      237 |     // Vérifier que la description longue est lisible
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:234:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-firefox/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-firefox/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-firefox/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-firefox/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › performance - analyse complète sous 45 secondes" classname="refonte-ia-first.spec.ts" time="30.032">
+<failure message="refonte-ia-first.spec.ts:248:7 performance - analyse complète sous 45 secondes" type="FAILURE">
+<![CDATA[  [firefox] › refonte-ia-first.spec.ts:248:7 › Refonte IA-First - Parcours Utilisateur Complet › performance - analyse complète sous 45 secondes 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="start-analysis"]')
+
+
+      250 |     
+      251 |     // Parcours complet optimisé
+    > 252 |     await page.click('[data-testid="start-analysis"]')
+          |                ^
+      253 |     await uploadTestPhoto(page)
+      254 |     await page.click('[data-testid="continue-to-questionnaire"]')
+      255 |     await completeQuestionnaire(page)
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:252:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-firefox/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-firefox/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-firefox/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-firefox/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › cache - deuxième analyse identique plus rapide" classname="refonte-ia-first.spec.ts" time="33.297">
+<failure message="refonte-ia-first.spec.ts:270:7 cache - deuxième analyse identique plus rapide" type="FAILURE">
+<![CDATA[  [firefox] › refonte-ia-first.spec.ts:270:7 › Refonte IA-First - Parcours Utilisateur Complet › cache - deuxième analyse identique plus rapide 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="start-analysis"]')
+
+
+      272 |     const startTime1 = Date.now()
+      273 |     
+    > 274 |     await page.click('[data-testid="start-analysis"]')
+          |                ^
+      275 |     await uploadTestPhoto(page)
+      276 |     await page.click('[data-testid="continue-to-questionnaire"]')
+      277 |     await completeQuestionnaire(page)
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:274:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-firefox/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-firefox/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-firefox/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-firefox/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › gestion erreurs - budget OpenAI dépassé" classname="refonte-ia-first.spec.ts" time="23.241">
+<failure message="refonte-ia-first.spec.ts:302:7 gestion erreurs - budget OpenAI dépassé" type="FAILURE">
+<![CDATA[  [firefox] › refonte-ia-first.spec.ts:302:7 › Refonte IA-First - Parcours Utilisateur Complet › gestion erreurs - budget OpenAI dépassé 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="start-analysis"]')
+
+
+      312 |     })
+      313 |
+    > 314 |     await page.click('[data-testid="start-analysis"]')
+          |                ^
+      315 |     await uploadTestPhoto(page)
+      316 |     await page.click('[data-testid="continue-to-questionnaire"]')
+      317 |     await completeQuestionnaire(page)
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:314:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-firefox/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-firefox/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-firefox/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-firefox/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › accessibilité - navigation au clavier" classname="refonte-ia-first.spec.ts" time="21.178">
+<failure message="refonte-ia-first.spec.ts:327:7 accessibilité - navigation au clavier" type="FAILURE">
+<![CDATA[  [firefox] › refonte-ia-first.spec.ts:327:7 › Refonte IA-First - Parcours Utilisateur Complet › accessibilité - navigation au clavier 
+
+    Error: expect.toBeVisible: Error: strict mode violation: locator(':focus') resolved to 2 elements:
+        1) <nextjs-portal></nextjs-portal> aka locator('nextjs-portal')
+        2) <button aria-haspopup="menu" data-next-mark="true" aria-expanded="false" data-next-mark-loading="true" aria-label="Open Next.js Dev Tools" data-nextjs-dev-tools-button="true" aria-controls="nextjs-dev-tools-menu">…</button> aka getByRole('button', { name: 'Open Next.js Dev Tools' })
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for locator(':focus')
+
+
+      336 |     // Vérifier que les éléments sont focusables
+      337 |     const focusedElement = page.locator(':focus')
+    > 338 |     await expect(focusedElement).toBeVisible()
+          |                                  ^
+      339 |     
+      340 |     // Tester activation avec Enter/Space
+      341 |     await page.keyboard.press('Enter')
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:338:34
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-firefox/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-firefox/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-firefox/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-firefox/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › responsive - affichage mobile" classname="refonte-ia-first.spec.ts" time="30.287">
+<failure message="refonte-ia-first.spec.ts:345:7 responsive - affichage mobile" type="FAILURE">
+<![CDATA[  [firefox] › refonte-ia-first.spec.ts:345:7 › Refonte IA-First - Parcours Utilisateur Complet › responsive - affichage mobile 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator:  locator('[data-testid="routine-section"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  10000ms
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for locator('[data-testid="routine-section"]')
+
+
+      351 |     // Vérifier que les éléments s'adaptent
+      352 |     const routineSection = page.locator('[data-testid="routine-section"]')
+    > 353 |     await expect(routineSection).toBeVisible()
+          |                                  ^
+      354 |     
+      355 |     // Vérifier que le texte reste lisible
+      356 |     const stepTitle = page.locator('[data-testid="step-title"]').first()
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:353:34
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-firefox/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-firefox/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-firefox/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-firefox/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › partage - génération URL de partage" classname="refonte-ia-first.spec.ts" time="29.31">
+<failure message="refonte-ia-first.spec.ts:364:7 partage - génération URL de partage" type="FAILURE">
+<![CDATA[  [firefox] › refonte-ia-first.spec.ts:364:7 › Refonte IA-First - Parcours Utilisateur Complet › partage - génération URL de partage 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="share-button"]')
+
+
+      366 |     
+      367 |     // Cliquer sur le bouton de partage
+    > 368 |     await page.click('[data-testid="share-button"]')
+          |                ^
+      369 |     
+      370 |     // Vérifier que l'URL de partage est générée
+      371 |     await expect(page.locator('[data-testid="share-url"]')).toBeVisible()
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:368:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-firefox/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-firefox/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-firefox/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-firefox/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Tests de Charge et Performance › simulation charge - 10 analyses simultanées" classname="refonte-ia-first.spec.ts" time="36.944">
+<failure message="refonte-ia-first.spec.ts:387:7 simulation charge - 10 analyses simultanées" type="FAILURE">
+<![CDATA[  [firefox] › refonte-ia-first.spec.ts:387:7 › Tests de Charge et Performance › simulation charge - 10 analyses simultanées 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="start-analysis"]')
+
+
+      400 |     const analysisPromises = pages.map(async (page, index) => {
+      401 |       await page.goto('/')
+    > 402 |       await page.click('[data-testid="start-analysis"]')
+          |                  ^
+      403 |       await uploadTestPhoto(page)
+      404 |       await page.click('[data-testid="continue-to-questionnaire"]')
+      405 |       await completeQuestionnaire(page)
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:402:18
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:411:5
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-firefox/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-firefox/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="refonte-ia-first.spec.ts" timestamp="2025-09-11T23:33:21.089Z" hostname="webkit" tests="9" failures="9" skipped="0" time="532.916" errors="0">
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › parcours complet upload → questionnaire → analyse → résultats personnalisés" classname="refonte-ia-first.spec.ts" time="83.168">
+<failure message="refonte-ia-first.spec.ts:137:7 parcours complet upload → questionnaire → analyse → résultats personnalisés" type="FAILURE">
+<![CDATA[  [webkit] › refonte-ia-first.spec.ts:137:7 › Refonte IA-First - Parcours Utilisateur Complet › parcours complet upload → questionnaire → analyse → résultats personnalisés 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('h1')
+    Expected string: "DermAI"
+    Received string: "Partenaire IABeauté Fondé enScience"
+    Timeout: 10000ms
+
+    Call log:
+      - Expect "toContainText" with timeout 10000ms
+      - waiting for locator('h1')
+        9 × locator resolved to <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold leading-tight text-dermai-neutral-900">…</h1>
+          - unexpected value "Partenaire IABeauté Fondé enScience"
+
+
+      137 |   test('parcours complet upload → questionnaire → analyse → résultats personnalisés', async ({ page }) => {
+      138 |     // 1. Page d'accueil
+    > 139 |     await expect(page.locator('h1')).toContainText('DermAI')
+          |                                      ^
+      140 |     await page.click('[data-testid="start-analysis"]')
+      141 |
+      142 |     // 2. Upload de photos
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:139:38
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-webkit/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-webkit/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-webkit/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › rendu dynamique du contenu IA variable" classname="refonte-ia-first.spec.ts" time="80.039">
+<failure message="refonte-ia-first.spec.ts:198:7 rendu dynamique du contenu IA variable" type="FAILURE">
+<![CDATA[  [webkit] › refonte-ia-first.spec.ts:198:7 › Refonte IA-First - Parcours Utilisateur Complet › rendu dynamique du contenu IA variable 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator:  locator('[data-testid="routine-step"]:first-child [data-testid="step-title"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  10000ms
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for locator('[data-testid="routine-step"]:first-child [data-testid="step-title"]')
+
+
+      232 |     // Vérifier que le contenu long s'affiche correctement
+      233 |     const longTitle = page.locator('[data-testid="routine-step"]:first-child [data-testid="step-title"]')
+    > 234 |     await expect(longTitle).toBeVisible()
+          |                             ^
+      235 |     await expect(longTitle).toContainText('Titre très long')
+      236 |     
+      237 |     // Vérifier que la description longue est lisible
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:234:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-webkit/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-webkit/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-webkit/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-webkit/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › performance - analyse complète sous 45 secondes" classname="refonte-ia-first.spec.ts" time="83.183">
+<failure message="refonte-ia-first.spec.ts:248:7 performance - analyse complète sous 45 secondes" type="FAILURE">
+<![CDATA[  [webkit] › refonte-ia-first.spec.ts:248:7 › Refonte IA-First - Parcours Utilisateur Complet › performance - analyse complète sous 45 secondes 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="start-analysis"]')
+
+
+      250 |     
+      251 |     // Parcours complet optimisé
+    > 252 |     await page.click('[data-testid="start-analysis"]')
+          |                ^
+      253 |     await uploadTestPhoto(page)
+      254 |     await page.click('[data-testid="continue-to-questionnaire"]')
+      255 |     await completeQuestionnaire(page)
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:252:16
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-webkit/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-webkit/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-webkit/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › cache - deuxième analyse identique plus rapide" classname="refonte-ia-first.spec.ts" time="42.719">
+<failure message="refonte-ia-first.spec.ts:270:7 cache - deuxième analyse identique plus rapide" type="FAILURE">
+<![CDATA[  [webkit] › refonte-ia-first.spec.ts:270:7 › Refonte IA-First - Parcours Utilisateur Complet › cache - deuxième analyse identique plus rapide 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="start-analysis"]')
+
+
+      272 |     const startTime1 = Date.now()
+      273 |     
+    > 274 |     await page.click('[data-testid="start-analysis"]')
+          |                ^
+      275 |     await uploadTestPhoto(page)
+      276 |     await page.click('[data-testid="continue-to-questionnaire"]')
+      277 |     await completeQuestionnaire(page)
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:274:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-webkit/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-webkit/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-webkit/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-webkit/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › gestion erreurs - budget OpenAI dépassé" classname="refonte-ia-first.spec.ts" time="40.76">
+<failure message="refonte-ia-first.spec.ts:302:7 gestion erreurs - budget OpenAI dépassé" type="FAILURE">
+<![CDATA[  [webkit] › refonte-ia-first.spec.ts:302:7 › Refonte IA-First - Parcours Utilisateur Complet › gestion erreurs - budget OpenAI dépassé 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="start-analysis"]')
+
+
+      312 |     })
+      313 |
+    > 314 |     await page.click('[data-testid="start-analysis"]')
+          |                ^
+      315 |     await uploadTestPhoto(page)
+      316 |     await page.click('[data-testid="continue-to-questionnaire"]')
+      317 |     await completeQuestionnaire(page)
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:314:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-webkit/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-webkit/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-webkit/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-webkit/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › accessibilité - navigation au clavier" classname="refonte-ia-first.spec.ts" time="65.452">
+<failure message="refonte-ia-first.spec.ts:327:7 accessibilité - navigation au clavier" type="FAILURE">
+<![CDATA[  [webkit] › refonte-ia-first.spec.ts:327:7 › Refonte IA-First - Parcours Utilisateur Complet › accessibilité - navigation au clavier 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator:  locator(':focus')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  10000ms
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for locator(':focus')
+
+
+      336 |     // Vérifier que les éléments sont focusables
+      337 |     const focusedElement = page.locator(':focus')
+    > 338 |     await expect(focusedElement).toBeVisible()
+          |                                  ^
+      339 |     
+      340 |     // Tester activation avec Enter/Space
+      341 |     await page.keyboard.press('Enter')
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:338:34
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-webkit/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-webkit/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-webkit/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-webkit/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › responsive - affichage mobile" classname="refonte-ia-first.spec.ts" time="42.543">
+<failure message="refonte-ia-first.spec.ts:345:7 responsive - affichage mobile" type="FAILURE">
+<![CDATA[  [webkit] › refonte-ia-first.spec.ts:345:7 › Refonte IA-First - Parcours Utilisateur Complet › responsive - affichage mobile 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator:  locator('[data-testid="routine-section"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  10000ms
+
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for locator('[data-testid="routine-section"]')
+
+
+      351 |     // Vérifier que les éléments s'adaptent
+      352 |     const routineSection = page.locator('[data-testid="routine-section"]')
+    > 353 |     await expect(routineSection).toBeVisible()
+          |                                  ^
+      354 |     
+      355 |     // Vérifier que le texte reste lisible
+      356 |     const stepTitle = page.locator('[data-testid="step-title"]').first()
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:353:34
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-webkit/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-webkit/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-webkit/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-webkit/video.webm]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-webkit/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › partage - génération URL de partage" classname="refonte-ia-first.spec.ts" time="61.069">
+<failure message="refonte-ia-first.spec.ts:364:7 partage - génération URL de partage" type="FAILURE">
+<![CDATA[  [webkit] › refonte-ia-first.spec.ts:364:7 › Refonte IA-First - Parcours Utilisateur Complet › partage - génération URL de partage 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="share-button"]')
+
+
+      366 |     
+      367 |     // Cliquer sur le bouton de partage
+    > 368 |     await page.click('[data-testid="share-button"]')
+          |                ^
+      369 |     
+      370 |     // Vérifier que l'URL de partage est générée
+      371 |     await expect(page.locator('[data-testid="share-url"]')).toBeVisible()
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:368:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-webkit/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-webkit/test-failed-1.png]]
+
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-webkit/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Tests de Charge et Performance › simulation charge - 10 analyses simultanées" classname="refonte-ia-first.spec.ts" time="33.983">
+<failure message="refonte-ia-first.spec.ts:387:7 simulation charge - 10 analyses simultanées" type="FAILURE">
+<![CDATA[  [webkit] › refonte-ia-first.spec.ts:387:7 › Tests de Charge et Performance › simulation charge - 10 analyses simultanées 
+
+    TimeoutError: page.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="start-analysis"]')
+
+
+      400 |     const analysisPromises = pages.map(async (page, index) => {
+      401 |       await page.goto('/')
+    > 402 |       await page.click('[data-testid="start-analysis"]')
+          |                  ^
+      403 |       await uploadTestPhoto(page)
+      404 |       await page.click('[data-testid="continue-to-questionnaire"]')
+      405 |       await completeQuestionnaire(page)
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:402:18
+        at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:411:5
+
+    Error Context: ../../test-results/e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-webkit/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-webkit/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="refonte-ia-first.spec.ts" timestamp="2025-09-11T23:33:21.089Z" hostname="Mobile Chrome" tests="9" failures="0" skipped="9" time="7.562" errors="0">
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › parcours complet upload → questionnaire → analyse → résultats personnalisés" classname="refonte-ia-first.spec.ts" time="7.562">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › rendu dynamique du contenu IA variable" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › performance - analyse complète sous 45 secondes" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › cache - deuxième analyse identique plus rapide" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › gestion erreurs - budget OpenAI dépassé" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › accessibilité - navigation au clavier" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › responsive - affichage mobile" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › partage - génération URL de partage" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Tests de Charge et Performance › simulation charge - 10 analyses simultanées" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="refonte-ia-first.spec.ts" timestamp="2025-09-11T23:33:21.089Z" hostname="Mobile Safari" tests="9" failures="0" skipped="9" time="0" errors="0">
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › parcours complet upload → questionnaire → analyse → résultats personnalisés" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › rendu dynamique du contenu IA variable" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › performance - analyse complète sous 45 secondes" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › cache - deuxième analyse identique plus rapide" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › gestion erreurs - budget OpenAI dépassé" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › accessibilité - navigation au clavier" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › responsive - affichage mobile" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › partage - génération URL de partage" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Tests de Charge et Performance › simulation charge - 10 analyses simultanées" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="refonte-ia-first.spec.ts" timestamp="2025-09-11T23:33:21.089Z" hostname="Tablet" tests="9" failures="0" skipped="9" time="0" errors="0">
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › parcours complet upload → questionnaire → analyse → résultats personnalisés" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › rendu dynamique du contenu IA variable" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › performance - analyse complète sous 45 secondes" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › cache - deuxième analyse identique plus rapide" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › gestion erreurs - budget OpenAI dépassé" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › accessibilité - navigation au clavier" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › responsive - affichage mobile" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Refonte IA-First - Parcours Utilisateur Complet › partage - génération URL de partage" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Tests de Charge et Performance › simulation charge - 10 analyses simultanées" classname="refonte-ia-first.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+</testsuites>

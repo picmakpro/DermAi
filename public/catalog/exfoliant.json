@@ -1,0 +1,188 @@
+{
+  "category": "exfoliant",
+  "count": 8,
+  "products": [
+    {
+      "id": "B00949CTQQ",
+      "name": "Paula's Choice SKIN PERFECTING 2% BHA",
+      "brand": "Paula's Choice",
+      "category": "exfoliant",
+      "price": 37,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61RHq4MT34L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B00949CTQQ/",
+      "activeIngredients": [
+        "Acide Salicylique 2%"
+      ],
+      "skinTypes": [
+        "grasse",
+        "mixte",
+        "pores dilatés"
+      ],
+      "benefits": [
+        "désobstrue pores",
+        "réduit points noirs",
+        "lisse"
+      ]
+    },
+    {
+      "id": "B071D4D5DT",
+      "name": "The Ordinary AHA 30% + BHA 2% Peeling Solution",
+      "brand": "The Ordinary",
+      "category": "exfoliant",
+      "price": 9.5,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71kjyCh8yyL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B071D4D5DT/",
+      "activeIngredients": [
+        "AHA 30%",
+        "BHA 2%"
+      ],
+      "skinTypes": [
+        "normale",
+        "grasse",
+        "expérimentés"
+      ],
+      "benefits": [
+        "peeling intense",
+        "éclat",
+        "texture de peau"
+      ]
+    },
+    {
+      "id": "B01M5FEYKA",
+      "name": "Paula's Choice SKIN PERFECTING 2% BHA Lotion",
+      "brand": "Paula's Choice",
+      "category": "exfoliant",
+      "price": 35,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61xqbLC414L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B01M5FEYKA/",
+      "activeIngredients": [
+        "Acide Salicylique 2%"
+      ],
+      "skinTypes": [
+        "sensible",
+        "sèche"
+      ],
+      "benefits": [
+        "exfoliation douce",
+        "texture lotion",
+        "hydrate"
+      ]
+    },
+    {
+      "id": "B089973QWM",
+      "name": "Paula's Choice 25% AHA + 2% BHA Liquid",
+      "brand": "Paula's Choice",
+      "category": "exfoliant",
+      "price": 45,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71BgHPmzoXL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B089973QWM/",
+      "activeIngredients": [
+        "AHA 25%",
+        "BHA 2%"
+      ],
+      "skinTypes": [
+        "expérimentés",
+        "résistante"
+      ],
+      "benefits": [
+        "peeling professionnel",
+        "résultats intenses"
+      ]
+    },
+    {
+      "id": "B00KOAMZCW",
+      "name": "Paula's Choice RESIST Daily Pore Refining 2% BHA",
+      "brand": "Paula's Choice",
+      "category": "exfoliant",
+      "price": 37,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71EIkbcXEhL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B00KOAMZCW/",
+      "activeIngredients": [
+        "Acide Salicylique 2%",
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "normale",
+        "mixte",
+        "mature"
+      ],
+      "benefits": [
+        "raffine pores",
+        "hydrate",
+        "anti-âge"
+      ]
+    },
+    {
+      "id": "B0DMTDN158",
+      "name": "The Ordinary Glycolic Acid 7% Toning Solution",
+      "brand": "The Ordinary",
+      "category": "exfoliant",
+      "price": 8.7,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61DAurbQboL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0DMTDN158/",
+      "activeIngredients": [
+        "Acide Glycolique 7%"
+      ],
+      "skinTypes": [
+        "normale",
+        "grasse"
+      ],
+      "benefits": [
+        "texture améliorée",
+        "éclat quotidien",
+        "lisse"
+      ]
+    },
+    {
+      "id": "B07DK27V2F",
+      "name": "Paula's Choice AHA 8% + BHA 2% Duo",
+      "brand": "Paula's Choice",
+      "category": "exfoliant",
+      "price": 25.5,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/81-GXMJRa3L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B07DK27V2F/",
+      "activeIngredients": [
+        "Acide Glycolique",
+        "Acide Salicylique"
+      ],
+      "skinTypes": [
+        "mixte",
+        "mature"
+      ],
+      "benefits": [
+        "routine complète",
+        "anti-âge",
+        "purifiante"
+      ]
+    },
+    {
+      "id": "B09DP7P4QN",
+      "name": "AHA 30% + BHA 2% Peeling Solution Alternative",
+      "brand": "Generic",
+      "category": "exfoliant",
+      "price": 6.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71mvc9NBS6L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B09DP7P4QN/",
+      "activeIngredients": [
+        "AHA 30%",
+        "BHA 2%"
+      ],
+      "skinTypes": [
+        "expérimentés",
+        "économique"
+      ],
+      "benefits": [
+        "peeling chimique",
+        "alternative abordable"
+      ]
+    }
+  ]
+}

@@ -134,9 +134,25 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 
 ## 4. IA et Machine Learning
 
-- **Modèle**: GPT-4o Vision pour l'analyse d'images.
-- **Prompts**: Des prompts systèmes sophistiqués et distincts pour le diagnostic et la sélection de produits.
-- **Algorithme de score**: Un algorithme propriétaire pour calculer l'âge de la peau et un score global de santé cutanée.
+### 4.1. Architecture IA-First Pure (Refonte V2)
+
+- **Modèle**: GPT-4o Vision avec configuration déterministe (température 0.0)
+- **Logique 4 Étapes IA Pures**:
+  - **ÉTAPE 1**: Diagnostic visuel pur (IA OpenAI) avec validation Zod stricte
+  - **ÉTAPE 2**: Routine personnalisée (IA OpenAI) basée sur diagnostic + profil
+  - **ÉTAPE 3**: Sélection produits (IA OpenAI) basée sur routine + catalogue
+  - **ÉTAPE 4**: Assemblage et validation (algorithmique) pour cohérence finale
+- **Prompts**: Prompts spécialisés par étape avec chaînage des outputs
+- **Personnalisation**: 95% de routines différentes pour diagnostics différents
+
+### 4.2. Fiabilité et Déterminisme V2
+
+- **Reproductibilité**: Seed basé sur hash des images pour résultats identiques
+- **Validation Multi-Étapes**: Schémas Zod spécialisés pour chaque étape IA
+- **Gestion d'erreurs**: Retry intelligent par étape avec fallback progressif
+- **Cohérence Garantie**: Validation croisée diagnostic → routine → produits
+- **Cache Intelligent**: Multi-niveaux pour optimiser coûts et performance
+- **Monitoring Avancé**: Métriques de personnalisation et cohérence temps réel
 
 ## 5. Gestion des Données
 
@@ -271,22 +287,98 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 - **Validation des entrées**: Renforcer la validation côté serveur pour toutes les entrées utilisateur (questionnaire, upload de photos) afin de prévenir les injections ou les données malformées.
 - **Authentification sécurisée**: Pour les fonctionnalités futures nécessitant une authentification, utiliser des protocoles OAuth2/OpenID Connect avec des fournisseurs d'identité reconnus (ex: Auth0, NextAuth.js) et des tokens JWT sécurisés.
 
-### 8.2. Robustesse
+### 8.2. Robustesse et Fiabilité Opérationnelle
 
-- **Gestion des erreurs API**: Implémenter des mécanismes de retry avec backoff exponentiel pour les appels aux APIs externes (OpenAI, Perfect Corp si utilisée, APIs d'affiliation) afin de gérer les erreurs temporaires et les limites de débit.
-- **Monitoring et Alerting**: Mettre en place un système de monitoring pour suivre les performances de l'application, les erreurs d'API, et les temps de réponse. Des alertes automatiques devraient être configurées pour les incidents critiques.
-- **Tests automatisés**: Développer une suite complète de tests unitaires, d'intégration et de bout en bout pour garantir la stabilité et la non-régression des fonctionnalités existantes et futures.
-- **Scalabilité**: Anticiper la croissance du nombre d'utilisateurs. Pour les APIs, cela signifie potentiellement la mise en place de caching ou l'utilisation de services managés qui scalent automatiquement. Pour le frontend, l'optimisation continue des bundles et des temps de chargement.
+#### **8.2.1. Gestion d'Erreurs Avancée**
+- **Retry Strategy**: Backoff exponentiel avec jitter pour OpenAI API (3 tentatives max)
+- **Circuit Breaker**: Protection contre les cascades d'erreurs avec fallback automatique
+- **Timeout Management**: Alignement client/serveur (30s client, 35s serveur)
+- **Error Classification**: Retry intelligent selon type d'erreur (réseau vs validation)
 
-### 8.3. Cohérence et Fonctionnalité
+#### **8.2.2. Monitoring et Observabilité**
+- **Métriques Temps Réel**: Taux d'erreur, latence P95, cohérence diagnostic
+- **Alerting Intelligent**: Seuils adaptatifs avec escalade automatique
+- **Logging Structuré**: Corrélation des requêtes avec métadonnées contextuelles
+- **Dashboard Opérationnel**: Visibilité complète sur santé système
 
-- **Standardisation des données**: Définir des schémas de données clairs et cohérents pour le catalogue de produits, les diagnostics IA et les profils utilisateurs. Utiliser TypeScript pour renforcer cette cohérence à la compilation.
-- **Amélioration de la logique de sélection des produits**: Affiner l'algorithme de sélection des produits pour prendre en compte non seulement le diagnostic mais aussi les préférences de l'utilisateur (budget, allergies, type de routine) de manière plus pondérée.
-- **Feedback utilisateur sur le diagnostic**: Permettre aux utilisateurs de fournir un feedback sur la précision du diagnostic IA. Cela pourrait servir à améliorer le prompt engineering ou à identifier des cas limites.
-- **Internationalisation (i18n)**: Dès que possible, concevoir l'application pour supporter plusieurs langues et formats régionaux, en prévision d'une expansion internationale.
-- **Accessibilité (A11y)**: S'assurer que l'application est utilisable par des personnes ayant des handicaps, en suivant les directives WCAG (Web Content Accessibility Guidelines).
+#### **8.2.3. Tests et Validation**
+- **Tests Unitaires**: Couverture >90% sur services critiques avec mocks déterministes
+- **Tests d'Intégration**: Validation E2E avec données réelles anonymisées
+- **Tests de Charge**: Simulation 100 analyses simultanées
+- **Tests de Chaos**: Injection d'erreurs pour valider résilience
 
-## 9. Références
+#### **8.2.4. Scalabilité et Performance**
+- **Optimisation Mémoire**: Monitoring usage Vercel avec compression adaptative
+- **Cache Intelligent**: Redis pour catalogue produits et résultats fréquents
+- **CDN Assets**: Optimisation images et bundles JS
+- **Database Optimization**: Index optimisés et requêtes préparées
+
+### 8.3. Cohérence et Qualité des Données
+
+#### **8.3.1. Validation et Schémas**
+- **Schémas Zod**: Validation runtime stricte pour tous les inputs/outputs IA
+- **Contrats API**: Interfaces TypeScript avec validation côté serveur
+- **Cohérence Inter-Étapes**: Validation croisée diagnostic ↔ produits ↔ routine
+- **Catalogue Validé**: Vérification temps réel de la disponibilité des produits
+
+#### **8.3.2. Amélioration Continue**
+- **Feedback Loop**: Collecte anonyme de satisfaction pour améliorer prompts
+- **A/B Testing**: Tests de variantes de prompts avec métriques de qualité
+- **Analyse de Cohérence**: Détection automatique d'incohérences dans les résultats
+- **Optimisation Budgétaire**: Respect strict des contraintes financières utilisateur
+
+#### **8.3.3. Accessibilité et Internationalisation**
+- **WCAG 2.1 AA**: Conformité complète pour accessibilité
+- **i18n Ready**: Architecture préparée pour multi-langues
+- **Responsive Design**: Optimisation mobile-first avec PWA
+- **Performance Web**: Core Web Vitals optimisés (LCP < 2.5s, FID < 100ms)
+
+## 9. Documentation Technique de Référence
+
+### 9.1. Fiche Technique Évolutive
+
+**[diagnostic-technique-refonte-ia-complete.md](./diagnostic-technique-refonte-ia-complete.md)** - 🔥 **REFONTE MAJEURE V2** :
+- Architecture IA-First Pure (4 étapes 100% IA)
+- Schémas de validation Zod spécialisés
+- Prompts opérationnels pour chaque étape IA
+- Planning d'implémentation détaillé (3 semaines)
+- Métriques de personnalisation et cohérence
+
+**[diagnostic-technique-complet.md](./diagnostic-technique-complet.md)** - Document de référence historique :
+- Diagnostic complet des problèmes identifiés (architecture hybride)
+- Solutions techniques détaillées avec implémentation
+- Roadmap priorisée sur 8 semaines (4 sprints)
+- ⚠️ **OBSOLÈTE** - Remplacé par refonte IA complète
+
+**[diagnostic-technique-affichage-routines.md](./diagnostic-technique-affichage-routines.md)** - Corrections affichage routines :
+- Audit complet problèmes affichage identifiés par l'utilisateur
+- Solutions techniques pour badges, titres, timing, zones
+- Plan d'action en 3 sprints avec prompts opérationnels
+- Tests de validation et critères de succès
+
+**[planning-execution-refonte-routines.md](./planning-execution-refonte-routines.md)** - Planning opérationnel refonte :
+- Tableau de bord progression sprints avec statuts temps réel
+- Prompts opérationnels prêts à l'emploi pour chaque sprint
+- Prompts de vérification et debug pour validation qualité
+- Métriques cibles et comparaison avant/après refonte
+- ✅ **REFONTE TERMINÉE** : 3 sprints complétés avec succès
+
+**[formats-json-ia.md](./formats-json-ia.md)** - Formats JSON IA stables :
+- Schémas Zod complets pour validation runtime stricte
+- Architecture A/B testing pour optimisation prompts
+- Pipeline validation avec retry automatique et fallback
+- Documentation technique complète formats stables
+
+### 9.2. Architecture et Logique Métier
+**[architecture-fiabilite.md](./architecture-fiabilite.md)** - Spécifications techniques de l'architecture de fiabilité
+**[dermatological-logic.md](./dermatological-logic.md)** - Logique dermatologique et routine 3 phases
+
+### 9.3. Règle de Développement
+> **IMPORTANT** : La fiche technique évolutive est la référence officielle du projet. 
+> Toute modification du code doit s'appuyer sur cette documentation.
+> Mise à jour obligatoire après chaque sprint.
+
+## 10. Références
 
 [1] Skincare AI Business Plan. (2025). Document fourni par l'utilisateur.
 [2] Skincare AI Planning Secondaire. (2025). Document fourni par l'utilisateur.
