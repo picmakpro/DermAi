@@ -458,3 +458,4 @@ console.log('Variant B score:', metricsB.overall_quality)
 *Documentation Formats JSON IA - DermAI V2*  
 *Sprint 3 : Formats Prompts Stables*  
 *Version 3.0 - 12 septembre 2025*
+

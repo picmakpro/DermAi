@@ -483,3 +483,4 @@ export function generateProductsFallbackTemplate(): ProductSelectionComplete {
     }
   }
 }
+

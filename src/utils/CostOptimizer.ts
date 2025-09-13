@@ -431,3 +431,4 @@ export class CostOptimizer {
 
 // Export singleton
 export const costOptimizer = CostOptimizer.getInstance()
+

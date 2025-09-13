@@ -424,3 +424,4 @@ test.describe('Tests de Charge et Performance', () => {
     await Promise.all(contexts.map(context => context.close()))
   })
 })
+

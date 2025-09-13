@@ -246,6 +246,7 @@ export interface RecommendedProduct {
   price?: number
   affiliateLink?: string
   catalogId?: string
+  justification?: string // 🔥 SPRINT 2: Ajout justification pour affichage
 }
 
 // Interface pour timing badges

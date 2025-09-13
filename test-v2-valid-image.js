@@ -69,3 +69,4 @@ async function testV2WithValidImage() {
 }
 
 testV2WithValidImage()
+

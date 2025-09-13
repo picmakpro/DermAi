@@ -289,3 +289,4 @@ export class CategorizedCatalogService {
     this.indexCache = null
   }
 }
+

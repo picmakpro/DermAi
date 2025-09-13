@@ -262,3 +262,4 @@ setTimeout(() => {
     console.log('🧹 Fichier de test fonctionnel nettoyé')
   }
 }, 1000)
+

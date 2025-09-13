@@ -572,3 +572,4 @@ describe('ProductMappingHelpers - Sprint 2 Cohérence Produits', () => {
     })
   })
 })
+

@@ -108,3 +108,4 @@ async function testV2WithDetailedLogs() {
 }
 
 testV2WithDetailedLogs()
+

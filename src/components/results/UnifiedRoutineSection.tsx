@@ -19,11 +19,14 @@ import {
   Shield,
   TrendingUp,
   Heart,
-  Globe
+  Globe,
+  ChevronRight,
+  Sparkles
 } from 'lucide-react'
 import type { UnifiedRoutineStep, BeautyAssessment } from '@/types'
 import { PhaseTimingCalculator, type PhaseTiming } from '@/services/educational/phaseTimingCalculator'
 import { EducationalTooltip, MobileEducationalTooltip } from '@/components/shared/EducationalTooltip'
+import { AIRoutineIndicator } from '@/components/shared/AIIndicator'
 import { 
   isTemporaryTreatment, 
   isContinuousTreatment, 
@@ -254,9 +257,31 @@ export function UnifiedRoutineSection({
   const scheduleData = organizeBySchedule()
 
   const renderStep = (step: UnifiedRoutineStep, index: number, resetNumbering: boolean = false) => {
-    // CORRECTION 1: Badges temporaires précis basés sur logique métier
-    const isTemporary = isTemporaryTreatment(step)
-    const isContinuous = isContinuousTreatment(step)
+    // 🔥 SPRINT 2: Badges et timing intelligents
+    const isTemporary = step.applicationDuration?.includes("Progressif") || 
+                       step.applicationDuration?.includes("jusqu'à") ||
+                       isTemporaryTreatment(step)
+    const isContinuous = step.applicationDuration === "En continu" || 
+                        isContinuousTreatment(step)
+    
+    // 🔥 SPRINT 2: Couleurs de phase basées sur category
+    const getCategoryColor = (category: string) => {
+      switch (category?.toLowerCase()) {
+        case 'nettoyage':
+        case 'cleansing':
+          return 'from-green-400 to-green-500' // Vert pour nettoyage
+        case 'traitement':
+        case 'treatment':
+          return 'from-red-400 to-red-500' // Rouge pour traitement
+        case 'hydratation':
+        case 'moisturizing':
+          return 'from-blue-400 to-blue-500' // Bleu pour hydratation
+        case 'protection':
+          return 'from-amber-400 to-amber-500' // Ambre pour protection
+        default:
+          return 'from-dermai-ai-400 to-dermai-ai-500' // Couleur par défaut
+      }
+    }
     
     // CORRECTION 2: Titres cohérents nettoyés
     const cleanTitle = validateAndCleanTitle(step.title, step.category)
@@ -283,7 +308,7 @@ export function UnifiedRoutineSection({
       >
         <div className="flex items-start space-x-2 md:space-x-3">
           <div className="flex-shrink-0">
-            <div className="w-8 h-8 bg-gradient-to-r from-dermai-ai-400 to-dermai-ai-500 text-white rounded-full flex items-center justify-center text-sm font-semibold">
+            <div className={`w-8 h-8 bg-gradient-to-r ${getCategoryColor(step.category)} text-white rounded-full flex items-center justify-center text-sm font-semibold`}>
               {displayNumber}
             </div>
           </div>
@@ -309,15 +334,20 @@ export function UnifiedRoutineSection({
                 </div>
               </div>
               
-              {/* Badge temporaire UNIQUEMENT si nécessaire */}
+              {/* 🔥 SPRINT 2: Badges intelligents temporaire/continu */}
               <div className="flex items-center gap-2 flex-wrap">
                 {isTemporary && (
-                  <div className="flex items-center space-x-1 px-2 py-1 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700 rounded-full text-xs font-medium">
+                  <div className="flex items-center space-x-1 px-2 py-1 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700 border border-amber-200 rounded-full text-xs font-medium">
                     <Clock className="w-3 h-3" />
                     <span>Temporaire</span>
                   </div>
                 )}
-                {/* PAS de badge "Continu" - redondant avec durée d'application */}
+                {isContinuous && !isTemporary && (
+                  <div className="flex items-center space-x-1 px-2 py-1 bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 border border-green-200 rounded-full text-xs font-medium">
+                    <Repeat className="w-3 h-3" />
+                    <span>Continu</span>
+                  </div>
+                )}
               </div>
             </div>
             
@@ -330,21 +360,27 @@ export function UnifiedRoutineSection({
               </div>
             )}
 
-            {/* Zones ciblées - Affichage complet sans troncature */}
-            {step.targetArea === 'specific' && step.zones && step.zones.length > 0 && (
-              <div className="flex items-center gap-1 px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium mb-2 w-fit">
-                <MapPin className="w-3 h-3" />
-                <span>Zones : {step.zones.join(', ')}</span>
+            {/* 🔥 SPRINT 2: Zones spécifiques avec badges colorés */}
+            {step.targetArea === 'specific' && step.zones && step.zones.length > 0 ? (
+              <div className="flex items-center gap-1 flex-wrap mb-2">
+                <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-purple-100 to-purple-200 text-purple-700 border border-purple-300 rounded-full text-xs font-medium">
+                  <MapPin className="w-3 h-3" />
+                  <span>Zones ciblées :</span>
+                </div>
+                {step.zones.map((zone, zoneIndex) => (
+                  <div key={zoneIndex} className="px-2 py-1 bg-gradient-to-r from-purple-50 to-pink-50 text-purple-600 border border-purple-200 rounded-full text-xs font-medium">
+                    {zone}
+                  </div>
+                ))}
               </div>
-            )}
-            {step.targetArea === 'global' && (
-              <div className="flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium mb-2 w-fit">
+            ) : (
+              <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-dermai-ai-100 to-dermai-ai-200 text-dermai-ai-700 border border-dermai-ai-300 rounded-full text-xs font-medium mb-2 w-fit">
                 <Globe className="w-3 h-3" />
                 <span>Visage entier</span>
               </div>
             )}
             
-            {/* Produits recommandés - CORRECTION FINALE avec fallback */}
+            {/* 🔥 SPRINT 2: Produits recommandés avec justifications et liens d'affiliation */}
             <div className="bg-dermai-ai-50 rounded-lg p-2 md:p-3 mb-2 md:mb-3 border border-dermai-ai-200">
               <div className="flex items-center space-x-1 text-xs text-dermai-ai-700 mb-1 md:mb-2">
                 <ShoppingBag className="w-3 h-3 flex-shrink-0" />
@@ -352,29 +388,73 @@ export function UnifiedRoutineSection({
               </div>
               {step.recommendedProducts && step.recommendedProducts.length > 0 ? (
                 step.recommendedProducts.map((product, productIndex) => (
-                  <div key={productIndex} className="mb-1 md:mb-2 last:mb-0">
-                    <div className="font-medium text-sm text-dermai-ai-800 leading-tight">
+                  <div key={productIndex} className="mb-2 md:mb-3 last:mb-0 p-2 bg-white rounded-lg border border-dermai-ai-100">
+                    <div className="font-medium text-sm text-dermai-ai-800 leading-tight mb-1">
                       {product.name}
                     </div>
-                    <div className="text-xs text-gray-600 mb-1">
+                    <div className="text-xs text-gray-600 mb-2">
                       {product.brand} • {product.category}
+                      {product.price && (
+                        <span className="ml-2 font-medium text-dermai-ai-600">
+                          {typeof product.price === 'number' ? `${product.price.toFixed(2)}€` : product.price}
+                        </span>
+                      )}
                     </div>
-                    {product.affiliateLink && (
-                      <a
-                        href={product.affiliateLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center text-xs text-dermai-ai-600 hover:underline font-medium"
-                      >
-                        <span>Voir le produit</span>
-                        <span className="ml-1">→</span>
-                      </a>
+                    
+                    {/* 🔥 SPRINT 2: Afficher justification du produit */}
+                    {product.justification && (
+                      <div className="mb-2 p-2 bg-gradient-to-r from-green-50 to-emerald-50 rounded-md border-l-2 border-green-300">
+                        <div className="flex items-start space-x-1 text-xs text-green-700">
+                          <Target className="w-3 h-3 flex-shrink-0 mt-0.5" />
+                          <span className="font-medium">Pourquoi ce produit :</span>
+                        </div>
+                        <div className="text-xs text-green-600 mt-1 leading-relaxed">
+                          {product.justification}
+                        </div>
+                      </div>
                     )}
+                    
+                    {/* 🔥 SPRINT 2: Liens d'affiliation améliorés */}
+                    <div className="flex items-center justify-between">
+                      {product.affiliateLink ? (
+                        <a
+                          href={product.affiliateLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center px-3 py-1.5 bg-gradient-to-t from-dermai-ai-500 via-dermai-ai-400 to-dermai-ai-600 text-white rounded-full text-xs font-medium hover:from-dermai-ai-600 hover:via-dermai-ai-500 hover:to-dermai-ai-700 transition-all"
+                        >
+                          <ShoppingBag className="w-3 h-3 mr-1" />
+                          <span>Voir le produit</span>
+                          <ChevronRight className="w-3 h-3 ml-1" />
+                        </a>
+                      ) : (
+                        <div className="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-500 rounded-full text-xs font-medium">
+                          <Info className="w-3 h-3 mr-1" />
+                          <span>Lien bientôt disponible</span>
+                        </div>
+                      )}
+                      
+                      {product.category && (
+                        <div className={`px-2 py-1 rounded-full text-xs font-medium border ${
+                          product.category === 'nettoyage' ? 'bg-green-100 text-green-700 border-green-200' :
+                          product.category === 'traitement' ? 'bg-red-100 text-red-700 border-red-200' :
+                          product.category === 'hydratation' ? 'bg-dermai-ai-100 text-dermai-ai-700 border-dermai-ai-200' :
+                          product.category === 'protection' ? 'bg-amber-100 text-amber-700 border-amber-200' :
+                          'bg-gray-100 text-gray-700 border-gray-200'
+                        }`}>
+                          {product.category}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 ))
               ) : (
-                <div className="text-xs text-gray-500 italic">
-                  Produit en cours de sélection...
+                <div className="flex items-center space-x-2 p-3 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border border-amber-200">
+                  <Clock className="w-4 h-4 text-amber-600 flex-shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-amber-800">Produit en cours de sélection...</div>
+                    <div className="text-xs text-amber-600 mt-1">Notre IA analyse le meilleur produit pour vos besoins</div>
+                  </div>
                 </div>
               )}
             </div>
@@ -457,10 +537,18 @@ export function UnifiedRoutineSection({
             <Calendar className="w-4 h-4 md:w-5 md:h-5 text-dermai-ai-600" />
           </div>
           <div>
-            <h2 className="text-lg md:text-2xl font-bold text-gray-900">Routines Personnalisées</h2>
-            <p className="text-xs md:text-sm text-dermai-neutral-600">Propulsé par DermAI</p>
+            <div className="flex items-center space-x-2 md:space-x-3 mb-1">
+              <h2 className="text-lg md:text-2xl font-bold text-gray-900">Routines Personnalisées</h2>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="inline-flex items-center space-x-1 text-xs font-medium text-dermai-ai-700 bg-dermai-ai-100 border border-dermai-ai-200 px-2 py-1 rounded-md">
+                <Sparkles className="w-3 h-3" />
+                <span>Routine IA</span>
+              </div>
+            </div>
           </div>
         </div>
+        
         
         <div className="flex bg-gray-100 rounded-lg p-1 w-fit">
           <button
@@ -643,7 +731,7 @@ export function UnifiedRoutineSection({
                           setActivePhase(phases[currentIndex + 1])
                         }
                       }}
-                      className="flex items-center space-x-1 px-2.5 md:px-3 py-1.5 md:py-2 bg-gradient-to-r from-dermai-ai-400 to-dermai-ai-500 hover:from-dermai-ai-500 hover:to-dermai-ai-600 text-white rounded-lg text-xs md:text-sm font-medium transition-all shadow-md"
+                      className="flex items-center space-x-1 px-2.5 md:px-3 py-1.5 md:py-2 bg-gradient-to-br from-dermai-ai-400 via-dermai-ai-300 to-dermai-ai-500 hover:from-dermai-ai-500 hover:via-dermai-ai-400 hover:to-dermai-ai-600 text-white rounded-lg text-xs md:text-sm font-medium transition-all shadow-md"
                     >
                       <span className="whitespace-nowrap">
                         <span className="hidden sm:inline">

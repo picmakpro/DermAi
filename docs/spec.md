@@ -373,7 +373,11 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 **[architecture-fiabilite.md](./architecture-fiabilite.md)** - Spécifications techniques de l'architecture de fiabilité
 **[dermatological-logic.md](./dermatological-logic.md)** - Logique dermatologique et routine 3 phases
 
-### 9.3. Règle de Développement
+### 9.3. Correction Mapping Frontend
+**[diagnostic-technique-mapping-v2-frontend.md](./diagnostic-technique-mapping-v2-frontend.md)** - 🔥 **CORRECTION CRITIQUE** - Diagnostic technique pour corriger le mapping V2→Frontend
+**[planning-execution-mapping-v2-frontend.md](./planning-execution-mapping-v2-frontend.md)** - Planning d'exécution avec prompts opérationnels pour l'implémentation
+
+### 9.4. Règle de Développement
 > **IMPORTANT** : La fiche technique évolutive est la référence officielle du projet. 
 > Toute modification du code doit s'appuyer sur cette documentation.
 > Mise à jour obligatoire après chaque sprint.

@@ -409,3 +409,4 @@ runAllTests().catch(error => {
   console.error('Erreur fatale:', error)
   process.exit(1)
 })
+

@@ -107,7 +107,7 @@ export function DynamicRoutineRenderer({
         {/* Badge IA si contenu dynamique */}
         {isDynamicContent && (
           <div className="absolute -top-2 -right-2">
-            <div className="bg-gradient-to-r from-violet-500 to-blue-500 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
+            <div className="bg-gradient-to-r from-dermai-ai-400 to-dermai-ai-500 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 border border-dermai-ai-300">
               <Sparkles className="w-3 h-3" />
               <span>IA</span>
             </div>
@@ -120,8 +120,8 @@ export function DynamicRoutineRenderer({
             <div className={`
               w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold
               ${isDynamicContent 
-                ? 'bg-gradient-to-r from-violet-500 to-blue-500 text-white' 
-                : 'bg-blue-100 text-blue-600'
+                ? 'bg-gradient-to-r from-dermai-ai-400 to-dermai-ai-500 text-white' 
+                : 'bg-dermai-ai-100 text-dermai-ai-600'
               }
             `}>
               {step.stepNumber}
@@ -221,10 +221,10 @@ export function DynamicRoutineRenderer({
         <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
           <div className="flex items-center gap-2">
             <div className={`
-              px-3 py-1 rounded-full text-xs font-medium
-              ${step.phase === 'immediate' ? 'bg-green-100 text-green-700' :
-                step.phase === 'adaptation' ? 'bg-blue-100 text-blue-700' :
-                'bg-purple-100 text-purple-700'}
+              px-3 py-1 rounded-full text-xs font-medium border
+              ${step.phase === 'immediate' ? 'bg-green-100 text-green-700 border-green-200' :
+                step.phase === 'adaptation' ? 'bg-dermai-ai-100 text-dermai-ai-700 border-dermai-ai-200' :
+                'bg-purple-100 text-purple-700 border-purple-200'}
             `}>
               {step.phase === 'immediate' ? 'Immédiate' :
                step.phase === 'adaptation' ? 'Adaptation' : 'Maintenance'}
@@ -302,7 +302,7 @@ export function DynamicRoutineRenderer({
       {/* Indicateur de contenu IA */}
       {isDynamicContent && (
         <div className="text-center py-4">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-violet-100 to-blue-100 rounded-full text-sm text-violet-700">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-dermai-ai-100 to-dermai-ai-200 rounded-full text-sm text-dermai-ai-700 border border-dermai-ai-300">
             <Sparkles className="w-4 h-4" />
             <span>Routine générée par intelligence artificielle</span>
           </div>
@@ -311,3 +311,4 @@ export function DynamicRoutineRenderer({
     </div>
   )
 }
+
