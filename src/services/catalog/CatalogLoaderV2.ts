@@ -69,9 +69,17 @@ export class CatalogLoaderV2 {
       if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
         // En production/Vercel : utiliser fetch pour accéder aux fichiers statiques
         this.logger.debug('📡 Chargement catalogue via fetch (production)')
-        const indexResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/catalog/index.json`)
+        
+        // Construire l'URL de base - utiliser l'URL de la requête courante ou une URL relative
+        const baseUrl = process.env.VERCEL_URL 
+          ? `https://${process.env.VERCEL_URL}` 
+          : process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+        
+        this.logger.debug('🌐 URL de base pour catalogue:', { baseUrl })
+        
+        const indexResponse = await fetch(`${baseUrl}/catalog/index.json`)
         if (!indexResponse.ok) {
-          throw new Error(`Erreur HTTP ${indexResponse.status} lors du chargement de l'index`)
+          throw new Error(`Erreur HTTP ${indexResponse.status} lors du chargement de l'index depuis ${baseUrl}`)
         }
         indexContent = await indexResponse.text()
       } else {
@@ -99,9 +107,13 @@ export class CatalogLoaderV2 {
 
           if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
             // En production/Vercel : utiliser fetch
-            const categoryResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/catalog/${category.file}`)
+            const baseUrl = process.env.VERCEL_URL 
+              ? `https://${process.env.VERCEL_URL}` 
+              : process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+            
+            const categoryResponse = await fetch(`${baseUrl}/catalog/${category.file}`)
             if (!categoryResponse.ok) {
-              throw new Error(`Erreur HTTP ${categoryResponse.status} pour ${category.file}`)
+              throw new Error(`Erreur HTTP ${categoryResponse.status} pour ${category.file} depuis ${baseUrl}`)
             }
             categoryContent = await categoryResponse.text()
           } else {
