@@ -62,14 +62,27 @@ export class CatalogLoaderV2 {
     try {
       this.logger.info('🔄 Chargement catalogue partitionné V2')
 
-      // Charger l'index principal
-      const catalogPath = process.env.NODE_ENV === 'production' 
-        ? path.join(process.cwd(), 'public', 'catalog')
-        : path.join(process.cwd(), 'public', 'catalog')
+      // Charger l'index principal - Approche hybride pour Vercel
+      let indexContent: string
+      let index: CatalogIndex
 
-      const indexPath = path.join(catalogPath, 'index.json')
-      const indexContent = await fs.readFile(indexPath, 'utf-8')
-      const index: CatalogIndex = JSON.parse(indexContent)
+      if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+        // En production/Vercel : utiliser fetch pour accéder aux fichiers statiques
+        this.logger.debug('📡 Chargement catalogue via fetch (production)')
+        const indexResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/catalog/index.json`)
+        if (!indexResponse.ok) {
+          throw new Error(`Erreur HTTP ${indexResponse.status} lors du chargement de l'index`)
+        }
+        indexContent = await indexResponse.text()
+      } else {
+        // En développement : utiliser fs
+        this.logger.debug('📁 Chargement catalogue via fs (développement)')
+        const catalogPath = path.join(process.cwd(), 'public', 'catalog')
+        const indexPath = path.join(catalogPath, 'index.json')
+        indexContent = await fs.readFile(indexPath, 'utf-8')
+      }
+
+      index = JSON.parse(indexContent)
 
       this.logger.info('📋 Index catalogue chargé', {
         version: index.version,
@@ -82,8 +95,22 @@ export class CatalogLoaderV2 {
 
       for (const category of index.categories) {
         try {
-          const categoryPath = path.join(catalogPath, category.file)
-          const categoryContent = await fs.readFile(categoryPath, 'utf-8')
+          let categoryContent: string
+
+          if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+            // En production/Vercel : utiliser fetch
+            const categoryResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/catalog/${category.file}`)
+            if (!categoryResponse.ok) {
+              throw new Error(`Erreur HTTP ${categoryResponse.status} pour ${category.file}`)
+            }
+            categoryContent = await categoryResponse.text()
+          } else {
+            // En développement : utiliser fs
+            const catalogPath = path.join(process.cwd(), 'public', 'catalog')
+            const categoryPath = path.join(catalogPath, category.file)
+            categoryContent = await fs.readFile(categoryPath, 'utf-8')
+          }
+
           const categoryData = JSON.parse(categoryContent)
 
           // Normaliser les produits pour l'IA
