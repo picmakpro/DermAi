@@ -17,6 +17,7 @@ import { AssemblyAndValidationService } from './core/AssemblyAndValidationServic
 import { getPromptForAttempt } from './core/prompts/diagnosticPur'
 import { ROUTINE_PERSONNALISEE_SYSTEM_PROMPT, buildRoutineUserPrompt } from './core/prompts/routinePersonnalisee'
 import { SELECTION_PRODUITS_SYSTEM_PROMPT, buildProductSelectionUserPrompt } from './core/prompts/selectionProduits'
+import { cleanAIResponse } from './core/response-cleaner'
 
 // Types pour les requêtes
 interface AnalyzeRequest {
@@ -293,8 +294,54 @@ export class AnalysisService {
       })
 
       // Parser et valider avec Zod
-      const parsedContent = JSON.parse(cleanContent)
-      const validatedDiagnostic = PureDiagnosticSchema.parse(parsedContent)
+      let parsedContent: any
+      try {
+        parsedContent = JSON.parse(cleanContent)
+      } catch (parseError) {
+        throw new Error(`Erreur parsing JSON: ${parseError}`)
+      }
+      
+      // Log du contenu avant validation pour debug
+      this.logger.info('🔍 CONTENU AVANT VALIDATION ZOD:', { 
+        requestId,
+        parsedContent: JSON.stringify(parsedContent, null, 2)
+      })
+      
+      // Tentative de validation directe
+      const directValidation = PureDiagnosticSchema.safeParse(parsedContent)
+      
+      let validatedDiagnostic: PureDiagnostic
+      
+      if (directValidation.success) {
+        // Validation réussie directement
+        validatedDiagnostic = directValidation.data
+        this.logger.info('✅ Validation directe réussie', { requestId })
+      } else {
+        // Validation échouée, essayer le nettoyage automatique
+        this.logger.warn('🧹 Validation directe échouée, tentative de nettoyage automatique', { 
+          requestId,
+          errors: directValidation.error.issues
+        })
+        
+        const { cleanedResponse, corrections, isValid } = cleanAIResponse(cleanContent)
+        
+        if (corrections.length > 0) {
+          this.logger.info('🔧 Corrections automatiques appliquées:', { 
+            requestId,
+            corrections
+          })
+        }
+        
+        if (!isValid) {
+          throw new Error(`Échec nettoyage automatique: ${corrections.join(', ')}`)
+        }
+        
+        // Re-parser et valider le contenu nettoyé
+        const cleanedParsed = JSON.parse(cleanedResponse)
+        validatedDiagnostic = PureDiagnosticSchema.parse(cleanedParsed)
+        
+        this.logger.info('✅ Validation après nettoyage réussie', { requestId })
+      }
 
       // Mettre en cache
       await this.cache.set(cacheKey, validatedDiagnostic, 24 * 60 * 60 * 1000) // 24h
@@ -310,12 +357,24 @@ export class AnalysisService {
         
       } catch (error) {
         lastError = error as Error
-        this.logger.warn(`❌ Tentative diagnostic ${attempt}/3 échouée`, { 
-          requestId, 
-          attempt,
-          error: lastError.message,
-          errorType: lastError.constructor.name
-        })
+        
+        // Log détaillé pour les erreurs de validation Zod
+        if (error instanceof Error && error.message.includes('ZodError')) {
+          this.logger.error(`❌ Erreur validation Zod - Tentative ${attempt}/3`, { 
+            requestId, 
+            attempt,
+            error: lastError.message,
+            errorType: lastError.constructor.name,
+            zodDetails: JSON.stringify(error, null, 2)
+          })
+        } else {
+          this.logger.warn(`❌ Tentative diagnostic ${attempt}/3 échouée`, { 
+            requestId, 
+            attempt,
+            error: lastError.message,
+            errorType: lastError.constructor.name
+          })
+        }
         
         if (attempt < 3) {
           await new Promise(resolve => setTimeout(resolve, 2000 * attempt))

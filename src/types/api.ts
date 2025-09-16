@@ -1,3 +1,5 @@
+import type { PhotoUpload } from './index'
+
 export interface ApiResponse<T> {
   success: boolean
   data?: T
@@ -9,10 +11,17 @@ export interface AnalyzeRequest {
   photos: PhotoUpload[]
   userProfile: UserProfile
   skinConcerns: SkinConcerns
-  currentRoutine: CurrentRoutine
+  currentRoutine?: CurrentRoutine
   allergies?: {
     ingredients: string[]
     pastReactions: string
+  }
+  // Format alternatif pour les tests V2
+  constraints?: {
+    budget: number
+    timeAvailable?: string
+    allergies?: string[]
+    currentRoutine?: string
   }
 }
 

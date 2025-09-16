@@ -26,7 +26,7 @@ export const BudgetBreakdownSchema = z.object({
     alternativeCatalogId: z.string(),
     savings: z.number(),
     reason: z.string()
-  })).optional()
+  })).min(0).optional()
 })
 
 // Schéma pour la validation de cohérence

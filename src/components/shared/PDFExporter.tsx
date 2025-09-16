@@ -523,3 +523,5 @@ export function PDFExporter({ analysis, skinAgeYears, className = '' }: PDFExpor
 }
 
 export default PDFExporter
+
+

@@ -1,29 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="25" failures="8" errors="0" time="3.61">
-  <testsuite name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES" errors="0" failures="4" skipped="0" timestamp="2025-09-12T13:18:28" time="1.254" tests="21">
-    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 1: Validation JSON valide → parsing OK ✅ Devrait valider une routine complète valide" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 1: Validation JSON valide → parsing OK ✅ Devrait valider une routine complète valide" time="0.013">
-    </testcase>
-    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 1: Validation JSON valide → parsing OK ✅ Devrait valider une sélection produits complète valide" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 1: Validation JSON valide → parsing OK ✅ Devrait valider une sélection produits complète valide" time="0.003">
-    </testcase>
-    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 1: Validation JSON valide → parsing OK ✅ Devrait valider les schémas Zod directement" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 1: Validation JSON valide → parsing OK ✅ Devrait valider les schémas Zod directement" time="0.001">
-    </testcase>
-    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 2: JSON invalide → erreurs détaillées ❌ Devrait échouer avec routine incomplète" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 2: JSON invalide → erreurs détaillées ❌ Devrait échouer avec routine incomplète" time="0.007">
-    </testcase>
-    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 2: JSON invalide → erreurs détaillées ❌ Devrait échouer avec produits invalides" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 2: JSON invalide → erreurs détaillées ❌ Devrait échouer avec produits invalides" time="0.005">
-    </testcase>
-    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 2: JSON invalide → erreurs détaillées ❌ Devrait échouer avec version incorrecte" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 2: JSON invalide → erreurs détaillées ❌ Devrait échouer avec version incorrecte" time="0.007">
-    </testcase>
-    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 3: Pipeline validation avec retry ✅ Devrait valider directement un output valide" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 3: Pipeline validation avec retry ✅ Devrait valider directement un output valide" time="0.005">
-      <failure>Error: expect(received).toBeGreaterThan(expected)
+<testsuites name="jest tests" tests="20" failures="11" errors="0" time="2.216">
+  <testsuite name="Schemas Zod - Sprint 3 Qualité" errors="0" failures="11" skipped="0" timestamp="2025-09-16T08:28:53" time="1.024" tests="20">
+    <testcase classname="Schemas Zod - Sprint 3 Qualité 🧪 Tests DiagnosticBrutSchema Validation diagnostic valide - PASS" name="Schemas Zod - Sprint 3 Qualité 🧪 Tests DiagnosticBrutSchema Validation diagnostic valide - PASS" time="0.051">
+      <failure>Error: expect(received).not.toThrow()
 
-Expected: &gt; 0
-Received:   0
-    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/services/ai/__tests__/validation.test.ts:280:37)
+Error name:    &quot;ZodError&quot;
+Error message: &quot;[
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 3,
+    \&quot;type\&quot;: \&quot;array\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;Array must contain at least 3 element(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;beautyAssessment\&quot;,
+      \&quot;visualFindings\&quot;
+    ]
+  }
+]&quot;
+
+      105 |     
+      106 |     test(&apos;Validation diagnostic valide - PASS&apos;, () =&gt; {
+    &gt; 107 |       expect(() =&gt; DiagnosticBrutSchema.parse(validDiagnostic)).not.toThrow()
+          |                                         ^
+      108 |       
+      109 |       const parsed = DiagnosticBrutSchema.parse(validDiagnostic)
+      110 |       expect(parsed.scores.overall).toBe(76)
+
+      at Object.get error [as error] (node_modules/zod/v3/types.cjs:45:31)
+      at ZodObject.parse (node_modules/zod/v3/types.cjs:120:22)
+      at src/schemas/__tests__/index.test.ts:107:41
+      at Object.&lt;anonymous&gt; (node_modules/expect/build/toThrowMatchers.js:74:11)
+      at Object.throwingMatcher [as toThrow] (node_modules/expect/build/index.js:320:21)
+      at Object.&lt;anonymous&gt; (src/schemas/__tests__/index.test.ts:107:69)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/schemas/__tests__/index.test.ts:107:69)
     at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
     at new Promise (&lt;anonymous&gt;)
     at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
     at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
     at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
     at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
     at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
@@ -34,89 +49,784 @@ Received:   0
     at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
     at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 3: Pipeline validation avec retry ❌ Devrait échouer avec output invalide" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 3: Pipeline validation avec retry ❌ Devrait échouer avec output invalide" time="0.004">
+    <testcase classname="Schemas Zod - Sprint 3 Qualité 🧪 Tests DiagnosticBrutSchema Validation scores - valeurs limites" name="Schemas Zod - Sprint 3 Qualité 🧪 Tests DiagnosticBrutSchema Validation scores - valeurs limites" time="0.01">
+      <failure>Error: expect(received).not.toThrow()
+
+Error name:    &quot;ZodError&quot;
+Error message: &quot;[
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 3,
+    \&quot;type\&quot;: \&quot;array\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;Array must contain at least 3 element(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;beautyAssessment\&quot;,
+      \&quot;visualFindings\&quot;
+    ]
+  }
+]&quot;
+
+      121 |         }
+      122 |       }
+    &gt; 123 |       expect(() =&gt; DiagnosticBrutSchema.parse(diagnosticScore0)).not.toThrow()
+          |                                         ^
+      124 |       
+      125 |       // Test score = 100
+      126 |       const diagnosticScore100 = {
+
+      at Object.get error [as error] (node_modules/zod/v3/types.cjs:45:31)
+      at ZodObject.parse (node_modules/zod/v3/types.cjs:120:22)
+      at src/schemas/__tests__/index.test.ts:123:41
+      at Object.&lt;anonymous&gt; (node_modules/expect/build/toThrowMatchers.js:74:11)
+      at Object.throwingMatcher [as toThrow] (node_modules/expect/build/index.js:320:21)
+      at Object.&lt;anonymous&gt; (src/schemas/__tests__/index.test.ts:123:70)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/schemas/__tests__/index.test.ts:123:70)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 4: Fallback algorithmique ✅ Devrait générer un template routine fallback valide" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 4: Fallback algorithmique ✅ Devrait générer un template routine fallback valide" time="0.005">
+    <testcase classname="Schemas Zod - Sprint 3 Qualité 🧪 Tests DiagnosticBrutSchema Validation confidence - valeurs limites" name="Schemas Zod - Sprint 3 Qualité 🧪 Tests DiagnosticBrutSchema Validation confidence - valeurs limites" time="0.008">
+      <failure>Error: expect(received).not.toThrow()
+
+Error name:    &quot;ZodError&quot;
+Error message: &quot;[
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 3,
+    \&quot;type\&quot;: \&quot;array\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;Array must contain at least 3 element(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;beautyAssessment\&quot;,
+      \&quot;visualFindings\&quot;
+    ]
+  }
+]&quot;
+
+      153 |         }
+      154 |       }
+    &gt; 155 |       expect(() =&gt; DiagnosticBrutSchema.parse(diagnosticConf0)).not.toThrow()
+          |                                         ^
+      156 |       
+      157 |       // Test confidence = 1
+      158 |       const diagnosticConf1 = {
+
+      at Object.get error [as error] (node_modules/zod/v3/types.cjs:45:31)
+      at ZodObject.parse (node_modules/zod/v3/types.cjs:120:22)
+      at src/schemas/__tests__/index.test.ts:155:41
+      at Object.&lt;anonymous&gt; (node_modules/expect/build/toThrowMatchers.js:74:11)
+      at Object.throwingMatcher [as toThrow] (node_modules/expect/build/index.js:320:21)
+      at Object.&lt;anonymous&gt; (src/schemas/__tests__/index.test.ts:155:69)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/schemas/__tests__/index.test.ts:155:69)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 4: Fallback algorithmique ✅ Devrait générer un template produits fallback valide" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 4: Fallback algorithmique ✅ Devrait générer un template produits fallback valide" time="0.009">
+    <testcase classname="Schemas Zod - Sprint 3 Qualité 🧪 Tests DiagnosticBrutSchema Validation intensité - valeurs autorisées" name="Schemas Zod - Sprint 3 Qualité 🧪 Tests DiagnosticBrutSchema Validation intensité - valeurs autorisées" time="0.008">
+      <failure>Error: expect(received).not.toThrow()
+
+Error name:    &quot;ZodError&quot;
+Error message: &quot;[
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 3,
+    \&quot;type\&quot;: \&quot;array\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;Array must contain at least 3 element(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;beautyAssessment\&quot;,
+      \&quot;visualFindings\&quot;
+    ]
+  }
+]&quot;
+
+      187 |           }
+      188 |         }
+    &gt; 189 |         expect(() =&gt; DiagnosticBrutSchema.parse(diagnostic)).not.toThrow()
+          |                                           ^
+      190 |       })
+      191 |       
+      192 |       // Test intensité invalide
+
+      at Object.get error [as error] (node_modules/zod/v3/types.cjs:45:31)
+      at ZodObject.parse (node_modules/zod/v3/types.cjs:120:22)
+      at src/schemas/__tests__/index.test.ts:189:43
+      at Object.&lt;anonymous&gt; (node_modules/expect/build/toThrowMatchers.js:74:11)
+      at Object.throwingMatcher [as toThrow] (node_modules/expect/build/index.js:320:21)
+      at src/schemas/__tests__/index.test.ts:189:66
+          at Array.forEach (&lt;anonymous&gt;)
+      at Object.&lt;anonymous&gt; (src/schemas/__tests__/index.test.ts:181:25)
+    at /Users/mak/dermai-v2/src/schemas/__tests__/index.test.ts:189:66
+    at Array.forEach (&lt;anonymous&gt;)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/schemas/__tests__/index.test.ts:181:25)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 4: Fallback algorithmique ✅ Templates fallback devraient avoir scores cohérents" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 4: Fallback algorithmique ✅ Templates fallback devraient avoir scores cohérents" time="0.004">
+    <testcase classname="Schemas Zod - Sprint 3 Qualité 🧪 Tests DiagnosticBrutSchema Validation champs obligatoires" name="Schemas Zod - Sprint 3 Qualité 🧪 Tests DiagnosticBrutSchema Validation champs obligatoires" time="0.003">
     </testcase>
-    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 5: A/B Testing - modification contenu sans casser structure ✅ Devrait permettre modification contenu variable" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 5: A/B Testing - modification contenu sans casser structure ✅ Devrait permettre modification contenu variable" time="0.003">
+    <testcase classname="Schemas Zod - Sprint 3 Qualité 🔧 Tests RoutinePersonnaliseeSchema Validation routine valide - PASS" name="Schemas Zod - Sprint 3 Qualité 🔧 Tests RoutinePersonnaliseeSchema Validation routine valide - PASS" time="0.017">
+      <failure>Error: expect(received).not.toThrow()
+
+Error name:    &quot;ZodError&quot;
+Error message: &quot;[
+  {
+    \&quot;received\&quot;: \&quot;3_fois_semaine\&quot;,
+    \&quot;code\&quot;: \&quot;invalid_enum_value\&quot;,
+    \&quot;options\&quot;: [
+      \&quot;quotidien\&quot;,
+      \&quot;hebdomadaire\&quot;,
+      \&quot;ponctuel\&quot;
+    ],
+    \&quot;path\&quot;: [
+      \&quot;routine\&quot;,
+      \&quot;adaptation\&quot;,
+      0,
+      \&quot;frequency\&quot;
+    ],
+    \&quot;message\&quot;: \&quot;Invalid enum value. Expected &apos;quotidien&apos; | &apos;hebdomadaire&apos; | &apos;ponctuel&apos;, received &apos;3_fois_semaine&apos;\&quot;
+  },
+  {
+    \&quot;received\&quot;: \&quot;semaine 3\&quot;,
+    \&quot;code\&quot;: \&quot;invalid_enum_value\&quot;,
+    \&quot;options\&quot;: [
+      \&quot;maintenant\&quot;,
+      \&quot;après_1_semaine\&quot;,
+      \&quot;après_2_semaines\&quot;,
+      \&quot;après_3_semaines\&quot;
+    ],
+    \&quot;path\&quot;: [
+      \&quot;routine\&quot;,
+      \&quot;adaptation\&quot;,
+      0,
+      \&quot;startDate\&quot;
+    ],
+    \&quot;message\&quot;: \&quot;Invalid enum value. Expected &apos;maintenant&apos; | &apos;après_1_semaine&apos; | &apos;après_2_semaines&apos; | &apos;après_3_semaines&apos;, received &apos;semaine 3&apos;\&quot;
+  }
+]&quot;
+
+      263 |     
+      264 |     test(&apos;Validation routine valide - PASS&apos;, () =&gt; {
+    &gt; 265 |       expect(() =&gt; RoutinePersonnaliseeSchema.parse(validRoutine)).not.toThrow()
+          |                                               ^
+      266 |       
+      267 |       const parsed = RoutinePersonnaliseeSchema.parse(validRoutine)
+      268 |       expect(parsed.routine.immediate).toHaveLength(1)
+
+      at Object.get error [as error] (node_modules/zod/v3/types.cjs:45:31)
+      at ZodObject.parse (node_modules/zod/v3/types.cjs:120:22)
+      at src/schemas/__tests__/index.test.ts:265:47
+      at Object.&lt;anonymous&gt; (node_modules/expect/build/toThrowMatchers.js:74:11)
+      at Object.throwingMatcher [as toThrow] (node_modules/expect/build/index.js:320:21)
+      at Object.&lt;anonymous&gt; (src/schemas/__tests__/index.test.ts:265:72)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/schemas/__tests__/index.test.ts:265:72)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 5: A/B Testing - modification contenu sans casser structure ✅ Devrait permettre A/B testing des justifications produits" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 5: A/B Testing - modification contenu sans casser structure ✅ Devrait permettre A/B testing des justifications produits" time="0.002">
+    <testcase classname="Schemas Zod - Sprint 3 Qualité 🔧 Tests RoutinePersonnaliseeSchema Validation catalogId - format strict" name="Schemas Zod - Sprint 3 Qualité 🔧 Tests RoutinePersonnaliseeSchema Validation catalogId - format strict" time="0.01">
+      <failure>Error: expect(received).not.toThrow()
+
+Error name:    &quot;ZodError&quot;
+Error message: &quot;[
+  {
+    \&quot;received\&quot;: \&quot;3_fois_semaine\&quot;,
+    \&quot;code\&quot;: \&quot;invalid_enum_value\&quot;,
+    \&quot;options\&quot;: [
+      \&quot;quotidien\&quot;,
+      \&quot;hebdomadaire\&quot;,
+      \&quot;ponctuel\&quot;
+    ],
+    \&quot;path\&quot;: [
+      \&quot;routine\&quot;,
+      \&quot;adaptation\&quot;,
+      0,
+      \&quot;frequency\&quot;
+    ],
+    \&quot;message\&quot;: \&quot;Invalid enum value. Expected &apos;quotidien&apos; | &apos;hebdomadaire&apos; | &apos;ponctuel&apos;, received &apos;3_fois_semaine&apos;\&quot;
+  },
+  {
+    \&quot;received\&quot;: \&quot;semaine 3\&quot;,
+    \&quot;code\&quot;: \&quot;invalid_enum_value\&quot;,
+    \&quot;options\&quot;: [
+      \&quot;maintenant\&quot;,
+      \&quot;après_1_semaine\&quot;,
+      \&quot;après_2_semaines\&quot;,
+      \&quot;après_3_semaines\&quot;
+    ],
+    \&quot;path\&quot;: [
+      \&quot;routine\&quot;,
+      \&quot;adaptation\&quot;,
+      0,
+      \&quot;startDate\&quot;
+    ],
+    \&quot;message\&quot;: \&quot;Invalid enum value. Expected &apos;maintenant&apos; | &apos;après_1_semaine&apos; | &apos;après_2_semaines&apos; | &apos;après_3_semaines&apos;, received &apos;semaine 3&apos;\&quot;
+  }
+]&quot;
+
+      285 |           }
+      286 |         }
+    &gt; 287 |         expect(() =&gt; RoutinePersonnaliseeSchema.parse(routine)).not.toThrow()
+          |                                                 ^
+      288 |       })
+      289 |       
+      290 |       // Test catalogId invalides
+
+      at Object.get error [as error] (node_modules/zod/v3/types.cjs:45:31)
+      at ZodObject.parse (node_modules/zod/v3/types.cjs:120:22)
+      at src/schemas/__tests__/index.test.ts:287:49
+      at Object.&lt;anonymous&gt; (node_modules/expect/build/toThrowMatchers.js:74:11)
+      at Object.throwingMatcher [as toThrow] (node_modules/expect/build/index.js:320:21)
+      at src/schemas/__tests__/index.test.ts:287:69
+          at Array.forEach (&lt;anonymous&gt;)
+      at Object.&lt;anonymous&gt; (src/schemas/__tests__/index.test.ts:276:25)
+    at /Users/mak/dermai-v2/src/schemas/__tests__/index.test.ts:287:69
+    at Array.forEach (&lt;anonymous&gt;)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/schemas/__tests__/index.test.ts:276:25)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 6: Fonctions utilitaires ✅ sanitizeAndParseJSON devrait nettoyer JSON markdown" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 6: Fonctions utilitaires ✅ sanitizeAndParseJSON devrait nettoyer JSON markdown" time="0.008">
+    <testcase classname="Schemas Zod - Sprint 3 Qualité 🔧 Tests RoutinePersonnaliseeSchema Validation frequency - valeurs autorisées" name="Schemas Zod - Sprint 3 Qualité 🔧 Tests RoutinePersonnaliseeSchema Validation frequency - valeurs autorisées" time="0.01">
+      <failure>Error: expect(received).not.toThrow()
+
+Error name:    &quot;ZodError&quot;
+Error message: &quot;[
+  {
+    \&quot;received\&quot;: \&quot;3_fois_semaine\&quot;,
+    \&quot;code\&quot;: \&quot;invalid_enum_value\&quot;,
+    \&quot;options\&quot;: [
+      \&quot;quotidien\&quot;,
+      \&quot;hebdomadaire\&quot;,
+      \&quot;ponctuel\&quot;
+    ],
+    \&quot;path\&quot;: [
+      \&quot;routine\&quot;,
+      \&quot;adaptation\&quot;,
+      0,
+      \&quot;frequency\&quot;
+    ],
+    \&quot;message\&quot;: \&quot;Invalid enum value. Expected &apos;quotidien&apos; | &apos;hebdomadaire&apos; | &apos;ponctuel&apos;, received &apos;3_fois_semaine&apos;\&quot;
+  },
+  {
+    \&quot;received\&quot;: \&quot;semaine 3\&quot;,
+    \&quot;code\&quot;: \&quot;invalid_enum_value\&quot;,
+    \&quot;options\&quot;: [
+      \&quot;maintenant\&quot;,
+      \&quot;après_1_semaine\&quot;,
+      \&quot;après_2_semaines\&quot;,
+      \&quot;après_3_semaines\&quot;
+    ],
+    \&quot;path\&quot;: [
+      \&quot;routine\&quot;,
+      \&quot;adaptation\&quot;,
+      0,
+      \&quot;startDate\&quot;
+    ],
+    \&quot;message\&quot;: \&quot;Invalid enum value. Expected &apos;maintenant&apos; | &apos;après_1_semaine&apos; | &apos;après_2_semaines&apos; | &apos;après_3_semaines&apos;, received &apos;semaine 3&apos;\&quot;
+  }
+]&quot;
+
+      320 |           }
+      321 |         }
+    &gt; 322 |         expect(() =&gt; RoutinePersonnaliseeSchema.parse(routine)).not.toThrow()
+          |                                                 ^
+      323 |       })
+      324 |       
+      325 |       // Test frequency invalide
+
+      at Object.get error [as error] (node_modules/zod/v3/types.cjs:45:31)
+      at ZodObject.parse (node_modules/zod/v3/types.cjs:120:22)
+      at src/schemas/__tests__/index.test.ts:322:49
+      at Object.&lt;anonymous&gt; (node_modules/expect/build/toThrowMatchers.js:74:11)
+      at Object.throwingMatcher [as toThrow] (node_modules/expect/build/index.js:320:21)
+      at src/schemas/__tests__/index.test.ts:322:69
+          at Array.forEach (&lt;anonymous&gt;)
+      at Object.&lt;anonymous&gt; (src/schemas/__tests__/index.test.ts:311:25)
+    at /Users/mak/dermai-v2/src/schemas/__tests__/index.test.ts:322:69
+    at Array.forEach (&lt;anonymous&gt;)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/schemas/__tests__/index.test.ts:311:25)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 6: Fonctions utilitaires ✅ validateRoutineProductCoherence devrait détecter incohérences" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 6: Fonctions utilitaires ✅ validateRoutineProductCoherence devrait détecter incohérences" time="0.003">
+    <testcase classname="Schemas Zod - Sprint 3 Qualité 🔧 Tests RoutinePersonnaliseeSchema Validation timing - valeurs autorisées" name="Schemas Zod - Sprint 3 Qualité 🔧 Tests RoutinePersonnaliseeSchema Validation timing - valeurs autorisées" time="0.023">
+      <failure>Error: expect(received).not.toThrow()
+
+Error name:    &quot;ZodError&quot;
+Error message: &quot;[
+  {
+    \&quot;received\&quot;: \&quot;3_fois_semaine\&quot;,
+    \&quot;code\&quot;: \&quot;invalid_enum_value\&quot;,
+    \&quot;options\&quot;: [
+      \&quot;quotidien\&quot;,
+      \&quot;hebdomadaire\&quot;,
+      \&quot;ponctuel\&quot;
+    ],
+    \&quot;path\&quot;: [
+      \&quot;routine\&quot;,
+      \&quot;adaptation\&quot;,
+      0,
+      \&quot;frequency\&quot;
+    ],
+    \&quot;message\&quot;: \&quot;Invalid enum value. Expected &apos;quotidien&apos; | &apos;hebdomadaire&apos; | &apos;ponctuel&apos;, received &apos;3_fois_semaine&apos;\&quot;
+  },
+  {
+    \&quot;received\&quot;: \&quot;semaine 3\&quot;,
+    \&quot;code\&quot;: \&quot;invalid_enum_value\&quot;,
+    \&quot;options\&quot;: [
+      \&quot;maintenant\&quot;,
+      \&quot;après_1_semaine\&quot;,
+      \&quot;après_2_semaines\&quot;,
+      \&quot;après_3_semaines\&quot;
+    ],
+    \&quot;path\&quot;: [
+      \&quot;routine\&quot;,
+      \&quot;adaptation\&quot;,
+      0,
+      \&quot;startDate\&quot;
+    ],
+    \&quot;message\&quot;: \&quot;Invalid enum value. Expected &apos;maintenant&apos; | &apos;après_1_semaine&apos; | &apos;après_2_semaines&apos; | &apos;après_3_semaines&apos;, received &apos;semaine 3&apos;\&quot;
+  }
+]&quot;
+
+      351 |           }
+      352 |         }
+    &gt; 353 |         expect(() =&gt; RoutinePersonnaliseeSchema.parse(routine)).not.toThrow()
+          |                                                 ^
+      354 |       })
+      355 |       
+      356 |       // Test timing invalide
+
+      at Object.get error [as error] (node_modules/zod/v3/types.cjs:45:31)
+      at ZodObject.parse (node_modules/zod/v3/types.cjs:120:22)
+      at src/schemas/__tests__/index.test.ts:353:49
+      at Object.&lt;anonymous&gt; (node_modules/expect/build/toThrowMatchers.js:74:11)
+      at Object.throwingMatcher [as toThrow] (node_modules/expect/build/index.js:320:21)
+      at src/schemas/__tests__/index.test.ts:353:69
+          at Array.forEach (&lt;anonymous&gt;)
+      at Object.&lt;anonymous&gt; (src/schemas/__tests__/index.test.ts:342:22)
+    at /Users/mak/dermai-v2/src/schemas/__tests__/index.test.ts:353:69
+    at Array.forEach (&lt;anonymous&gt;)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/schemas/__tests__/index.test.ts:342:22)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="Schemas Zod - Sprint 3 Qualité 🔧 Tests RoutinePersonnaliseeSchema Validation champs obligatoires routine" name="Schemas Zod - Sprint 3 Qualité 🔧 Tests RoutinePersonnaliseeSchema Validation champs obligatoires routine" time="0.004">
+    </testcase>
+    <testcase classname="Schemas Zod - Sprint 3 Qualité 🔐 Tests Utilitaires Crypto generateSeed - reproductibilité" name="Schemas Zod - Sprint 3 Qualité 🔐 Tests Utilitaires Crypto generateSeed - reproductibilité" time="0.002">
+    </testcase>
+    <testcase classname="Schemas Zod - Sprint 3 Qualité 🔐 Tests Utilitaires Crypto generateSeed - différentiation" name="Schemas Zod - Sprint 3 Qualité 🔐 Tests Utilitaires Crypto generateSeed - différentiation" time="0.001">
+    </testcase>
+    <testcase classname="Schemas Zod - Sprint 3 Qualité 🔐 Tests Utilitaires Crypto hashImage - reproductibilité" name="Schemas Zod - Sprint 3 Qualité 🔐 Tests Utilitaires Crypto hashImage - reproductibilité" time="0.001">
+    </testcase>
+    <testcase classname="Schemas Zod - Sprint 3 Qualité 🔐 Tests Utilitaires Crypto hashImage - différentiation" name="Schemas Zod - Sprint 3 Qualité 🔐 Tests Utilitaires Crypto hashImage - différentiation" time="0">
+    </testcase>
+    <testcase classname="Schemas Zod - Sprint 3 Qualité ⚠️ Tests Gestion Erreurs classifyError - classification correcte" name="Schemas Zod - Sprint 3 Qualité ⚠️ Tests Gestion Erreurs classifyError - classification correcte" time="0">
+    </testcase>
+    <testcase classname="Schemas Zod - Sprint 3 Qualité ⚠️ Tests Gestion Erreurs shouldRetry - logique retry correcte" name="Schemas Zod - Sprint 3 Qualité ⚠️ Tests Gestion Erreurs shouldRetry - logique retry correcte" time="0.001">
+    </testcase>
+    <testcase classname="Schemas Zod - Sprint 3 Qualité ⚠️ Tests Gestion Erreurs ErrorType - énumération complète" name="Schemas Zod - Sprint 3 Qualité ⚠️ Tests Gestion Erreurs ErrorType - énumération complète" time="0.002">
+    </testcase>
+    <testcase classname="Schemas Zod - Sprint 3 Qualité 🎯 Tests Edge Cases Diagnostic avec champs optionnels manquants" name="Schemas Zod - Sprint 3 Qualité 🎯 Tests Edge Cases Diagnostic avec champs optionnels manquants" time="0.008">
+      <failure>Error: expect(received).not.toThrow()
+
+Error name:    &quot;ZodError&quot;
+Error message: &quot;[
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 10,
+    \&quot;type\&quot;: \&quot;string\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;String must contain at least 10 character(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;scores\&quot;,
+      \&quot;hydration\&quot;,
+      \&quot;justification\&quot;
+    ]
+  },
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 10,
+    \&quot;type\&quot;: \&quot;string\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;String must contain at least 10 character(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;scores\&quot;,
+      \&quot;wrinkles\&quot;,
+      \&quot;justification\&quot;
+    ]
+  },
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 10,
+    \&quot;type\&quot;: \&quot;string\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;String must contain at least 10 character(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;scores\&quot;,
+      \&quot;firmness\&quot;,
+      \&quot;justification\&quot;
+    ]
+  },
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 10,
+    \&quot;type\&quot;: \&quot;string\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;String must contain at least 10 character(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;scores\&quot;,
+      \&quot;radiance\&quot;,
+      \&quot;justification\&quot;
+    ]
+  },
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 10,
+    \&quot;type\&quot;: \&quot;string\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;String must contain at least 10 character(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;scores\&quot;,
+      \&quot;pores\&quot;,
+      \&quot;justification\&quot;
+    ]
+  },
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 10,
+    \&quot;type\&quot;: \&quot;string\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;String must contain at least 10 character(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;scores\&quot;,
+      \&quot;spots\&quot;,
+      \&quot;justification\&quot;
+    ]
+  },
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 10,
+    \&quot;type\&quot;: \&quot;string\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;String must contain at least 10 character(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;scores\&quot;,
+      \&quot;darkCircles\&quot;,
+      \&quot;justification\&quot;
+    ]
+  },
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 10,
+    \&quot;type\&quot;: \&quot;string\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;String must contain at least 10 character(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;scores\&quot;,
+      \&quot;skinAge\&quot;,
+      \&quot;justification\&quot;
+    ]
+  },
+  {
+    \&quot;code\&quot;: \&quot;invalid_type\&quot;,
+    \&quot;expected\&quot;: \&quot;string\&quot;,
+    \&quot;received\&quot;: \&quot;undefined\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;beautyAssessment\&quot;,
+      \&quot;skinType\&quot;
+    ],
+    \&quot;message\&quot;: \&quot;Required\&quot;
+  },
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 1,
+    \&quot;type\&quot;: \&quot;array\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;Array must contain at least 1 element(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;beautyAssessment\&quot;,
+      \&quot;concernedZones\&quot;
+    ]
+  },
+  {
+    \&quot;code\&quot;: \&quot;invalid_type\&quot;,
+    \&quot;expected\&quot;: \&quot;array\&quot;,
+    \&quot;received\&quot;: \&quot;undefined\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;beautyAssessment\&quot;,
+      \&quot;specificities\&quot;
+    ],
+    \&quot;message\&quot;: \&quot;Required\&quot;
+  },
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 3,
+    \&quot;type\&quot;: \&quot;array\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;Array must contain at least 3 element(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;beautyAssessment\&quot;,
+      \&quot;visualFindings\&quot;
+    ]
+  },
+  {
+    \&quot;code\&quot;: \&quot;invalid_type\&quot;,
+    \&quot;expected\&quot;: \&quot;array\&quot;,
+    \&quot;received\&quot;: \&quot;undefined\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;beautyAssessment\&quot;,
+      \&quot;overview\&quot;
+    ],
+    \&quot;message\&quot;: \&quot;Required\&quot;
+  },
+  {
+    \&quot;code\&quot;: \&quot;invalid_type\&quot;,
+    \&quot;expected\&quot;: \&quot;array\&quot;,
+    \&quot;received\&quot;: \&quot;undefined\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;beautyAssessment\&quot;,
+      \&quot;zoneSpecific\&quot;
+    ],
+    \&quot;message\&quot;: \&quot;Required\&quot;
+  },
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 20,
+    \&quot;type\&quot;: \&quot;string\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;String must contain at least 20 character(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;beautyAssessment\&quot;,
+      \&quot;expectedImprovement\&quot;
+    ]
+  },
+  {
+    \&quot;expected\&quot;: \&quot;&apos;4-6 semaines&apos; | &apos;2-3 mois&apos; | &apos;3-4 mois&apos; | &apos;4-6 mois&apos; | &apos;6-8 mois&apos;\&quot;,
+    \&quot;received\&quot;: \&quot;undefined\&quot;,
+    \&quot;code\&quot;: \&quot;invalid_type\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;beautyAssessment\&quot;,
+      \&quot;improvementTimeEstimate\&quot;
+    ],
+    \&quot;message\&quot;: \&quot;Required\&quot;
+  }
+]&quot;
+
+      562 |       }
+      563 |       
+    &gt; 564 |       expect(() =&gt; DiagnosticBrutSchema.parse(diagnosticMinimal)).not.toThrow()
+          |                                         ^
+      565 |     })
+      566 |     
+      567 |     test(&apos;Routine avec phases vides&apos;, () =&gt; {
+
+      at Object.get error [as error] (node_modules/zod/v3/types.cjs:45:31)
+      at ZodObject.parse (node_modules/zod/v3/types.cjs:120:22)
+      at src/schemas/__tests__/index.test.ts:564:41
+      at Object.&lt;anonymous&gt; (node_modules/expect/build/toThrowMatchers.js:74:11)
+      at Object.throwingMatcher [as toThrow] (node_modules/expect/build/index.js:320:21)
+      at Object.&lt;anonymous&gt; (src/schemas/__tests__/index.test.ts:564:71)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/schemas/__tests__/index.test.ts:564:71)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="Schemas Zod - Sprint 3 Qualité 🎯 Tests Edge Cases Routine avec phases vides" name="Schemas Zod - Sprint 3 Qualité 🎯 Tests Edge Cases Routine avec phases vides" time="0.006">
+      <failure>Error: expect(received).not.toThrow()
+
+Error name:    &quot;ZodError&quot;
+Error message: &quot;[
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 1,
+    \&quot;type\&quot;: \&quot;array\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;Array must contain at least 1 element(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;immediate\&quot;
+    ]
+  },
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 1,
+    \&quot;type\&quot;: \&quot;array\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;Array must contain at least 1 element(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;routine\&quot;,
+      \&quot;immediate\&quot;
+    ]
+  },
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 20,
+    \&quot;type\&quot;: \&quot;string\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;String must contain at least 20 character(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;overview\&quot;
+    ]
+  },
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 20,
+    \&quot;type\&quot;: \&quot;string\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;String must contain at least 20 character(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;zoneSpecificCare\&quot;
+    ]
+  },
+  {
+    \&quot;code\&quot;: \&quot;too_small\&quot;,
+    \&quot;minimum\&quot;: 10,
+    \&quot;type\&quot;: \&quot;string\&quot;,
+    \&quot;inclusive\&quot;: true,
+    \&quot;exact\&quot;: false,
+    \&quot;message\&quot;: \&quot;String must contain at least 10 character(s)\&quot;,
+    \&quot;path\&quot;: [
+      \&quot;restrictions\&quot;
+    ]
+  }
+]&quot;
+
+      579 |       }
+      580 |       
+    &gt; 581 |       expect(() =&gt; RoutinePersonnaliseeSchema.parse(routinePhasesVides)).not.toThrow()
+          |                                               ^
+      582 |     })
+      583 |     
+      584 |     test(&apos;Gestion erreurs inconnues&apos;, () =&gt; {
+
+      at Object.get error [as error] (node_modules/zod/v3/types.cjs:45:31)
+      at ZodObject.parse (node_modules/zod/v3/types.cjs:120:22)
+      at src/schemas/__tests__/index.test.ts:581:47
+      at Object.&lt;anonymous&gt; (node_modules/expect/build/toThrowMatchers.js:74:11)
+      at Object.throwingMatcher [as toThrow] (node_modules/expect/build/index.js:320:21)
+      at Object.&lt;anonymous&gt; (src/schemas/__tests__/index.test.ts:581:78)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/schemas/__tests__/index.test.ts:581:78)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
+    </testcase>
+    <testcase classname="Schemas Zod - Sprint 3 Qualité 🎯 Tests Edge Cases Gestion erreurs inconnues" name="Schemas Zod - Sprint 3 Qualité 🎯 Tests Edge Cases Gestion erreurs inconnues" time="0.001">
       <failure>Error: expect(received).toBe(expected) // Object.is equality
 
-Expected: true
-Received: false
-    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/services/ai/__tests__/validation.test.ts:456:69)
-    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 6: Fonctions utilitaires ✅ generateValidationMetrics devrait calculer métriques" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 6: Fonctions utilitaires ✅ generateValidationMetrics devrait calculer métriques" time="0.001">
-    </testcase>
-    <testcase classname="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 7: Configuration pipeline ✅ Devrait permettre configuration validation" name="🔥 SPRINT 3 - VALIDATION FORMATS PROMPTS STABLES TEST 7: Configuration pipeline ✅ Devrait permettre configuration validation" time="0">
-    </testcase>
-    <testcase classname="🚀 TESTS INTÉGRATION SPRINT 3 ✅ CRITÈRE SUCCÈS: Formats JSON documentés et stables (100%)" name="🚀 TESTS INTÉGRATION SPRINT 3 ✅ CRITÈRE SUCCÈS: Formats JSON documentés et stables (100%)" time="0.009">
-    </testcase>
-    <testcase classname="🚀 TESTS INTÉGRATION SPRINT 3 ✅ CRITÈRE SUCCÈS: Validation Zod fonctionnelle sur tous outputs" name="🚀 TESTS INTÉGRATION SPRINT 3 ✅ CRITÈRE SUCCÈS: Validation Zod fonctionnelle sur tous outputs" time="0.001">
-      <failure>ReferenceError: validRoutineJSON is not defined
-    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/services/ai/__tests__/validation.test.ts:528:49)
-    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-    <testcase classname="🚀 TESTS INTÉGRATION SPRINT 3 ✅ CRITÈRE SUCCÈS: Prêt pour A/B testing prompts sans casser parsing" name="🚀 TESTS INTÉGRATION SPRINT 3 ✅ CRITÈRE SUCCÈS: Prêt pour A/B testing prompts sans casser parsing" time="0.001">
-      <failure>ReferenceError: validRoutineJSON is not defined
-    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/services/ai/__tests__/validation.test.ts:544:10)
-    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-    <testcase classname="🚀 TESTS INTÉGRATION SPRINT 3 ✅ CRITÈRE SUCCÈS: Fallback algorithmique robuste" name="🚀 TESTS INTÉGRATION SPRINT 3 ✅ CRITÈRE SUCCÈS: Fallback algorithmique robuste" time="0.002">
-    </testcase>
-  </testsuite>
-  <testsuite name="🔥 VALIDATION SPRINT 1 REFONTE IA-FIRST" errors="0" failures="4" skipped="0" timestamp="2025-09-12T13:18:29" time="0.34" tests="4">
-    <testcase classname="🔥 VALIDATION SPRINT 1 REFONTE IA-FIRST ✅ CRITÈRE 1: Routine 100% générée par IA (zéro algorithme)" name="🔥 VALIDATION SPRINT 1 REFONTE IA-FIRST ✅ CRITÈRE 1: Routine 100% générée par IA (zéro algorithme)" time="0.018">
-      <failure>TypeError: Cannot read properties of undefined (reading &apos;budget&apos;)
-    at Function.generatePersonalizedRoutine (/Users/mak/dermai-v2/src/services/ai/AIRoutineGenerator.ts:84:45)
-    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/services/ai/__tests__/refonte-validation.test.ts:135:46)
+Expected: false
+Received: true
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/schemas/__tests__/index.test.ts:592:44)
     at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
     at new Promise (&lt;anonymous&gt;)
     at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
@@ -124,56 +834,6 @@ Received: false
     at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
     at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
     at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-    <testcase classname="🔥 VALIDATION SPRINT 1 REFONTE IA-FIRST ✅ CRITÈRE 2: Contenu personnalisé unique par utilisateur" name="🔥 VALIDATION SPRINT 1 REFONTE IA-FIRST ✅ CRITÈRE 2: Contenu personnalisé unique par utilisateur" time="0.007">
-      <failure>TypeError: Cannot read properties of undefined (reading &apos;budget&apos;)
-    at Function.generatePersonalizedRoutine (/Users/mak/dermai-v2/src/services/ai/AIRoutineGenerator.ts:84:45)
-    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/services/ai/__tests__/refonte-validation.test.ts:216:51)
-    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
-    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-    <testcase classname="🔥 VALIDATION SPRINT 1 REFONTE IA-FIRST ✅ CRITÈRE 3: Logique dermatologique respectée (3 phases + cycle cellulaire)" name="🔥 VALIDATION SPRINT 1 REFONTE IA-FIRST ✅ CRITÈRE 3: Logique dermatologique respectée (3 phases + cycle cellulaire)" time="0.011">
-      <failure>TypeError: Cannot read properties of undefined (reading &apos;budget&apos;)
-    at Function.generatePersonalizedRoutine (/Users/mak/dermai-v2/src/services/ai/AIRoutineGenerator.ts:84:45)
-    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/services/ai/__tests__/refonte-validation.test.ts:315:46)
-    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
-    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-    <testcase classname="🔥 VALIDATION SPRINT 1 REFONTE IA-FIRST ✅ CRITÈRE 4: Validation Zod stricte fonctionnelle" name="🔥 VALIDATION SPRINT 1 REFONTE IA-FIRST ✅ CRITÈRE 4: Validation Zod stricte fonctionnelle" time="0.01">
-      <failure>TypeError: Cannot read properties of undefined (reading &apos;budget&apos;)
-    at Function.generatePersonalizedRoutine (/Users/mak/dermai-v2/src/services/ai/AIRoutineGenerator.ts:84:45)
-    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/services/ai/__tests__/refonte-validation.test.ts:411:46)
-    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
-    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
     at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
     at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
     at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)

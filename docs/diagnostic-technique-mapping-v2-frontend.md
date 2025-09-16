@@ -281,3 +281,4 @@ interface BeautyAssessment {
 *Diagnostic Technique Mapping V2 → Frontend - DermAI V2*  
 *Version 1.0 - Correction Critique*  
 *13 septembre 2025*
+

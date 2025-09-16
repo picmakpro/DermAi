@@ -3,6 +3,7 @@ import { AnalysisService } from '@/services/ai/AnalysisService'
 import type { AnalyzeRequest as ApiAnalyzeRequest } from '@/types/api'
 import { logger, Logger } from '@/utils/Logger'
 import { FallbackStrategy } from '@/utils/FallbackStrategy'
+import { CoherencePreValidator } from '@/utils/CoherencePreValidator'
 
 // Type pour le service AnalysisService
 interface ServiceAnalyzeRequest {
@@ -38,11 +39,13 @@ function adaptApiRequestToService(apiRequest: ApiAnalyzeRequest): ServiceAnalyze
     'Pas de limite': 500
   }
   
-  const budget = budgetMapping[apiRequest.currentRoutine.monthlyBudget] || 100
+  const budget = apiRequest.constraints?.budget || 
+                 (apiRequest.currentRoutine?.monthlyBudget ? 
+                  budgetMapping[apiRequest.currentRoutine.monthlyBudget] : undefined) || 100
   
   return {
     photos: apiRequest.photos.map(photo => ({
-      url: photo.url || photo.file || '',
+      url: (photo as any).url || photo.preview || '',
       type: photo.type
     })),
     userProfile: {
@@ -56,9 +59,12 @@ function adaptApiRequestToService(apiRequest: ApiAnalyzeRequest): ServiceAnalyze
     },
     constraints: {
       budget,
-      timeAvailable: apiRequest.currentRoutine.routinePreference || '10-15 min',
-      allergies: apiRequest.allergies?.ingredients || [],
-      currentRoutine: `Matin: ${apiRequest.currentRoutine.morningProducts.join(', ')}. Soir: ${apiRequest.currentRoutine.eveningProducts.join(', ')}`
+      timeAvailable: apiRequest.constraints?.timeAvailable || 
+                     apiRequest.currentRoutine?.routinePreference || '10-15 min',
+      allergies: apiRequest.constraints?.allergies || 
+                 apiRequest.allergies?.ingredients || [],
+      currentRoutine: apiRequest.constraints?.currentRoutine ||
+                     `Matin: ${apiRequest.currentRoutine?.morningProducts?.join(', ') || 'Aucun'}. Soir: ${apiRequest.currentRoutine?.eveningProducts?.join(', ') || 'Aucun'}`
     }
   }
 }
@@ -144,12 +150,28 @@ export async function POST(request: NextRequest) {
 
     logger.info('Validation réussie, démarrage analyse V2 Pure', { stage: 'validated' })
 
+    // 🧠 Validation de cohérence pré-IA
+    logger.info('🧠 Validation cohérence utilisateur', { stage: 'coherence_validation' })
+    const coherenceResult = CoherencePreValidator.validateCoherence(apiBody)
+    
+    if (!coherenceResult.isCoherent) {
+      logger.warn('⚠️ Incohérences détectées, adaptation automatique', { 
+        stage: 'coherence_issues',
+        issuesCount: coherenceResult.issues.length,
+        criticalIssues: coherenceResult.issues.filter(i => i.severity === 'critical').length
+      })
+    }
+    
+    // Utiliser la requête adaptée si nécessaire
+    const finalBody = coherenceResult.adaptedRequest ? 
+                      adaptApiRequestToService(coherenceResult.adaptedRequest) : body
+
     // 🚀 ANALYSE V2 PURE - Architecture IA-First Complète
     const analysisStartTime = Date.now()
     
     logger.info('🔥 Utilisation AnalysisService V2 Pure (IA-First)', { stage: 'analysis_v2_pure' })
     
-    const analysis = await AnalysisService.analyzeSkinComplete(body)
+    const analysis = await AnalysisService.analyzeSkinComplete(finalBody)
     
     const analysisDuration = Date.now() - analysisStartTime
 
