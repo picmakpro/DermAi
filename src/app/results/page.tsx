@@ -649,31 +649,67 @@ import ProgressionVisualizer from '@/components/shared/ProgressionVisualizer'
 
 // Fonction utilitaire pour extraire les problèmes d'une zone
 const extractProblems = (zone: any) => {
-  // 1. Nouvelle structure multi-problèmes
-  if (Array.isArray(zone.problems) && zone.problems.length > 0) {
-    return zone.problems
+  // console.log('🔍 extractProblems appelée avec zone:', zone)
+  
+  // 1. Format V2 direct: {zone, problem, intensity, description}
+  if (zone.problem && typeof zone.problem === 'string') {
+    const result = [{
+      name: zone.problem,
+      intensity: zone.intensity || 'modérée',
+      description: zone.description
+    }]
+    // console.log('✅ Format V2 détecté, problèmes extraits:', result)
+    return result
   }
-  // 2. Ancienne structure avec concerns
+  
+  // 2. Nouvelle structure multi-problèmes V1: {problems: [{name, intensity}]} ou {problems: [{type, intensity}]}
+  if (Array.isArray(zone.problems) && zone.problems.length > 0) {
+    // console.log('✅ Format multi-problèmes V1 détecté:', zone.problems)
+    // Vérifier si les problèmes ont déjà la bonne structure
+    const firstProblem = zone.problems[0]
+    if (firstProblem && typeof firstProblem === 'object') {
+      // Gérer les deux formats : {name: ...} ou {type: ...}
+      return zone.problems.map((problem: any) => ({
+        name: problem.name || problem.type || 'Problème détecté',
+        intensity: problem.intensity || zone.intensity || 'modérée',
+        description: problem.description
+      }))
+    }
+    // Sinon, les traiter comme des strings
+    return zone.problems.map((problem: any) => ({
+      name: typeof problem === 'string' ? problem : 'Problème détecté',
+      intensity: zone.intensity || 'modérée'
+    }))
+  }
+  
+  // 3. Ancienne structure avec concerns
   if (Array.isArray(zone.concerns) && zone.concerns.length > 0) {
+    // console.log('✅ Format concerns détecté')
     return zone.concerns.map((concern: string) => ({
       name: concern,
       intensity: zone.intensity || 'modérée'
     }))
   }
-  // 3. Structure legacy avec issues
+  
+  // 4. Structure legacy avec issues
   if (Array.isArray(zone.issues) && zone.issues.length > 0) {
+    // console.log('✅ Format issues détecté')
     return zone.issues.map((issue: string) => ({
       name: issue,
       intensity: zone.intensity || 'modérée'
     }))
   }
-  // 4. Description valide
+  
+  // 5. Description valide comme fallback
   if (zone.description && zone.description !== 'Problème détecté') {
+    // console.log('✅ Format description fallback détecté')
     return [{
       name: zone.description,
       intensity: zone.intensity || 'modérée'
     }]
   }
+  
+  // console.log('❌ Aucun format reconnu, zone:', zone)
   return []
 }
 
@@ -2181,20 +2217,44 @@ Les scores évoluent avec votre routine personnalisée !"
           )}
 
           {/* Observations localisées par zones */}
-          {getLocalizedRoutine(analysis).length > 0 && (
+          {(() => {
+            // 🔍 DEBUG: Analyser la structure des données reçues (désactivé)
+            // console.log('🔍 DEBUG ZONES - Structure complète analysis:', analysis)
+            // console.log('🔍 DEBUG ZONES - analysis.diagnostic:', analysis?.diagnostic)
+            // console.log('🔍 DEBUG ZONES - analysis.diagnostic.zoneSpecificIssues:', analysis?.diagnostic?.zoneSpecificIssues)
+            // console.log('🔍 DEBUG ZONES - analysis.beautyAssessment:', analysis?.beautyAssessment)
+            // console.log('🔍 DEBUG ZONES - analysis.beautyAssessment.zoneSpecific:', analysis?.beautyAssessment?.zoneSpecific)
+            
+            const hasV2Data = (analysis?.diagnostic?.zoneSpecificIssues?.length ?? 0) > 0
+            const hasV1Data = (analysis?.beautyAssessment?.zoneSpecific?.length ?? 0) > 0
+            
+            // console.log('🔍 DEBUG ZONES - hasV2Data:', hasV2Data)
+            // console.log('🔍 DEBUG ZONES - hasV1Data:', hasV1Data)
+            
+            return hasV2Data || hasV1Data
+          })() && (
             <div className="mt-4">
               <h4 className="text-sm font-semibold text-gray-700 mb-2">Zones à surveiller</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {getLocalizedRoutine(analysis)
-                  .filter((loc: any) => {
-                    // Filtrer les zones qui ont des problèmes valides
-                    const hasProblems = Array.isArray(loc.problems) && loc.problems.length > 0
-                    const hasConcerns = Array.isArray(loc.concerns) && loc.concerns.length > 0
-                    const hasIssues = Array.isArray(loc.issues) && loc.issues.length > 0
-                    const hasValidDescription = loc.description && loc.description !== 'Problème détecté'
-                    
-                    return hasProblems || hasConcerns || hasIssues || hasValidDescription
-                  })
+                {/* Priorité aux données V2 directes, fallback V1 directes */}
+                {(() => {
+                  const v2Data = analysis?.diagnostic?.zoneSpecificIssues ?? []
+                  const v1Data = analysis?.beautyAssessment?.zoneSpecific ?? []
+                  
+                  // console.log('🔍 DEBUG ZONES - V2 Data:', v2Data)
+                  // console.log('🔍 DEBUG ZONES - V1 Data:', v1Data)
+                  
+                  const dataToUse = v2Data.length > 0 ? v2Data : v1Data
+                  // console.log('🔍 DEBUG ZONES - Données utilisées:', v2Data.length > 0 ? 'V2' : 'V1', dataToUse)
+                  
+                  // Si nous avons des données V2, les utiliser directement
+                  if (v2Data.length > 0) {
+                    return v2Data
+                  }
+                  
+                  // Sinon, utiliser les données V1
+                  return v1Data
+                })()
                   .map((loc: any, idx: number) => {
                     // Fonction pour obtenir les couleurs selon l'intensité
                     const getIntensityColors = (intensity: string) => {
@@ -2229,7 +2289,6 @@ Les scores évoluent avec votre routine personnalisée !"
                     }
 
                     // Extraire les problèmes de la zone
-
                     const problems = extractProblems(loc)
 
                     return (
@@ -2250,12 +2309,15 @@ Les scores évoluent avec votre routine personnalisée !"
                             const colors = getIntensityColors(problem.intensity)
                             const fillPercent = getFillPercent(problem.intensity)
                             
+                            // Debug logs désactivés
+                            // console.log(`🔍 DEBUG ZONES - Problème ${problemIdx + 1} pour zone ${loc.zone}:`, problem)
+                            
                             return (
                               <div key={problemIdx} className="space-y-2">
                                 {/* Nom du problème */}
                                 <div className="flex items-center justify-between">
                                   <span className="text-sm font-medium text-gray-800">
-                                    {problem.name}
+                                    {problem.name || 'Problème non spécifié'}
                                   </span>
                                   <span className={`text-xs px-2 py-1 rounded-full border ${colors.badge}`}>
                                     {problem.intensity}

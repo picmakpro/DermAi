@@ -377,7 +377,22 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 **[diagnostic-technique-mapping-v2-frontend.md](./diagnostic-technique-mapping-v2-frontend.md)** - 🔥 **CORRECTION CRITIQUE** - Diagnostic technique pour corriger le mapping V2→Frontend
 **[planning-execution-mapping-v2-frontend.md](./planning-execution-mapping-v2-frontend.md)** - Planning d'exécution avec prompts opérationnels pour l'implémentation
 
-### 9.4. Règle de Développement
+### 9.4. Synchronisation Produits ↔ Routine (NOUVEAU - Sprint 1 Terminé)
+**[specification-technique-synchronisation-produits-routine.md](./specification-technique-synchronisation-produits-routine.md)** - 🔥 **IMPLÉMENTATION TERMINÉE** :
+- Architecture complète de synchronisation bidirectionnelle
+- Services Core : ProductRoutineSyncService, AlternativeProductService, ProductEnrichmentService
+- Hooks React optimisés : useProductSync, useAlternatives, useProductReplacement
+- Tests unitaires complets (75+ tests, 5,516 lignes de code)
+- Système d'alternatives intelligentes avec critères de comparaison
+- Catégorisation par problème de peau (8 catégories)
+- Cache multi-niveaux et gestion d'erreurs robuste
+
+**[planning-execution-synchronisation-produits-routine.md](./planning-execution-synchronisation-produits-routine.md)** - Planning d'exécution détaillé :
+- Sprint 1 (5 jours) : Architecture & Services Core ✅ **TERMINÉ**
+- Sprint 2 (5 jours) : Interface Utilisateur & Alternatives 📋 **PRÊT**
+- Sprint 3 (5 jours) : Intégration, Tests & Optimisation 📋 **PLANIFIÉ**
+
+### 9.5. Règle de Développement
 > **IMPORTANT** : La fiche technique évolutive est la référence officielle du projet. 
 > Toute modification du code doit s'appuyer sur cette documentation.
 > Mise à jour obligatoire après chaque sprint.

@@ -106,45 +106,45 @@ export class AnalysisService {
       const diagnostic = await this.performPureDiagnostic(request.photos, requestId)
       
       this.logger.info('📤 OUTPUT ÉTAPE 1 (Diagnostic):', { requestId })
-      console.log('📤 OUTPUT ÉTAPE 1 (Diagnostic) - CONTENU COMPLET:', JSON.stringify(diagnostic, null, 2))
+      // console.log('📤 OUTPUT ÉTAPE 1 (Diagnostic) - CONTENU COMPLET:', JSON.stringify(diagnostic, null, 2))
       
       // 🧬 ÉTAPE 2: Routine personnalisée IA  
       this.logger.info('🧬 ÉTAPE 2: Routine personnalisée IA', { requestId })
       this.logger.info('📥 INPUT ÉTAPE 2:', { requestId })
-      console.log('📥 INPUT ÉTAPE 2 - CONTENU COMPLET:', JSON.stringify({
-        diagnostic,
-        userProfile: request.userProfile,
-        skinConcerns: request.skinConcerns,
-        constraints: request.constraints
-      }, null, 2))
+      // console.log('📥 INPUT ÉTAPE 2 - CONTENU COMPLET:', JSON.stringify({
+      //   diagnostic,
+      //   userProfile: request.userProfile,
+      //   skinConcerns: request.skinConcerns,
+      //   constraints: request.constraints
+      // }, null, 2))
       
       const routine = await this.generatePersonalizedRoutine(diagnostic, request, requestId)
       
       this.logger.info('📤 OUTPUT ÉTAPE 2 (Routine):', { requestId })
-      console.log('📤 OUTPUT ÉTAPE 2 (Routine) - CONTENU COMPLET:', JSON.stringify(routine, null, 2))
+      // console.log('📤 OUTPUT ÉTAPE 2 (Routine) - CONTENU COMPLET:', JSON.stringify(routine, null, 2))
       
       // 🛍️ ÉTAPE 3: Sélection produits IA
       this.logger.info('🛍️ ÉTAPE 3: Sélection produits IA', { requestId })
       this.logger.info('📥 INPUT ÉTAPE 3:', { requestId })
-      console.log('📥 INPUT ÉTAPE 3 - CONTENU COMPLET:', JSON.stringify({
-        routine,
-        constraints: request.constraints,
-        catalogueInfo: 'Catalogue partitionné V2 chargé'
-      }, null, 2))
+      // console.log('📥 INPUT ÉTAPE 3 - CONTENU COMPLET:', JSON.stringify({
+      //   routine,
+      //   constraints: request.constraints,
+      //   catalogueInfo: 'Catalogue partitionné V2 chargé'
+      // }, null, 2))
       
       const products = await this.selectOptimalProducts(routine, request, requestId)
       
       this.logger.info('📤 OUTPUT ÉTAPE 3 (Produits):', { requestId })
-      console.log('📤 OUTPUT ÉTAPE 3 (Produits) - CONTENU COMPLET:', JSON.stringify(products, null, 2))
+      // console.log('📤 OUTPUT ÉTAPE 3 (Produits) - CONTENU COMPLET:', JSON.stringify(products, null, 2))
       
       // 🎯 ÉTAPE 4: Assemblage et validation
       this.logger.info('🎯 ÉTAPE 4: Assemblage et validation', { requestId })
       this.logger.info('📥 INPUT ÉTAPE 4:', { requestId })
-      console.log('📥 INPUT ÉTAPE 4 - CONTENU COMPLET:', JSON.stringify({
-        diagnostic,
-        routine,
-        products
-      }, null, 2))
+      // console.log('📥 INPUT ÉTAPE 4 - CONTENU COMPLET:', JSON.stringify({
+      //   diagnostic,
+      //   routine,
+      //   products
+      // }, null, 2))
       
       const finalResult = await AssemblyAndValidationService.assembleCompleteAnalysis(
         diagnostic, 

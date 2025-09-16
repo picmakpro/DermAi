@@ -28,6 +28,19 @@ export interface SkinAnalysis {
   beautyAssessment: BeautyAssessment
   recommendations: ProductRecommendations
   createdAt: Date
+  // Support pour les données V2 de la refonte IA-First
+  diagnostic?: {
+    skinType?: string
+    scores?: SkinScores
+    skinAgeEstimate?: number
+    generalObservation?: string
+    zoneSpecificIssues?: Array<{
+      zone: string
+      problem: string
+      intensity: 'légère' | 'modérée' | 'intense'
+      description: string
+    }>
+  }
 }
 
 export interface SkinScores {
@@ -343,3 +356,31 @@ export interface CatalogProduct {
   reviewScore?: number // Score d'avis clients
   availability?: 'in-stock' | 'limited' | 'out-of-stock' // Disponibilité
 }
+
+// 🔄 EXPORTS SYNCHRONISATION PRODUITS ↔ ROUTINE
+export type {
+  EnrichedProduct,
+  AlternativeProduct,
+  ProductProblemCategory,
+  SyncResult,
+  ProductReplacement,
+  ComparisonMatrix,
+  ComparisonCriterion,
+  ProductRoutineContext
+} from './productSync'
+
+export type {
+  AlternativeServiceConfig,
+  AlternativeSearchResult,
+  AlternativeCriteria,
+  PriceFilter,
+  NaturalnessFilter,
+  PotencyFilter,
+  AlternativeScoring,
+  ComparisonMetadata,
+  AlternativeFeedback,
+  AlternativeStats,
+  ComparisonType,
+  AlternativeStatus,
+  AlternativeAlgorithmConfig
+} from './alternatives'
