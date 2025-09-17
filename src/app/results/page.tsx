@@ -639,6 +639,7 @@ import ProductCard from './components/ProductCard'
 import AdvancedRoutineDisplay from '@/components/routine/AdvancedRoutineDisplay'
 import ShareableCard from '@/components/shared/ShareableCard'
 import { UnifiedRoutineSection } from '@/components/results/UnifiedRoutineSection'
+import { EnhancedProductsSection } from '@/components/results/EnhancedProductsSection'
 import { EducationalTooltip, MobileEducationalTooltip } from '@/components/shared/EducationalTooltip'
 import { AIIndicator, AIScoreIndicator, AIProductIndicator, AIRoutineIndicator } from '@/components/shared/AIIndicator'
 import { ProgressiveReveal, CascadeReveal, AnimatedCounter } from '@/components/shared/ProgressiveReveal'
@@ -2430,6 +2431,28 @@ Les scores évoluent avec votre routine personnalisée !"
          </motion.div>
         )}
            </>
+         )}
+
+         {/* NOUVELLE SECTION PRODUITS ENRICHIE - SPRINT 2 */}
+         {analysis.recommendations.unifiedRoutine && analysis.recommendations.unifiedRoutine.length > 0 && (
+           <AnalyticsTracker 
+             sectionName="produits_enrichis" 
+             trackViews={true} 
+             trackClicks={true}
+             trackTimeSpent={true}
+           >
+             <EnhancedProductsSection 
+               routine={analysis.recommendations.unifiedRoutine}
+               onProductReplace={(oldProduct, newProduct) => {
+                 console.log('🔄 Remplacement produit dans page résultats:', {
+                   ancien: oldProduct.name,
+                   nouveau: newProduct.name
+                 })
+                 // TODO: Mettre à jour l'état local si nécessaire
+               }}
+               className="mb-8"
+             />
+           </AnalyticsTracker>
          )}
 
          {/* Guide Éducatif des Phases - Masqué temporairement */}

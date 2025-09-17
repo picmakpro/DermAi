@@ -74,11 +74,20 @@ export class ProductRoutineSyncService {
       return []
     }
     
+    // Déduplication des produits par ID
+    const uniqueProducts = products.filter((product, index, self) => 
+      index === self.findIndex(p => p.id === product.id)
+    )
+    
+    if (uniqueProducts.length !== products.length) {
+      console.warn(`⚠️ ${products.length - uniqueProducts.length} produits dupliqués supprimés`)
+    }
+    
     try {
       const catalog = await loadCatalog()
       const enrichedProducts: EnrichedProduct[] = []
       
-      for (const product of products) {
+      for (const product of uniqueProducts) {
         try {
           // Rechercher dans le catalogue JSON
           const catalogProduct = this.findProductInCatalog(catalog, product)

@@ -6,7 +6,15 @@ const nextConfig: NextConfig = {
   
   // Optimisations d'images
   images: {
-    domains: [],
+    domains: [
+      'm.media-amazon.com',
+      'images-na.ssl-images-amazon.com',
+      'www.sephora.fr',
+      'www.douglas.fr',
+      'cdn.shopify.com',
+      'static.beautytech.fr',
+      'example.com' // Pour les images de test
+    ],
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
