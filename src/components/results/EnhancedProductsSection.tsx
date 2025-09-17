@@ -1,340 +1,283 @@
 /**
- * 🎨 SECTION PRODUITS ENRICHIE
+ * 🎨 SECTION PRODUITS ENRICHIE V3 - TOP 3 ALTERNATIVES
  * 
- * Composant principal pour l'affichage de la section produits recommandés
- * avec synchronisation bidirectionnelle et système d'alternatives
+ * Composant principal pour l'affichage des produits recommandés
+ * avec système Top 3 par catégorie et alternatives intelligentes
  * 
- * Version: 1.0
- * Date: 16 septembre 2025
+ * Version: 2.0 - Sprint 2
+ * Date: 17 septembre 2025
  */
 
 'use client'
 
 import React, { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ShoppingBag, Sparkles, AlertCircle, RefreshCw, CheckCircle } from 'lucide-react'
+import { ShoppingBag, Sparkles, AlertCircle, RefreshCw, CheckCircle, Shuffle, Crown, BarChart3 } from 'lucide-react'
 import { UnifiedRoutineStep } from '@/types'
-import { EnrichedProduct } from '@/types/productSync'
-import { AlternativeProduct } from '@/types/alternatives'
-import { useProductSync } from '@/hooks/useProductSync'
-import { useAlternatives } from '@/hooks/useAlternatives'
-import { EnrichedProductCard } from './EnrichedProductCard'
-import { AlternativeModal } from './AlternativeModal'
-import { ProductReplacementWarning } from './ProductReplacementWarning'
+import { SelectedProductWithAlternatives, ProductDetail } from '@/schemas/v3/products'
+import { useAlternativeSelection } from '@/hooks/useAlternativeSelection'
+import { useProductRanking } from '@/hooks/useProductRanking'
+import { AlternativeProductModal } from './AlternativeProductModal'
+import { ProductComparisonCard } from './ProductComparisonCard'
 
 interface EnhancedProductsSectionProps {
+  // Nouvelles props V3 - Top 3 produits
+  productsV3: SelectedProductWithAlternatives[]
   routine: UnifiedRoutineStep[]
-  onProductReplace?: (oldProduct: EnrichedProduct, newProduct: EnrichedProduct) => void
+  onProductSelect?: (product: ProductDetail, routineStepId: number) => void
   className?: string
+  showAlternativesButton?: boolean
+  enableProductComparison?: boolean
 }
 
 export const EnhancedProductsSection: React.FC<EnhancedProductsSectionProps> = ({
+  productsV3,
   routine,
-  onProductReplace,
-  className = ''
+  onProductSelect,
+  className = '',
+  showAlternativesButton = true,
+  enableProductComparison = true
 }) => {
-  // Hooks de gestion d'état
+  // Hooks V3 - Top 3 alternatives
   const {
-    enrichedProducts,
+    selectedProducts,
+    modalState,
     isLoading,
     error,
-    syncStatus,
-    syncFromRoutine,
-    replaceProduct,
-    clearError,
-    syncMetrics
-  } = useProductSync({ autoSync: true, cacheResults: true })
+    openAlternativesModal,
+    closeAlternativesModal,
+    selectAlternative,
+    resetSelection,
+    getSelectionStats
+  } = useAlternativeSelection(productsV3)
   
   const {
-    alternatives,
-    isLoadingAlternatives,
-    alternativesError,
-    selectedAlternative,
-    loadAlternatives,
-    selectAlternative,
-    clearAlternatives,
-    clearAlternativesError
-  } = useAlternatives({ cacheResults: true, autoRetry: true })
+    analyzeProduct,
+    compareProducts,
+    getRecommendationForUser
+  } = useProductRanking()
   
-  // État local pour les modals
-  const [showAlternativeModal, setShowAlternativeModal] = useState(false)
-  const [showReplacementWarning, setShowReplacementWarning] = useState(false)
-  const [currentProduct, setCurrentProduct] = useState<EnrichedProduct | null>(null)
-  const [pendingReplacement, setPendingReplacement] = useState<{
-    old: EnrichedProduct
-    new: EnrichedProduct
-  } | null>(null)
+  // État local pour les statistiques
+  const [showStats, setShowStats] = useState(false)
+  const selectionStats = getSelectionStats()
   
-  // Synchronisation initiale
+  // Gestion de la sélection d'alternative
+  const handleAlternativeSelect = (product: ProductDetail, routineStepId: number) => {
+    selectAlternative(product, routineStepId)
+    onProductSelect?.(product, routineStepId)
+  }
+  
+  // Synchronisation avec la routine si nécessaire
   useEffect(() => {
-    if (routine && routine.length > 0) {
-      console.log('🔄 Synchronisation initiale des produits depuis routine')
-      syncFromRoutine(routine)
-    }
-  }, [routine, syncFromRoutine])
-  
-  /**
-   * 🔍 GESTION OUVERTURE ALTERNATIVES
-   */
-  const handleAlternativeClick = async (product: EnrichedProduct) => {
-    console.log(`🔍 Ouverture alternatives pour: ${product.name}`)
-    setCurrentProduct(product)
-    setShowAlternativeModal(true)
-    clearAlternativesError()
-    
-    // Charger les alternatives avec critères par défaut
-    await loadAlternatives(product, {
-      priceRange: 'similar',
-      naturalness: 'similar',
-      potency: 'similar'
-    })
-  }
-  
-  /**
-   * ✅ GESTION SÉLECTION ALTERNATIVE
-   */
-  const handleAlternativeSelect = (alternative: AlternativeProduct) => {
-    if (!currentProduct) return
-    
-    console.log(`✅ Alternative sélectionnée: ${alternative.name}`)
-    selectAlternative(alternative)
-    
-    // Préparer le remplacement
-    setPendingReplacement({
-      old: currentProduct,
-      new: alternative
-    })
-    
-    // Fermer modal alternatives et ouvrir prévention
-    setShowAlternativeModal(false)
-    setShowReplacementWarning(true)
-  }
-  
-  /**
-   * 🔄 GESTION CONFIRMATION REMPLACEMENT
-   */
-  const handleReplacementConfirm = async () => {
-    if (!pendingReplacement) return
-    
-    try {
-      console.log('🔄 Confirmation remplacement produit')
-      
-      // Effectuer le remplacement
-      const syncResult = await replaceProduct(pendingReplacement.old, pendingReplacement.new)
-      
-      if (syncResult.success) {
-        // Callback externe si fourni
-        if (onProductReplace) {
-          onProductReplace(pendingReplacement.old, pendingReplacement.new)
-        }
-        
-        console.log('✅ Remplacement effectué avec succès')
-      } else {
-        console.error('❌ Échec du remplacement:', syncResult.errors)
-      }
-      
-      // Nettoyage
-      handleCancel()
-      
-    } catch (error) {
-      console.error('❌ Erreur lors du remplacement:', error)
-      // L'erreur sera affichée via le hook useProductSync
-    }
-  }
-  
-  /**
-   * ❌ GESTION ANNULATION
-   */
-  const handleCancel = () => {
-    setShowAlternativeModal(false)
-    setShowReplacementWarning(false)
-    setPendingReplacement(null)
-    setCurrentProduct(null)
-    clearAlternatives()
-  }
-  
-  /**
-   * 🏷️ CATÉGORISATION PAR PROBLÈME
-   */
-  const categorizeProductsByProblem = (products: EnrichedProduct[]) => {
-    const categories = new Map<string, EnrichedProduct[]>()
-    
-    products.forEach(product => {
-      const category = product.problemCategory || 'Autres soins'
-      if (!categories.has(category)) {
-        categories.set(category, [])
-      }
-      categories.get(category)!.push(product)
-    })
-    
-    // Trier les catégories par ordre de priorité
-    const sortedCategories = new Map([...categories.entries()].sort((a, b) => {
-      const priorityOrder = [
-        'Nettoyage',
-        'Anti-acné', 
-        'Hydratation',
-        'Anti-rides',
-        'Taches & Éclat',
-        'Protection solaire',
-        'Peaux sensibles',
-        'Exfoliation',
-        'Autres soins'
-      ]
-      return priorityOrder.indexOf(a[0]) - priorityOrder.indexOf(b[0])
-    }))
-    
-    return sortedCategories
-  }
-  
-  // Rendu conditionnel pour les états de chargement/erreur
-  if (isLoading && enrichedProducts.length === 0) {
+    // Logique de synchronisation si nécessaire
+  }, [routine, productsV3])
+
+  if (isLoading) {
     return (
-      <div className={`bg-white rounded-3xl shadow-xl p-8 border border-dermai-ai-100 ${className}`}>
-        <div className="flex items-center justify-center py-12">
-          <div className="flex items-center space-x-3">
-            <RefreshCw className="w-6 h-6 text-dermai-ai-500 animate-spin" />
-            <span className="text-lg text-gray-600">Synchronisation des produits...</span>
-          </div>
+      <div className={`bg-white rounded-2xl shadow-sm border border-gray-100 p-8 ${className}`}>
+        <div className="flex items-center justify-center space-x-3">
+          <RefreshCw className="w-6 h-6 animate-spin text-dermai-primary" />
+          <span className="text-gray-600">Chargement des produits...</span>
         </div>
       </div>
     )
   }
-  
+
   if (error) {
     return (
-      <div className={`bg-white rounded-3xl shadow-xl p-8 border border-red-200 ${className}`}>
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-3">
-            <AlertCircle className="w-6 h-6 text-red-500" />
-            <h2 className="text-xl font-bold text-red-700">Erreur de synchronisation</h2>
-          </div>
-          <button
-            onClick={clearError}
-            className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors"
-          >
-            Réessayer
-          </button>
+      <div className={`bg-white rounded-2xl shadow-sm border border-red-200 p-8 ${className}`}>
+        <div className="flex items-center space-x-3 text-red-600 mb-4">
+          <AlertCircle className="w-6 h-6" />
+          <span className="font-medium">Erreur de chargement</span>
         </div>
-        <p className="text-red-600">{error}</p>
+        <p className="text-red-600 mb-4">{error}</p>
+        <button 
+          onClick={() => window.location.reload()}
+          className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+        >
+          Réessayer
+        </button>
       </div>
     )
   }
-  
-  // Catégorisation des produits
-  const categorizedProducts = categorizeProductsByProblem(enrichedProducts)
-  
+
   return (
-    <>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className={`bg-white rounded-3xl shadow-xl p-8 border border-dermai-ai-100 ${className}`}
-      >
-        {/* En-tête de section */}
-        <div className="flex items-center justify-between mb-8">
+    <div className={`bg-white rounded-2xl shadow-sm border border-gray-100 ${className}`}>
+      {/* En-tête avec statistiques */}
+      <div className="p-6 border-b border-gray-100">
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-gradient-to-br from-dermai-ai-100 to-dermai-ai-200 rounded-xl">
-              <ShoppingBag className="w-5 h-5 text-dermai-ai-600" />
+            <div className="p-2 bg-dermai-primary/10 rounded-lg">
+              <ShoppingBag className="w-6 h-6 text-dermai-primary" />
             </div>
             <div>
-              <h2 className="text-xl md:text-2xl font-bold text-gray-900">
-                Produits recommandés
+              <h2 className="text-xl font-bold text-gray-900">
+                Produits Recommandés
               </h2>
-              <p className="text-sm text-gray-600 mt-1">
-                Synchronisés avec votre routine personnalisée • {enrichedProducts.length} produits
+              <p className="text-gray-600">
+                {productsV3?.length || 0} étapes • {(productsV3?.length || 0) * 3} produits analysés
               </p>
             </div>
           </div>
           
-          {/* Indicateur de synchronisation */}
-          <div className="flex items-center space-x-4">
-            {syncStatus === 'success' && (
-              <div className="flex items-center space-x-2 text-green-600">
-                <CheckCircle className="w-4 h-4" />
-                <span className="text-sm font-medium">Synchronisé</span>
-              </div>
-            )}
-            
-            {/* Métriques de performance */}
-            {syncMetrics.totalSyncs > 0 && (
-              <div className="text-xs text-gray-500">
-                {syncMetrics.totalSyncs} sync • {Math.round(syncMetrics.averageSyncTime)}ms moy
-              </div>
-            )}
-          </div>
+          {/* Bouton statistiques */}
+          <button
+            onClick={() => setShowStats(!showStats)}
+            className="flex items-center space-x-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+          >
+            <BarChart3 className="w-4 h-4" />
+            <span className="text-sm font-medium">Statistiques</span>
+          </button>
         </div>
-        
-        {/* Produits par catégorie */}
-        <div className="space-y-8">
-          {Array.from(categorizedProducts.entries()).map(([category, products]) => (
-            <motion.div 
-              key={category}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
+
+        {/* Statistiques de sélection */}
+        <AnimatePresence>
+          {showStats && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="bg-blue-50 rounded-lg p-4 mb-4"
             >
-              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                <Sparkles className="w-4 h-4 mr-2 text-dermai-ai-500" />
-                {category}
-                <span className="ml-2 px-2 py-1 text-xs bg-dermai-ai-100 text-dermai-ai-700 rounded-full">
-                  {products.length}
-                </span>
-              </h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {products.map((product, index) => (
-                  <motion.div
-                    key={`${category}-${product.id}-${index}`}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <EnrichedProductCard
-                      product={product}
-                      onAlternativeClick={() => handleAlternativeClick(product)}
-                      isLoading={isLoading}
-                    />
-                  </motion.div>
-                ))}
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div>
+                  <div className="text-2xl font-bold text-blue-600">
+                    {selectionStats.primarySelected}
+                  </div>
+                  <div className="text-sm text-blue-600">Recommandés</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-orange-600">
+                    {selectionStats.alternativesSelected}
+                  </div>
+                  <div className="text-sm text-orange-600">Alternatives</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-green-600">
+                    {Math.round(selectionStats.selectionRate * 100)}%
+                  </div>
+                  <div className="text-sm text-green-600">Personnalisation</div>
+                </div>
               </div>
             </motion.div>
-          ))}
-        </div>
-        
-        {/* Message si pas de produits */}
-        {enrichedProducts.length === 0 && !isLoading && (
-          <div className="text-center py-12">
-            <ShoppingBag className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-600 mb-2">
-              Aucun produit synchronisé
-            </h3>
-            <p className="text-gray-500">
-              Les produits apparaîtront ici une fois la routine analysée
-            </p>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Liste des produits */}
+      <div className="p-6 space-y-6">
+        {productsV3?.map((step, index) => {
+          const selectedProduct = selectedProducts.get(step.routineStepId) || step.primaryProduct
+          const isAlternativeSelected = selectedProduct.catalogId !== step.primaryProduct.catalogId
+          
+          return (
+            <motion.div
+              key={step.routineStepId}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow"
+            >
+              {/* En-tête de l'étape */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-dermai-primary text-white rounded-full flex items-center justify-center text-sm font-bold">
+                    {step.routineStepId}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900">
+                      Étape {step.routineStepId}
+                    </h3>
+                    {isAlternativeSelected && (
+                      <div className="flex items-center space-x-1 text-sm text-orange-600">
+                        <Shuffle className="w-3 h-3" />
+                        <span>Alternative sélectionnée</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                {/* Boutons d'action */}
+                <div className="flex items-center space-x-2">
+                  {showAlternativesButton && (
+                    <button
+                      onClick={() => openAlternativesModal(step)}
+                      className="flex items-center space-x-2 px-3 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors text-sm"
+                    >
+                      <Shuffle className="w-4 h-4" />
+                      <span>Voir alternatives</span>
+                    </button>
+                  )}
+                  
+                  {isAlternativeSelected && (
+                    <button
+                      onClick={() => resetSelection(step.routineStepId)}
+                      className="flex items-center space-x-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors text-sm"
+                    >
+                      <RefreshCw className="w-4 h-4" />
+                      <span>Réinitialiser</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Carte du produit sélectionné */}
+              <ProductComparisonCard
+                product={selectedProduct}
+                isSelected={true}
+                showRanking={true}
+                showDetailedInfo={false}
+              />
+
+              {/* Indicateur de diversification */}
+              {enableProductComparison && (
+                <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                  <div className="text-sm text-gray-600">
+                    <strong>Stratégie de sélection :</strong> {step.categoryRanking.diversificationStrategy}
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          )
+        })}
+      </div>
+
+      {/* Footer avec résumé */}
+      <div className="p-6 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <CheckCircle className="w-5 h-5 text-green-600" />
+              <span className="text-sm text-gray-700">
+                {selectionStats.totalSteps} produits sélectionnés
+              </span>
+            </div>
+            {selectionStats.alternativesSelected > 0 && (
+              <div className="flex items-center space-x-2">
+                <Sparkles className="w-5 h-5 text-orange-600" />
+                <span className="text-sm text-gray-700">
+                  {selectionStats.alternativesSelected} alternative(s) choisie(s)
+                </span>
+              </div>
+            )}
           </div>
-        )}
-      </motion.div>
-      
-      {/* Modal d'alternatives */}
-      <AlternativeModal
-        isOpen={showAlternativeModal}
-        currentProduct={currentProduct}
-        alternatives={alternatives}
-        isLoading={isLoadingAlternatives}
-        error={alternativesError}
-        onSelect={handleAlternativeSelect}
-        onClose={handleCancel}
+          
+          <div className="text-sm text-gray-500">
+            Routine personnalisée à {Math.round(selectionStats.selectionRate * 100)}%
+          </div>
+        </div>
+      </div>
+
+      {/* Modal des alternatives */}
+      <AlternativeProductModal
+        isOpen={modalState.isOpen}
+        currentProduct={modalState.currentProduct}
+        alternatives={modalState.alternatives}
+        isLoading={false}
+        error={null}
+        onSelect={(product) => handleAlternativeSelect(product, modalState.currentStep?.routineStepId || 0)}
+        onClose={closeAlternativesModal}
       />
-      
-      {/* Modal de prévention remplacement */}
-      <ProductReplacementWarning
-        isOpen={showReplacementWarning}
-        oldProduct={pendingReplacement?.old}
-        newProduct={pendingReplacement?.new}
-        onConfirm={handleReplacementConfirm}
-        onCancel={handleCancel}
-      />
-    </>
+    </div>
   )
 }

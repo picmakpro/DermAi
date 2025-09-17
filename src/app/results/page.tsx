@@ -640,6 +640,7 @@ import AdvancedRoutineDisplay from '@/components/routine/AdvancedRoutineDisplay'
 import ShareableCard from '@/components/shared/ShareableCard'
 import { UnifiedRoutineSection } from '@/components/results/UnifiedRoutineSection'
 import { EnhancedProductsSection } from '@/components/results/EnhancedProductsSection'
+import { SelectedProductWithAlternatives } from '@/schemas/v3/products'
 import { EducationalTooltip, MobileEducationalTooltip } from '@/components/shared/EducationalTooltip'
 import { AIIndicator, AIScoreIndicator, AIProductIndicator, AIRoutineIndicator } from '@/components/shared/AIIndicator'
 import { ProgressiveReveal, CascadeReveal, AnimatedCounter } from '@/components/shared/ProgressiveReveal'
@@ -1433,6 +1434,11 @@ export default function ResultsPage() {
   const [isMobile, setIsMobile] = useState(false)
   const shareableCardRef = useRef<HTMLDivElement>(null)
   
+  // 🔥 NOUVEAU V3: État pour Top 3 produits
+  const [analysisV3, setAnalysisV3] = useState<any>(null)
+  const [productsV3, setProductsV3] = useState<SelectedProductWithAlternatives[]>([])
+  const [isV3Mode, setIsV3Mode] = useState(false)
+  
   // 🔥 SPRINT 4: Analytics d'affichage
   const { trackEvent } = useAnalytics()
 
@@ -1593,9 +1599,26 @@ export default function ResultsPage() {
           
           console.log('✅ SPRINT 3: Analyse récupérée depuis storage')
           
-          // Adapter avec gestion d'erreurs
-          const adaptedStored = adaptV2ToV1Format(stored)
-          setAnalysis(adaptedStored)
+          // 🔥 NOUVEAU V3: Détecter si c'est une analyse V3 avec Top 3 produits
+          if (stored.metadata?.version === '3.0-top3' && stored.products?.selectedProducts) {
+            console.log('🔥 V3 MODE: Analyse Top 3 détectée')
+            setIsV3Mode(true)
+            setAnalysisV3(stored)
+            setProductsV3(stored.products.selectedProducts)
+            
+            // Adapter aussi pour la compatibilité V1 (scores, etc.)
+            const adaptedStored = adaptV2ToV1Format(stored)
+            setAnalysis(adaptedStored)
+          } else {
+            // Mode V2 classique
+            console.log('📋 V2 MODE: Analyse classique')
+            const adaptedStored = adaptV2ToV1Format(stored)
+            setAnalysis(adaptedStored)
+            
+            // 🧪 MODE TEST V3: Simuler V3 pour les tests (temporaire)
+            // Décommentez la ligne suivante pour tester l'interface V3 avec des données V2
+            // setIsV3Mode(true)
+          }
           
           // Récupérer l'âge utilisateur
           if (questionnaireData) {
@@ -2433,26 +2456,64 @@ Les scores évoluent avec votre routine personnalisée !"
            </>
          )}
 
-         {/* NOUVELLE SECTION PRODUITS ENRICHIE - SPRINT 2 */}
-         {analysis.recommendations.unifiedRoutine && analysis.recommendations.unifiedRoutine.length > 0 && (
+         {/* NOUVELLE SECTION PRODUITS ENRICHIE - SPRINT 2/3 */}
+         {isV3Mode && productsV3 && productsV3.length > 0 ? (
+           // 🔥 MODE V3: Top 3 produits avec alternatives
            <AnalyticsTracker 
-             sectionName="produits_enrichis" 
+             sectionName="produits_top3_v3" 
              trackViews={true} 
              trackClicks={true}
              trackTimeSpent={true}
            >
              <EnhancedProductsSection 
+               productsV3={productsV3}
                routine={analysis.recommendations.unifiedRoutine}
-               onProductReplace={(oldProduct, newProduct) => {
-                 console.log('🔄 Remplacement produit dans page résultats:', {
-                   ancien: oldProduct.name,
-                   nouveau: newProduct.name
+               onProductSelect={(product, routineStepId) => {
+                 console.log('🔥 V3: Sélection alternative:', {
+                   produit: product.productName,
+                   marque: product.brand,
+                   prix: product.price,
+                   ranking: product.ranking,
+                   etape: routineStepId
                  })
-                 // TODO: Mettre à jour l'état local si nécessaire
+                 
+                 // Analytics V3
+                 trackEvent('alternative_product_selected', {
+                   productId: product.catalogId,
+                   productName: product.productName,
+                   brand: product.brand,
+                   ranking: product.ranking,
+                   routineStepId,
+                   version: 'v3'
+                 })
                }}
                className="mb-8"
+               showAlternativesButton={true}
+               enableProductComparison={true}
              />
            </AnalyticsTracker>
+         ) : (
+           // Mode V2 classique
+           analysis.recommendations.unifiedRoutine && analysis.recommendations.unifiedRoutine.length > 0 && (
+             <AnalyticsTracker 
+               sectionName="produits_enrichis" 
+               trackViews={true} 
+               trackClicks={true}
+               trackTimeSpent={true}
+             >
+               <EnhancedProductsSection 
+                 routine={analysis.recommendations.unifiedRoutine}
+                 onProductReplace={(oldProduct, newProduct) => {
+                   console.log('🔄 Remplacement produit dans page résultats:', {
+                     ancien: oldProduct.name,
+                     nouveau: newProduct.name
+                   })
+                   // TODO: Mettre à jour l'état local si nécessaire
+                 }}
+                 className="mb-8"
+               />
+             </AnalyticsTracker>
+           )
          )}
 
          {/* Guide Éducatif des Phases - Masqué temporairement */}

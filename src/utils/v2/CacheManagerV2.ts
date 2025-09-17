@@ -60,6 +60,27 @@ export class CacheManagerV2 {
   }
 
   /**
+   * 🔥 NOUVEAU: Générer clé cache pour Top 3 produits V3
+   */
+  generateProductsV3Key(routine: PersonalizedRoutine, budget: number): string {
+    const routineHash = this.hashObject({
+      phases: Object.keys(routine.phases).map(phase => ({
+        phase,
+        steps: routine.phases[phase].steps.map(step => ({
+          careType: step.careType,
+          targetProblem: step.targetProblem,
+          targetZones: step.targetZones,
+          timing: step.timing
+        }))
+      })),
+      budget,
+      version: 'v3' // Nouvelle version pour Top 3
+    })
+    
+    return `products_v3_${routineHash}`
+  }
+
+  /**
    * Générer clé cache pour assemblage final
    */
   generateFinalKey(diagnosticKey: string, routineKey: string, productsKey: string): string {
@@ -167,10 +188,61 @@ export class CacheManagerV2 {
   }
 
   /**
+   * 🔥 NOUVEAU: Statistiques cache spécifiques Top 3
+   */
+  async getCacheStatsV3(): Promise<{
+    hitRate: number
+    totalRequests: number
+    averageProductsPerRequest: number
+    diversificationSuccessRate: number
+  }> {
+    const keys = await this.getAllKeys('products_v3_*')
+    let totalRequests = 0
+    let hits = 0
+    let totalProducts = 0
+    let diversificationSuccesses = 0
+    
+    for (const key of keys) {
+      const data = await this.get(key)
+      if (data) {
+        totalRequests++
+        hits++
+        totalProducts += (data as any).selectedProducts?.length * 3 || 0
+        if ((data as any).coherenceValidation?.diversificationSuccess) {
+          diversificationSuccesses++
+        }
+      }
+    }
+    
+    return {
+      hitRate: totalRequests > 0 ? hits / totalRequests : 0,
+      totalRequests,
+      averageProductsPerRequest: totalRequests > 0 ? totalProducts / totalRequests : 0,
+      diversificationSuccessRate: totalRequests > 0 ? diversificationSuccesses / totalRequests : 0
+    }
+  }
+
+  /**
+   * Récupérer toutes les clés correspondant à un pattern
+   */
+  private async getAllKeys(pattern: string): Promise<string[]> {
+    return Array.from(this.cache.keys()).filter(key => 
+      key.includes(pattern.replace('*', ''))
+    )
+  }
+
+  /**
    * Hasher une chaîne de caractères
    */
   private hashString(input: string): string {
     return createHash('sha256').update(input).digest('hex').substring(0, 16)
+  }
+
+  /**
+   * 🔥 NOUVEAU: Hasher un objet (pour clés V3)
+   */
+  private hashObject(obj: any): string {
+    return this.hashString(JSON.stringify(obj))
   }
 
   /**

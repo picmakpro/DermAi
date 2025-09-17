@@ -6,6 +6,7 @@ import {
   InterStepCoherence,
   QualityMetrics
 } from '@/schemas/v2'
+import { ProductSelectionV3 } from '@/schemas/v3'
 import { Logger } from '@/utils/Logger'
 
 /**
@@ -17,12 +18,12 @@ export class AssemblyAndValidationService {
   private static logger = Logger.getInstance('AssemblyValidationV2')
 
   /**
-   * Assembler l'analyse complète avec validation de cohérence
+   * Assembler l'analyse complète avec validation de cohérence (V2 et V3)
    */
   static async assembleCompleteAnalysis(
     diagnostic: PureDiagnostic,
     routine: PersonalizedRoutine, 
-    products: ProductSelection
+    products: ProductSelection | ProductSelectionV3
   ): Promise<CompleteAnalysisV2> {
     
     this.logger.info('🎯 Démarrage assemblage et validation V2')
@@ -33,7 +34,10 @@ export class AssemblyAndValidationService {
     // 2. Calcul métriques de qualité
     const qualityMetrics = this.calculateQualityMetrics(diagnostic, routine, products, coherenceValidation)
     
-    // 3. Assemblage final
+    // 3. Assemblage final avec détection V3
+    const isV3Mode = 'selectedProducts' in products && Array.isArray(products.selectedProducts) && 
+                     products.selectedProducts.length > 0 && 'alternatives' in products.selectedProducts[0]
+    
     const completeAnalysis: CompleteAnalysisV2 = {
       id: this.generateAnalysisId(),
       diagnostic,
@@ -42,7 +46,11 @@ export class AssemblyAndValidationService {
       coherenceValidation,
       qualityMetrics,
       generatedAt: new Date(),
-      version: '2.0'
+      version: isV3Mode ? '3.0-top3' : '2.0',
+      metadata: {
+        version: isV3Mode ? '3.0-top3' : '2.0',
+        isV3Mode
+      }
     }
 
     this.logger.info('✅ Assemblage V2 terminé', {
@@ -55,12 +63,12 @@ export class AssemblyAndValidationService {
   }
 
   /**
-   * Valider la cohérence entre toutes les étapes
+   * Valider la cohérence entre toutes les étapes (V2 et V3)
    */
   private static validateInterStepCoherence(
     diagnostic: PureDiagnostic,
     routine: PersonalizedRoutine,
-    products: ProductSelection
+    products: ProductSelection | ProductSelectionV3
   ): InterStepCoherence {
     const issues: string[] = []
     let overallScore = 100
@@ -118,7 +126,7 @@ export class AssemblyAndValidationService {
   private static calculateQualityMetrics(
     diagnostic: PureDiagnostic,
     routine: PersonalizedRoutine,
-    products: ProductSelection,
+    products: ProductSelection | ProductSelectionV3,
     coherence: InterStepCoherence
   ): QualityMetrics {
     
@@ -165,7 +173,14 @@ export class AssemblyAndValidationService {
 
     const productZones = new Set()
     products.selectedProducts.forEach(product => {
-      product.targetZones.forEach(zone => productZones.add(zone))
+      // Gérer format V3 (avec primaryProduct) et V2 (direct)
+      if ('primaryProduct' in product) {
+        // Format V3
+        product.primaryProduct.targetZones.forEach(zone => productZones.add(zone))
+      } else {
+        // Format V2
+        product.targetZones.forEach(zone => productZones.add(zone))
+      }
     })
 
     // Vérifier qu'il y a un overlap significatif
@@ -205,7 +220,7 @@ export class AssemblyAndValidationService {
    */
   private static validateRoutineProductsMatch(
     routine: PersonalizedRoutine,
-    products: ProductSelection
+    products: ProductSelection | ProductSelectionV3
   ): boolean {
     const totalRoutineSteps = Object.values(routine.phases).reduce(
       (total, phase) => total + phase.steps.length, 0
@@ -222,7 +237,7 @@ export class AssemblyAndValidationService {
    */
   private static validateTimingLogic(
     routine: PersonalizedRoutine,
-    products: ProductSelection
+    products: ProductSelection | ProductSelectionV3
   ): boolean {
     // Vérifier que les timings des produits correspondent aux étapes de routine
     const routineTimings = new Set<string>()
@@ -232,7 +247,16 @@ export class AssemblyAndValidationService {
       })
     })
 
-    const productTimings = products.selectedProducts.map(p => p.timing.toLowerCase())
+    const productTimings = products.selectedProducts.map(p => {
+      // Gérer format V3 (avec primaryProduct) et V2 (direct)
+      if ('primaryProduct' in p) {
+        // Format V3
+        return p.primaryProduct.timing.toLowerCase()
+      } else {
+        // Format V2
+        return p.timing.toLowerCase()
+      }
+    })
     
     // Vérification basique de cohérence
     return productTimings.every(timing => 
@@ -249,7 +273,7 @@ export class AssemblyAndValidationService {
   private static calculatePersonalizationScore(
     diagnostic: PureDiagnostic,
     routine: PersonalizedRoutine,
-    products: ProductSelection
+    products: ProductSelection | ProductSelectionV3
   ): number {
     let score = 100
 

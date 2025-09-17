@@ -10,6 +10,11 @@ import {
   ProductSelectionSchema,
   CompleteAnalysisV2Schema
 } from '@/schemas/v2'
+import { 
+  ProductSelectionV3, 
+  ProductSelectionV3Schema,
+  validateTop3Products 
+} from '@/schemas/v3'
 import { Logger } from '@/utils/Logger'
 import { RetryStrategy } from '@/utils/RetryStrategy'
 import { CacheManagerV2 } from '@/utils/v2/CacheManagerV2'
@@ -17,6 +22,7 @@ import { AssemblyAndValidationService } from './core/AssemblyAndValidationServic
 import { getPromptForAttempt } from './core/prompts/diagnosticPur'
 import { ROUTINE_PERSONNALISEE_SYSTEM_PROMPT, buildRoutineUserPrompt } from './core/prompts/routinePersonnalisee'
 import { SELECTION_PRODUITS_SYSTEM_PROMPT, buildProductSelectionUserPrompt } from './core/prompts/selectionProduits'
+import { SELECTION_PRODUITS_TOP3_SYSTEM_PROMPT, buildTop3ProductSelectionUserPrompt } from './core/prompts/selectionProduitsTop3'
 
 // Types pour les requêtes
 interface AnalyzeRequest {
@@ -71,7 +77,7 @@ export class AnalysisService {
     apiKey: process.env.OPENAI_API_KEY
   })
 
-  private static logger = Logger.getInstance('AnalysisServiceV2')
+  private static logger = Logger.getInstance()
   private static cache = new CacheManagerV2()
 
   /**
@@ -91,14 +97,14 @@ export class AnalysisService {
     })
 
     this.logger.info('🚀 Démarrage analyse complète V2', { 
-      requestId
+      requestId,
+      operation: 'analyze_complete'
     })
 
     try {
       // 🔍 ÉTAPE 1: Diagnostic pur IA
       this.logger.info('🔍 ÉTAPE 1: Diagnostic pur IA', { requestId })
-      this.logger.info('📥 INPUT ÉTAPE 1:', { 
-        requestId,
+      this.logWithMetadata('📥 INPUT ÉTAPE 1:', requestId, 'diagnostic_input', {
         photosCount: request.photos.length,
         photosInfo: request.photos.map(p => ({ url: p.url.substring(0, 50) + '...', type: p.type }))
       })
@@ -106,45 +112,45 @@ export class AnalysisService {
       const diagnostic = await this.performPureDiagnostic(request.photos, requestId)
       
       this.logger.info('📤 OUTPUT ÉTAPE 1 (Diagnostic):', { requestId })
-      // console.log('📤 OUTPUT ÉTAPE 1 (Diagnostic) - CONTENU COMPLET:', JSON.stringify(diagnostic, null, 2))
+      console.log('📤 OUTPUT ÉTAPE 1 (Diagnostic) - CONTENU COMPLET:', JSON.stringify(diagnostic, null, 2))
       
       // 🧬 ÉTAPE 2: Routine personnalisée IA  
       this.logger.info('🧬 ÉTAPE 2: Routine personnalisée IA', { requestId })
       this.logger.info('📥 INPUT ÉTAPE 2:', { requestId })
-      // console.log('📥 INPUT ÉTAPE 2 - CONTENU COMPLET:', JSON.stringify({
-      //   diagnostic,
-      //   userProfile: request.userProfile,
-      //   skinConcerns: request.skinConcerns,
-      //   constraints: request.constraints
-      // }, null, 2))
+      console.log('📥 INPUT ÉTAPE 2 - CONTENU COMPLET:', JSON.stringify({
+        diagnostic,
+        userProfile: request.userProfile,
+        skinConcerns: request.skinConcerns,
+        constraints: request.constraints
+      }, null, 2))
       
       const routine = await this.generatePersonalizedRoutine(diagnostic, request, requestId)
       
       this.logger.info('📤 OUTPUT ÉTAPE 2 (Routine):', { requestId })
-      // console.log('📤 OUTPUT ÉTAPE 2 (Routine) - CONTENU COMPLET:', JSON.stringify(routine, null, 2))
+      console.log('📤 OUTPUT ÉTAPE 2 (Routine) - CONTENU COMPLET:', JSON.stringify(routine, null, 2))
       
-      // 🛍️ ÉTAPE 3: Sélection produits IA
-      this.logger.info('🛍️ ÉTAPE 3: Sélection produits IA', { requestId })
+      // 🛍️ ÉTAPE 3: Sélection produits IA - TOP 3 V3
+      this.logger.info('🛍️ ÉTAPE 3: Sélection TOP 3 produits IA', { requestId })
       this.logger.info('📥 INPUT ÉTAPE 3:', { requestId })
-      // console.log('📥 INPUT ÉTAPE 3 - CONTENU COMPLET:', JSON.stringify({
-      //   routine,
-      //   constraints: request.constraints,
-      //   catalogueInfo: 'Catalogue partitionné V2 chargé'
-      // }, null, 2))
+      console.log('📥 INPUT ÉTAPE 3 - CONTENU COMPLET:', JSON.stringify({
+        routine,
+        constraints: request.constraints,
+        catalogueInfo: 'Catalogue partitionné V3 chargé'
+      }, null, 2))
       
-      const products = await this.selectOptimalProducts(routine, request, requestId)
+      const products = await this.selectOptimalProductsV3(routine, request, requestId)
       
       this.logger.info('📤 OUTPUT ÉTAPE 3 (Produits):', { requestId })
-      // console.log('📤 OUTPUT ÉTAPE 3 (Produits) - CONTENU COMPLET:', JSON.stringify(products, null, 2))
+      console.log('📤 OUTPUT ÉTAPE 3 (Produits) - CONTENU COMPLET:', JSON.stringify(products, null, 2))
       
       // 🎯 ÉTAPE 4: Assemblage et validation
       this.logger.info('🎯 ÉTAPE 4: Assemblage et validation', { requestId })
       this.logger.info('📥 INPUT ÉTAPE 4:', { requestId })
-      // console.log('📥 INPUT ÉTAPE 4 - CONTENU COMPLET:', JSON.stringify({
-      //   diagnostic,
-      //   routine,
-      //   products
-      // }, null, 2))
+      console.log('📥 INPUT ÉTAPE 4 - CONTENU COMPLET:', JSON.stringify({
+        diagnostic,
+        routine,
+        products
+      }, null, 2))
       
       const finalResult = await AssemblyAndValidationService.assembleCompleteAnalysis(
         diagnostic, 
@@ -522,6 +528,204 @@ export class AnalysisService {
   }
 
   /**
+   * 🔥 ÉTAPE 3 V3: Sélection TOP 3 produits optimaux par catégorie
+   * NOUVEAU: Génère 3 produits classés par pertinence pour chaque étape
+   */
+  static async selectOptimalProductsV3(
+    routine: PersonalizedRoutine,
+    request: AnalyzeRequest,
+    requestId: string
+  ): Promise<ProductSelectionV3> {
+    
+    // Charger le catalogue partitionné (inchangé)
+    const catalog = await this.loadPartitionedCatalog()
+    
+    // Nouvelle clé de cache pour Top 3
+    const cacheKey = this.cache.generateProductsV3Key(routine, request.constraints.budget)
+    
+    // Vérifier cache
+    const cached = await this.cache.get(cacheKey)
+    if (cached) {
+      this.logger.info('📋 Cache hit - Top 3 Produits', { requestId })
+      return ProductSelectionV3Schema.parse(cached)
+    }
+
+    // Retry logic pour top 3 produits
+    let lastError: Error | null = null
+    
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        this.logger.info(`🛍️ ÉTAPE 3 V3 - TOP 3: Tentative ${attempt}`, { requestId })
+        
+        const response = await this.openai.chat.completions.create({
+          model: 'gpt-4o',
+          temperature: 0.0, // Déterminisme maximal
+          max_tokens: 6000, // Augmenté pour 3 produits par étape
+          messages: [
+            {
+              role: 'system',
+              content: SELECTION_PRODUITS_TOP3_SYSTEM_PROMPT
+            },
+            {
+              role: 'user',
+              content: buildTop3ProductSelectionUserPrompt(
+                routine,
+                catalog,
+                { maxBudget: request.constraints.budget },
+                request.constraints.allergies || []
+              )
+            }
+          ]
+        })
+
+        const content = response.choices[0]?.message?.content
+        if (!content) {
+          throw new Error('Pas de contenu dans la réponse OpenAI')
+        }
+
+        // Nettoyage JSON (même logique que les autres étapes)
+        const cleanContent = content
+          .replace(/```json\n?/g, '')
+          .replace(/```\n?/g, '')
+          .replace(/^```/gm, '')
+          .replace(/```$/gm, '')
+          .trim()
+
+        this.logger.info('📋 CONTENU NETTOYÉ ÉTAPE 3 V3 - TOP 3:', { 
+          requestId,
+          operation: 'products_top3_cleaning',
+          stage: 'json_cleanup',
+          metadata: {
+            attempt,
+            cleanContentPreview: cleanContent.substring(0, 300) + '...',
+            wasMarkdown: cleanContent !== content,
+            tokensUsed: response.usage?.total_tokens
+          }
+        })
+
+        // Parser et valider avec nouveau schéma V3
+        const parsedContent = JSON.parse(cleanContent)
+        const validatedProducts = ProductSelectionV3Schema.parse(parsedContent)
+
+        // Validation supplémentaire : vérifier structure Top 3
+        this.validateTop3Structure(validatedProducts, requestId)
+
+        // Mettre en cache avec TTL adapté
+        await this.cache.set(cacheKey, validatedProducts, 6 * 60 * 60 * 1000) // 6h
+
+        this.logger.info('✅ Top 3 Produits sélectionnés avec succès', { 
+          requestId,
+          stepsCount: validatedProducts.selectedProducts.length,
+          totalProducts: validatedProducts.selectedProducts.length * 3,
+          primaryProductsCost: validatedProducts.budgetBreakdown.totalCost,
+          budgetRespected: validatedProducts.budgetBreakdown.budgetRespected,
+          diversificationSuccess: validatedProducts.coherenceValidation.diversificationSuccess,
+          tokensUsed: response.usage?.total_tokens
+        })
+
+        return validatedProducts
+        
+      } catch (error) {
+        lastError = error as Error
+        this.logger.warn(`⚠️ Tentative ${attempt} échouée - Top 3 Produits:`, { 
+          requestId, 
+          error: lastError.message,
+          attempt,
+          errorType: error instanceof Error ? error.constructor.name : 'unknown'
+        })
+        
+        // Si erreur de validation Zod, logger les détails
+        if (error && typeof error === 'object' && 'issues' in error) {
+          this.logger.error('❌ Erreurs validation Zod Top 3:', {
+            requestId,
+            zodErrors: (error as any).issues,
+            attempt
+          })
+        }
+      }
+    }
+
+    throw lastError || new Error('Échec sélection Top 3 produits après 2 tentatives')
+  }
+
+  /**
+   * Validation supplémentaire de la structure Top 3
+   */
+  private static validateTop3Structure(products: ProductSelectionV3, requestId: string): void {
+    products.selectedProducts.forEach((step, index) => {
+      // Vérifier produit principal
+      if (!step.primaryProduct) {
+        throw new Error(`Étape ${index + 1}: Produit principal manquant`)
+      }
+      
+      // Vérifier alternatives
+      if (!step.alternatives || step.alternatives.length !== 2) {
+        throw new Error(`Étape ${index + 1}: Exactement 2 alternatives requises, ${step.alternatives?.length || 0} trouvées`)
+      }
+      
+      // Vérifier rankings
+      if (step.primaryProduct.ranking !== 1) {
+        throw new Error(`Étape ${index + 1}: Produit principal doit avoir ranking = 1, trouvé ${step.primaryProduct.ranking}`)
+      }
+      
+      if (step.alternatives[0].ranking !== 2 || step.alternatives[1].ranking !== 3) {
+        throw new Error(`Étape ${index + 1}: Alternatives doivent avoir ranking = 2 et 3, trouvé ${step.alternatives[0].ranking} et ${step.alternatives[1].ranking}`)
+      }
+      
+      // Vérifier diversification marques
+      const brands = [
+        step.primaryProduct.brand,
+        step.alternatives[0].brand,
+        step.alternatives[1].brand
+      ]
+      const uniqueBrands = new Set(brands)
+      
+      if (uniqueBrands.size < 2) {
+        this.logger.warn(`⚠️ Diversification marques limitée étape ${index + 1}:`, {
+          requestId,
+          brands,
+          uniqueBrands: uniqueBrands.size
+        })
+      }
+      
+      // Vérifier cohérence zones et timing
+      const zones = [
+        step.primaryProduct.targetZones,
+        step.alternatives[0].targetZones,
+        step.alternatives[1].targetZones
+      ]
+      const timings = [
+        step.primaryProduct.timing,
+        step.alternatives[0].timing,
+        step.alternatives[1].timing
+      ]
+      
+      // Toutes les zones doivent être identiques
+      if (!zones.every(zone => JSON.stringify(zone) === JSON.stringify(zones[0]))) {
+        throw new Error(`Étape ${index + 1}: Zones incohérentes entre les 3 produits`)
+      }
+      
+      // Tous les timings doivent être identiques (warning si incohérent)
+      if (!timings.every(timing => timing === timings[0])) {
+        this.logger.warn(`⚠️ Timings incohérents étape ${index + 1}:`, {
+          requestId,
+          timings,
+          step: index + 1,
+          primaryTiming: step.primaryProduct.timing,
+          alternativeTimings: step.alternatives.map(alt => alt.timing)
+        })
+        // Ne pas faire échouer l'analyse, juste logger le warning
+      }
+    })
+    
+    this.logger.info('✅ Validation structure Top 3 réussie', { 
+      requestId,
+      stepsValidated: products.selectedProducts.length,
+      totalProductsValidated: products.selectedProducts.length * 3
+    })
+  }
+
+  /**
    * Gestion d'erreur avec fallback intelligent
    */
   private static async handleErrorWithFallback(
@@ -569,10 +773,24 @@ export class AnalysisService {
   private static logPromptDetails(stage: string, requestId: string, systemPrompt: string, userPrompt: string) {
     this.logger.info(`📝 PROMPT ${stage}:`, {
       requestId,
-      systemPromptLength: systemPrompt.length,
-      userPromptLength: userPrompt.length,
-      systemPromptPreview: systemPrompt.substring(0, 150) + '...',
-      userPromptPreview: userPrompt.substring(0, 150) + '...'
+      operation: 'prompt_details',
+      metadata: {
+        systemPromptLength: systemPrompt.length,
+        userPromptLength: userPrompt.length,
+        systemPromptPreview: systemPrompt.substring(0, 150) + '...',
+        userPromptPreview: userPrompt.substring(0, 150) + '...'
+      }
+    })
+  }
+
+  /**
+   * Helper pour logger avec métadonnées
+   */
+  private static logWithMetadata(message: string, requestId: string, operation: string, metadata: any) {
+    this.logger.info(message, {
+      requestId,
+      operation,
+      metadata
     })
   }
 }

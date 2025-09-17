@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { PureDiagnosticSchema } from './diagnostic'
 import { PersonalizedRoutineSchema } from './routine'
 import { ProductSelectionSchema } from './products'
+import { ProductSelectionV3Schema } from '../v3/products'
 
 // Schéma pour les métriques de qualité
 export const QualityMetricsSchema = z.object({
@@ -21,16 +22,20 @@ export const InterStepCoherenceSchema = z.object({
   recommendations: z.array(z.string()).optional()
 })
 
-// Schéma principal pour l'analyse complète V2
+// Schéma principal pour l'analyse complète V2 (compatible V3)
 export const CompleteAnalysisV2Schema = z.object({
   id: z.string(),
   diagnostic: PureDiagnosticSchema,
   routine: PersonalizedRoutineSchema,
-  products: ProductSelectionSchema,
+  products: z.union([ProductSelectionSchema, ProductSelectionV3Schema]), // Support V2 et V3
   coherenceValidation: InterStepCoherenceSchema,
   qualityMetrics: QualityMetricsSchema,
   generatedAt: z.date(),
-  version: z.string().default('2.0')
+  version: z.string().default('2.0'),
+  metadata: z.object({
+    version: z.string().optional(),
+    isV3Mode: z.boolean().optional()
+  }).optional()
 })
 
 // Types TypeScript dérivés
