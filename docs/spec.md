@@ -217,11 +217,13 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 
 ### 7.2. Planning de Développement (6-10 semaines)
 
-**PHASE 1 : Authentification & Cloud Storage (1-2 semaines)**
-- Configuration Supabase avec tables utilisateurs et analyses
-- Implémentation NextAuth.js (email/password + OAuth Google)
-- Migration du stockage local vers cloud sécurisé
-- Protection des routes et gestion des sessions
+**PHASE 1 : Authentification & Cloud Storage (1-2 semaines)** ⚡ **EN COURS**
+- ✅ Configuration Supabase avec tables utilisateurs et analyses
+- ✅ Services CloudStorage et Migration implémentés
+- ✅ API routes de test fonctionnelles
+- 🔄 Implémentation NextAuth.js (email/password + OAuth Google)
+- 🔄 Migration du stockage local vers cloud sécurisé
+- 🔄 Protection des routes et gestion des sessions
 
 **PHASE 2 : Dashboard Utilisateur (2-3 semaines)**
 - Architecture dashboard avec sidebar responsive

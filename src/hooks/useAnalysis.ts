@@ -1,6 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
+import { useHybridStorage } from '@/hooks/useHybridStorage'
+import { useAuth } from '@/hooks/useAuth'
 import type { AnalyzeRequest, SkinAnalysis } from '@/types'
 
 export interface UseAnalysisReturn {
@@ -10,6 +12,11 @@ export interface UseAnalysisReturn {
   progress: number
   analyze: (request: AnalyzeRequest) => Promise<void>
   reset: () => void
+  // Nouvelles propriétés pour l'authentification
+  canAnalyze: boolean
+  remainingAnalyses: number
+  isAuthenticated: boolean
+  requiresAuth: boolean
 }
 
 export function useAnalysis(): UseAnalysisReturn {
@@ -17,12 +24,49 @@ export function useAnalysis(): UseAnalysisReturn {
   const [analysis, setAnalysis] = useState<SkinAnalysis | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [progress, setProgress] = useState(0)
+  const [canAnalyze, setCanAnalyze] = useState(true)
+  const [remainingAnalyses, setRemainingAnalyses] = useState(1)
+  const [requiresAuth, setRequiresAuth] = useState(false)
+
+  // Hooks pour l'authentification et le stockage hybride
+  const { isAuthenticated, user, incrementAnalysisCount } = useAuth()
+  const { 
+    saveAnalysis: saveAnalysisHybrid, 
+    checkAnalysisLimit, 
+    getRemainingAnalyses 
+  } = useHybridStorage()
+
+  // Fonction pour mettre à jour les limites d'analyses
+  const updateAnalysisLimits = async () => {
+    try {
+      const limitCheck = await checkAnalysisLimit()
+      const remaining = await getRemainingAnalyses()
+      
+      setCanAnalyze(limitCheck.canAnalyze)
+      setRemainingAnalyses(remaining === Infinity ? 999 : remaining)
+      setRequiresAuth(!limitCheck.canAnalyze && !isAuthenticated)
+    } catch (error) {
+      console.warn('Erreur mise à jour limites:', error)
+    }
+  }
+
+  // Mettre à jour les limites au chargement et quand l'auth change
+  React.useEffect(() => {
+    updateAnalysisLimits()
+  }, [isAuthenticated, user])
 
   const analyze = async (request: AnalyzeRequest) => {
     try {
       setIsAnalyzing(true)
       setError(null)
       setProgress(0)
+
+      // Vérifier les limites d'analyses avant de commencer
+      const limitCheck = await checkAnalysisLimit()
+      if (!limitCheck.canAnalyze) {
+        setRequiresAuth(true)
+        throw new Error(limitCheck.reason || 'Limite d\'analyses atteinte')
+      }
 
       // Simulation du progress (GPT-4o ne donne pas de feedback temps réel)
       let progressInterval: ReturnType<typeof setInterval> | null = setInterval(() => {
@@ -60,6 +104,24 @@ export function useAnalysis(): UseAnalysisReturn {
         setProgress(100)
         setAnalysis(result.data)
 
+        // Sauvegarder l'analyse avec le stockage hybride
+        if (result.data) {
+          try {
+            await saveAnalysisHybrid(result.data, 'current-analysis')
+            
+            // Incrémenter le compteur d'analyses si l'utilisateur est connecté
+            if (isAuthenticated && user && incrementAnalysisCount) {
+              await incrementAnalysisCount()
+            }
+            
+            // Mettre à jour les limites
+            await updateAnalysisLimits()
+          } catch (storageError) {
+            console.warn('Erreur sauvegarde analyse:', storageError)
+            // Ne pas faire échouer l'analyse si la sauvegarde échoue
+          }
+        }
+
       } catch (fetchError) {
         clearTimeout(timeoutId)
         
@@ -91,6 +153,9 @@ export function useAnalysis(): UseAnalysisReturn {
     setError(null)
     setProgress(0)
     setIsAnalyzing(false)
+    setRequiresAuth(false)
+    // Remettre à jour les limites après reset
+    updateAnalysisLimits()
   }
 
   return {
@@ -99,6 +164,11 @@ export function useAnalysis(): UseAnalysisReturn {
     error,
     progress,
     analyze,
-    reset
+    reset,
+    // Nouvelles propriétés pour l'authentification
+    canAnalyze,
+    remainingAnalyses,
+    isAuthenticated,
+    requiresAuth,
   }
 }

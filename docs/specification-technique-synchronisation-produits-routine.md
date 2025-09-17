@@ -23,7 +23,7 @@ Créer une synchronisation bidirectionnelle parfaite entre la routine personnali
 #### **1. Section "Produits Recommandés" Enrichie**
 - **Image du produit** : Récupérée depuis le catalogue enrichi
 - **Titre + Marque** : Données officielles du catalogue
-- **Catégorie par problème** : "Anti-acné", "Hydratation", "Anti-rides", etc.
+- **Catégorie produit** : "Nettoyant", "Sérum", "Hydratant", etc.
 - **Description mots-clés** : Bénéfices principaux du produit
 - **2 Bulles d'infos** :
   - 🕐 **Mode d'emploi** : Instructions d'application + fréquence
@@ -43,17 +43,41 @@ Créer une synchronisation bidirectionnelle parfaite entre la routine personnali
 - **Marquage alternatif** : Badge "Produit alternatif choisi" dans la routine
 - **Prévention utilisateur** : Modal d'information sur l'impact du changement
 
-#### **3. Catégorisation par Problème**
+#### **3. Regroupement par Catégorie Produit**
 ```typescript
-enum ProductProblemCategory {
-  ACNE = "Anti-acné",
-  HYDRATION = "Hydratation",
-  ANTI_AGING = "Anti-rides", 
-  PIGMENTATION = "Taches & Éclat",
-  SENSITIVITY = "Peaux sensibles",
-  CLEANSING = "Nettoyage",
-  PROTECTION = "Protection solaire",
-  EXFOLIATION = "Exfoliation"
+enum ProductCategory {
+  CLEANSER = "cleanser",
+  EXFOLIANT = "exfoliant", 
+  TONER = "toner",
+  SERUM = "serum",
+  TREATMENT = "treatment",
+  MOISTURIZER = "moisturizer",
+  FACE_OIL = "face-oil",
+  SUNSCREEN = "sunscreen",
+  MASK = "mask",
+  EYE_CARE = "eye-care",
+  BALM = "balm",
+  PRIMER = "primer",
+  MIST = "mist",
+  LIP_CARE = "lip-care"
+}
+
+// Mapping pour affichage utilisateur
+const CATEGORY_DISPLAY_NAMES = {
+  cleanser: "🧴 Nettoyants",
+  exfoliant: "✨ Exfoliants", 
+  toner: "💧 Toniques",
+  serum: "💎 Sérums",
+  treatment: "🎯 Traitements",
+  moisturizer: "🌿 Hydratants",
+  "face-oil": "🌰 Huiles visage",
+  sunscreen: "☀️ Protection solaire",
+  mask: "🎭 Masques",
+  "eye-care": "👁️ Contour des yeux",
+  balm: "🍯 Baumes",
+  primer: "✨ Primers",
+  mist: "💨 Brumes",
+  "lip-care": "💋 Soins lèvres"
 }
 ```
 
@@ -109,7 +133,8 @@ interface EnrichedProduct extends RecommendedProduct {
   imageUrl: string
   description: string
   keywordBenefits: string[]
-  problemCategory: ProductProblemCategory
+  category: ProductCategory
+  problemsTreated?: string[] // Tags des problèmes traités
   
   // Instructions enrichies
   usageInstructions: {
@@ -142,6 +167,16 @@ class AlternativeProductService {
       p.category === currentProduct.category && 
       p.id !== currentProduct.id
     )
+  }
+  
+  // 📊 Regroupement des produits par catégorie
+  static groupProductsByCategory(products: EnrichedProduct[]): Record<ProductCategory, EnrichedProduct[]> {
+    return products.reduce((groups, product) => {
+      const category = product.category
+      if (!groups[category]) groups[category] = []
+      groups[category].push(product)
+      return groups
+    }, {} as Record<ProductCategory, EnrichedProduct[]>)
   }
   
   // 🧠 ÉTAPE 2: Application des critères de comparaison intelligents
@@ -264,10 +299,11 @@ src/services/products/
 ├── ProductRoutineSyncService.ts        # Service principal synchronisation
 ├── AlternativeProductService.ts        # Service alternatives intelligentes
 ├── ProductEnrichmentService.ts         # Enrichissement données catalogue
-└── ProductCategoryService.ts           # Gestion catégories par problème
+└── ProductCategoryService.ts           # Gestion catégories produits
 
 src/components/results/
 ├── EnhancedProductsSection.tsx         # Section produits enrichie
+├── ProductCategoryGroup.tsx            # Groupe de produits par catégorie
 ├── EnrichedProductCard.tsx             # Carte produit complète
 ├── AlternativeModal.tsx                # Modal alternatives
 ├── ProductReplacementWarning.tsx      # Prévention utilisateur
@@ -283,7 +319,7 @@ src/types/
 └── alternatives.ts                     # Types alternatives
 
 src/utils/
-├── productCategorization.ts            # Utilitaires catégorisation
+├── productCategorization.ts            # Utilitaires catégories produits
 └── comparisonLogic.ts                  # Logique de comparaison
 ```
 
@@ -411,7 +447,7 @@ POST /api/products/replace
 - ✅ Synchronisation parfaite routine ↔ produits (100%)
 - ✅ Système d'alternatives fonctionnel avec 3+ options par produit
 - ✅ Remplacement cohérent avec prévention utilisateur
-- ✅ Catégorisation par problème claire et pertinente
+- ✅ Regroupement par catégorie produit clair et intuitif
 
 ### **Techniques**
 - ✅ Temps de synchronisation < 500ms
@@ -424,6 +460,23 @@ POST /api/products/replace
 - ✅ Taux d'utilisation alternatives > 20%
 - ✅ Satisfaction utilisateur > 4.5/5
 - ✅ Réduction taux de rebond section produits -10%
+
+## 💡 **AVANTAGES DE LA NOUVELLE LOGIQUE**
+
+### **Simplicité et Intuitivité**
+- ✅ **Logique naturelle** : Les utilisateurs pensent en termes de produits ("je cherche un sérum")
+- ✅ **Cohérence catalogue** : Utilise directement les catégories du catalogue d'affiliation
+- ✅ **Maintenance simplifiée** : Pas de mapping complexe problème → produit
+
+### **Évolutivité**
+- ✅ **Nouvelles catégories automatiques** : Ajout transparent de nouvelles catégories
+- ✅ **Flexibilité** : Un produit peut traiter plusieurs problèmes via tags
+- ✅ **Scalabilité** : Architecture prête pour des milliers de produits
+
+### **Expérience Utilisateur**
+- ✅ **Navigation claire** : Sections organisées par type de produit
+- ✅ **Alternatives pertinentes** : Comparaison dans la même catégorie
+- ✅ **Compréhension immédiate** : Pas de confusion sur la classification
 
 ---
 
