@@ -2502,9 +2502,10 @@ Les scores évoluent avec votre routine personnalisée !"
            </motion.div>
          </AnalyticsTracker>
 
-         {/* Products Section */}
+         {/* ANCIENNE SECTION PRODUITS - MASQUÉE TEMPORAIREMENT */}
+         {false && (
          <AnalyticsTracker 
-           sectionName="produits_recommandes" 
+           sectionName="produits_recommandes_legacy" 
            trackViews={true} 
            trackClicks={true}
            trackTimeSpent={true}
@@ -2586,6 +2587,7 @@ Chaque produit est choisi pour maximiser l'efficacité de votre routine personna
            </div>
            </motion.div>
          </AnalyticsTracker>
+         )}
 
          {/* Actions secondaires après Produits recommandés */}
          <div className="flex items-center justify-end gap-3">
