@@ -225,11 +225,14 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 - 🔄 Migration du stockage local vers cloud sécurisé
 - 🔄 Protection des routes et gestion des sessions
 
-**PHASE 2 : Dashboard Utilisateur (2-3 semaines)**
-- Architecture dashboard avec sidebar responsive
-- Historique des analyses avec pagination et filtres
-- Système de comparaison et suivi d'évolution
-- Paramètres utilisateur et gestion du profil
+**PHASE 2 : Dashboard Utilisateur (3-4 semaines)** 📋 **PLANIFIÉ**
+- ✅ Architecture dashboard définie avec sidebar responsive et widgets temps réel
+- ✅ Historique analyses avec comparaison slider avant/après
+- ✅ Routine tracker avec calendrier mensuel et calcul de streaks
+- ✅ Étagères produits drag & drop (internes + personnalisés)
+- ✅ Coach IA contextuel avec GPT-4o et suggestions produits
+- ✅ Système de badges symboliques motivants (4 catégories)
+- ✅ Paramètres complets avec conformité RGPD
 
 **PHASE 3 : Catalogue Produits Interne & Monétisation (2-3 semaines)**
 - Base de données produits interne soigneusement curatée
@@ -402,7 +405,23 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 - Intégration parfaite avec les services Sprint 1
 - Taux de validation : 100% (24/24 tests réussis)
 
-### 9.5. Règle de Développement
+### 9.5. Phase 2 - Dashboard Utilisateur (NOUVEAU)
+**[fiche-technique-phase2-dashboard.md](./fiche-technique-phase2-dashboard.md)** - 🎯 **ARCHITECTURE PHASE 2** :
+- Architecture complète dashboard avec widgets temps réel
+- Modèles de données étendus (routine_completions, user_product_shelves, user_badges, ai_coach_conversations)
+- Spécifications UI/UX détaillées pour chaque feature
+- API routes nécessaires pour toutes les fonctionnalités
+- Intégration coach IA avec contexte personnalisé
+
+**[planning-execution-phase2-dashboard.md](./planning-execution-phase2-dashboard.md)** - Planning opérationnel Phase 2 :
+- Sprint 2.1 : Architecture Dashboard (3-4 jours)
+- Sprint 2.2 : Historique Analyses & Comparaison (4-5 jours)
+- Sprint 2.3 : Routine Tracker & Étagères (5-6 jours)
+- Sprint 2.4 : Paramètres Utilisateur (2-3 jours)
+- Sprint 2.5 : Coach IA & Badges (3-4 jours)
+- Prompts opérationnels prêts à l'emploi pour chaque composant
+
+### 9.6. Règle de Développement
 > **IMPORTANT** : La fiche technique évolutive est la référence officielle du projet. 
 > Toute modification du code doit s'appuyer sur cette documentation.
 > Mise à jour obligatoire après chaque sprint.

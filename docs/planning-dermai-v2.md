@@ -161,10 +161,15 @@ CREATE TABLE affiliate_clicks (
 
 ---
 
-## **PHASE 2 : DASHBOARD UTILISATEUR**
-### *Durée : 2-3 semaines*
+## **PHASE 2 : DASHBOARD UTILISATEUR** ✅ **ARCHITECTURE COMPLÈTE**
+### *Durée : 3-4 semaines*
+### **Statut : Prêt à implémenter**
 
-### **Sprint 2.1 : Architecture Dashboard (2-3 jours)**
+**Documentation Phase 2 disponible :**
+- 📋 **Fiche technique** : `docs/fiche-technique-phase2-dashboard.md`
+- 🗓️ **Planning détaillé** : `docs/planning-execution-phase2-dashboard.md`
+
+### **Sprint 2.1 : Architecture Dashboard (3-4 jours)** ✅ DÉFINI
 - [ ] **Structure des routes :**
   ```typescript
   src/app/dashboard/
@@ -186,41 +191,34 @@ CREATE TABLE affiliate_clicks (
   - src/components/dashboard/QuickActions.tsx
   ```
 
-### **Sprint 2.2 : Historique des Analyses (3-4 jours)**
-- [ ] **API Routes pour CRUD :**
-  ```typescript
-  - src/app/api/analyses/route.ts (GET, POST)
-  - src/app/api/analyses/[id]/route.ts (GET, PUT, DELETE)
-  - src/app/api/analyses/[id]/share/route.ts (partage sécurisé)
-  ```
-- [ ] **Interface utilisateur :**
-  - Liste avec pagination et filtres
-  - Recherche textuelle dans les analyses
-  - Actions en lot (supprimer, exporter)
-  - Détail enrichi avec comparaisons
+### **Sprint 2.2 : Historique des Analyses (4-5 jours)** ✅ DÉFINI
+- [ ] **Liste paginée avec filtres** : Recherche, période, amélioration
+- [ ] **Page détail analyse** : Tabs avec scores, routine, photos
+- [ ] **Comparaison interactive** : Slider avant/après pour photos
+- [ ] **Graphiques scores** : Radar chart et bar chart (Recharts)
+- [ ] **Export PDF** : Rapport détaillé avec graphiques
 
-### **Sprint 2.3 : Suivi de l'Évolution (3-4 jours)**
-- [ ] **Algorithme de comparaison :**
-  ```typescript
-  // Fichier : src/services/analysis/comparison.service.ts
-  - Comparaison des scores entre analyses
-  - Calcul des tendances d'amélioration
-  - Génération de recommandations
-  ```
-- [ ] **Visualisations :**
-  - Graphiques d'évolution (Chart.js ou Recharts)
-  - Comparaison avant/après des photos
-  - Timeline des diagnostics
+### **Sprint 2.3 : Routine Tracker & Étagères (5-6 jours)** ✅ DÉFINI
+- [ ] **Calendrier mensuel** : React-Calendar avec indicateurs visuels
+- [ ] **Tracking par phase** : Matin/soir avec complétion simple
+- [ ] **Calcul de streaks** : Automatique avec badges de progression
+- [ ] **Étagères produits** : Drag & drop avec React Beautiful DnD
+- [ ] **Produits personnalisés** : Ajout de produits hors catalogue
+- [ ] **Synchronisation analyses** : Suggestion mise à jour étagères
 
-### **Sprint 2.4 : Paramètres Utilisateur (2 jours)**
-- [ ] **Gestion du profil :**
-  - Modification informations personnelles
-  - Upload photo de profil
-  - Préférences de notifications
-- [ ] **Paramètres avancés :**
-  - Export/suppression des données (RGPD)
-  - Préférences d'affiliation
-  - Paramètres de confidentialité
+### **Sprint 2.4 : Paramètres Utilisateur (2-3 jours)** ✅ DÉFINI
+- [ ] **Profil complet** : Avatar, infos perso, type peau, préoccupations
+- [ ] **Notifications** : In-app, email, fréquence, horaires rappels
+- [ ] **Préférences dashboard** : Ordre widgets, vue par défaut
+- [ ] **Confidentialité RGPD** : Export données JSON, suppression compte
+
+### **Sprint 2.5 : Coach IA & Badges (3-4 jours)** ✅ DÉFINI
+- [ ] **Coach IA contextuel** : Chat modal avec GPT-4o
+- [ ] **Contexte intelligent** : Profil + routine + analyses + produits
+- [ ] **Suggestions produits** : Intégrées dans les réponses
+- [ ] **Cache réponses** : Optimisation coûts API
+- [ ] **Badges symboliques** : 4 catégories, 4 niveaux chacune
+- [ ] **Notifications badges** : Animation Framer Motion
 
 ---
 
@@ -584,13 +582,38 @@ Version complète + Marketplace + IA avancée + APIs publiques
 1. **Jour 1-3 :** Architecture et composants dashboard
 2. **Jour 4-5 :** Historique analyses + APIs
 
-### **🚀 AMÉLIORATION PRIORITAIRE : Routine Unifiée**
-**Durée :** 1 semaine (peut être faite en parallèle)
-- **Jour 1 :** Modification service IA + prompts 
-- **Jour 2-3 :** Nouveau composant UnifiedRoutineSection
-- **Jour 4 :** Integration page résultats + CSS
-- **Jour 5 :** Tests + validation UX
+### **🎯 FONCTIONNALITÉS CLÉS PHASE 2 : DASHBOARD**
 
-> **Impact :** UX dramatically améliorée, structure plus logique, scan visuel optimisé
+**1. Routine Tracker avec Calendrier** ✅
+- Vue mensuelle avec indicateurs visuels (complet/partiel/manqué)
+- Tracking simple par phase (matin/soir) avec un clic
+- Calcul automatique des streaks avec récompenses visuelles
+- Statistiques détaillées (taux complétion, meilleur streak)
+
+**2. Étagères Produits Intelligentes** ✅
+- Organisation drag & drop intuitive
+- Double logique : étagères personnalisées + liées aux analyses
+- Ajout de produits personnels hors catalogue
+- Suggestions de mise à jour après nouvelle analyse
+
+**3. Comparaison d'Analyses Visuelle** ✅
+- Slider interactif avant/après pour les photos
+- Graphiques de progression des scores (radar + bar charts)
+- Sélection libre parmi toutes les analyses
+- Export PDF avec comparaisons
+
+**4. Coach IA Contextuel** ✅
+- Chat modal accessible partout dans le dashboard
+- Contexte intelligent : profil + routine + analyses + produits
+- Suggestions de produits intégrées aux réponses
+- Historique des conversations sauvegardé
+
+**5. Gamification par Badges Symboliques** ✅
+- 4 catégories : routine, analyses, amélioration, découverte
+- 4 niveaux par catégorie (bronze, argent, or, platine)
+- Notifications animées lors du déblocage
+- Objectifs stricts pour motivation (7, 30, 90, 365 jours)
+
+> **Impact attendu :** Engagement quotidien, rétention >50% à J7, >30% à J30
 
 Ce planning est conçu pour être itératif et adaptatif. Chaque sprint peut être ajusté selon les retours utilisateur et les contraintes techniques. L'objectif principal est d'avoir une version bêta fonctionnelle en 6 semaines, puis d'optimiser rapidement vers la version publique.

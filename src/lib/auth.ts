@@ -6,8 +6,15 @@ import { supabaseAdmin } from '@/lib/supabaseAdmin'
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID || 'dummy-client-id',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'dummy-client-secret',
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code"
+        }
+      }
     }),
     CredentialsProvider({
       name: 'email',
@@ -18,56 +25,121 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null
         
-        // Authentification via Supabase
-        const { data, error } = await supabaseAdmin.auth.signInWithPassword({
-          email: credentials.email,
-          password: credentials.password,
-        })
-        
-        if (error || !data.user) return null
-        
-        return {
-          id: data.user.id,
-          email: data.user.email,
-          name: data.user.user_metadata?.full_name,
+        try {
+          // Authentification via Supabase
+          const { data, error } = await supabaseAdmin.auth.signInWithPassword({
+            email: credentials.email,
+            password: credentials.password,
+          })
+          
+          if (error || !data.user) {
+            console.error('Erreur auth Supabase:', error?.message)
+            return null
+          }
+          
+          return {
+            id: data.user.id,
+            email: data.user.email!,
+            name: data.user.user_metadata?.full_name || data.user.email,
+          }
+        } catch (error) {
+          console.error('Erreur authorize:', error)
+          return null
         }
       }
     })
   ],
   callbacks: {
     async signIn({ user, account, profile }) {
-      if (account?.provider === 'google') {
-        try {
-          // Créer ou mettre à jour le profil
-          const { error } = await supabaseAdmin
-            .from('profiles')
-            .upsert({
-              id: user.id,
-              email: user.email!,
+      try {
+        if (account?.provider === 'google') {
+          console.log('🔍 Google signIn callback - user:', user.id, user.email)
+          
+          // D'abord créer l'utilisateur dans Supabase Auth
+          const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.createUser({
+            email: user.email!,
+            email_confirm: true,
+            user_metadata: {
               full_name: user.name,
               avatar_url: user.image,
-            })
+              provider: 'google'
+            }
+          })
           
-          if (error) {
-            console.error('Erreur création profil Supabase:', error)
+          if (authError && !authError.message.includes('already registered')) {
+            console.error('Erreur création user Supabase Auth:', authError)
             return false
           }
           
+          const userId = authUser?.user?.id || user.id
+          
+          // Puis créer le profil
+          const { error: profileError } = await supabaseAdmin
+            .from('profiles')
+            .upsert({
+              id: userId,
+              email: user.email!,
+              full_name: user.name,
+              avatar_url: user.image,
+            }, {
+              onConflict: 'id'
+            })
+          
+          if (profileError) {
+            console.error('Erreur création profil:', profileError)
+            return false
+          }
+          
+          // Mettre à jour l'ID utilisateur pour NextAuth
+          user.id = userId
+          
+          console.log('✅ Google user créé avec succès:', userId)
           return true
-        } catch (error) {
-          console.error('Erreur callback signIn:', error)
-          return false
         }
+        
+        // Pour email/password, vérifier que le profil existe
+        if (account?.provider === 'credentials') {
+          const { data: profile } = await supabaseAdmin
+            .from('profiles')
+            .select('id')
+            .eq('id', user.id)
+            .single()
+          
+          if (!profile) {
+            console.error('Profil manquant pour user credentials:', user.id)
+            return false
+          }
+        }
+        
+        return true
+      } catch (error) {
+        console.error('Erreur callback signIn:', error)
+        return false
       }
-      return true
     },
     async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.sub!
+      if (session.user && token.sub) {
+        session.user.id = token.sub
+        
+        // Enrichir la session avec le profil Supabase
+        try {
+          const { data: profile } = await supabaseAdmin
+            .from('profiles')
+            .select('*')
+            .eq('id', token.sub)
+            .single()
+          
+          if (profile) {
+            session.user.name = profile.full_name || session.user.name
+            session.user.image = profile.avatar_url || session.user.image
+          }
+        } catch (error) {
+          console.error('Erreur enrichissement session:', error)
+        }
       }
       return session
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token.sub = user.id
       }
@@ -82,5 +154,17 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
     maxAge: 24 * 60 * 60, // 24 heures
+  },
+  debug: process.env.NODE_ENV === 'development',
+  logger: {
+    error(code, metadata) {
+      console.error('NextAuth Error:', code, metadata)
+    },
+    warn(code) {
+      console.warn('NextAuth Warning:', code)
+    },
+    debug(code, metadata) {
+      console.log('NextAuth Debug:', code, metadata)
+    }
   },
 }

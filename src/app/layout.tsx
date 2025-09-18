@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter, Space_Grotesk, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
 import AuthProvider from '@/components/providers/AuthProvider'
+import { Toaster } from 'sonner'
 
 // Polices selon la nouvelle direction artistique
 const inter = Inter({ 
@@ -39,6 +40,11 @@ export default function RootLayout({
       <body className={`${inter.variable} ${spaceGrotesk.variable} ${ibmPlexMono.variable} font-sans antialiased`}>
         <AuthProvider>
           {children}
+          <Toaster 
+            position="top-right"
+            richColors
+            closeButton
+          />
         </AuthProvider>
       </body>
     </html>
