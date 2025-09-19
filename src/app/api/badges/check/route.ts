@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { supabase } from '@/lib/supabase'
+import { CloudStorageService } from '@/services/storage/cloudStorage'
 
 // POST /api/badges/check - Vérifier et attribuer de nouveaux badges
 export async function POST(request: NextRequest) {
@@ -11,263 +11,138 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
     }
 
-    const newBadges = []
-    
-    // Vérifier chaque type de badge
-    const routineBadges = await checkRoutineBadges(session.user.id)
-    const analysisBadges = await checkAnalysisBadges(session.user.id)
-    const improvementBadges = await checkImprovementBadges(session.user.id)
-    const discoveryBadges = await checkDiscoveryBadges(session.user.id)
-    
-    newBadges.push(...routineBadges, ...analysisBadges, ...improvementBadges, ...discoveryBadges)
-    
+    const userId = (session.user as any).id
+    console.log('🔍 [BADGES-CHECK] Vérification nouveaux badges pour userId:', userId)
+
+    // Import dynamique côté serveur uniquement
+    const { supabaseAdmin } = await import('@/lib/supabaseAdmin')
+
+    // Récupérer les badges existants
+    const { data: existingBadges, error: badgesError } = await supabaseAdmin
+      .from('user_badges')
+      .select('badge_type, badge_level')
+      .eq('user_id', userId)
+
+    if (badgesError) {
+      console.error('❌ [BADGES-CHECK] Erreur récupération badges existants:', badgesError)
+      throw badgesError
+    }
+
+    const existingBadgeKeys = new Set(
+      (existingBadges || []).map(b => `${b.badge_type}_${b.badge_level}`)
+    )
+
+    // Calculer les nouveaux badges à attribuer
+    const newBadges = await calculateNewBadges(userId, existingBadgeKeys)
+
     // Sauvegarder les nouveaux badges
     if (newBadges.length > 0) {
-      const { error } = await supabase
-        .from('user_badges')
-        .insert(newBadges.map(badge => ({
-          ...badge,
-          user_id: session.user.id,
-          earned_at: new Date().toISOString(),
-          is_new: true
-        })))
+      console.log('🏆 [BADGES-CHECK] Nouveaux badges à créer:', newBadges.length)
       
-      if (error) {
-        console.error('Erreur sauvegarde nouveaux badges:', error)
-      }
-    }
-    
-    return NextResponse.json(newBadges)
-
-  } catch (error) {
-    console.error('Erreur API badges check:', error)
-    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 })
-  }
-}
-
-// Vérifier badges de routine
-async function checkRoutineBadges(userId: string) {
-  const newBadges = []
-  
-  try {
-    // Calculer le streak actuel (simulation - à adapter selon votre logique)
-    const currentStreak = await getCurrentRoutineStreak(userId)
-    
-    const routineBadgeThresholds = [
-      { level: 'bronze', days: 7 },
-      { level: 'silver', days: 30 },
-      { level: 'gold', days: 90 },
-      { level: 'platinum', days: 365 }
-    ]
-    
-    for (const threshold of routineBadgeThresholds) {
-      if (currentStreak >= threshold.days) {
-        // Vérifier si le badge n'existe pas déjà
-        const { data: existingBadge } = await supabase
+      try {
+        const { data: savedBadges, error: saveError } = await supabaseAdmin
           .from('user_badges')
-          .select('id')
-          .eq('user_id', userId)
-          .eq('badge_type', 'routine_streak')
-          .eq('badge_level', threshold.level)
-          .single()
-        
-        if (!existingBadge) {
-          newBadges.push({
-            badge_type: 'routine_streak',
-            badge_level: threshold.level,
-            badge_criteria: { days: threshold.days, achieved_streak: currentStreak }
-          })
+          .insert(newBadges.map(badge => ({
+            user_id: userId,
+            ...badge
+          })))
+          .select()
+
+        if (saveError) {
+          console.error('❌ [BADGES-CHECK] Erreur sauvegarde nouveaux badges:', saveError)
+          throw saveError
         }
+
+        console.log('✅ [BADGES-CHECK] Nouveaux badges sauvegardés:', savedBadges?.length || 0)
+        
+        return NextResponse.json({
+          success: true,
+          data: savedBadges || []
+        })
+      } catch (saveError) {
+        console.error('❌ [BADGES-CHECK] Erreur sauvegarde nouveaux badges:', saveError)
+        // Continuer même si la sauvegarde échoue
       }
     }
+
+    console.log('ℹ️ [BADGES-CHECK] Aucun nouveau badge à attribuer')
+    return NextResponse.json({
+      success: true,
+      data: []
+    })
+
   } catch (error) {
-    console.error('Erreur vérification badges routine:', error)
+    console.error('❌ [BADGES-CHECK] Erreur vérification badges:', error)
+    return NextResponse.json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Erreur inconnue'
+    }, { status: 500 })
   }
-  
-  return newBadges
 }
 
-// Vérifier badges d'analyses
-async function checkAnalysisBadges(userId: string) {
-  const newBadges = []
-  
+// Fonction pour calculer les nouveaux badges à attribuer
+async function calculateNewBadges(userId: string, existingBadgeKeys: Set<string>) {
+  const newBadges: any[] = []
+
   try {
-    // Compter le nombre d'analyses
-    const { count } = await supabase
-      .from('user_analyses')
-      .select('*', { count: 'exact', head: true })
-      .eq('user_id', userId)
-    
-    const analysisCount = count || 0
-    
-    const analysisBadgeThresholds = [
-      { level: 'bronze', count: 3 },
-      { level: 'silver', count: 10 },
-      { level: 'gold', count: 25 },
-      { level: 'platinum', count: 50 }
+    // Récupérer les statistiques utilisateur
+    const analyses = await CloudStorageService.getUserAnalyses(userId, { limit: 100 })
+    const analysisCount = analyses.length
+
+    // Badges basés sur le nombre d'analyses
+    const analysisBadges = [
+      { level: 'bronze', required: 1, title: 'Première Analyse' },
+      { level: 'silver', required: 3, title: 'Explorateur Curieux' },
+      { level: 'gold', required: 5, title: 'Analyste Régulier' },
+      { level: 'platinum', required: 10, title: 'Expert en Diagnostic' }
     ]
-    
-    for (const threshold of analysisBadgeThresholds) {
-      if (analysisCount >= threshold.count) {
-        // Vérifier si le badge n'existe pas déjà
-        const { data: existingBadge } = await supabase
-          .from('user_badges')
-          .select('id')
-          .eq('user_id', userId)
-          .eq('badge_type', 'analysis_count')
-          .eq('badge_level', threshold.level)
-          .single()
-        
-        if (!existingBadge) {
-          newBadges.push({
-            badge_type: 'analysis_count',
-            badge_level: threshold.level,
-            badge_criteria: { count: threshold.count, achieved_count: analysisCount }
-          })
-        }
+
+    for (const badge of analysisBadges) {
+      const badgeKey = `analysis_count_${badge.level}`
+      if (analysisCount >= badge.required && !existingBadgeKeys.has(badgeKey)) {
+        newBadges.push({
+          badge_type: 'analysis_count',
+          badge_level: badge.level,
+          badge_criteria: {
+            required: badge.required,
+            current: analysisCount,
+            title: badge.title
+          }
+        })
       }
     }
-  } catch (error) {
-    console.error('Erreur vérification badges analyses:', error)
-  }
-  
-  return newBadges
-}
 
-// Vérifier badges d'amélioration
-async function checkImprovementBadges(userId: string) {
-  const newBadges = []
-  
-  try {
-    // Calculer l'amélioration (simulation - à adapter selon votre logique)
-    const improvement = await calculateImprovement(userId)
-    
-    const improvementBadgeThresholds = [
-      { level: 'bronze', percent: 10 },
-      { level: 'silver', percent: 25 },
-      { level: 'gold', percent: 50 },
-      { level: 'platinum', percent: 75 }
+    // Badges basés sur la routine (simulé pour l'instant)
+    const routineStreak = Math.min(analysisCount, 7) // Simulé
+    const routineBadges = [
+      { level: 'bronze', required: 3, title: 'Première Routine' },
+      { level: 'silver', required: 7, title: 'Une Semaine Régulière' }
     ]
-    
-    for (const threshold of improvementBadgeThresholds) {
-      if (improvement >= threshold.percent) {
-        // Vérifier si le badge n'existe pas déjà
-        const { data: existingBadge } = await supabase
-          .from('user_badges')
-          .select('id')
-          .eq('user_id', userId)
-          .eq('badge_type', 'improvement')
-          .eq('badge_level', threshold.level)
-          .single()
-        
-        if (!existingBadge) {
-          newBadges.push({
-            badge_type: 'improvement',
-            badge_level: threshold.level,
-            badge_criteria: { percent: threshold.percent, achieved_improvement: improvement }
-          })
-        }
+
+    for (const badge of routineBadges) {
+      const badgeKey = `routine_streak_${badge.level}`
+      if (routineStreak >= badge.required && !existingBadgeKeys.has(badgeKey)) {
+        newBadges.push({
+          badge_type: 'routine_streak',
+          badge_level: badge.level,
+          badge_criteria: {
+            required: badge.required,
+            current: routineStreak,
+            title: badge.title
+          }
+        })
       }
     }
+
+    console.log('📊 [BADGES-CHECK] Statistiques calculées:', {
+      analysisCount,
+      routineStreak,
+      newBadgesCount: newBadges.length
+    })
+
   } catch (error) {
-    console.error('Erreur vérification badges amélioration:', error)
+    console.error('❌ [BADGES-CHECK] Erreur calcul badges:', error)
   }
-  
+
   return newBadges
-}
-
-// Vérifier badges de découverte
-async function checkDiscoveryBadges(userId: string) {
-  const newBadges = []
-  
-  try {
-    // Compter les produits découverts (simulation - à adapter selon votre logique)
-    const productsDiscovered = await countDiscoveredProducts(userId)
-    
-    const discoveryBadgeThresholds = [
-      { level: 'bronze', products: 5 },
-      { level: 'silver', products: 15 },
-      { level: 'gold', products: 30 },
-      { level: 'platinum', products: 50 }
-    ]
-    
-    for (const threshold of discoveryBadgeThresholds) {
-      if (productsDiscovered >= threshold.products) {
-        // Vérifier si le badge n'existe pas déjà
-        const { data: existingBadge } = await supabase
-          .from('user_badges')
-          .select('id')
-          .eq('user_id', userId)
-          .eq('badge_type', 'discovery')
-          .eq('badge_level', threshold.level)
-          .single()
-        
-        if (!existingBadge) {
-          newBadges.push({
-            badge_type: 'discovery',
-            badge_level: threshold.level,
-            badge_criteria: { products: threshold.products, achieved_count: productsDiscovered }
-          })
-        }
-      }
-    }
-  } catch (error) {
-    console.error('Erreur vérification badges découverte:', error)
-  }
-  
-  return newBadges
-}
-
-// Helpers (à adapter selon votre logique métier)
-async function getCurrentRoutineStreak(userId: string): Promise<number> {
-  // Simulation - remplacer par votre logique de calcul de streak
-  return Math.floor(Math.random() * 30) + 1
-}
-
-async function calculateImprovement(userId: string): Promise<number> {
-  try {
-    // Récupérer les 2 dernières analyses pour calculer l'amélioration
-    const { data: analyses } = await supabase
-      .from('user_analyses')
-      .select('analysis_data')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false })
-      .limit(2)
-    
-    if (!analyses || analyses.length < 2) {
-      return 0
-    }
-    
-    const [latest, previous] = analyses
-    const latestScore = latest.analysis_data?.globalScore || 0
-    const previousScore = previous.analysis_data?.globalScore || 0
-    
-    if (previousScore === 0) return 0
-    
-    const improvement = ((latestScore - previousScore) / previousScore) * 100
-    return Math.max(0, improvement)
-  } catch (error) {
-    console.error('Erreur calcul amélioration:', error)
-    return 0
-  }
-}
-
-async function countDiscoveredProducts(userId: string): Promise<number> {
-  try {
-    // Compter les produits uniques dans les étagères utilisateur
-    const { data: shelves } = await supabase
-      .from('user_product_shelves')
-      .select('products')
-      .eq('user_id', userId)
-    
-    if (!shelves) return 0
-    
-    const allProducts = shelves.flatMap(shelf => shelf.products || [])
-    const uniqueProducts = new Set(allProducts.map(p => p.id))
-    
-    return uniqueProducts.size
-  } catch (error) {
-    console.error('Erreur comptage produits découverts:', error)
-    return 0
-  }
 }

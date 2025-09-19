@@ -138,3 +138,4 @@ ORDER BY display_order;
 
 -- Calculer le streak actuel (doit retourner un nombre > 0)
 SELECT calculate_current_streak('YOUR_USER_ID') as current_streak;
+

@@ -32,3 +32,4 @@ $$;
 GRANT EXECUTE ON FUNCTION create_user_profile TO service_role;
 
 SELECT 'Fonction RPC create_user_profile créée avec succès' as status;
+

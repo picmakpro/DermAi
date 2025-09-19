@@ -71,3 +71,4 @@ export function AnalysisFilters({ defaultFilters }: AnalysisFiltersProps) {
     </div>
   )
 }
+

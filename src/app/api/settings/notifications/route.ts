@@ -110,3 +110,4 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 })
   }
 }
+

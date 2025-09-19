@@ -3,6 +3,9 @@ import { AnalysisService } from '@/services/ai/AnalysisService'
 import type { AnalyzeRequest as ApiAnalyzeRequest } from '@/types/api'
 import { logger, Logger } from '@/utils/Logger'
 import { FallbackStrategy } from '@/utils/FallbackStrategy'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import { CloudStorageService } from '@/services/storage/cloudStorage'
 
 // Type pour le service AnalysisService
 interface ServiceAnalyzeRequest {
@@ -162,13 +165,43 @@ export async function POST(request: NextRequest) {
       apiLatency: analysisDuration
     }, { stage: 'success' })
 
+    // 🔄 ÉTAPE 1: Sauvegarde automatique si utilisateur connecté
+    let savedAnalysisId: string | null = null
+    try {
+      const session = await getServerSession(authOptions)
+      const userId = (session?.user as any)?.id
+      if (userId) {
+        logger.info('💾 Sauvegarde analyse pour utilisateur connecté', { 
+          stage: 'save_analysis',
+          userId 
+        })
+        
+        const savedAnalysis = await CloudStorageService.saveAnalysis(
+          userId,
+          analysis as any, // Cast temporaire pour compatibilité type
+          { source: 'web_analysis' }
+        )
+        
+        savedAnalysisId = savedAnalysis.id
+        logger.info('✅ Analyse sauvegardée avec succès', { 
+          stage: 'save_success'
+        }, { analysisId: savedAnalysisId })
+      } else {
+        logger.info('👤 Mode invité - analyse non sauvegardée', { stage: 'guest_mode' })
+      }
+    } catch (saveError) {
+      logger.error('❌ Erreur sauvegarde analyse', saveError as Error, { stage: 'save_error' })
+      // Ne pas faire échouer l'analyse si la sauvegarde échoue
+    }
+
     // Calculer métriques de succès
     const totalDuration = Date.now() - startTime
     logger.info('Requête API V2 Pure terminée avec succès', { stage: 'complete' }, {
       totalDuration,
       analysisDuration,
       version: '2.0-pure',
-      success: true
+      success: true,
+      savedAnalysisId
     })
 
     return NextResponse.json({
@@ -179,7 +212,8 @@ export async function POST(request: NextRequest) {
         duration: totalDuration,
         version: '2.0-pure',
         source: 'ia-first-pure',
-        architecture: '4-steps-ai'
+        architecture: '4-steps-ai',
+        savedAnalysisId
       }
     })
 

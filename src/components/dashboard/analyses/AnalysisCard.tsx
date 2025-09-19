@@ -173,3 +173,4 @@ export function AnalysisCard({ analysis }: AnalysisCardProps) {
     </div>
   )
 }
+

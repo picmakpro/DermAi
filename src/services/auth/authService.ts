@@ -36,27 +36,26 @@ export class AuthService {
   }
 
   /**
-   * Récupérer le profil d'un utilisateur
+   * Récupérer le profil d'un utilisateur via API route
    * Utilisé pour charger les données utilisateur après connexion
    */
   static async getProfile(userId: string): Promise<Profile | null> {
     try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single()
-
-      if (error) {
-        if (error.code === 'PGRST116') {
-          // Profil non trouvé
-          console.log('Profil non trouvé pour utilisateur:', userId)
-          return null
-        }
-        console.error('Erreur récupération profil:', error)
-        throw new Error(`Erreur récupération profil: ${error.message}`)
+      const response = await fetch('/api/auth/profile')
+      
+      if (response.status === 404) {
+        // Profil non trouvé
+        console.log('Profil non trouvé pour utilisateur:', userId)
+        return null
+      }
+      
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Erreur récupération profil:', errorData.error)
+        return null
       }
 
+      const data = await response.json()
       return data
     } catch (error) {
       console.error('Erreur AuthService.getProfile:', error)

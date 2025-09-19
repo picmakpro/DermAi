@@ -1,8 +1,13 @@
-import { supabase } from '@/lib/supabase'
+// ⚠️ ATTENTION: Ce service doit UNIQUEMENT être utilisé côté serveur (API routes)
+// Les clés service role ne doivent JAMAIS être exposées côté client
+
 import type { UserAnalysis } from '@/lib/supabase'
 import type { SkinAnalysis } from '@/types'
 
 export class CloudStorageService {
+  // ⚠️ IMPORTANT: Toutes ces méthodes nécessitent supabaseAdmin
+  // Elles doivent être appelées UNIQUEMENT depuis les API routes côté serveur
+  
   // Sauvegarder analyse en cloud
   static async saveAnalysis(
     userId: string, 
@@ -12,7 +17,10 @@ export class CloudStorageService {
       source?: string
     } = {}
   ): Promise<UserAnalysis> {
-    const { data, error } = await supabase
+    // Import dynamique côté serveur uniquement
+    const { supabaseAdmin } = await import('@/lib/supabaseAdmin')
+    
+    const { data, error } = await supabaseAdmin
       .from('user_analyses')
       .insert({
         user_id: userId,
@@ -38,7 +46,9 @@ export class CloudStorageService {
       includeDeleted?: boolean
     } = {}
   ): Promise<UserAnalysis[]> {
-    let query = supabase
+    const { supabaseAdmin } = await import('@/lib/supabaseAdmin')
+    
+    let query = supabaseAdmin
       .from('user_analyses')
       .select('*')
       .eq('user_id', userId)
@@ -67,7 +77,9 @@ export class CloudStorageService {
     userId: string, 
     analysisId: string
   ): Promise<void> {
-    const { error } = await supabase
+    const { supabaseAdmin } = await import('@/lib/supabaseAdmin')
+    
+    const { error } = await supabaseAdmin
       .from('user_analyses')
       .update({ deleted_at: new Date().toISOString() })
       .eq('id', analysisId)
@@ -82,16 +94,18 @@ export class CloudStorageService {
     photoBlob: Blob, 
     filename: string
   ): Promise<string> {
+    const { supabaseAdmin } = await import('@/lib/supabaseAdmin')
+    
     const filePath = `${userId}/${Date.now()}-${filename}`
     
-    const { data, error } = await supabase.storage
+    const { data, error } = await supabaseAdmin.storage
       .from('user-photos')
       .upload(filePath, photoBlob)
 
     if (error) throw error
 
     // Récupérer URL publique
-    const { data: urlData } = supabase.storage
+    const { data: urlData } = supabaseAdmin.storage
       .from('user-photos')
       .getPublicUrl(data.path)
 
@@ -103,9 +117,11 @@ export class CloudStorageService {
     userId: string, 
     analysisId: string
   ): Promise<string> {
+    const { supabaseAdmin } = await import('@/lib/supabaseAdmin')
+    
     const shareToken = crypto.randomUUID()
     
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
       .from('user_analyses')
       .update({ 
         share_token: shareToken,
@@ -120,7 +136,9 @@ export class CloudStorageService {
 
   // Récupérer analyse par token de partage
   static async getAnalysisByShareToken(shareToken: string): Promise<UserAnalysis | null> {
-    const { data, error } = await supabase
+    const { supabaseAdmin } = await import('@/lib/supabaseAdmin')
+    
+    const { data, error } = await supabaseAdmin
       .from('user_analyses')
       .select('*')
       .eq('share_token', shareToken)
@@ -138,7 +156,9 @@ export class CloudStorageService {
     analysisId: string,
     updates: Partial<Pick<UserAnalysis, 'analysis_data' | 'photos_metadata' | 'shared_publicly'>>
   ): Promise<UserAnalysis> {
-    const { data, error } = await supabase
+    const { supabaseAdmin } = await import('@/lib/supabaseAdmin')
+    
+    const { data, error } = await supabaseAdmin
       .from('user_analyses')
       .update({
         ...updates,
@@ -155,7 +175,9 @@ export class CloudStorageService {
 
   // Compter les analyses d'un utilisateur
   static async getUserAnalysesCount(userId: string): Promise<number> {
-    const { count, error } = await supabase
+    const { supabaseAdmin } = await import('@/lib/supabaseAdmin')
+    
+    const { count, error } = await supabaseAdmin
       .from('user_analyses')
       .select('*', { count: 'exact', head: true })
       .eq('user_id', userId)
@@ -167,7 +189,9 @@ export class CloudStorageService {
 
   // Récupérer la dernière analyse d'un utilisateur
   static async getLatestAnalysis(userId: string): Promise<UserAnalysis | null> {
-    const { data, error } = await supabase
+    const { supabaseAdmin } = await import('@/lib/supabaseAdmin')
+    
+    const { data, error } = await supabaseAdmin
       .from('user_analyses')
       .select('*')
       .eq('user_id', userId)

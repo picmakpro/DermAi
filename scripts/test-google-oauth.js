@@ -80,3 +80,4 @@ console.log('2. Vérifier que les APIs Google+ sont activées')
 console.log('3. Régénérer les credentials si nécessaire')
 console.log('4. Vérifier les quotas et limites')
 console.log('5. Tester avec un autre compte Google')
+

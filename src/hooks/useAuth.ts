@@ -52,13 +52,24 @@ export function useAuth(): UseAuthReturn {
       if (!profile) {
         // Profil n'existe pas, le créer
         console.log('Profil non trouvé, création automatique...')
-        const newProfile = await AuthService.createProfile({
-          id: session.user.id,
-          email: session.user.email!,
-          full_name: session.user.name,
-          avatar_url: session.user.image,
-        })
-        setUser(newProfile)
+        try {
+          const newProfile = await AuthService.createProfile({
+            id: session.user.id,
+            email: session.user.email!,
+            full_name: session.user.name,
+            avatar_url: session.user.image,
+          })
+          setUser(newProfile)
+        } catch (createError) {
+          // Si erreur de création (ex: profil existe déjà), essayer de le récupérer à nouveau
+          console.log('Erreur création profil, tentative de récupération...', createError)
+          const existingProfile = await AuthService.getProfile(session.user.id)
+          if (existingProfile) {
+            setUser(existingProfile)
+          } else {
+            throw createError
+          }
+        }
       } else {
         setUser(profile)
       }

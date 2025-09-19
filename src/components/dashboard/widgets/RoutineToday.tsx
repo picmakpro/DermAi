@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { DashboardCard } from '@/components/dashboard/common/DashboardCard'
 import { Check, Clock, Sun, Moon } from 'lucide-react'
+import { useToast } from '@/components/ui/Toast'
 import Link from 'next/link'
 
 interface Product {
@@ -23,6 +24,7 @@ export function RoutineToday() {
     currentStreak: 0
   })
   const [loading, setLoading] = useState(true)
+  const { success, error, ToastContainer } = useToast()
   
   useEffect(() => {
     fetchTodayRoutine()
@@ -30,35 +32,63 @@ export function RoutineToday() {
   
   const fetchTodayRoutine = async () => {
     try {
-      // TODO: Remplacer par vraie API
-      // const response = await fetch('/api/routine/today')
-      // const data = await response.json()
-      // setRoutine(data)
+      console.log('🌅 [RoutineToday] Récupération routine du jour depuis API...')
       
-      // Données mockées pour le développement
-      const mockRoutine = {
-        morning: {
-          products: [
-            { name: 'Nettoyant doux', brand: 'CeraVe' },
-            { name: 'Sérum Vitamine C', brand: 'The Ordinary' },
-            { name: 'Crème hydratante', brand: 'Neutrogena' },
-            { name: 'Crème solaire SPF50', brand: 'La Roche-Posay' }
-          ],
-          completed: true
-        },
-        evening: {
-          products: [
-            { name: 'Démaquillant', brand: 'Bioderma' },
-            { name: 'Nettoyant doux', brand: 'CeraVe' },
-            { name: 'Sérum Rétinol', brand: 'The Ordinary' },
-            { name: 'Crème de nuit', brand: 'Olay' }
-          ],
-          completed: false
-        },
-        currentStreak: 7
+      // 🔄 ÉTAPE 2: Utilisation de la vraie API
+      const response = await fetch('/api/routine/today')
+      
+      if (response.status === 401) {
+        console.log('ℹ️ [RoutineToday] Utilisateur non connecté, pas de routine')
+        setRoutine({
+          morning: { products: [], completed: false },
+          evening: { products: [], completed: false },
+          currentStreak: 0
+        })
+        return
       }
       
-      setRoutine(mockRoutine)
+      if (!response.ok) {
+        throw new Error(`Erreur API: ${response.status}`)
+      }
+      
+      const data = await response.json()
+      console.log('✅ [RoutineToday] Routine reçue:', data.data)
+      
+      if (data.success && data.data) {
+        if (!data.data.hasRoutine) {
+          // Pas de routine disponible
+          setRoutine({
+            morning: { products: [], completed: false },
+            evening: { products: [], completed: false },
+            currentStreak: 0
+          })
+        } else {
+          // Convertir les étapes en produits pour l'affichage
+          const morningProducts = data.data.morning.steps.map((step: any) => ({
+            name: step.product?.name || `${step.careType} (étape ${step.stepNumber})`,
+            brand: step.product?.brand || 'Recommandé'
+          }))
+          
+          const eveningProducts = data.data.evening.steps.map((step: any) => ({
+            name: step.product?.name || `${step.careType} (étape ${step.stepNumber})`,
+            brand: step.product?.brand || 'Recommandé'
+          }))
+          
+          setRoutine({
+            morning: {
+              products: morningProducts,
+              completed: data.data.morning.completed
+            },
+            evening: {
+              products: eveningProducts,
+              completed: data.data.evening.completed
+            },
+            currentStreak: 7 // Sera calculé avec les vraies données plus tard
+          })
+        }
+      } else {
+        throw new Error('Données invalides reçues de l\'API')
+      }
     } catch (error) {
       console.error('Erreur chargement routine:', error)
     } finally {
@@ -68,18 +98,26 @@ export function RoutineToday() {
   
   const handleTogglePhase = async (phase: 'morning' | 'evening') => {
     try {
-      // TODO: Remplacer par vraie API
-      // await fetch('/api/routine/completions', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     completion_date: new Date().toISOString().split('T')[0],
-      //     phase,
-      //     completed: !routine[phase].completed
-      //   })
-      // })
+      console.log('🔄 [RoutineToday] Mise à jour completion:', { phase, completed: !routine[phase].completed })
       
-      // Mise à jour locale
+      // 🔄 ÉTAPE 4: Utilisation de la vraie API
+      const response = await fetch('/api/routine/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          completion_date: new Date().toISOString().split('T')[0],
+          phase,
+          completed: !routine[phase].completed
+        })
+      })
+      
+      if (!response.ok) {
+        throw new Error(`Erreur API: ${response.status}`)
+      }
+      
+      console.log('✅ [RoutineToday] Completion mise à jour avec succès')
+      
+      // Mise à jour locale après succès API
       setRoutine(prev => ({
         ...prev,
         [phase]: {
@@ -87,8 +125,15 @@ export function RoutineToday() {
           completed: !prev[phase].completed
         }
       }))
+      
+      // Notification de succès
+      const phaseLabel = phase === 'morning' ? 'matinale' : 'du soir'
+      const actionLabel = !routine[phase].completed ? 'complétée' : 'marquée comme non faite'
+      success(`Routine ${phaseLabel} ${actionLabel} !`)
+      
     } catch (error) {
-      console.error('Erreur mise à jour routine:', error)
+      console.error('❌ [RoutineToday] Erreur mise à jour routine:', error)
+      error('Erreur lors de la mise à jour de votre routine')
     }
   }
   
@@ -225,6 +270,8 @@ export function RoutineToday() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </DashboardCard>
   )
 }
+

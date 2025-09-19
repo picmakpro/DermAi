@@ -114,3 +114,4 @@ function inferPhaseFromCategory(category: string): 'morning' | 'evening' | 'both
   if (eveningCategories.includes(category)) return 'evening'
   return 'both'
 }
+

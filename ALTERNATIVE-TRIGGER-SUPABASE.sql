@@ -37,3 +37,4 @@ CREATE POLICY "Users can update own profile" ON profiles
 -- Pas besoin de politique INSERT car le trigger s'en charge
 
 SELECT 'Trigger automatique créé avec succès' as status;
+

@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 
@@ -16,12 +15,13 @@ export async function GET(request: NextRequest) {
     const endDate = searchParams.get('end_date')
     const limit = parseInt(searchParams.get('limit') || '30')
 
-    // supabase est déjà importé
+    // Import dynamique côté serveur uniquement
+    const { supabaseAdmin } = await import('@/lib/supabaseAdmin')
     
-    let query = supabase
+    let query = supabaseAdmin
       .from('routine_completions')
       .select('*')
-      .eq('user_id', session.user.id)
+      .eq('user_id', (session.user as any).id)
       .order('completion_date', { ascending: false })
       .limit(limit)
 
@@ -78,13 +78,14 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
-    // supabase est déjà importé
+    // Import dynamique côté serveur uniquement
+    const { supabaseAdmin } = await import('@/lib/supabaseAdmin')
 
     // Upsert (insert ou update)
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('routine_completions')
       .upsert({
-        user_id: session.user.id,
+        user_id: (session.user as any).id,
         completion_date,
         phase,
         completed: completed ?? true,

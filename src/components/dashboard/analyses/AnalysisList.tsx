@@ -145,3 +145,4 @@ export async function AnalysisList({ page, filters }: AnalysisListProps) {
     </div>
   )
 }
+

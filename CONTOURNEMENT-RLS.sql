@@ -6,3 +6,4 @@ ALTER TABLE profiles DISABLE ROW LEVEL SECURITY;
 
 -- Réactiver après que l'inscription fonctionne
 -- ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+

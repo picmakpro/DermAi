@@ -34,3 +34,4 @@ export function formatDistanceToNow(date: Date | string): string {
     return `Il y a ${months} mois`
   }
 }
+

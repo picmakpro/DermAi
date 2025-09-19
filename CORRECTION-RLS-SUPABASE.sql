@@ -37,3 +37,4 @@ ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 -- 4. Test de la politique (optionnel)
 -- Cette requête devrait fonctionner maintenant
 SELECT 'Politiques RLS mises à jour avec succès' as status;
+

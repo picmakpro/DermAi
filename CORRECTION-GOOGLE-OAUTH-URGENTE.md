@@ -104,3 +104,4 @@ Après correction :
 
 **⏰ TEMPS ESTIMÉ :** 10-15 minutes (+ 5-10 min propagation Google)
 **🎯 PRIORITÉ :** CRITIQUE - Bloque la Phase 1
+

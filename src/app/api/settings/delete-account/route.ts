@@ -91,3 +91,4 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 })
   }
 }
+

@@ -1,7 +1,6 @@
 'use client'
 
 import { useAuth } from '@/hooks/useAuth'
-import { CloudStorageService } from '@/services/storage/cloudStorage'
 import { saveAnalysis, getAnalysis, clearAllAnalysis } from '@/utils/storage/analysisStore'
 import type { SkinAnalysis } from '@/types'
 import { useState, useCallback } from 'react'
@@ -49,10 +48,22 @@ export function useHybridStorage(): UseHybridStorageReturn {
 
     try {
       if (isAuthenticated && user) {
-        // Utilisateur connecté : sauvegarder en cloud
+        // Utilisateur connecté : sauvegarder en cloud via API
         try {
-          await CloudStorageService.saveAnalysis(user.id, analysis)
-          console.log('✅ Analyse sauvegardée en cloud')
+          const response = await fetch('/api/analyses', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              analysis_data: analysis,
+              source: 'web'
+            })
+          })
+          
+          if (!response.ok) {
+            throw new Error(`Erreur API: ${response.status}`)
+          }
+          
+          console.log('✅ Analyse sauvegardée en cloud via API')
         } catch (cloudError) {
           console.error('❌ Erreur sauvegarde cloud, fallback local:', cloudError)
           // Fallback local en cas d'erreur cloud
@@ -80,11 +91,15 @@ export function useHybridStorage(): UseHybridStorageReturn {
 
     try {
       if (isAuthenticated && user) {
-        // Utilisateur connecté : récupérer depuis cloud
+        // Utilisateur connecté : récupérer depuis cloud via API
         try {
-          const analyses = await CloudStorageService.getUserAnalyses(user.id, { limit: 100 })
-          const analysis = analyses.find(a => a.id === analysisId)
-          return analysis?.analysis_data || null
+          const response = await fetch(`/api/analyses/${analysisId}`)
+          if (!response.ok) {
+            throw new Error(`Erreur API: ${response.status}`)
+          }
+          
+          const data = await response.json()
+          return data.success ? data.data?.analysis_data : null
         } catch (cloudError) {
           console.error('❌ Erreur récupération cloud, fallback local:', cloudError)
           // Fallback local
@@ -110,9 +125,19 @@ export function useHybridStorage(): UseHybridStorageReturn {
 
     try {
       if (isAuthenticated && user) {
-        // Utilisateur connecté : récupérer depuis cloud
-        const analyses = await CloudStorageService.getUserAnalyses(user.id)
-        return analyses.map(a => a.analysis_data)
+        // Utilisateur connecté : récupérer depuis cloud via API
+        try {
+          const response = await fetch('/api/analyses')
+          if (!response.ok) {
+            throw new Error(`Erreur API: ${response.status}`)
+          }
+          
+          const data = await response.json()
+          return data.success ? data.data.map((a: any) => a.analysis_data) : []
+        } catch (cloudError) {
+          console.error('❌ Erreur récupération cloud:', cloudError)
+          return []
+        }
       } else {
         // Mode invité : récupérer localement
         // Pour le moment, on retourne juste la dernière analyse guest
@@ -135,8 +160,14 @@ export function useHybridStorage(): UseHybridStorageReturn {
 
     try {
       if (isAuthenticated && user) {
-        // Utilisateur connecté : supprimer du cloud
-        await CloudStorageService.deleteAnalysis(user.id, analysisId)
+        // Utilisateur connecté : supprimer du cloud via API
+        const response = await fetch(`/api/analyses/${analysisId}`, {
+          method: 'DELETE'
+        })
+        
+        if (!response.ok) {
+          throw new Error(`Erreur API: ${response.status}`)
+        }
       } else {
         // Mode invité : supprimer localement
         // Pour le stockage local, on peut implémenter une fonction de suppression
@@ -262,7 +293,11 @@ export function useHybridStorage(): UseHybridStorageReturn {
       // Compter les analyses cloud
       if (isAuthenticated && user) {
         try {
-          cloudCount = await CloudStorageService.getUserAnalysesCount(user.id)
+          const response = await fetch('/api/analyses')
+          if (response.ok) {
+            const data = await response.json()
+            cloudCount = data.success ? data.data.length : 0
+          }
         } catch {
           // Ignore les erreurs cloud
         }

@@ -24,16 +24,19 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Créer le profil avec supabaseAdmin
+    // Créer ou mettre à jour le profil avec supabaseAdmin (UPSERT)
     const { data, error } = await supabaseAdmin
       .from('profiles')
-      .insert({
+      .upsert({
         id: userData.id,
         email: userData.email,
         full_name: userData.full_name,
         avatar_url: userData.avatar_url,
         subscription_status: 'free',
         analyses_count: 0,
+        updated_at: new Date().toISOString(),
+      }, {
+        onConflict: 'id'
       })
       .select()
       .single()

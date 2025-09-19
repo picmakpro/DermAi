@@ -31,21 +31,49 @@ export function OverviewStats() {
   
   const fetchUserStats = async () => {
     try {
-      // TODO: Remplacer par vraie API
-      // const response = await fetch('/api/dashboard/stats')
-      // const data = await response.json()
+      console.log('📊 [OverviewStats] Récupération statistiques depuis API...')
       
-      // Données mockées pour le développement
-      const mockData = {
-        totalAnalyses: 3,
-        currentStreak: 7,
-        improvementRate: 15,
-        totalBadges: 2
+      // 🔄 ÉTAPE 2: Utilisation de la vraie API
+      const response = await fetch('/api/dashboard/stats')
+      
+      if (response.status === 401) {
+        console.log('ℹ️ [OverviewStats] Utilisateur non connecté, utilisation données par défaut')
+        setStats({
+          totalAnalyses: 0,
+          currentStreak: 0,
+          improvementRate: 0,
+          totalBadges: 0
+        })
+        return
       }
       
-      setStats(mockData)
+      if (!response.ok) {
+        throw new Error(`Erreur API: ${response.status}`)
+      }
+      
+      const data = await response.json()
+      console.log('✅ [OverviewStats] Statistiques reçues:', data.data)
+      
+      if (data.success && data.data) {
+        setStats({
+          totalAnalyses: data.data.totalAnalyses,
+          currentStreak: data.data.routineStreak,
+          improvementRate: Math.round(data.data.globalImprovement),
+          totalBadges: data.data.badgesCount
+        })
+      } else {
+        throw new Error('Données invalides reçues de l\'API')
+      }
     } catch (error) {
-      console.error('Erreur chargement stats:', error)
+      console.error('❌ [OverviewStats] Erreur chargement stats:', error)
+      
+      // Fallback vers données par défaut en cas d'erreur
+      setStats({
+        totalAnalyses: 0,
+        currentStreak: 0,
+        improvementRate: 0,
+        totalBadges: 0
+      })
     } finally {
       setLoading(false)
     }
@@ -120,3 +148,4 @@ export function OverviewStats() {
     </DashboardCard>
   )
 }
+

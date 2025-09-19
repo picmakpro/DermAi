@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 
@@ -11,11 +10,12 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
     }
 
-    // supabase est déjà importé
-    const userId = session.user.id
+    // Import dynamique côté serveur uniquement
+    const { supabaseAdmin } = await import('@/lib/supabaseAdmin')
+    const userId = (session.user as any).id
 
     // Récupérer toutes les complétions pour calculs
-    const { data: completions, error } = await supabase
+    const { data: completions, error } = await supabaseAdmin
       .from('routine_completions')
       .select('completion_date, phase, completed')
       .eq('user_id', userId)

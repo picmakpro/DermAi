@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { supabase } from '@/lib/supabase'
 
 // GET /api/badges - Récupérer les badges de l'utilisateur
 export async function GET(request: NextRequest) {
@@ -11,22 +10,36 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
     }
 
-    const { data: badges, error } = await supabase
+    const userId = (session.user as any).id
+    console.log('🏆 [BADGES] Récupération badges pour userId:', userId)
+
+    // Import dynamique côté serveur uniquement
+    const { supabaseAdmin } = await import('@/lib/supabaseAdmin')
+
+    const { data: badges, error } = await supabaseAdmin
       .from('user_badges')
       .select('*')
-      .eq('user_id', session.user.id)
+      .eq('user_id', userId)
       .order('earned_at', { ascending: false })
 
     if (error) {
-      console.error('Erreur récupération badges:', error)
-      return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 })
+      console.error('❌ [BADGES] Erreur récupération badges:', error)
+      throw error
     }
 
-    return NextResponse.json(badges || [])
+    console.log('✅ [BADGES] Badges récupérés:', badges?.length || 0)
+
+    return NextResponse.json({
+      success: true,
+      data: badges || []
+    })
 
   } catch (error) {
-    console.error('Erreur API badges GET:', error)
-    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 })
+    console.error('❌ [BADGES] Erreur récupération badges:', error)
+    return NextResponse.json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Erreur inconnue'
+    }, { status: 500 })
   }
 }
 
@@ -38,63 +51,42 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
     }
 
+    const userId = (session.user as any).id
     const body = await request.json()
-    const { badge_type, badge_level, badge_criteria } = body
+    
+    console.log('🏆 [BADGES] Création badge pour userId:', userId, body)
 
-    // Validation des données
-    const validTypes = ['routine_streak', 'analysis_count', 'improvement', 'discovery']
-    const validLevels = ['bronze', 'silver', 'gold', 'platinum']
+    // Import dynamique côté serveur uniquement
+    const { supabaseAdmin } = await import('@/lib/supabaseAdmin')
 
-    if (!validTypes.includes(badge_type)) {
-      return NextResponse.json({ 
-        error: 'Type de badge invalide' 
-      }, { status: 400 })
-    }
-
-    if (!validLevels.includes(badge_level)) {
-      return NextResponse.json({ 
-        error: 'Niveau de badge invalide' 
-      }, { status: 400 })
-    }
-
-    // Vérifier si le badge n'existe pas déjà
-    const { data: existingBadge } = await supabase
-      .from('user_badges')
-      .select('id')
-      .eq('user_id', session.user.id)
-      .eq('badge_type', badge_type)
-      .eq('badge_level', badge_level)
-      .single()
-
-    if (existingBadge) {
-      return NextResponse.json({ 
-        error: 'Badge déjà obtenu' 
-      }, { status: 409 })
-    }
-
-    // Créer le nouveau badge
-    const { data: newBadge, error } = await supabase
+    const { data: badge, error } = await supabaseAdmin
       .from('user_badges')
       .insert({
-        user_id: session.user.id,
-        badge_type,
-        badge_level,
-        badge_criteria: badge_criteria || {},
-        earned_at: new Date().toISOString(),
-        is_new: true
+        user_id: userId,
+        badge_type: body.badge_type,
+        badge_level: body.badge_level,
+        badge_criteria: body.badge_criteria || {}
       })
       .select()
       .single()
 
     if (error) {
-      console.error('Erreur création badge:', error)
-      return NextResponse.json({ error: 'Erreur création badge' }, { status: 500 })
+      console.error('❌ [BADGES] Erreur création badge:', error)
+      throw error
     }
 
-    return NextResponse.json(newBadge, { status: 201 })
+    console.log('✅ [BADGES] Badge créé:', badge.id)
+
+    return NextResponse.json({
+      success: true,
+      data: badge
+    })
 
   } catch (error) {
-    console.error('Erreur API badges POST:', error)
-    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 })
+    console.error('❌ [BADGES] Erreur création badge:', error)
+    return NextResponse.json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Erreur inconnue'
+    }, { status: 500 })
   }
 }

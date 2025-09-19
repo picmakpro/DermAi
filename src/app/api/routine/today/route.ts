@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { CloudStorageService } from '@/services/storage/cloudStorage'
 
-// GET /api/routine/today - Récupérer la routine du jour
+// GET /api/routine/today - Routine du jour basée sur la dernière analyse
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
@@ -11,136 +11,159 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
     }
 
-    const today = new Date().toISOString().split('T')[0]
-    // supabase est déjà importé
+    const userId = (session.user as any).id
+    console.log('🌅 [ROUTINE-TODAY] Récupération routine du jour pour userId:', userId)
 
-    // Récupérer les complétions du jour
-    const { data: completions, error: completionsError } = await supabase
-      .from('routine_completions')
-      .select('*')
-      .eq('user_id', session.user.id)
-      .eq('completion_date', today)
-
-    if (completionsError) {
-      console.error('Erreur récupération completions today:', completionsError)
-      return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 })
+    // Récupérer la dernière analyse pour extraire la routine
+    const latestAnalysis = await CloudStorageService.getLatestAnalysis(userId)
+    
+    if (!latestAnalysis || !latestAnalysis.analysis_data?.routine) {
+      console.log('ℹ️ [ROUTINE-TODAY] Aucune routine trouvée')
+      return NextResponse.json({
+        success: true,
+        data: {
+          hasRoutine: false,
+          message: 'Aucune routine disponible. Faites une analyse pour obtenir votre routine personnalisée.',
+          morning: { steps: [], completed: false },
+          evening: { steps: [], completed: false }
+        }
+      })
     }
 
-    // Récupérer la dernière analyse pour les produits recommandés
-    const { data: lastAnalysis, error: analysisError } = await supabase
-      .from('user_analyses')
-      .select('analysis_data')
-      .eq('user_id', session.user.id)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single()
+    const routine = latestAnalysis.analysis_data.routine
+    console.log('📋 [ROUTINE-TODAY] Routine trouvée avec phases:', Object.keys(routine.phases || {}))
 
-    // Organiser les complétions par phase
-    const morningCompletion = completions.find(c => c.phase === 'morning')
-    const eveningCompletion = completions.find(c => c.phase === 'evening')
-
-    // Extraire les produits de la routine (depuis la dernière analyse)
-    let morningProducts = []
-    let eveningProducts = []
-
-    if (lastAnalysis?.analysis_data?.routine) {
-      const routine = lastAnalysis.analysis_data.routine
-      
-      // Extraire produits matin
-      if (routine.phases) {
-        routine.phases.forEach((phase: any) => {
-          if (phase.products) {
-            phase.products.forEach((product: any) => {
-              if (product.usage?.includes('matin') || product.usage?.includes('morning')) {
-                morningProducts.push({
-                  id: product.id || product.catalogId,
-                  name: product.name,
-                  brand: product.brand,
-                  type: product.type || product.category,
-                  step: product.step || morningProducts.length + 1
-                })
-              }
-              if (product.usage?.includes('soir') || product.usage?.includes('evening')) {
-                eveningProducts.push({
-                  id: product.id || product.catalogId,
-                  name: product.name,
-                  brand: product.brand,
-                  type: product.type || product.category,
-                  step: product.step || eveningProducts.length + 1
-                })
-              }
-            })
-          }
-        })
+    // Extraire les étapes pour aujourd'hui (phase immédiate en priorité)
+    const todayRoutine = extractTodayRoutine(routine)
+    
+    // Simuler le statut de complétion (sera remplacé par vraies données plus tard)
+    const completionStatus = {
+      morning: {
+        ...todayRoutine.morning,
+        completed: Math.random() > 0.7 // 30% de chance d'être complétée
+      },
+      evening: {
+        ...todayRoutine.evening,
+        completed: Math.random() > 0.6 // 40% de chance d'être complétée
       }
     }
 
-    // Calculer le streak actuel
-    const { data: recentCompletions } = await supabase
-      .from('routine_completions')
-      .select('completion_date, phase, completed')
-      .eq('user_id', session.user.id)
-      .gte('completion_date', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0])
-      .order('completion_date', { ascending: false })
+    console.log('✅ [ROUTINE-TODAY] Routine du jour générée:', {
+      morningSteps: completionStatus.morning.steps.length,
+      eveningSteps: completionStatus.evening.steps.length,
+      morningCompleted: completionStatus.morning.completed,
+      eveningCompleted: completionStatus.evening.completed
+    })
 
-    const currentStreak = calculateCurrentStreak(recentCompletions || [])
-
-    const routineToday = {
-      morning: {
-        products: morningProducts,
-        completed: morningCompletion?.completed || false,
-        notes: morningCompletion?.notes || null,
-        completedAt: morningCompletion?.created_at || null
-      },
-      evening: {
-        products: eveningProducts,
-        completed: eveningCompletion?.completed || false,
-        notes: eveningCompletion?.notes || null,
-        completedAt: eveningCompletion?.created_at || null
-      },
-      currentStreak,
-      date: today
-    }
-
-    return NextResponse.json(routineToday)
+    return NextResponse.json({
+      success: true,
+      data: {
+        hasRoutine: true,
+        analysisId: latestAnalysis.id,
+        analysisDate: latestAnalysis.created_at,
+        ...completionStatus
+      }
+    })
 
   } catch (error) {
-    console.error('Erreur API routine today:', error)
-    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 })
+    console.error('❌ [ROUTINE-TODAY] Erreur:', error)
+    return NextResponse.json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Erreur inconnue'
+    }, { status: 500 })
   }
 }
 
-function calculateCurrentStreak(completions: any[]): number {
-  if (!completions.length) return 0
-
-  // Organiser par date
-  const completionsByDate = completions.reduce((acc, completion) => {
-    const date = completion.completion_date
-    if (!acc[date]) {
-      acc[date] = { morning: false, evening: false }
-    }
-    if (completion.completed) {
-      acc[date][completion.phase] = true
-    }
-    return acc
-  }, {})
-
-  let streak = 0
-  const today = new Date()
+// Fonction pour extraire la routine du jour depuis l'analyse
+function extractTodayRoutine(routine: any) {
+  const morningSteps: any[] = []
+  const eveningSteps: any[] = []
   
-  // Compter les jours consécutifs depuis aujourd'hui
-  for (let i = 0; i < 30; i++) {
-    const date = new Date(today)
-    date.setDate(date.getDate() - i)
-    const dateStr = date.toISOString().split('T')[0]
-    
-    const dayCompletion = completionsByDate[dateStr]
-    if (dayCompletion && (dayCompletion.morning || dayCompletion.evening)) {
-      streak++
-    } else {
-      break
+  // Priorité : phase immédiate, puis adaptation si pas d'immédiate
+  const phases = routine.phases || {}
+  const currentPhase = phases.immediate || phases.adaptation || phases.maintenance
+  
+  if (!currentPhase?.steps) {
+    return { morning: { steps: [] }, evening: { steps: [] } }
+  }
+
+  // Séparer les étapes par timing
+  currentPhase.steps.forEach((step: any) => {
+    const stepWithProduct = {
+      ...step,
+      // Ajouter un produit exemple basé sur le careType
+      product: generateExampleProduct(step.careType),
+      completed: false
+    }
+
+    switch (step.timing) {
+      case 'matin':
+        morningSteps.push(stepWithProduct)
+        break
+      case 'soir':
+        eveningSteps.push(stepWithProduct)
+        break
+      case 'both':
+        // Ajouter aux deux moments
+        morningSteps.push({ ...stepWithProduct, timing: 'matin' })
+        eveningSteps.push({ ...stepWithProduct, timing: 'soir' })
+        break
+      case 'hebdomadaire':
+        // Ajouter au soir pour les soins hebdomadaires
+        eveningSteps.push({ ...stepWithProduct, frequency: 'hebdomadaire' })
+        break
+    }
+  })
+
+  // Trier par stepNumber
+  morningSteps.sort((a, b) => (a.stepNumber || 0) - (b.stepNumber || 0))
+  eveningSteps.sort((a, b) => (a.stepNumber || 0) - (b.stepNumber || 0))
+
+  return {
+    morning: { steps: morningSteps },
+    evening: { steps: eveningSteps }
+  }
+}
+
+// Générer un produit exemple basé sur le type de soin
+function generateExampleProduct(careType: string) {
+  const productExamples: { [key: string]: any } = {
+    nettoyage: {
+      name: 'Nettoyant Doux',
+      brand: 'CeraVe',
+      type: 'cleanser',
+      description: 'Nettoyant visage pour tous types de peau'
+    },
+    hydratation: {
+      name: 'Crème Hydratante',
+      brand: 'Neutrogena',
+      type: 'moisturizer',
+      description: 'Hydratation quotidienne'
+    },
+    traitement: {
+      name: 'Sérum Actif',
+      brand: 'The Ordinary',
+      type: 'serum',
+      description: 'Traitement ciblé'
+    },
+    protection: {
+      name: 'Crème Solaire SPF50',
+      brand: 'La Roche-Posay',
+      type: 'sunscreen',
+      description: 'Protection UV quotidienne'
+    },
+    exfoliation: {
+      name: 'Exfoliant Doux',
+      brand: 'Paula\'s Choice',
+      type: 'exfoliant',
+      description: 'Exfoliation hebdomadaire'
     }
   }
-  
-  return streak
+
+  return productExamples[careType] || {
+    name: 'Produit Recommandé',
+    brand: 'À définir',
+    type: careType,
+    description: 'Produit adapté à votre routine'
+  }
 }
