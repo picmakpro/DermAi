@@ -2,7 +2,7 @@
 
 ## 1. Vue d'ensemble
 
-DermAI V2 est une application web de diagnostic dermatologique basée sur l'intelligence artificielle. Elle a pour but de fournir aux utilisateurs une analyse personnalisée de leur peau, des recommandations de produits et une routine de soins sur mesure. L'application se distingue par son approche en deux étapes pour le diagnostic, sa forte personnalisation et son potentiel de monétisation via l'affiliation.
+DermAI V2 est une application web de diagnostic dermatologique basée sur l'intelligence artificielle. Elle a pour but de fournir aux utilisateurs une analyse personnalisée de leur skincare (vsiage), des recommandations de produits et une routine de soins sur mesure. L'application se distingue par son approche en 4 étapes pour le diagnostic, sa forte personnalisation et son potentiel de monétisation via l'affiliation et abonnement.
 
 ## 2. Architecture Technique
 
@@ -103,7 +103,7 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 
 ### 3.2. Fonctionnalités Détaillées
 
-- **Diagnostic en 2 étapes optimisé**: 
+- **Diagnostic en 4 étapes optimisé**: 
     1.  Analyse visuelle par GPT-4o pour un diagnostic objectif et détaillé.
     2.  Sélection intelligente de produits via moteur interne (zéro fallback générique).
 - **Parcours utilisateur optimisé** :
@@ -112,18 +112,21 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
     - **Visualisation des économies** : Comparaison avant/après des dépenses cosmétiques
     - **Progression claire** : Indicateur visuel et numérique du progrès
 - **Scores Détaillés**: Notation sur 100 pour 8 critères de santé de la peau (hydratation, rides, etc.).
-- **🔬 Routine 3 Phases Dermatologique** (NOUVEAU):
-    - **Phase Immédiate (1-3 sem)** : Stabiliser + traiter urgent, respecter barrière cutanée
-    - **Phase Adaptation (3-8 sem)** : Introduction progressive actifs puissants
+- **🔬 Routine 3 Phases Dermatologique V3** (REFONTE COMPLÈTE):
+    - **Architecture Onglets Phase → Slots** : Chaque phase contient Matin/Soir/Hebdomadaire
+    - **Phase Immédiate (1–3 semaines)** : Stabiliser + traiter urgent, dictée par traitements temporaires
+    - **Phase Adaptation (4–6 semaines)** : Introduction progressive actifs selon tolérance
     - **Phase Maintenance (continu)** : Maintenir acquis + prévention rechutes
-    - **Transition intelligente** : Base durable vs traitements temporaires
-    - **Durées personnalisées** : Calcul selon âge, type peau, gravité problèmes
-    - **Critères visuels** : "Jusqu'à cicatrisation" remplace timing arbitraire
-- **🎓 Interface Éducative Intégrée** (NOUVEAU):
-    - **Objectifs par phase** : Explication "pourquoi" chaque étape
-    - **Info-bulles dermatologiques** : Cycle cellulaire 28 jours vulgarisé
-    - **Badges temporels enrichis** : Observation + durée + objectif
-    - **Autonomisation utilisateur** : Compréhension logique progression
+    - **Affichage par horaire** : Organisation claire Matin/Soir/Hebdo dans chaque phase
+    - **Produits continus** : Pas de badge "Continu", titres simples ("Nettoyage", "Hydratation matin")
+    - **Traitements temporaires** : Métadonnées obligatoires (intro semaine X, durée, fréquence)
+    - **Hebdomadaire étendu** : Tous les items ≥ hebdo (pas seulement exfoliants/masques)
+- **🎓 Interface Éducative V3** (ENRICHIE):
+    - **Éducation par phase** : Objectifs et progressivité explicites
+    - **Badges éducatifs** : Observe/Duration/Objective pour traitements
+    - **Sections pédagogiques** : Instructions, restrictions, zones ciblées par item
+    - **Variantes design** : Clinical/Glow/Editorial (A/B/C) avec tokens DermAI
+    - **Mobile-first** : Slots sticky, navigation tactile optimisée
 - **Catalogue Interne Curatifé**: Base de données produits soigneusement sélectionnés par qualité et efficacité
 - **Moteur de Recommandations Avancé**: 
     - Algorithme intelligent sans recommandations "vides"
@@ -196,9 +199,34 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 - **Palette de couleurs**: Dominance de blanc et de beige avec des accents de bleu/violet pour l'IA.
 - **Responsive**: L'application est conçue pour être entièrement fonctionnelle et esthétique sur mobile et sur ordinateur.
 
-## 7. Roadmap et Planning Détaillé
+## 7. Amélioration Continue et Optimisations
 
-### 7.1. État Actuel (Janvier 2025)
+### 7.1 Refonte Routine UI V3 (En cours) 🔥 **REFONTE MAJEURE**
+
+**Objectif** : Reconstruction complète de la section "Routine personnalisée" avec architecture onglets Phase → Slots et intégration de la Preview finale.
+
+**Transformation UX** :
+- **Avant** : Liste linéaire par phase avec badges "Continu"
+- **Après** : Onglets Phase → Slots (Matin/Soir/Hebdomadaire) avec métadonnées riches
+
+**Documentation associée** :
+- `docs/planning-execution-refonte-routine-ui-v3.md` - **Plan d'exécution complet**
+- `docs/preview-routine-perso-section` - Preview finale de référence (fait foi)
+
+**Règles d'affichage strictes** :
+- **Produits continus** : Titres simples, jamais de badge "Continu"
+- **Traitements temporaires** : Métadonnées obligatoires (intro/durée/fréquence)
+- **Hebdomadaire étendu** : Tous les items ≥ hebdo (pas seulement exfoliants)
+- **Mobile-first** : Slots sticky, navigation tactile, 3 variantes design
+
+**Architecture technique** :
+- **Types stricts** : `AiRoutineOutput` avec validation Zod
+- **Mapper pur** : Zéro inférence métier, logs champs manquants
+- **Prompts ajustés** : Garantir champs requis sans changer logique clinique
+
+## 8. Roadmap et Planning Détaillé
+
+### 8.1. État Actuel (Janvier 2025)
 - ✅ Architecture Next.js 15 + TypeScript + Tailwind CSS
 - ✅ Interface d'upload professionnel avec validation
 - ✅ Questionnaire interactif en 7 étapes (3 écrans plein écran)
@@ -216,6 +244,13 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 - ⚠️ NextAuth.js et Supabase installés mais non configurés
 
 ### 7.2. Planning de Développement (6-10 semaines)
+
+**REFONTE ROUTINE UI V3 - EN COURS** ⚡
+- 📋 **Planning détaillé** : `docs/planning-execution-refonte-routine-ui-v3.md`
+- 🎯 **Objectif** : Architecture onglets Phase → Slots (Matin/Soir/Hebdo)
+- 🎨 **Preview finale** : Intégration variantes A/B/C (Clinical/Glow/Editorial)
+- 🔧 **Mapping pur** : Front ne fait que mapper, zéro inférence métier
+- 📅 **Durée** : 9-11 jours (4 sprints)
 
 **PHASE 1 : Authentification & Cloud Storage (1-2 semaines)** ⚡ **EN COURS**
 - ✅ Configuration Supabase avec tables utilisateurs et analyses
@@ -421,10 +456,45 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 - Sprint 2.5 : Coach IA & Badges (3-4 jours)
 - Prompts opérationnels prêts à l'emploi pour chaque composant
 
-### 9.6. Règle de Développement
+### 9.6. Refonte Routine UI V3 (NOUVEAU - Janvier 2025) 🔥 **REFONTE COMPLÈTE**
+
+**[planning-execution-refonte-routine-ui-v3.md](./planning-execution-refonte-routine-ui-v3.md)** - 🎯 **PLAN D'EXÉCUTION COMPLET** :
+- Sprint 1 : Fondations & Types (2-3 jours) - Types TypeScript + Mapper + Spec
+- Sprint 2 : Intégration Preview UI (3-4 jours) - Variantes A/B/C + Composants
+- Sprint 3 : Ajustements Prompts IA (2 jours) - Champs requis + Tests E2E
+- Sprint 4 : QA & Finitions (2 jours) - Accessibilité + Analytics + Performance
+- **Durée totale** : 9-11 jours avec prompts opérationnels détaillés
+
+**Architecture Cible** :
+- **Transformation UX** : Liste linéaire → Onglets Phase → Slots (Matin/Soir/Hebdo)
+- **Règles strictes** : Produits continus sans badge, temporaires avec métadonnées
+- **Mobile-first** : Slots sticky, 3 variantes design (Clinical/Glow/Editorial)
+- **Mapping pur** : Front ne fait que mapper, zéro inférence métier
+
+**Critères de Succès (DoD)** :
+- Parité Preview ≥ 99% (mobile-first, 3 variantes)
+- Hebdomadaire = tous ≥ hebdo (jamais badge "Continu")
+- Temporaires : métadonnées obligatoires (intro/durée/fréquence)
+- Performance Lighthouse > 90, Accessibilité WCAG AA
+- Analytics instrumenté (6 events minimum)
+
+### 9.7. Amélioration Section Routines V2 (HISTORIQUE - Septembre 2025) ✅ **TERMINÉ**
+
+**Note** : Cette version V2 est remplacée par la refonte complète V3 ci-dessus.
+
+**Réalisations V2** :
+- ✅ Homogénéisation titres (Sprint 1) - 26 tests unitaires
+- ✅ Déduplication intelligente (Sprint 2) - 18 tests unitaires  
+- ✅ Phases explicites (Sprint 3) - 29 tests unitaires
+- ✅ Rythme hebdomadaire (Sprint 4) - 31 tests unitaires
+- **Total** : 104 tests unitaires, réduction 85% duplications UI
+
+### 9.8. Règle de Développement
 > **IMPORTANT** : La fiche technique évolutive est la référence officielle du projet. 
 > Toute modification du code doit s'appuyer sur cette documentation.
 > Mise à jour obligatoire après chaque sprint.
+> 
+> **REFONTE V3 EN COURS** : Suivre `docs/planning-execution-refonte-routine-ui-v3.md` pour tous développements routine.
 
 ## 10. Références
 

@@ -178,3 +178,4 @@ export function BadgeNotification({ badge, onClose }: BadgeNotificationProps) {
   )
 }
 
+

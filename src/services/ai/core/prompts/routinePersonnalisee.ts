@@ -74,19 +74,53 @@ FOCUS : Types de soins, timing, progression dermatologique.
 - **Progression logique** entre phases
 - **Zones ciblées** selon diagnostic
 
-## RÈGLES STRICTES FORMAT JSON
-- **timing** : UNIQUEMENT "matin", "soir", "both", ou "hebdomadaire" (pas "matin et soir")
-- **progressiveIntroduction** : Utiliser null si pas applicable, sinon string descriptive
-- **careType** : UNIQUEMENT les valeurs autorisées (nettoyage, traitement, hydratation, protection, exfoliation, masque)
+## RÈGLES STRICTES FORMAT JSON V3
 
-## FORMAT JSON OBLIGATOIRE
-Réponds UNIQUEMENT en JSON selon cette structure EXACTE :
+### **INTERDICTION TIMING "both"**
+- **timing** : INTERDICTION ABSOLUE de "both" - créer deux steps distincts si nécessaire
+- **timing** : UNIQUEMENT "matin", "soir", ou "hebdomadaire" 
+- Si un produit s'utilise matin ET soir → créer 2 steps avec timing différent
+
+### **RÈGLE HEBDOMADAIRE AUTOMATIQUE**
+- Tout item dont **frequency** n'est PAS "daily" → **timing="hebdomadaire"** OBLIGATOIRE
+- Exemples : "2x/week", "weekly", "1x/week" → timing="hebdomadaire"
+
+### **CHAMPS OBLIGATOIRES V3**
+- **careType** : UNIQUEMENT les valeurs autorisées (nettoyage, traitement, hydratation, protection, exfoliation, masque)
+- **applicationInstructions** : string obligatoire (instructions d'application détaillées)
+- **restrictions** : array obligatoire (même si vide [])
+- **targetZones** : array obligatoire (même si ["visage entier"])
+- **alternatives** : array obligatoire (même si vide [] - sera rempli par Étape 3)
+
+## NOUVEAUX CHAMPS OBLIGATOIRES V2
+Chaque step doit maintenant inclure ces champs supplémentaires :
+
+### **Champs de Métadonnées Enrichies**
+- **isTemporary** : boolean - true pour traitements ponctuels/temporaires, false pour soins continus
+- **introduceFromWeek** : number - 0 = dès le début, 1 = semaine 2, etc. (max 12)
+- **applicationDuration** : string - "3 semaines", "jusqu'à cicatrisation", "continu"
+- **frequency** : string - "daily", "2x/week", "weekly", "1x/week", "progressive"
+- **displayTitle** : string - titre court et descriptif pour UI (3-40 caractères)
+- **targetBenefit** : string - bénéfice principal en 3-5 mots (3-30 caractères)
+
+### **Règles de Cohérence**
+- Les produits de base (nettoyage, hydratation, protection) ont toujours **isTemporary=false**
+- Les traitements ciblés ont généralement **isTemporary=true**
+- **applicationDuration** doit être cohérent avec la phase
+- **frequency="daily"** pour soins quotidiens, autres valeurs pour soins spécialisés
+
+## FORMAT JSON OBLIGATOIRE ENRICHI
+Réponds UNIQUEMENT en JSON selon cette structure EXACTE avec TOUS les champs :
 
 {
   "phases": {
     "immediate": {
       "duration": "1-2 semaines",
       "objective": "Stabiliser votre peau et traiter les problèmes urgents identifiés",
+      "education": {
+        "title": "Objectif : Stabiliser la barrière cutanée",
+        "text": "Cette phase prépare votre peau aux traitements plus intensifs. Les durées sont dictées par les traitements temporaires pour éviter la sur-stimulation."
+      },
       "steps": [
         {
           "stepNumber": 1,
@@ -95,7 +129,15 @@ Réponds UNIQUEMENT en JSON selon cette structure EXACTE :
           "targetProblem": "Impuretés quotidiennes",
           "targetZones": ["visage entier"],
           "progressiveIntroduction": null,
-          "restrictions": []
+          "restrictions": [],
+          "applicationInstructions": "Appliquer sur peau humide, masser délicatement 30 secondes, rincer à l'eau tiède",
+          "alternatives": [],
+          "isTemporary": false,
+          "introduceFromWeek": 0,
+          "applicationDuration": "continu",
+          "frequency": "daily",
+          "displayTitle": "Nettoyage matinal",
+          "targetBenefit": "Purifier et préparer"
         },
         {
           "stepNumber": 2,
@@ -104,28 +146,69 @@ Réponds UNIQUEMENT en JSON selon cette structure EXACTE :
           "targetProblem": "Pores dilatés zone T",
           "targetZones": ["nez", "front"],
           "progressiveIntroduction": "Commencer 2-3 fois par semaine",
-          "restrictions": ["Éviter contour des yeux"]
+          "restrictions": ["Éviter contour des yeux"],
+          "applicationInstructions": "Après nettoyage, appliquer 2-3 gouttes sur zones concernées, attendre 60s avant hydratant",
+          "alternatives": [],
+          "isTemporary": true,
+          "introduceFromWeek": 0,
+          "applicationDuration": "3-4 semaines",
+          "frequency": "2x/week puis daily",
+          "displayTitle": "Traitement pores",
+          "targetBenefit": "Resserrer pores dilatés"
         }
       ]
     },
     "adaptation": {
       "duration": "4-6 semaines", 
       "objective": "Introduire des actifs plus puissants progressivement",
+      "education": {
+        "title": "Objectif : Introduire progressivement des actifs",
+        "text": "Augmentation graduelle de la puissance ou fréquence selon la tolérance. Éviter les changements multiples simultanés."
+      },
       "steps": [
         {
           "stepNumber": 1,
           "careType": "nettoyage",
-          "timing": "both",
-          "targetProblem": "Maintien propreté",
+          "timing": "matin",
+          "targetProblem": "Maintien propreté matinale",
           "targetZones": ["visage entier"],
           "progressiveIntroduction": null,
-          "restrictions": []
+          "restrictions": [],
+          "applicationInstructions": "Appliquer sur peau humide, masser délicatement, rincer à l'eau tiède",
+          "alternatives": [],
+          "isTemporary": false,
+          "introduceFromWeek": 0,
+          "applicationDuration": "continu",
+          "frequency": "daily",
+          "displayTitle": "Nettoyage matin",
+          "targetBenefit": "Purifier et préparer"
+        },
+        {
+          "stepNumber": 2,
+          "careType": "nettoyage",
+          "timing": "soir",
+          "targetProblem": "Maintien propreté nocturne",
+          "targetZones": ["visage entier"],
+          "progressiveIntroduction": null,
+          "restrictions": [],
+          "applicationInstructions": "Démaquiller puis nettoyer, sécher par tapotements",
+          "alternatives": [],
+          "isTemporary": false,
+          "introduceFromWeek": 0,
+          "applicationDuration": "continu",
+          "frequency": "daily",
+          "displayTitle": "Nettoyage soir",
+          "targetBenefit": "Purifier et régénérer"
         }
       ]
     },
     "maintenance": {
       "duration": "Continu",
-      "objective": "Maintenir les acquis et prévenir les rechutes", 
+      "objective": "Maintenir les acquis et prévenir les rechutes",
+      "education": {
+        "title": "Objectif : Maintenir les acquis",
+        "text": "Stabilisation de la routine et prévention des rechutes. Ajustements possibles selon les résultats obtenus."
+      }, 
       "steps": [
         {
           "stepNumber": 1,
@@ -134,7 +217,15 @@ Réponds UNIQUEMENT en JSON selon cette structure EXACTE :
           "targetProblem": "Prévention vieillissement",
           "targetZones": ["visage entier"],
           "progressiveIntroduction": null,
-          "restrictions": []
+          "restrictions": [],
+          "applicationInstructions": "Appliquer généreusement en dernière étape, renouveler toutes les 2h si exposition",
+          "alternatives": [],
+          "isTemporary": false,
+          "introduceFromWeek": 0,
+          "applicationDuration": "continu",
+          "frequency": "daily",
+          "displayTitle": "Protection solaire",
+          "targetBenefit": "Prévenir vieillissement"
         }
       ]
     }

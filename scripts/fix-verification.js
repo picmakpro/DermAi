@@ -88,3 +88,4 @@ if (allFixed) {
 
 process.exit(allFixed ? 0 : 1)
 
+

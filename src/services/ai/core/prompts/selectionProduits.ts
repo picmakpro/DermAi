@@ -34,6 +34,11 @@ INTERDICTION : Inventer des produits non présents dans le catalogue.
 - **Priorisation** : SPF > Nettoyant > Actif principal > Hydratant > Compléments
 - **Alternatives** : Proposer si dépassement budgétaire
 
+### **RÈGLES TIMING V3 (cohérence avec Étape 2)**
+- **timing** : UNIQUEMENT "matin", "soir", ou "hebdomadaire" (PAS "matin et soir")
+- **Aligner avec routine** : Si routine dit "matin" → produit timing="matin"
+- **Champs obligatoires** : routineStepUid, imageUrl, alternatives[], retailers[]
+
 ## CATALOGUE FOURNI
 Le catalogue est partitionné par catégories avec structure :
 {catalogId, name, brand, category, price, targetSkinTypes, benefits, activeIngredients, applicationTiming, targetZones, restrictions}
@@ -59,13 +64,23 @@ Réponds UNIQUEMENT en JSON selon cette structure :
   "selectedProducts": [
     {
       "routineStepId": 1,
+      "routineStepUid": "immediate:morning:nettoyage:1",
       "catalogId": "cerave_gel_moussant_123",
       "productName": "Gel Moussant Nettoyant",
       "brand": "CeraVe",
       "price": 12.99,
+      "imageUrl": "https://example.com/cerave-gel.jpg",
+      "retailers": [
+        { "name": "Amazon", "url": "https://amazon.fr/cerave-gel" },
+        { "name": "Sephora", "url": "https://sephora.fr/cerave-gel" }
+      ],
+      "alternatives": [
+        { "catalogId": "cetaphil_cleanser_456", "name": "Cetaphil Gentle Skin Cleanser", "brand": "Cetaphil", "price": 10.99, "imageUrl": "https://example.com/cetaphil.jpg" },
+        { "catalogId": "lrp_toleriane_789", "name": "La Roche-Posay Toleriane Dermo-Nettoyant", "brand": "La Roche-Posay", "price": 15.99, "imageUrl": "https://example.com/lrp.jpg" }
+      ],
       "justification": "Nettoyant doux adapté à votre peau mixte diagnostiquée, formulé avec céramides pour respecter la barrière cutanée fragile. Répond au besoin de nettoyage quotidien sans agression.",
       "applicationAdvice": "Appliquer sur peau humide, masser délicatement 30 secondes, rincer à l'eau tiède",
-      "timing": "matin et soir",
+      "timing": "matin",
       "targetZones": ["visage entier"],
       "temporaryLabel": false,
       "progressiveIntroduction": null,
@@ -73,15 +88,24 @@ Réponds UNIQUEMENT en JSON selon cette structure :
     },
     {
       "routineStepId": 2,
+      "routineStepUid": "immediate:evening:traitement:2",
       "catalogId": "niacinamide_ordinary_456",
       "productName": "Sérum Niacinamide 10%",
       "brand": "The Ordinary",
       "price": 7.50,
+      "imageUrl": "https://example.com/ordinary-niacinamide.jpg",
+      "retailers": [
+        { "name": "Sephora", "url": "https://sephora.fr/ordinary-niacinamide" }
+      ],
+      "alternatives": [
+        { "catalogId": "paula_niacin_789", "name": "Paula's Choice 10% Niacinamide Booster", "brand": "Paula's Choice", "price": 45.0, "imageUrl": "https://example.com/paula.jpg" },
+        { "catalogId": "inkey_niacin_101", "name": "The Inkey List Niacinamide", "brand": "The Inkey List", "price": 8.99, "imageUrl": "https://example.com/inkey.jpg" }
+      ],
       "justification": "Traitement ciblé pour vos pores dilatés zone T diagnostiqués. La niacinamide resserre les pores et régule le sébum sans assécher.",
       "applicationAdvice": "Appliquer 2-3 gouttes sur zone T uniquement, éviter contour des yeux",
-      "timing": "soir uniquement",
+      "timing": "soir",
       "targetZones": ["nez", "front"],
-      "temporaryLabel": false,
+      "temporaryLabel": true,
       "progressiveIntroduction": "Commencer 2 fois par semaine puis augmenter progressivement",
       "restrictions": ["Éviter contour des yeux", "Ne pas mélanger avec vitamine C"]
     }

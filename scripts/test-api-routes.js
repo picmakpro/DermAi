@@ -47,3 +47,4 @@ console.log('- Tables Supabase créées (SPRINT-2-3-SUPABASE-TABLES.sql)')
 console.log('- Utilisateur connecté avec session valide')
 console.log('- Données de test optionnelles (SPRINT-2-3-TEST-DATA.sql)')
 
+

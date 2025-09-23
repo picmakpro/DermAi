@@ -65,7 +65,7 @@ describe('RoutineDisplayHelpers - Sprint 1 Corrections', () => {
     it('devrait identifier les critères visuels comme temporaires', () => {
       const visualStep = createMockStep({
         category: 'treatment',
-        visualCriteria: 'Jusqu\'à disparition des rougeurs'
+        applicationDuration: 'Jusqu\'à disparition des rougeurs'
       })
       
       expect(isTemporaryTreatment(visualStep)).toBe(true)

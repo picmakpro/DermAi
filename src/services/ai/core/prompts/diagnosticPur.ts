@@ -47,7 +47,7 @@ Estimation visuelle de l'**apparence cutanée** (pas l'âge civil). Base: rides,
 Résumé objectif: état global, caractéristiques dominantes, zones à surveiller (cosmétique).
 
 ### 5) PROBLÈMES PAR ZONE
-Pour chaque zone (front, joues, nez, menton, contour-yeux, cou):
+Pour chaque zone (front, joues, nez, menton, contour-yeux, lèvres, cou):
 - Zone
 - Problème (description factuelle, non médicale)
 - Intensité: légère / modérée / intense
@@ -137,7 +137,7 @@ Apparence cutanée perçue (pas l'âge civil).
 Résumé objectif: état global, traits dominants, zones à surveiller (cosmétique).
 
 ### 5) PROBLÈMES PAR ZONE
-(front, joues, nez, menton, contour-yeux, cou): zone / problème (cosmétique) / intensité (légère|modérée|intense) / description (≥120 chars).
+(front, joues, nez, menton, contour-yeux, lèvres, cou): zone / problème (cosmétique) / intensité (légère|modérée|intense) / description (≥120 chars).
 
 ## VALIDATION INTERNE AVANT ENVOI (AUTO-CHECK)
 - JSON valide, parseable, sans texte avant/après, sans markdown ni backticks.

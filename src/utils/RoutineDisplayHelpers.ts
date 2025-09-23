@@ -11,20 +11,17 @@ import type { UnifiedRoutineStep } from '@/types'
  * Logique basée sur category + isTemporaryTreatment au lieu de applicationDuration
  */
 export const isTemporaryTreatment = (step: UnifiedRoutineStep): boolean => {
-  // Traitements spécifiques temporaires (flag explicite)
-  if (step.isTemporaryTreatment === true) return true
-  
   // Catégories temporaires par nature
   if (['spot-treatment', 'healing', 'repair', 'cicatrisation'].includes(step.category)) return true
-  
-  // Critères visuels = temporaire
-  if (step.visualCriteria || step.hasVisualCriteria) return true
   
   // Durée explicitement temporaire
   if (step.applicationDuration?.includes('jusqu\'à') || 
       step.applicationDuration?.includes('cicatrisation') ||
       step.applicationDuration?.includes('amélioration') ||
       step.applicationDuration?.includes('disparition')) return true
+  
+  // Traitements spécifiques avec zones ciblées = souvent temporaires
+  if (step.category === 'treatment' && step.targetArea === 'specific') return true
   
   // Base care = continu (jamais temporaire)
   if (['cleansing', 'hydration', 'protection', 'moisturizing'].includes(step.category)) return false
@@ -43,30 +40,38 @@ export const isContinuousTreatment = (step: UnifiedRoutineStep): boolean => {
 }
 
 /**
- * CORRECTION 2: Titres cohérents IA
- * Validation et nettoyage des titres générés par l'IA
+ * CORRECTION 2: Titres cohérents IA - SPRINT 1 AMÉLIORATION
+ * Validation et nettoyage des titres générés par l'IA avec standardisation
  */
-export const validateAndCleanTitle = (title: string, category: string): string => {
+export const validateAndCleanTitle = (
+  title: string, 
+  category: string, 
+  product?: any
+): string => {
   if (!title || typeof title !== 'string') {
     return getFallbackTitle(category)
   }
   
-  // Supprimer artefacts génération
+  // 1. Nettoyer artefacts IA existants + nouveaux
   let cleaned = title
     .replace(/je ne sais pas/gi, '')
-    .replace(/undefined/gi, '')
-    .replace(/null/gi, '')
-    .replace(/\s+/g, ' ')
-    .trim()
-  
-  // Supprimer mentions évolutives redondantes
-  cleaned = cleaned
+    .replace(/undefined|null/gi, '')
     .replace(/(optimisée?|renforcée?|→\s*(évolutif|optimisé))/gi, '')
     .replace(/\s+/g, ' ')
     .trim()
   
-  // Fallback par catégorie si titre incohérent
-  if (cleaned.length < 5 || cleaned.includes('undefined') || cleaned === '') {
+  // 2. NOUVEAU : Standardiser par catégorie si titre contient nom produit exact
+  if (product?.name && cleaned.toLowerCase().includes(product.name.toLowerCase())) {
+    cleaned = getCategoryTitle(category, product)
+  }
+  
+  // 3. NOUVEAU : Validation longueur (5-60 caractères)
+  if (cleaned.length < 5 || cleaned.length > 60) {
+    return getFallbackTitle(category)
+  }
+  
+  // 4. Validation cohérence finale
+  if (cleaned === '') {
     return getFallbackTitle(category)
   }
   
@@ -74,7 +79,25 @@ export const validateAndCleanTitle = (title: string, category: string): string =
 }
 
 /**
- * Fallbacks par catégorie pour titres incohérents
+ * NOUVEAU : Titres standardisés par catégorie avec contexte produit
+ */
+const getCategoryTitle = (category: string, product: any): string => {
+  const templates: Record<string, string> = {
+    cleansing: `Nettoyage ${product?.skinType || 'adapté'}`,
+    treatment: `Traitement ${product?.targetProblem || 'ciblé'}`,
+    hydration: `Hydratation ${product?.skinType || 'quotidienne'}`,
+    moisturizing: `Hydratation ${product?.skinType || 'quotidienne'}`,
+    protection: 'Protection solaire quotidienne',
+    exfoliation: 'Exfoliation douce',
+    'spot-treatment': `Traitement ${product?.targetArea || 'localisé'}`,
+    healing: 'Soin réparateur',
+    repair: 'Soin réparateur'
+  }
+  return templates[category] || 'Soin personnalisé'
+}
+
+/**
+ * Fallbacks par catégorie pour titres incohérents - SPRINT 1 ENRICHISSEMENT
  */
 const getFallbackTitle = (category: string): string => {
   const fallbacks: Record<string, string> = {
@@ -86,7 +109,15 @@ const getFallbackTitle = (category: string): string => {
     exfoliation: 'Exfoliation douce',
     'spot-treatment': 'Traitement localisé',
     healing: 'Soin réparateur',
-    repair: 'Soin réparateur'
+    repair: 'Soin réparateur',
+    // NOUVEAU : Plus de catégories
+    toning: 'Tonification équilibrante',
+    serum: 'Sérum concentré',
+    mask: 'Masque intensif',
+    essence: 'Essence hydratante',
+    oil: 'Huile nourrissante',
+    mist: 'Brume rafraîchissante',
+    balm: 'Baume réparateur'
   }
   
   return fallbacks[category] || 'Soin personnalisé'
@@ -193,18 +224,102 @@ export const getTimingIcon = (timeOfDay: string) => {
 }
 
 /**
- * Helper pour formater la durée d'application
+ * SPRINT 3 : Helper pour formater la durée d'application avec contexte de phase
  */
-export const formatApplicationDuration = (duration?: string): string => {
-  if (!duration) return ''
+export const formatApplicationDuration = (
+  step: UnifiedRoutineStep, 
+  phaseContext?: PhaseContext
+): string => {
   
-  // Nettoyage et formatage
-  return duration
-    .replace(/^(1-2|2-3|3-4|4-6|6-8)\s*(semaines?|mois)/gi, (match) => {
-      return match.charAt(0).toUpperCase() + match.slice(1).toLowerCase()
-    })
-    .replace(/jusqu'à/gi, 'Jusqu\'à')
-    .replace(/en continu/gi, 'En continu')
+  // Durées progressives précises
+  if (step.frequency === 'progressive') {
+    return getProgressiveDuration(step, phaseContext)
+  }
+  
+  // Fréquences hebdomadaires précises
+  if (step.frequency === 'weekly') {
+    return getWeeklyFrequency(step)
+  }
+  
+  // Critères visuels avec estimation
+  if (step.applicationDuration?.toLowerCase().includes('jusqu\'à')) {
+    return getVisualCriteriaDuration(step)
+  }
+  
+  // Durée standard avec nettoyage
+  if (step.applicationDuration) {
+    return step.applicationDuration
+      .replace(/^(1-2|2-3|3-4|4-6|6-8)\s*(semaines?|mois)/gi, (match) => {
+        return match.charAt(0).toUpperCase() + match.slice(1).toLowerCase()
+      })
+      .replace(/jusqu'à/gi, 'Jusqu\'à')
+      .replace(/en continu/gi, 'En continu')
+  }
+  
+  return 'En continu'
+}
+
+/**
+ * SPRINT 3 : Durées progressives précises avec contexte
+ */
+const getProgressiveDuration = (step: UnifiedRoutineStep, context?: PhaseContext): string => {
+  const baseWeeks = context?.phaseWeeks || 4
+  const introWeeks = Math.ceil(baseWeeks / 2)
+  
+  return `Commencer 2x/semaine, puis quotidien après ${introWeeks} semaines`
+}
+
+/**
+ * SPRINT 3 : Fréquences hebdomadaires précises par catégorie
+ */
+const getWeeklyFrequency = (step: UnifiedRoutineStep): string => {
+  if (step.category === 'exfoliation') {
+    const intensity = step.zones?.length && step.zones.length > 2 ? 'légère' : 'modérée'
+    return intensity === 'légère' ? '2x par semaine maximum' : '1x par semaine'
+  }
+  
+  if (step.category === 'treatment' && step.zones && step.zones.length > 0) {
+    return 'Commencer 2x/semaine, augmenter selon tolérance'
+  }
+  
+  return '1x par semaine, même jour chaque semaine'
+}
+
+/**
+ * SPRINT 3 : Critères visuels avec estimations temporelles
+ */
+const getVisualCriteriaDuration = (step: UnifiedRoutineStep): string => {
+  const criteria = step.applicationDuration?.toLowerCase() || ''
+  
+  // Détection plus flexible des mots-clés
+  if (criteria.includes('cicatrisation')) {
+    return 'Jusqu\'à cicatrisation (7-14 jours estimés)'
+  }
+  
+  if (criteria.includes('amélioration')) {
+    return 'Jusqu\'à amélioration (2-4 semaines estimées)'
+  }
+  
+  if (criteria.includes('disparition')) {
+    return 'Jusqu\'à disparition (3-6 semaines estimées)'
+  }
+  
+  // Si aucun mot-clé reconnu mais contient "jusqu'à", retourner tel quel
+  if (criteria.includes('jusqu\'à')) {
+    return step.applicationDuration || 'Selon évolution'
+  }
+  
+  return step.applicationDuration || 'Selon évolution'
+}
+
+/**
+ * Interface pour le contexte de phase (Sprint 3)
+ */
+export interface PhaseContext {
+  phaseWeeks: number
+  previousPhaseCompleted: boolean
+  userSkinType: string
+  hasUrgentIssues?: boolean
 }
 
 /**

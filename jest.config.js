@@ -9,9 +9,16 @@ const config = {
   // Transformation des fichiers
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
-      tsconfig: 'tsconfig.json'
+      tsconfig: {
+        jsx: 'react-jsx'
+      }
     }]
   },
+  
+  // Support des modules ES6 dans node_modules
+  transformIgnorePatterns: [
+    'node_modules/(?!(.*\\.mjs$|@headlessui|framer-motion))'
+  ],
   
   // Résolution des modules
   moduleNameMapper: {

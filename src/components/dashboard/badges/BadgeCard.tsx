@@ -128,3 +128,4 @@ export function BadgeCard({ badge, type, level, gradientColor }: BadgeCardProps)
   )
 }
 
+

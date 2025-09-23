@@ -76,9 +76,9 @@ export function useAnalysis(): UseAnalysisReturn {
       // Les photos sont déjà en base64 depuis le sessionStorage
       const requestForAPI = request
 
-      // V2 PURE: Timeout étendu 180s pour architecture IA-First 4 étapes
+      // V2 PURE: Timeout étendu 300s pour architecture IA-First 4 étapes
       const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 180000) // 3 minutes
+      const timeoutId = setTimeout(() => controller.abort(), 300000) // 5 minutes
 
       try {
         // Appel API au lieu du service direct
@@ -127,7 +127,7 @@ export function useAnalysis(): UseAnalysisReturn {
         
         // Gestion spécifique des timeouts
         if (fetchError instanceof Error && fetchError.name === 'AbortError') {
-          throw new Error('Timeout: L\'analyse a pris trop de temps (>180s). Veuillez réessayer avec des images plus petites.')
+          throw new Error('Timeout: L\'analyse a pris trop de temps (>300s). Veuillez réessayer avec des images plus petites.')
         }
         
         throw fetchError

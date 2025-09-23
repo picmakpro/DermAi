@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { 
   Calendar, 
@@ -24,20 +24,30 @@ import {
   Sparkles
 } from 'lucide-react'
 import type { UnifiedRoutineStep, BeautyAssessment } from '@/types'
+
+// SPRINT 2 : Extension du type pour les étapes fusionnées
+type MergedRoutineStep = UnifiedRoutineStep & {
+  isMergedStep?: boolean
+  originalSteps?: number
+}
 import { PhaseTimingCalculator, type PhaseTiming } from '@/services/educational/phaseTimingCalculator'
+import { PhaseDependencyCalculator, type PhaseDependencies, type PhaseInfo } from '@/services/educational/PhaseDependencyCalculator'
 import { EducationalTooltip, MobileEducationalTooltip } from '@/components/shared/EducationalTooltip'
 import { AIRoutineIndicator } from '@/components/shared/AIIndicator'
 import { 
   isTemporaryTreatment, 
-  isContinuousTreatment, 
   validateAndCleanTitle, 
   getDetailedTiming, 
-  renderZoneBadge 
+  renderZoneBadge,
+  formatApplicationDuration,
+  type PhaseContext
 } from '@/utils/RoutineDisplayHelpers'
 import { 
   ensureProductMapping, 
-  applyFullCoherence 
+  applyFullCoherence,
+  applyIntelligentDeduplication 
 } from '@/utils/ProductMappingHelpers'
+import { WeeklyScheduleDisplay } from '@/components/results/WeeklyScheduleDisplay'
 
 interface UnifiedRoutineSectionProps {
   routine: UnifiedRoutineStep[]
@@ -90,8 +100,22 @@ export function UnifiedRoutineSection({
   const [isMobile, setIsMobile] = useState(false)
   const [phaseTimings, setPhaseTimings] = useState<Record<string, PhaseTiming>>({})
   const [coherentRoutine, setCoherentRoutine] = useState<UnifiedRoutineStep[]>(routine)
-
-  // 🔥 SPRINT 3: Détection du contenu dynamique IA
+  
+  // 🔥 SPRINT 2 RÉEL: Appliquer la déduplication intelligente AVANT la cohérence
+  const deduplicatedRoutine = useMemo(() => {
+    console.log('🔄 Application déduplication intelligente...')
+    // 1. D'abord déduplication sur les données brutes (avec displayTitle de l'IA)
+    const deduplicated = applyIntelligentDeduplication(routine)
+    // 2. Puis cohérence sur les données déduplicées (préserve les titres)
+    const withCoherence = applyFullCoherence(deduplicated)
+    console.log('✅ Déduplication + Cohérence appliquées', { 
+      avant: routine.length, 
+      après: withCoherence.length 
+    })
+    return withCoherence
+  }, [routine])
+  
+  // 🔥 REFONTE V2: Détection du contenu dynamique IA
   const isDynamicContent = isAIGenerated && routine.some(step => 
     step.title.length > 50 || // Titre long personnalisé
     step.applicationAdvice.includes('votre') || // Personnalisation
@@ -144,11 +168,11 @@ export function UnifiedRoutineSection({
 
   // Calcul des durées personnalisées
   useEffect(() => {
-    if (beautyAssessment && coherentRoutine.length > 0) {
-      const timings = PhaseTimingCalculator.calculateCompleteTiming(beautyAssessment, coherentRoutine)
+    if (beautyAssessment && deduplicatedRoutine.length > 0) {
+      const timings = PhaseTimingCalculator.calculateCompleteTiming(beautyAssessment, deduplicatedRoutine)
       setPhaseTimings(timings)
     }
-  }, [beautyAssessment, coherentRoutine])
+  }, [beautyAssessment, deduplicatedRoutine])
 
   if (!routine || routine.length === 0) {
     return null
@@ -157,10 +181,87 @@ export function UnifiedRoutineSection({
   // Organiser par phases
   const organizeByPhases = () => {
     return {
-      immediate: coherentRoutine.filter(step => step.phase === 'immediate'),
-      adaptation: coherentRoutine.filter(step => step.phase === 'adaptation'),
-      maintenance: coherentRoutine.filter(step => step.phase === 'maintenance')
+      immediate: deduplicatedRoutine.filter(step => step.phase === 'immediate'),
+      adaptation: deduplicatedRoutine.filter(step => step.phase === 'adaptation'),
+      maintenance: deduplicatedRoutine.filter(step => step.phase === 'maintenance')
     }
+  }
+
+  // SPRINT 2 TÂCHE 2.1 : Génération clé de regroupement intelligente
+  const generateProductKey = (step: UnifiedRoutineStep): string => {
+    const category = step.category as string
+    
+    // Regrouper par fonction principale, pas par produit exact
+    if (category === 'cleansing') return 'Nettoyage quotidien'
+    if (category === 'protection') return 'Protection solaire'
+    if (category === 'hydration' || category === 'moisturizing') return 'Hydratation de base'
+    
+    // Pour traitements, regrouper par problème ciblé
+    if (category === 'treatment') {
+      const problem = step.targetArea || step.zones?.[0] || 'général'
+      return `Traitement ${problem}`
+    }
+    
+    // Exfoliants : toujours séparés (fréquence différente)
+    if (category === 'exfoliation') {
+      return `${step.title}_${step.stepNumber}` // Garder séparés
+    }
+    
+    // Traitements spécifiques : regrouper par zone
+    if (category === 'spot-treatment' || category === 'healing') {
+      const zone = step.zones?.[0] || step.targetArea || 'localisé'
+      return `${category}_${zone}`
+    }
+    
+    return step.title
+  }
+
+  // SPRINT 2 TÂCHE 2.2 : Fusion intelligente des étapes dupliquées
+  const mergeRoutineSteps = (
+    stepsGroup: UnifiedRoutineStep[], 
+    productKey: string
+  ): UnifiedRoutineStep => {
+    const baseStep = stepsGroup[0]
+    
+    // Fusionner les timings
+    const timings = stepsGroup.map(s => s.timeOfDay)
+    const mergedTiming = getMergedTiming(timings)
+    
+    // Fusionner les conseils d'application
+    const uniqueAdvices = stepsGroup
+      .map(s => s.applicationAdvice)
+      .filter((advice, i, arr) => arr.indexOf(advice) === i)
+    
+    const finalAdvice = uniqueAdvices.length > 1
+      ? `${uniqueAdvices[0]} (adapté selon le moment)`
+      : uniqueAdvices[0]
+    
+    // Déterminer durée finale
+    const isBaseCare = ['cleansing', 'hydration', 'protection'].includes(baseStep.category)
+    const finalDuration = isBaseCare ? "En continu" : baseStep.applicationDuration
+    
+    return {
+      ...baseStep,
+      title: productKey,
+      timeOfDay: mergedTiming,
+      applicationAdvice: finalAdvice,
+      applicationDuration: finalDuration,
+      stepNumber: Math.min(...stepsGroup.map(s => s.stepNumber)),
+      // NOUVEAU : Marquer comme fusionné
+      isMergedStep: true,
+      originalSteps: stepsGroup.length
+    } as UnifiedRoutineStep & { isMergedStep: boolean; originalSteps: number }
+  }
+
+  // SPRINT 2 : Fusion des timings multiples
+  const getMergedTiming = (timings: string[]): string => {
+    const uniqueTimings = [...new Set(timings)]
+    
+    if (uniqueTimings.includes('both')) return 'both'
+    if (uniqueTimings.includes('morning') && uniqueTimings.includes('evening')) return 'both'
+    if (uniqueTimings.length === 1) return uniqueTimings[0]
+    
+    return 'both' // Fallback
   }
 
   // Organiser par moment de la journée avec déduplication intelligente
@@ -168,18 +269,9 @@ export function UnifiedRoutineSection({
     const deduplicateByProduct = (steps: UnifiedRoutineStep[]) => {
       const productGroups = new Map<string, UnifiedRoutineStep[]>()
       
-      // Regrouper par catégorie ET fonction, pas par produit exact
+      // SPRINT 2 : Regroupement intelligent par fonction
       steps.forEach(step => {
-        let productKey = step.recommendedProducts[0]?.name || step.title
-        
-        // Regroupement intelligent pour produits similaires
-        if (step.category === 'protection' || step.title.includes('Protection solaire')) {
-          productKey = 'Protection solaire' // Unifier toutes les protections solaires
-        } else if (step.category === 'cleansing' || step.title.includes('Nettoyage')) {
-          productKey = 'Nettoyage doux' // Unifier tous les nettoyants
-        } else if (step.category === 'hydration' || step.title.includes('Hydratation')) {
-          productKey = 'Hydratation globale' // Unifier toutes les hydratations
-        }
+        const productKey = generateProductKey(step)
         
         if (!productGroups.has(productKey)) {
           productGroups.set(productKey, [])
@@ -187,7 +279,7 @@ export function UnifiedRoutineSection({
         productGroups.get(productKey)!.push(step)
       })
       
-      // Créer des étapes fusionnées pour chaque produit unique
+      // SPRINT 2 TÂCHE 2.2 : Fusion intelligente des étapes
       const deduplicatedSteps: UnifiedRoutineStep[] = []
       
       productGroups.forEach((stepsGroup, productKey) => {
@@ -195,39 +287,9 @@ export function UnifiedRoutineSection({
           // Pas de duplication, garder l'étape tel quel
           deduplicatedSteps.push(stepsGroup[0])
         } else {
-          // Fusionner les étapes multiples en une seule évolutive
-          const baseStep = stepsGroup[0]
-          const allPhases = stepsGroup.map(s => s.phase).filter((p, i, arr) => arr.indexOf(p) === i)
-          const phaseNames = allPhases.map(p => phaseLabels[p as keyof typeof phaseLabels])
-          
-          // Créer un titre nettoyé sans mentions évolutives
-          const cleanTitle = baseStep.title.replace(/(optimisée?|renforcée?|→\s*(évolutif|optimisé))/gi, '').trim()
-          
-          // Fusionner les conseils d'application
-          const uniqueAdvices = stepsGroup
-            .map(s => s.applicationAdvice)
-            .filter((advice, i, arr) => arr.indexOf(advice) === i)
-          
-          const finalAdvice = uniqueAdvices.length > 1
-            ? uniqueAdvices[0] // Prendre le premier conseil, le plus simple
-            : uniqueAdvices[0]
-          
-          // Créer la durée : garder temporaire si c'est un traitement, sinon "En continu"
-          const isBaseCareProduct = baseStep.category === 'cleansing' || baseStep.category === 'hydration' || baseStep.category === 'protection'
-          const finalDuration = allPhases.length > 1 && isBaseCareProduct
-            ? "En continu"
-            : baseStep.applicationDuration
-          
-          const evolvedStep: UnifiedRoutineStep = {
-            ...baseStep,
-            title: productKey, // Utiliser la clé unifiée comme titre
-            applicationAdvice: finalAdvice,
-            applicationDuration: finalDuration,
-            stepNumber: Math.min(...stepsGroup.map(s => s.stepNumber)),
-            phase: 'immediate' as const, // Phase de base pour l'affichage
-          }
-          
-          deduplicatedSteps.push(evolvedStep)
+          // Fusionner les étapes multiples
+          const mergedStep = mergeRoutineSteps(stepsGroup, productKey)
+          deduplicatedSteps.push(mergedStep)
         }
       })
       
@@ -235,11 +297,11 @@ export function UnifiedRoutineSection({
     }
     
     // Filtrage intelligent : éviter les doublons entre sections
-    const morningSteps = coherentRoutine.filter(step => 
+    const morningSteps = deduplicatedRoutine.filter(step => 
       (step.timeOfDay === 'morning' || step.timeOfDay === 'both') && 
       step.frequency === 'daily' // Seulement les étapes quotidiennes
     )
-    const eveningSteps = coherentRoutine.filter(step => 
+    const eveningSteps = deduplicatedRoutine.filter(step => 
       (step.timeOfDay === 'evening' || step.timeOfDay === 'both') && 
       step.frequency === 'daily' // Seulement les étapes quotidiennes
     )
@@ -247,22 +309,72 @@ export function UnifiedRoutineSection({
     return {
       morning: deduplicateByProduct(morningSteps),
       evening: deduplicateByProduct(eveningSteps),
-      weekly: coherentRoutine.filter(step => step.frequency === 'weekly'),
-      monthly: coherentRoutine.filter(step => step.frequency === 'monthly'),
-      asNeeded: coherentRoutine.filter(step => step.frequency === 'as-needed')
+      weekly: deduplicatedRoutine.filter(step => step.frequency === 'weekly'),
+      monthly: deduplicatedRoutine.filter(step => step.frequency === 'monthly'),
+      asNeeded: deduplicatedRoutine.filter(step => step.frequency === 'as-needed')
     }
   }
 
   const phaseData = organizeByPhases()
   const scheduleData = organizeBySchedule()
+  
+  // SPRINT 3 : Calcul des dépendances de phase
+  const phaseDependencies = PhaseDependencyCalculator.calculatePhaseDependencies(
+    routine, 
+    beautyAssessment
+  )
+  
+  // 🔥 REFONTE V2: Utiliser directement la routine dédupliquée dans l'interface principale
 
-  const renderStep = (step: UnifiedRoutineStep, index: number, resetNumbering: boolean = false) => {
+  // SPRINT 3 : Fonction pour rendre les en-têtes de phase avec dépendances
+  const renderPhaseHeader = (phase: string, dependencies: PhaseDependencies) => {
+    const phaseInfo = dependencies[phase as keyof PhaseDependencies]
+    
+    return (
+      <div className="mb-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-gray-900">
+            {phaseLabels[phase as keyof typeof phaseLabels]}
+          </h3>
+          <div className="text-sm text-gray-600">
+            {phaseInfo.duration}
+          </div>
+        </div>
+        
+        {/* NOUVEAU : Timeline et conditions */}
+        <div className="mt-2 p-3 bg-white/30 rounded-lg">
+          <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center space-x-2">
+              <Calendar className="w-4 h-4 text-gray-500" />
+              <span>Début : Jour {phaseInfo.startDay + 1}</span>
+            </div>
+            {phaseInfo.nextPhaseCondition && (
+              <div className="flex items-center space-x-2 text-green-600">
+                <CheckCircle className="w-4 h-4" />
+                <span>{phaseInfo.nextPhaseCondition}</span>
+              </div>
+            )}
+          </div>
+          
+          {/* Critères de transition */}
+          {phaseInfo.transitionCriteria && phaseInfo.transitionCriteria.length > 0 && (
+            <div className="mt-2 text-xs text-gray-600">
+              <span className="font-medium">Critères de passage : </span>
+              {phaseInfo.transitionCriteria.join(', ')}
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  const renderStep = (step: MergedRoutineStep, index: number, resetNumbering: boolean = false) => {
     // 🔥 SPRINT 2: Badges et timing intelligents
     const isTemporary = step.applicationDuration?.includes("Progressif") || 
                        step.applicationDuration?.includes("jusqu'à") ||
                        isTemporaryTreatment(step)
-    const isContinuous = step.applicationDuration === "En continu" || 
-                        isContinuousTreatment(step)
+    // Badge "Continu" supprimé dans Refonte V3
+    const isContinuous = false
     
     // 🔥 SPRINT 2: Couleurs de phase basées sur category
     const getCategoryColor = (category: string) => {
@@ -283,8 +395,9 @@ export function UnifiedRoutineSection({
       }
     }
     
-    // CORRECTION 2: Titres cohérents nettoyés
-    const cleanTitle = validateAndCleanTitle(step.title, step.category)
+    // CORRECTION 2: Titres cohérents nettoyés - SPRINT 1 AMÉLIORATION
+    const primaryProduct = step.recommendedProducts?.[0]
+    const cleanTitle = validateAndCleanTitle(step.title, step.category, primaryProduct)
     
     // CORRECTION 3: Timing précis et détaillé
     const detailedTiming = getDetailedTiming(step)
@@ -342,10 +455,13 @@ export function UnifiedRoutineSection({
                     <span>Temporaire</span>
                   </div>
                 )}
-                {isContinuous && !isTemporary && (
-                  <div className="flex items-center space-x-1 px-2 py-1 bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 border border-green-200 rounded-full text-xs font-medium">
+                {/* Badge "Continu" supprimé dans Refonte V3 */}
+                
+                {/* SPRINT 2 TÂCHE 2.3 : Indicateur étape fusionnée */}
+                {step.isMergedStep && (
+                  <div className="flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
                     <Repeat className="w-3 h-3" />
-                    <span>Continu</span>
+                    <span>Routine unifiée ({step.originalSteps} étapes)</span>
                   </div>
                 )}
               </div>
@@ -470,23 +586,16 @@ export function UnifiedRoutineSection({
               </div>
             </div>
 
-            {/* Durée d'application - CORRECTION FINALE */}
+            {/* SPRINT 3 : Durée d'application avec contexte de phase */}
             {(() => {
-              let duration = step.applicationDuration
+              // Créer le contexte de phase pour cette étape
+              const phaseContext: PhaseContext = PhaseDependencyCalculator.getPhaseContext(
+                step, 
+                phaseDependencies
+              )
               
-              // Logique cohérente pour la durée
-              if (isTemporary) {
-                // Pour les traitements temporaires, utiliser critères visuels ou durée spécifique
-                const criteria = PhaseTimingCalculator.getVisualCriteria(step)
-                if (criteria) {
-                  duration = `${criteria.observation} (${criteria.estimatedDays})`
-                } else if (!duration) {
-                  duration = "Jusqu'à amélioration"
-                }
-              } else {
-                // Pour les produits continus, toujours "En continu"
-                duration = "En continu"
-              }
+              // Utiliser la nouvelle fonction formatApplicationDuration
+              const duration = formatApplicationDuration(step, phaseContext)
               
               if (duration) {
                 return (
@@ -503,6 +612,9 @@ export function UnifiedRoutineSection({
               }
               return null
             })()}
+
+            {/* SPRINT 4 : Planning hebdomadaire pour produits à fréquence limitée */}
+            <WeeklyScheduleDisplay step={step} />
 
             {/* Supprimer timing détaillé - redondant avec badge en haut à droite */}
 
@@ -617,17 +729,11 @@ export function UnifiedRoutineSection({
                   {activePhase === 'adaptation' && <TrendingUp className="w-4 h-4" />}
                   {activePhase === 'maintenance' && <Heart className="w-4 h-4" />}
                 </div>
-                <div>
-                  <div className="flex items-baseline space-x-2">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {phaseLabels[activePhase]}
-                    </h3>
-                    {phaseTimings[activePhase] && (
-                      <span className="text-sm text-gray-600 font-medium">
-                        ({phaseTimings[activePhase].duration})
-                      </span>
-                    )}
-                  </div>
+                <div className="flex-1">
+                  {/* SPRINT 3 : Utilisation du nouveau renderPhaseHeader */}
+                  {renderPhaseHeader(activePhase, phaseDependencies)}
+                  
+                  {/* Conserver l'objectif éducatif existant */}
                   {phaseTimings[activePhase] && (
                     <p className="text-sm text-gray-700 mt-1">
                       {phaseTimings[activePhase].objective.title}

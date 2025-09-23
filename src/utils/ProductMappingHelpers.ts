@@ -1,16 +1,154 @@
 /**
- * 🔥 SPRINT 2 - COHÉRENCE PRODUITS
- * ProductMappingHelpers.ts - Garantir mapping produits et cohérence inter-phases
+ * 🔥 SPRINT 2 RÉEL - REFONTE ROUTINES V2 - DÉDUPLICATION INTELLIGENTE
+ * ProductMappingHelpers.ts - Implémenter "un produit = un bloc d'affichage"
  * 
- * OBJECTIFS:
- * 1. Garantir qu'aucune étape de routine n'est sans produit recommandé
- * 2. Assurer la cohérence des produits continus entre phases
- * 3. Synchroniser routine ↔ section "Produits Recommandés"
- * 4. Ajouter labels temporels "J+X" pour introduction progressive
+ * OBJECTIFS RÉELS:
+ * 1. DÉDUPLICATION: Fusionner produits identiques matin/soir en un seul bloc
+ * 2. COHÉRENCE: Maintenir logique dermatologique entre phases
+ * 3. MÉTADONNÉES: Enrichir avec displayTitle, isTemporary, etc.
+ * 4. SIMPLIFICATION: Réduire charge cognitive utilisateur (-60% blocs)
+ * 5. CLARTÉ: Un produit continu = un affichage "Matin et soir"
  */
 
 import type { UnifiedRoutineStep, RecommendedProduct, SkinAnalysis } from '@/types'
 import { EnrichedCatalogService } from '@/services/catalog/enrichedCatalogService'
+import { EnrichedRoutineStep } from '@/schemas/v2/routine'
+
+/**
+ * 🔥 FONCTION PRINCIPALE - DÉDUPLICATION INTELLIGENTE
+ * Implémente "un produit = un bloc d'affichage"
+ * Fusionne les produits identiques utilisés matin ET soir
+ */
+export const applyIntelligentDeduplication = (routine: UnifiedRoutineStep[]): UnifiedRoutineStep[] => {
+  console.log('🔄 Démarrage déduplication intelligente...', { stepsCount: routine.length })
+  
+  const deduplicatedSteps: UnifiedRoutineStep[] = []
+  const processedKeys = new Set<string>()
+  
+  // Grouper par phase d'abord
+  const phases = ['immediate', 'adaptation', 'maintenance'] as const
+  
+  phases.forEach(phase => {
+    const phaseSteps = routine.filter(step => step.phase === phase)
+    console.log(`📋 Phase ${phase}: ${phaseSteps.length} étapes`)
+    
+    phaseSteps.forEach(step => {
+      const stepKey = generateDeduplicationKey(step)
+      
+      if (processedKeys.has(stepKey)) {
+        console.log(`⏭️ Étape déjà traitée: ${stepKey}`)
+        return // Déjà traité
+      }
+      
+      // Chercher les étapes similaires (même produit, même phase, timing différent)
+      const similarSteps = phaseSteps.filter(s => 
+        generateDeduplicationKey(s) === stepKey && 
+        !processedKeys.has(generateDeduplicationKey(s))
+      )
+      
+      if (similarSteps.length > 1) {
+        // Fusionner les étapes similaires
+        const mergedStep = mergeSteps(similarSteps)
+        deduplicatedSteps.push(mergedStep)
+        console.log(`🔗 Fusion: ${similarSteps.length} étapes → 1 étape`, { 
+          originalTitles: similarSteps.map(s => s.title),
+          mergedTitle: mergedStep.title 
+        })
+      } else {
+        // Étape unique, garder telle quelle
+        deduplicatedSteps.push(step)
+        console.log(`✅ Étape unique conservée: ${step.title}`)
+      }
+      
+      // Marquer toutes les étapes similaires comme traitées
+      similarSteps.forEach(s => {
+        processedKeys.add(generateDeduplicationKey(s))
+      })
+    })
+  })
+  
+  console.log('✅ Déduplication terminée', { 
+    avant: routine.length, 
+    après: deduplicatedSteps.length,
+    réduction: `${Math.round((1 - deduplicatedSteps.length / routine.length) * 100)}%`
+  })
+  
+  return deduplicatedSteps
+}
+
+/**
+ * Génère une clé unique pour identifier les produits similaires
+ * Basé sur: careType + catalogId (le plus fiable) + fonction
+ */
+const generateDeduplicationKey = (step: UnifiedRoutineStep): string => {
+  const enrichedStep = step as any // Cast pour accéder aux nouveaux champs
+  
+  // Utiliser catalogId du premier produit (le plus fiable)
+  const catalogId = step.recommendedProducts?.[0]?.catalogId || ''
+  
+  // Si pas de catalogId, utiliser careType + zones ciblées
+  if (!catalogId) {
+    const zones = step.zones?.join('-') || 'global'
+    return `${step.phase}-${step.category}-${zones}`.toLowerCase()
+  }
+  
+  // Clé basée sur le produit réel (catalogId) + sa fonction
+  // Ne pas inclure la phase pour permettre déduplication inter-phases
+  return `${step.category}-${catalogId}`.toLowerCase()
+}
+
+/**
+ * Fusionne plusieurs étapes similaires en une seule
+ * Combine les timings et métadonnées
+ */
+const mergeSteps = (steps: UnifiedRoutineStep[]): UnifiedRoutineStep => {
+  if (steps.length === 1) return steps[0]
+  
+  const baseStep = steps[0]
+  const enrichedBase = baseStep as any
+  
+  // Combiner les timings
+  const timings = steps.map(s => s.timeOfDay).filter(Boolean)
+  const uniqueTimings = [...new Set(timings)]
+  
+  let combinedTimeOfDay: string
+  if (uniqueTimings.includes('morning') && uniqueTimings.includes('evening')) {
+    combinedTimeOfDay = 'both'
+  } else if (uniqueTimings.length === 1) {
+    combinedTimeOfDay = uniqueTimings[0]
+  } else {
+    combinedTimeOfDay = 'both' // Par défaut
+  }
+  
+  // Titre unifié - priorité aux displayTitle de l'IA
+  const displayTitle = enrichedBase.displayTitle || 
+    baseStep.title
+      .replace(/\s*-\s*(immediate|adaptation|maintenance)/gi, '') // Supprimer badges de phase
+      .replace(/\s+(matin|soir)/gi, '')
+      .trim()
+  
+  // Fusionner les conseils d'application
+  const applicationAdvices = steps
+    .map(s => s.applicationAdvice)
+    .filter(Boolean)
+    .filter((advice, index, arr) => arr.indexOf(advice) === index) // Déduplication
+  
+  const mergedStep: UnifiedRoutineStep = {
+    ...baseStep,
+    title: displayTitle,
+    timeOfDay: combinedTimeOfDay as any,
+    applicationAdvice: applicationAdvices.length > 1 
+      ? `Matin et soir : ${applicationAdvices[0]}`
+      : applicationAdvices[0] || baseStep.applicationAdvice,
+    // Conserver les métadonnées du premier step
+    frequency: baseStep.frequency,
+    // Marquer comme étape fusionnée pour l'affichage
+    isMergedStep: true,
+    originalSteps: steps.length
+  } as any
+  
+  return mergedStep
+}
 
 // Interface pour le mapping de produits
 export interface ProductMapping {
@@ -472,4 +610,211 @@ export const applyFullCoherence = (routine: UnifiedRoutineStep[]): UnifiedRoutin
   console.log(`✅ Cohérence complète appliquée: ${labeledRoutine.length} étapes finales`)
   
   return labeledRoutine
+}
+
+// ===== NOUVELLES FONCTIONS V2 - REFONTE ROUTINES =====
+
+/**
+ * NOUVELLE FONCTION V2: Cohérence inter-phases avec support isTemporary
+ * Utilise les nouveaux champs V2 pour une logique plus intelligente
+ */
+export const ensurePhaseCoherenceV2 = (routine: UnifiedRoutineStep[]): UnifiedRoutineStep[] => {
+  console.log('🔄 V2 - Début vérification cohérence inter-phases avec champs enrichis')
+  
+  // Identifier les produits continus vs temporaires
+  const continuousProducts = new Map<string, UnifiedRoutineStep>()
+  const temporaryProducts = new Map<string, UnifiedRoutineStep[]>()
+  
+  routine.forEach(step => {
+    // Utiliser isTemporary si disponible, sinon inférer
+    const isTemporary = (step as any).isTemporary ?? 
+                       ['treatment', 'exfoliation'].includes(step.category)
+    
+    if (!isTemporary) {
+      // Produit continu - doit être propagé dans toutes les phases
+      const key = `${step.category}_${step.timeOfDay}`
+      if (!continuousProducts.has(key)) {
+        continuousProducts.set(key, step)
+        console.log(`📌 V2 - Produit continu identifié: ${step.title} (${key})`)
+      }
+    } else {
+      // Produit temporaire - reste dans sa phase
+      const phaseKey = step.phase
+      if (!temporaryProducts.has(phaseKey)) {
+        temporaryProducts.set(phaseKey, [])
+      }
+      temporaryProducts.get(phaseKey)!.push(step)
+      console.log(`⏱️ V2 - Produit temporaire identifié: ${step.title} (${phaseKey})`)
+    }
+  })
+  
+  // Reconstruire la routine avec cohérence
+  const phases = ['immediate', 'adaptation', 'maintenance'] as const
+  const coherentRoutine: UnifiedRoutineStep[] = []
+  
+  phases.forEach(phase => {
+    // Ajouter tous les produits continus pour cette phase
+    continuousProducts.forEach((baseStep, key) => {
+      const continuityStep: UnifiedRoutineStep = {
+        ...baseStep,
+        phase: phase,
+        stepNumber: coherentRoutine.length + 1,
+        // Adapter les métadonnées selon la phase
+        applicationDuration: phase === 'immediate' ? 
+          (baseStep.applicationDuration || 'En continu') : 
+          'Continuer routine établie',
+        frequencyDetails: phase === 'immediate' ? 
+          baseStep.frequencyDetails : 
+          `Maintenir depuis phase ${phase === 'adaptation' ? 'immédiate' : 'précédente'}`
+      }
+      coherentRoutine.push(continuityStep)
+    })
+    
+    // Ajouter les produits temporaires spécifiques à cette phase
+    const phaseTemporaryProducts = temporaryProducts.get(phase) || []
+    phaseTemporaryProducts.forEach(step => {
+      coherentRoutine.push({
+        ...step,
+        stepNumber: coherentRoutine.length + 1
+      })
+    })
+  })
+  
+  console.log(`✅ V2 - Cohérence inter-phases assurée: ${coherentRoutine.length} étapes`)
+  return coherentRoutine
+}
+
+/**
+ * NOUVELLE FONCTION V2: Génération de métadonnées d'affichage enrichies
+ */
+export const generateDisplayMetadata = (step: UnifiedRoutineStep): {
+  showTemporaryBadge: boolean
+  showDurationBadge: boolean
+  showPhaseBadge: boolean
+  temporaryLabel?: string
+  durationLabel?: string
+  phaseLabel?: string
+  benefitLabel?: string
+} => {
+  const isTemporary = (step as any).isTemporary ?? 
+                     ['treatment', 'exfoliation'].includes(step.category)
+  
+  const applicationDuration = step.applicationDuration || 'En continu'
+  const hasSpecificDuration = applicationDuration !== 'En continu' && 
+                             applicationDuration !== 'continu'
+  
+  return {
+    showTemporaryBadge: isTemporary,
+    showDurationBadge: hasSpecificDuration,
+    showPhaseBadge: step.phase !== 'maintenance',
+    
+    temporaryLabel: isTemporary ? 'Traitement temporaire' : undefined,
+    durationLabel: hasSpecificDuration ? applicationDuration : undefined,
+    phaseLabel: step.phase === 'immediate' ? 'Phase Immédiate' :
+               step.phase === 'adaptation' ? 'Phase Adaptation' :
+               'Phase Maintenance',
+    benefitLabel: (step as any).targetBenefit || 
+                 `Améliorer ${step.category === 'treatment' ? 'problèmes ciblés' : step.category}`
+  }
+}
+
+/**
+ * NOUVELLE FONCTION V2: Génération de clé produit pour déduplication intelligente
+ * Utilise les nouveaux champs pour une logique plus précise
+ */
+export const generateProductKey = (step: UnifiedRoutineStep): string => {
+  const product = step.recommendedProducts[0]
+  if (!product) return `no-product-${step.category}-${step.timeOfDay}`
+  
+  // Pour les produits continus, utiliser catalogId + fonction
+  const isTemporary = (step as any).isTemporary ?? 
+                     ['treatment', 'exfoliation'].includes(step.category)
+  
+  if (!isTemporary) {
+    // Produits continus : clé basée sur fonction + timing
+    return `continuous-${step.category}-${step.timeOfDay}`
+  } else {
+    // Traitements temporaires : clé unique pour éviter fusion
+    return `temporary-${product.catalogId || product.id}-${step.phase}-${step.stepNumber}`
+  }
+}
+
+/**
+ * NOUVELLE FONCTION V2: Validation de cohérence avec nouveaux champs
+ */
+export const validateRoutineCoherenceV2 = (routine: UnifiedRoutineStep[]): {
+  isCoherent: boolean
+  issues: string[]
+  suggestions: string[]
+} => {
+  const issues: string[] = []
+  const suggestions: string[] = []
+  
+  // Vérifier que chaque phase a les produits de base
+  const phases = ['immediate', 'adaptation', 'maintenance'] as const
+  const requiredCategories = ['cleansing', 'hydration', 'protection']
+  
+  phases.forEach(phase => {
+    const phaseSteps = routine.filter(s => s.phase === phase)
+    
+    requiredCategories.forEach(category => {
+      const hasCategory = phaseSteps.some(s => s.category === category)
+      if (!hasCategory) {
+        issues.push(`Phase ${phase} manque catégorie ${category}`)
+        suggestions.push(`Ajouter un produit ${category} en phase ${phase}`)
+      }
+    })
+  })
+  
+  // Vérifier la progression logique des traitements temporaires
+  const temporaryTreatments = routine.filter(s => 
+    (s as any).isTemporary && s.category === 'treatment'
+  )
+  
+  temporaryTreatments.forEach(treatment => {
+    const introduceFromWeek = (treatment as any).introduceFromWeek || 0
+    const expectedPhase = introduceFromWeek === 0 ? 'immediate' :
+                         introduceFromWeek <= 4 ? 'adaptation' : 'maintenance'
+    
+    if (treatment.phase !== expectedPhase) {
+      issues.push(`Traitement ${treatment.title} en mauvaise phase (${treatment.phase} vs ${expectedPhase})`)
+      suggestions.push(`Déplacer ${treatment.title} en phase ${expectedPhase}`)
+    }
+  })
+  
+  return {
+    isCoherent: issues.length === 0,
+    issues,
+    suggestions
+  }
+}
+
+/**
+ * NOUVELLE FONCTION V2: Application complète avec support V2
+ */
+export const applyFullCoherenceV2 = (routine: UnifiedRoutineStep[]): UnifiedRoutineStep[] => {
+  console.log('🔄 V2 - Application cohérence complète avec nouveaux champs')
+  
+  // 1. Appliquer le mapping de produits
+  const mappedRoutine = applyProductMappingToRoutine(routine)
+  
+  // 2. Assurer la cohérence inter-phases V2
+  const coherentRoutine = ensurePhaseCoherenceV2(mappedRoutine)
+  
+  // 3. Générer les métadonnées d'affichage
+  const enrichedRoutine = coherentRoutine.map(step => ({
+    ...step,
+    displayMetadata: generateDisplayMetadata(step)
+  }))
+  
+  // 4. Valider la cohérence finale
+  const validation = validateRoutineCoherenceV2(enrichedRoutine)
+  if (!validation.isCoherent) {
+    console.warn('⚠️ V2 - Problèmes de cohérence détectés:', validation.issues)
+    console.log('💡 V2 - Suggestions:', validation.suggestions)
+  }
+  
+  console.log(`✅ V2 - Cohérence complète appliquée: ${enrichedRoutine.length} étapes finales`)
+  
+  return enrichedRoutine
 }

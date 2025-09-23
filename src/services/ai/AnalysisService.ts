@@ -14,6 +14,7 @@ import { Logger } from '@/utils/Logger'
 import { RetryStrategy } from '@/utils/RetryStrategy'
 import { CacheManagerV2 } from '@/utils/v2/CacheManagerV2'
 import { AssemblyAndValidationService } from './core/AssemblyAndValidationService'
+import { AnalysisServiceV3Adapter } from './core/AnalysisServiceV3Adapter'
 import { getPromptForAttempt } from './core/prompts/diagnosticPur'
 import { ROUTINE_PERSONNALISEE_SYSTEM_PROMPT, buildRoutineUserPrompt } from './core/prompts/routinePersonnalisee'
 import { SELECTION_PRODUITS_SYSTEM_PROMPT, buildProductSelectionUserPrompt } from './core/prompts/selectionProduits'
@@ -137,20 +138,22 @@ export class AnalysisService {
       this.logger.info('📤 OUTPUT ÉTAPE 3 (Produits):', { requestId })
       // console.log('📤 OUTPUT ÉTAPE 3 (Produits) - CONTENU COMPLET:', JSON.stringify(products, null, 2))
       
-      // 🎯 ÉTAPE 4: Assemblage et validation
-      this.logger.info('🎯 ÉTAPE 4: Assemblage et validation', { requestId })
+      // 🎯 ÉTAPE 4: Assemblage et validation V3 OPTIMISÉE
+      this.logger.info('🎯 ÉTAPE 4: Assemblage V3 optimisé', { requestId })
       this.logger.info('📥 INPUT ÉTAPE 4:', { requestId })
-      // console.log('📥 INPUT ÉTAPE 4 - CONTENU COMPLET:', JSON.stringify({
-      //   diagnostic,
-      //   routine,
-      //   products
-      // }, null, 2))
       
+      // Assemblage classique V2
       const finalResult = await AssemblyAndValidationService.assembleCompleteAnalysis(
         diagnostic, 
         routine, 
         products
       )
+      
+      // Transformation UI V3 (sans casser V2)
+      const uiRoutine = AnalysisServiceV3Adapter.transformForUIV3(diagnostic, routine, products)
+      
+      // Ajouter uiRoutine au résultat final pour compatibilité UI V3
+      finalResult.uiRoutine = uiRoutine
       
       this.logger.info('📤 OUTPUT ÉTAPE 4 (Final):', { requestId })
       console.log('📤 OUTPUT ÉTAPE 4 (Final) - CONTENU COMPLET:', JSON.stringify(finalResult, null, 2))

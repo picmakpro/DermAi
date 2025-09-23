@@ -4,20 +4,20 @@
 
 ## ✨ Fonctionnalités
 
-- 🤖 **Analyse IA avancée** - GPT-4o Vision pour diagnostic précis
+- 🤖 **Architecture IA-First Pure** - 4 étapes 100% IA avec GPT-4o Vision
 - 📸 **Upload professionnel** - Interface drag & drop intuitive  
-- 🎯 **Diagnostic spécifique** - Conditions nommées précisément
+- 🎯 **Routine 3 Phases** - Logique dermatologique scientifique
 - 📊 **Scores détaillés** - 8 paramètres cutanés analysés
-- 🛍️ **Recommandations** - Produits et routine personnalisés
-- 📱 **Mobile-first** - Interface responsive optimisée
+- 🛍️ **Catalogue interne** - Sélection intelligente sans fallback générique
+- 📱 **Interface éducative** - Durées personnalisées et critères visuels
 
 ## 🚀 Technologies
 
 - **Frontend**: Next.js 15, TypeScript, Tailwind CSS
-- **IA**: OpenAI GPT-4o Vision API
-- **Architecture**: App Router, composants modulaires
-- **Validation**: Validation d'images avancée
-- **Performance**: Optimisé pour mobile et desktop
+- **Backend**: Supabase (PostgreSQL + Row Level Security)
+- **IA**: OpenAI GPT-4o Vision API (architecture déterministe)
+- **Architecture**: App Router, validation Zod, retry intelligent
+- **Performance**: Cache multi-niveaux, compression adaptative
 
 ## 🛠️ Installation
 
@@ -43,34 +43,41 @@ OPENAI_API_KEY=sk-your-openai-key-here
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 NODE_ENV=development
 
-## 📋 Roadmap
+## 📋 État du Projet
 
-### ✅ Phase 1 - MVP (Complété)
-- [x] Architecture Next.js 15 + TypeScript
-- [x] Integration GPT-4o Vision
-- [x] Upload photos professionnel
-- [x] Prompt engineering optimisé
-- [x] Interface moderne
+### ✅ Fonctionnalités Terminées
+- [x] Architecture IA-First Pure (4 étapes)
+- [x] Routine 3 phases dermatologique
+- [x] Interface éducative avec durées intelligentes
+- [x] Upload photos professionnel avec validation
+- [x] Déploiement Vercel optimisé
+- [x] Logique de transition produits intelligente
 
-### 🚧 Phase 2 - En cours
-- [ ] Formulaire contextuel dynamique
-- [ ] Page résultats avec scores
-- [ ] Recommandations produits
-- [ ] Chat support IA
+### 🚧 En Cours
+- [ ] Authentification NextAuth.js + Supabase
+- [ ] Dashboard utilisateur complet
+- [ ] Système de cache Redis
 
-### 🔮 Phase 3 - À venir
-- [ ] Authentication utilisateur
-- [ ] Dashboard personnel
-- [ ] Historique analyses
-- [ ] Notifications push
-- [ ] Monétisation affiliate
+### 🔮 Prochaines Étapes
+- [ ] Tests utilisateur complets
+- [ ] Optimisation prompts IA
+- [ ] Intégration APIs d'affiliation
+- [ ] Coach IA conversationnel
+
+## 📚 Documentation
+
+Pour une documentation complète, consultez :
+- **[docs/spec.md](./docs/spec.md)** - Spécifications techniques complètes
+- **[docs/README.md](./docs/README.md)** - Index de toute la documentation
+- **[docs/architecture/](./docs/architecture/)** - Architecture technique
+- **[docs/domain/](./docs/domain/)** - Logique dermatologique
 
 ## 🎯 Objectifs Business
 
-- **Cible** : 10K€/mois de revenus
-- **Modèle** : Commissions d'affiliation produits
-- **Conversion** : 8-12% diagnostic → achat
-- **AOV** : 120-150€ par utilisateur
+- **Modèle** : Catalogue interne + commissions d'affiliation
+- **Cible** : Zéro fallback générique, 95% personnalisation
+- **Conversion** : >12% diagnostic → achat (catalogue intelligent)
+- **AOV** : 35€ panier moyen optimisé
 
 ---
 

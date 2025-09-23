@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="11" failures="0" errors="0" time="3.133">
-  <testsuite name="DiagnosticNeedsService" errors="0" failures="0" skipped="0" timestamp="2025-09-17T13:57:51" time="0.978" tests="11">
-    <testcase classname="DiagnosticNeedsService detectNeeds should detect dehydration need when hydration score is low" name="DiagnosticNeedsService detectNeeds should detect dehydration need when hydration score is low" time="0.006">
+<testsuites name="jest tests" tests="7" failures="0" errors="0" time="2.744">
+  <testsuite name="Routine V3 - Validation Concept" errors="0" failures="0" skipped="0" timestamp="2025-09-23T13:21:04" time="0.72" tests="7">
+    <testcase classname="Routine V3 - Validation Concept doit identifier les règles de mapping V2 → V3" name="Routine V3 - Validation Concept doit identifier les règles de mapping V2 → V3" time="0.011">
     </testcase>
-    <testcase classname="DiagnosticNeedsService detectNeeds should detect dullness need when radiance score is low" name="DiagnosticNeedsService detectNeeds should detect dullness need when radiance score is low" time="0.001">
+    <testcase classname="Routine V3 - Validation Concept doit valider les champs obligatoires V3" name="Routine V3 - Validation Concept doit valider les champs obligatoires V3" time="0.004">
     </testcase>
-    <testcase classname="DiagnosticNeedsService detectNeeds should detect enlarged pores need when pores score is low" name="DiagnosticNeedsService detectNeeds should detect enlarged pores need when pores score is low" time="0.001">
+    <testcase classname="Routine V3 - Validation Concept doit valider la logique de slots" name="Routine V3 - Validation Concept doit valider la logique de slots" time="0.003">
     </testcase>
-    <testcase classname="DiagnosticNeedsService detectNeeds should always detect sun protection need" name="DiagnosticNeedsService detectNeeds should always detect sun protection need" time="0.002">
+    <testcase classname="Routine V3 - Validation Concept doit avoir une structure UI V3 cohérente" name="Routine V3 - Validation Concept doit avoir une structure UI V3 cohérente" time="0.003">
     </testcase>
-    <testcase classname="DiagnosticNeedsService detectNeeds should detect zone-specific pigmentation needs" name="DiagnosticNeedsService detectNeeds should detect zone-specific pigmentation needs" time="0.003">
+    <testcase classname="Mapping Logic V3 doit normaliser les timings correctement" name="Mapping Logic V3 doit normaliser les timings correctement" time="0.002">
     </testcase>
-    <testcase classname="DiagnosticNeedsService detectNeeds should sort needs by priority" name="DiagnosticNeedsService detectNeeds should sort needs by priority" time="0.001">
+    <testcase classname="Mapping Logic V3 doit normaliser les catégories correctement" name="Mapping Logic V3 doit normaliser les catégories correctement" time="0.002">
     </testcase>
-    <testcase classname="DiagnosticNeedsService detectNeeds should detect sensitivity need for sensitive skin type" name="DiagnosticNeedsService detectNeeds should detect sensitivity need for sensitive skin type" time="0.001">
-    </testcase>
-    <testcase classname="DiagnosticNeedsService detectNeeds should not detect wrinkles need when score is high" name="DiagnosticNeedsService detectNeeds should not detect wrinkles need when score is high" time="0">
-    </testcase>
-    <testcase classname="DiagnosticNeedsService filterNeedsByCategory should filter needs by category" name="DiagnosticNeedsService filterNeedsByCategory should filter needs by category" time="0">
-    </testcase>
-    <testcase classname="DiagnosticNeedsService getPriorityNeeds should return only critical and high priority needs" name="DiagnosticNeedsService getPriorityNeeds should return only critical and high priority needs" time="0.001">
-    </testcase>
-    <testcase classname="DiagnosticNeedsService getNeedsSummary should provide correct summary statistics" name="DiagnosticNeedsService getNeedsSummary should provide correct summary statistics" time="0.001">
+    <testcase classname="Mapping Logic V3 doit appliquer la règle hebdomadaire" name="Mapping Logic V3 doit appliquer la règle hebdomadaire" time="0.002">
     </testcase>
   </testsuite>
 </testsuites>

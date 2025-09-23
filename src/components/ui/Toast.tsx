@@ -125,3 +125,4 @@ export function useToast() {
     info: (message: string, duration?: number) => showToast(message, 'info', duration)
   }
 }
+

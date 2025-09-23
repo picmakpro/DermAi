@@ -482,7 +482,9 @@ function adaptV2ToV1Safely(analysisData: any): any {
         coherenceScore: analysisData.coherenceValidation?.overallScore,
         qualityScore: analysisData.qualityMetrics?.overallQuality,
         ...analysisData.metadata
-      }
+      },
+      // ✅ ROUTINE V3: Préserver uiRoutine pour affichage V3
+      uiRoutine: analysisData.uiRoutine
     }
   } catch (adaptationError) {
     console.error('❌ SPRINT 3: Erreur dans adaptation V2→V1:', adaptationError)
@@ -636,9 +638,11 @@ function attemptDataRecovery(data: any): any {
 import ChatWidget from './ChatWidget'
 import ScoreCircle from './components/ScoreCircle'
 import ProductCard from './components/ProductCard'
-import AdvancedRoutineDisplay from '@/components/routine/AdvancedRoutineDisplay'
+// import AdvancedRoutineDisplay from '@/components/routine/AdvancedRoutineDisplay' // Archivé en V3
 import ShareableCard from '@/components/shared/ShareableCard'
 import { UnifiedRoutineSection } from '@/components/results/UnifiedRoutineSection'
+import RoutineV3Final from '@/components/routine/RoutineV3Final'
+import { mapToAiRoutine } from '@/services/mappers/aiRoutine.mapper'
 import { EnhancedProductsSection } from '@/components/results/EnhancedProductsSection'
 import { EducationalTooltip, MobileEducationalTooltip } from '@/components/shared/EducationalTooltip'
 import { AIIndicator, AIScoreIndicator, AIProductIndicator, AIRoutineIndicator } from '@/components/shared/AIIndicator'
@@ -2360,8 +2364,18 @@ Les scores évoluent avec votre routine personnalisée !"
           )}
          </motion.div>
 
-         {/* NOUVELLE SECTION ROUTINE UNIFIÉE */}
-         {analysis.recommendations.unifiedRoutine && analysis.recommendations.unifiedRoutine.length > 0 ? (
+         {/* NOUVELLE SECTION ROUTINE V3 */}
+         {analysis.uiRoutine ? (
+           <div className="mb-12">
+             <RoutineV3Final 
+               routine={analysis.uiRoutine}
+               onAnalyticsEvent={(event, data) => {
+                 console.log(`[routine-v3:${event}]`, data);
+                 // TODO: Intégrer avec Google Analytics
+               }}
+             />
+           </div>
+         ) : analysis.recommendations.unifiedRoutine && analysis.recommendations.unifiedRoutine.length > 0 ? (
            <UnifiedRoutineSection 
              routine={analysis.recommendations.unifiedRoutine} 
              beautyAssessment={analysis.beautyAssessment || undefined}
