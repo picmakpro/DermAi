@@ -1,0 +1,53 @@
+# ══════════════════════════════════════════════════════════════
+# 🚀 PRODUCTION ENVIRONMENT - ROUTINE V2 + GPT-5
+# ══════════════════════════════════════════════════════════════
+# Version: 2.0
+# Date: 30 septembre 2025
+# Statut: Production Ready
+#
+# ⚠️ IMPORTANT : Configurer ces variables dans Vercel Dashboard
+
+# ──────────────────────────────────────────────────────────────
+# 🔑 OPENAI API
+# ──────────────────────────────────────────────────────────────
+
+OPENAI_API_KEY=sk-proj-xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# ──────────────────────────────────────────────────────────────
+# 🤖 MODÈLES IA V2 (GPT-5)
+# ──────────────────────────────────────────────────────────────
+
+AI_MODEL_DIAGNOSTIC=chatgpt-5
+AI_MODEL_ROUTINE=gpt-5-thinking
+
+# ──────────────────────────────────────────────────────────────
+# 🎚️ FEATURE FLAGS - ROLLOUT PROGRESSIF
+# ──────────────────────────────────────────────────────────────
+
+USE_GPT5_DIAGNOSTIC=true
+USE_GPT5_ROUTINE=true
+
+# Rollout recommandé : 10 → 25 → 50 → 100
+GPT5_ROLLOUT_PERCENTAGE=10
+
+# ──────────────────────────────────────────────────────────────
+# ⏱️ TIMEOUTS
+# ──────────────────────────────────────────────────────────────
+
+TIMEOUT_DIAGNOSTIC_MS=25000
+TIMEOUT_ROUTINE_MS=50000
+TIMEOUT_PRODUCTS_MS=30000
+
+# ──────────────────────────────────────────────────────────────
+# 💰 MONITORING
+# ──────────────────────────────────────────────────────────────
+
+OPENAI_DAILY_BUDGET_USD=500
+OPENAI_COST_ALERT_WEBHOOK=https://hooks.slack.com/services/xxx
+
+# ──────────────────────────────────────────────────────────────
+# 📊 LOGGING
+# ──────────────────────────────────────────────────────────────
+
+LOG_LEVEL=info
+LOG_STRUCTURED=true

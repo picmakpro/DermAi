@@ -39,14 +39,14 @@ export const EnrichedRoutineStepSchema = z.object({
 // Schéma pour une phase de routine (V1 - rétrocompatible)
 export const PhaseDetailSchema = z.object({
   duration: z.string().min(5).max(50),
-  objective: z.string().min(20).max(200),
+  objective: z.string().min(20).max(200).optional(), // ✅ Optionnel (prompt V3 ne génère pas toujours)
   steps: z.array(RoutineStepSchema).min(1).max(10)
 })
 
 // Schéma pour une phase enrichie V2
 export const EnrichedPhaseDetailSchema = z.object({
   duration: z.string().min(5).max(50),
-  objective: z.string().min(20).max(200),
+  objective: z.string().min(20).max(200).optional(), // ✅ Optionnel (prompt V3 ne génère pas toujours)
   steps: z.array(EnrichedRoutineStepSchema).min(1).max(10)
 })
 

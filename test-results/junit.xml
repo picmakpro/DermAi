@@ -1,19 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="7" failures="0" errors="0" time="2.744">
-  <testsuite name="Routine V3 - Validation Concept" errors="0" failures="0" skipped="0" timestamp="2025-09-23T13:21:04" time="0.72" tests="7">
-    <testcase classname="Routine V3 - Validation Concept doit identifier les règles de mapping V2 → V3" name="Routine V3 - Validation Concept doit identifier les règles de mapping V2 → V3" time="0.011">
+<testsuites name="jest tests" tests="43" failures="0" errors="0" time="3.028">
+  <testsuite name="Snapshots Routines Référence" errors="0" failures="0" skipped="0" timestamp="2025-09-30T02:05:54" time="0.718" tests="4">
+    <testcase classname="Snapshots Routines Référence Snapshot 1: Essentiel + Express → Routine minimale conforme" name="Snapshots Routines Référence Snapshot 1: Essentiel + Express → Routine minimale conforme" time="0.016">
     </testcase>
-    <testcase classname="Routine V3 - Validation Concept doit valider les champs obligatoires V3" name="Routine V3 - Validation Concept doit valider les champs obligatoires V3" time="0.004">
+    <testcase classname="Snapshots Routines Référence Snapshot 2: Confort + Équilibrée → 2 traitements alternance" name="Snapshots Routines Référence Snapshot 2: Confort + Équilibrée → 2 traitements alternance" time="0.005">
     </testcase>
-    <testcase classname="Routine V3 - Validation Concept doit valider la logique de slots" name="Routine V3 - Validation Concept doit valider la logique de slots" time="0.003">
+    <testcase classname="Snapshots Routines Référence Snapshot 3: Expert + Complète → Routine maximale 2T + 2H" name="Snapshots Routines Référence Snapshot 3: Expert + Complète → Routine maximale 2T + 2H" time="0.006">
     </testcase>
-    <testcase classname="Routine V3 - Validation Concept doit avoir une structure UI V3 cohérente" name="Routine V3 - Validation Concept doit avoir une structure UI V3 cohérente" time="0.003">
+    <testcase classname="Snapshots Routines Référence Snapshot 4: Grossesse + Confort → Aucun actif dangereux" name="Snapshots Routines Référence Snapshot 4: Grossesse + Confort → Aucun actif dangereux" time="0.006">
     </testcase>
-    <testcase classname="Mapping Logic V3 doit normaliser les timings correctement" name="Mapping Logic V3 doit normaliser les timings correctement" time="0.002">
+  </testsuite>
+  <testsuite name="Routine Validator" errors="0" failures="0" skipped="0" timestamp="2025-09-30T02:05:54" time="0.709" tests="12">
+    <testcase classname="Routine Validator Cas 1: Essentiel + Express → 1 traitement, 1 hebdo max, routine valide" name="Routine Validator Cas 1: Essentiel + Express → 1 traitement, 1 hebdo max, routine valide" time="0.012">
     </testcase>
-    <testcase classname="Mapping Logic V3 doit normaliser les catégories correctement" name="Mapping Logic V3 doit normaliser les catégories correctement" time="0.002">
+    <testcase classname="Routine Validator Cas 2: Essentiel + Complète → 2 traitements INTERDIT (budget limite à 1)" name="Routine Validator Cas 2: Essentiel + Complète → 2 traitements INTERDIT (budget limite à 1)" time="0.003">
     </testcase>
-    <testcase classname="Mapping Logic V3 doit appliquer la règle hebdomadaire" name="Mapping Logic V3 doit appliquer la règle hebdomadaire" time="0.002">
+    <testcase classname="Routine Validator Cas 3: Confort + Équilibrée → 2 traitements alternance OK" name="Routine Validator Cas 3: Confort + Équilibrée → 2 traitements alternance OK" time="0.003">
+    </testcase>
+    <testcase classname="Routine Validator Cas 4: Expert + Complète → 2 traitements + 2 hebdos OK" name="Routine Validator Cas 4: Expert + Complète → 2 traitements + 2 hebdos OK" time="0.001">
+    </testcase>
+    <testcase classname="Routine Validator Cas 5: Grossesse → Rétinol détecté = ERREUR BLOQUANTE" name="Routine Validator Cas 5: Grossesse → Rétinol détecté = ERREUR BLOQUANTE" time="0.002">
+    </testcase>
+    <testcase classname="Routine Validator Cas 6: 2 traitements SANS alternance → Warning (non bloquant)" name="Routine Validator Cas 6: 2 traitements SANS alternance → Warning (non bloquant)" time="0.001">
+    </testcase>
+    <testcase classname="Routine Validator countStepsByType() Compte correctement les traitements par phase" name="Routine Validator countStepsByType() Compte correctement les traitements par phase" time="0.004">
+    </testcase>
+    <testcase classname="Routine Validator countHebdomadaireSteps() Compte correctement les steps hebdomadaires" name="Routine Validator countHebdomadaireSteps() Compte correctement les steps hebdomadaires" time="0.002">
+    </testcase>
+    <testcase classname="Routine Validator detectDangerousActifs() Détecte rétinol dans displayTitle" name="Routine Validator detectDangerousActifs() Détecte rétinol dans displayTitle" time="0.001">
+    </testcase>
+    <testcase classname="Routine Validator detectDangerousActifs() Détecte acide salicylique dans instructions" name="Routine Validator detectDangerousActifs() Détecte acide salicylique dans instructions" time="0.001">
+    </testcase>
+    <testcase classname="Routine Validator validateBaseDurable() Erreur si nettoyage matin manquant" name="Routine Validator validateBaseDurable() Erreur si nettoyage matin manquant" time="0.001">
+    </testcase>
+    <testcase classname="Routine Validator validateAlternance() Valide si alternance bien configurée" name="Routine Validator validateAlternance() Valide si alternance bien configurée" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="openai-config" errors="0" failures="0" skipped="0" timestamp="2025-09-30T02:05:54" time="1.171" tests="27">
+    <testcase classname="openai-config selectModel() - Feature Flags DIAGNOSTIC: GPT-5 activé → retourne chatgpt-5" name="openai-config selectModel() - Feature Flags DIAGNOSTIC: GPT-5 activé → retourne chatgpt-5" time="0.014">
+    </testcase>
+    <testcase classname="openai-config selectModel() - Feature Flags DIAGNOSTIC: GPT-5 désactivé → fallback gpt-4o" name="openai-config selectModel() - Feature Flags DIAGNOSTIC: GPT-5 désactivé → fallback gpt-4o" time="0.058">
+    </testcase>
+    <testcase classname="openai-config selectModel() - Feature Flags ROUTINE: GPT-5 activé + rollout 100% → retourne gpt-5-thinking" name="openai-config selectModel() - Feature Flags ROUTINE: GPT-5 activé + rollout 100% → retourne gpt-5-thinking" time="0.004">
+    </testcase>
+    <testcase classname="openai-config selectModel() - Feature Flags ROUTINE: GPT-5 désactivé → fallback gpt-4o" name="openai-config selectModel() - Feature Flags ROUTINE: GPT-5 désactivé → fallback gpt-4o" time="0.003">
+    </testcase>
+    <testcase classname="openai-config selectModel() - Feature Flags PRODUCTS: toujours gpt-4o (pas de GPT-5)" name="openai-config selectModel() - Feature Flags PRODUCTS: toujours gpt-4o (pas de GPT-5)" time="0">
+    </testcase>
+    <testcase classname="openai-config selectModel() - Rollout Progressif Rollout 10%: ~10% GPT-5, ~90% fallback sur 100 requêtes" name="openai-config selectModel() - Rollout Progressif Rollout 10%: ~10% GPT-5, ~90% fallback sur 100 requêtes" time="0.146">
+    </testcase>
+    <testcase classname="openai-config selectModel() - Rollout Progressif Rollout 50%: ~50% GPT-5, ~50% fallback" name="openai-config selectModel() - Rollout Progressif Rollout 50%: ~50% GPT-5, ~50% fallback" time="0.151">
+    </testcase>
+    <testcase classname="openai-config selectModel() - Rollout Progressif Rollout 100%: toujours GPT-5" name="openai-config selectModel() - Rollout Progressif Rollout 100%: toujours GPT-5" time="0.016">
+    </testcase>
+    <testcase classname="openai-config selectModel() - Rollout Progressif Rollout 0%: toujours fallback" name="openai-config selectModel() - Rollout Progressif Rollout 0%: toujours fallback" time="0.015">
+    </testcase>
+    <testcase classname="openai-config selectModel() - Rollout Progressif Même requestId → Même modèle (déterminisme)" name="openai-config selectModel() - Rollout Progressif Même requestId → Même modèle (déterminisme)" time="0.005">
+    </testcase>
+    <testcase classname="openai-config hashImages() Même images → Même seed" name="openai-config hashImages() Même images → Même seed" time="0.001">
+    </testcase>
+    <testcase classname="openai-config hashImages() Images ordre différent → Même seed (tri automatique)" name="openai-config hashImages() Images ordre différent → Même seed (tri automatique)" time="0">
+    </testcase>
+    <testcase classname="openai-config hashImages() Images différentes → Seed différent" name="openai-config hashImages() Images différentes → Seed différent" time="0.001">
+    </testcase>
+    <testcase classname="openai-config hashImages() Seed est un nombre positif 32-bit" name="openai-config hashImages() Seed est un nombre positif 32-bit" time="0">
+    </testcase>
+    <testcase classname="openai-config hashImages() Aucune image → Seed cohérent" name="openai-config hashImages() Aucune image → Seed cohérent" time="0">
+    </testcase>
+    <testcase classname="openai-config getModelConfig() Retourne config complète avec métadonnées" name="openai-config getModelConfig() Retourne config complète avec métadonnées" time="0.003">
+    </testcase>
+    <testcase classname="openai-config getModelConfig() Métadonnées indiquent fallback si utilisé" name="openai-config getModelConfig() Métadonnées indiquent fallback si utilisé" time="0.003">
+    </testcase>
+    <testcase classname="openai-config getModelConfig() DIAGNOSTIC: temperature 0.0 (déterminisme)" name="openai-config getModelConfig() DIAGNOSTIC: temperature 0.0 (déterminisme)" time="0.001">
+    </testcase>
+    <testcase classname="openai-config getModelConfig() PRODUCTS: pas de rollout percentage (null)" name="openai-config getModelConfig() PRODUCTS: pas de rollout percentage (null)" time="0.001">
+    </testcase>
+    <testcase classname="openai-config __testing.hashStringToPercentage() Retourne nombre entre 0-99" name="openai-config __testing.hashStringToPercentage() Retourne nombre entre 0-99" time="0.02">
+    </testcase>
+    <testcase classname="openai-config __testing.hashStringToPercentage() Même string → Même hash (déterminisme)" name="openai-config __testing.hashStringToPercentage() Même string → Même hash (déterminisme)" time="0.001">
+    </testcase>
+    <testcase classname="openai-config __testing.hashStringToPercentage() Strings différents → Hash différent (probabilité haute)" name="openai-config __testing.hashStringToPercentage() Strings différents → Hash différent (probabilité haute)" time="0.001">
+    </testcase>
+    <testcase classname="openai-config __testing.hashStringToPercentage() Distribution uniforme sur 1000 échantillons" name="openai-config __testing.hashStringToPercentage() Distribution uniforme sur 1000 échantillons" time="0.009">
+    </testcase>
+    <testcase classname="openai-config Edge Cases GPT5_ROLLOUT_PERCENTAGE invalide → default 10" name="openai-config Edge Cases GPT5_ROLLOUT_PERCENTAGE invalide → default 10" time="0.002">
+    </testcase>
+    <testcase classname="openai-config Edge Cases GPT5_ROLLOUT_PERCENTAGE négatif → traité comme 0" name="openai-config Edge Cases GPT5_ROLLOUT_PERCENTAGE négatif → traité comme 0" time="0.016">
+    </testcase>
+    <testcase classname="openai-config Edge Cases GPT5_ROLLOUT_PERCENTAGE &gt;100 → traité comme 100" name="openai-config Edge Cases GPT5_ROLLOUT_PERCENTAGE &gt;100 → traité comme 100" time="0.014">
+    </testcase>
+    <testcase classname="openai-config Edge Cases RequestId vide → hash cohérent" name="openai-config Edge Cases RequestId vide → hash cohérent" time="0.003">
     </testcase>
   </testsuite>
 </testsuites>

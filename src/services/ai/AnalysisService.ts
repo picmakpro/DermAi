@@ -1,4 +1,3 @@
-import OpenAI from 'openai'
 import crypto from 'crypto'
 import { 
   PureDiagnostic, 
@@ -16,9 +15,34 @@ import { CacheManagerV2 } from '@/utils/v2/CacheManagerV2'
 import { AssemblyAndValidationService } from './core/AssemblyAndValidationService'
 import { AnalysisServiceV3Adapter } from './core/AnalysisServiceV3Adapter'
 import { getPromptForAttempt } from './core/prompts/diagnosticPur'
-import { ROUTINE_PERSONNALISEE_SYSTEM_PROMPT, buildRoutineUserPrompt } from './core/prompts/routinePersonnalisee'
+import { normalizeGPT5DiagnosticResponse, logNormalizationChanges } from '@/utils/gpt5Normalizer'
+
+// ✅ PROMPT V3 (GPT-5 Thinking optimisé)
+import { 
+  ROUTINE_PERSONNALISEE_SYSTEM_PROMPT_V3, 
+  buildRoutineUserPromptV3 
+} from './core/prompts/routinePersonnaliseeV3'
+
+// 🔄 PROMPT V2 (ROLLBACK disponible)
+// import { ROUTINE_PERSONNALISEE_SYSTEM_PROMPT, buildRoutineUserPrompt } from './core/prompts/routinePersonnalisee'
+
 import type { RoutineContext } from '@/types/questionnaire'
 import { SELECTION_PRODUITS_SYSTEM_PROMPT, buildProductSelectionUserPrompt } from './core/prompts/selectionProduits'
+
+// ✅ NOUVELLE CONFIGURATION GPT-5
+import { 
+  getOpenAIClient, 
+  selectModel, 
+  hashImages as hashImagesForSeed,
+  getModelConfig,
+  AI_MODELS 
+} from '@/lib/openai-config'
+
+// ✅ VALIDATION POST-GÉNÉRATION (Sprint 2)
+import { validateRoutineCompliance, enrichAdviceWithCompromises } from './validators/routineValidator'
+
+// 💰 MONITORING COÛTS (Sprint 4)
+import { CostMonitor } from '@/utils/CostMonitor'
 
 // Types pour les requêtes
 interface AnalyzeRequest {
@@ -69,9 +93,10 @@ interface PartitionedCatalog {
  * 4. Assemblage & validation (Algorithmique) - Cohérence finale
  */
 export class AnalysisService {
-  private static openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-  })
+  // ✅ CLIENT OPENAI LAZY-LOADED (via openai-config)
+  private static get openai() {
+    return getOpenAIClient()
+  }
 
   private static logger = Logger.getInstance('AnalysisServiceV2')
   private static cache = new CacheManagerV2()
@@ -215,11 +240,15 @@ export class AnalysisService {
     
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
-        // Générer seed déterministe basé sur les images
-        const imageHash = this.generateImageHash(photos)
-        const seed = parseInt(imageHash.substring(0, 8), 16) % 2147483647
+        // ✅ SEED DÉTERMINISTE (nouveau hash depuis openai-config)
+        const seed = hashImagesForSeed(photos)
+        
+        // ✅ SÉLECTION MODÈLE GPT-5 ou fallback GPT-4o
+        const modelName = selectModel('DIAGNOSTIC', requestId)
+        const modelConfig = getModelConfig('DIAGNOSTIC', requestId)
         
         // 🎯 PROMPTS PROGRESSIFS : Adapter selon la tentative
+        // 🎭 SÉLECTION PROMPT (même prompt pour tous les modèles)
         const { systemPrompt, userPromptBuilder } = getPromptForAttempt(attempt)
         const userPrompt = userPromptBuilder(photos)
         
@@ -236,26 +265,39 @@ export class AnalysisService {
           }
         })
         
+        // ✅ LOGS ENRICHIS GPT-5
         this.logger.info('🤖 APPEL OPENAI ÉTAPE 1:', { 
           requestId,
           operation: 'openai_call',
           stage: 'diagnostic_analysis',
           metadata: {
             attempt,
-            model: 'gpt-4o',
+            model: modelName,  // ✅ GPT-5 ou fallback
+            fallbackUsed: modelConfig._meta.isFallback,
             temperature: 0.0,
             seed: seed,
-            imageHash: imageHash,
             photosCount: photos.length
           }
         })
         
+        const stepStartTime = performance.now()
+        
+        // ✅ APPEL OPENAI AVEC CONFIG GPT-5
+        const isGPT5 = modelName.includes('gpt-5') || modelName.includes('o3')
         const response = await this.openai.chat.completions.create({
-          model: 'gpt-4o',
-          temperature: 0.0,
-          max_tokens: 3000,
-          seed: seed,
-          response_format: { type: "json_object" },
+          model: modelName,  // ✅ gpt-5 ou gpt-4o
+          // Paramètres conditionnels selon le modèle
+          ...(isGPT5 
+            ? { 
+                max_completion_tokens: 4000   // ✅ AUGMENTÉ pour GPT-5
+                // Pas de temperature, seed, ou response_format pour GPT-5
+              }
+            : { 
+                max_tokens: 1400,             // ✅ GPT-4o reste à 1400
+                temperature: 0.0,
+                seed: seed,                   // ✅ Reproductibilité
+                response_format: { type: "json_object" }
+              }),
           messages: [
             {
               role: 'system',
@@ -280,13 +322,35 @@ export class AnalysisService {
         ]
       })
 
+      const stepDuration = performance.now() - stepStartTime
+
+      // 💰 CALCUL & TRACKING COÛTS
+      const costEstimate = CostMonitor.calculateCost(modelName, {
+        prompt: response.usage?.prompt_tokens || 0,
+        completion: response.usage?.completion_tokens || 0,
+        total: response.usage?.total_tokens || 0
+      })
+      
+      const dailySummary = CostMonitor.trackCost(costEstimate)
+
+      // ✅ LOGS ENRICHIS GPT-5 (tokens + durée + modèle + coût)
       this.logger.info('🤖 RÉPONSE OPENAI ÉTAPE 1:', { 
         requestId,
-        tokensUsed: response.usage?.total_tokens,
-        promptTokens: response.usage?.prompt_tokens,
-        completionTokens: response.usage?.completion_tokens,
+        operation: 'diagnostic_success',
+        stage: 'response_received'
+      }, {
+        model: modelName,
+        fallbackUsed: modelConfig._meta.isFallback,
+        tokensUsed: response.usage?.total_tokens || 0,
+        tokensPrompt: response.usage?.prompt_tokens || 0,
+        tokensCompletion: response.usage?.completion_tokens || 0,
+        duration_ms: Math.round(stepDuration),
         finishReason: response.choices[0]?.finish_reason,
-        responseLength: response.choices[0]?.message?.content?.length
+        responseLength: response.choices[0]?.message?.content?.length || 0,
+        // 💰 MÉTRIQUES COÛTS
+        cost_usd: costEstimate.cost_usd,
+        daily_cost_total_usd: dailySummary.total_usd,
+        daily_budget_percentage: dailySummary.percentage_used
       })
 
       const content = response.choices[0]?.message?.content
@@ -314,9 +378,22 @@ export class AnalysisService {
         wasMarkdown: cleanContent !== content
       })
 
-      // Parser et valider avec Zod
+      // Parser JSON
       const parsedContent = JSON.parse(cleanContent)
-      const validatedDiagnostic = PureDiagnosticSchema.parse(parsedContent)
+      
+      // 🔧 NORMALISER si GPT-5 (pour compatibilité Zod)
+      const isGPT5Model = modelName.includes('gpt-5') || modelName.includes('o3')
+      const contentToValidate = isGPT5Model 
+        ? normalizeGPT5DiagnosticResponse(parsedContent)
+        : parsedContent
+      
+      // Log changements si normalisation
+      if (isGPT5Model) {
+        logNormalizationChanges(parsedContent, contentToValidate, requestId)
+      }
+      
+      // Valider avec Zod
+      const validatedDiagnostic = PureDiagnosticSchema.parse(contentToValidate)
 
       // Mettre en cache
       await this.cache.set(cacheKey, validatedDiagnostic, 24 * 60 * 60 * 1000) // 24h
@@ -371,26 +448,94 @@ export class AnalysisService {
     
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
+      // ✅ SÉLECTION MODÈLE GPT-5 THINKING ou fallback GPT-4o
+      const modelName = selectModel('ROUTINE', requestId)
+      const modelConfig = getModelConfig('ROUTINE', requestId)
+      
+      // ✅ LOGS DÉBUT ÉTAPE 2
+      this.logger.info('🧬 ÉTAPE 2 - Routine personnalisée START:', { 
+        requestId,
+        operation: 'routine_generation',
+        stage: 'start'
+      }, {
+        attempt,
+        model: modelName,
+        fallbackUsed: modelConfig._meta.isFallback,
+        hasRoutineContext: !!routineContext,
+        budgetTier: routineContext?.constraints.budgetTier,
+        routineStyle: routineContext?.constraints.style,
+        pregnancy: routineContext?.profile.pregnancy,
+        uvRiskBand: routineContext?.environment.uvRiskBand
+      })
+      
+      const stepStartTime = performance.now()
+      
+      // ✅ APPEL OPENAI AVEC GPT-5 THINKING
+      const isGPT5 = modelName.includes('gpt-5') || modelName.includes('o3')
       const response = await this.openai.chat.completions.create({
-        model: 'gpt-4o',
-        temperature: 0.1, // Légère créativité pour personnalisation
-        max_tokens: 4000,
+        model: modelName,  // ✅ o3 ou gpt-4o
+        // Paramètres conditionnels selon le modèle
+        ...(isGPT5 
+          ? { 
+              max_completion_tokens: 4000      // ✅ GPT-5/o3
+              // Pas de temperature ou response_format pour GPT-5
+            }
+          : { 
+              max_tokens: 4000,                // ✅ GPT-4o
+              temperature: 0.1,                // ✅ Créativité contrôlée
+              response_format: { type: "json_object" }
+            }),
         messages: [
           {
             role: 'system',
-            content: ROUTINE_PERSONNALISEE_SYSTEM_PROMPT
+            content: ROUTINE_PERSONNALISEE_SYSTEM_PROMPT_V3  // ✅ V3: Prompt optimisé GPT-5 Thinking
           },
           {
             role: 'user',
-            content: buildRoutineUserPrompt(
+            content: buildRoutineUserPromptV3(  // ✅ V3: Builder enrichi Budget/Style/UV
               diagnostic,
               request.userProfile,
               request.skinConcerns,
               request.constraints,
-              routineContext  // ✅ NOUVEAU V2: Passer contexte enrichi
+              routineContext  // ✅ V2: Contexte pregnancy, budget, style, UV
             )
           }
         ]
+      })
+      
+      const stepDuration = performance.now() - stepStartTime
+      
+      // ✅ LOGS ENRICHIS GPT-5 THINKING (tokens + reasoning_tokens)
+      const tokensReasoning = (response.usage as any)?.reasoning_tokens || 0
+      
+      // 💰 CALCUL & TRACKING COÛTS (avec reasoning_tokens pour GPT-5 Thinking)
+      const costEstimate = CostMonitor.calculateCost(modelName, {
+        prompt: response.usage?.prompt_tokens || 0,
+        completion: response.usage?.completion_tokens || 0,
+        reasoning: tokensReasoning,  // GPT-5 Thinking uniquement
+        total: response.usage?.total_tokens || 0
+      })
+      
+      const dailySummary = CostMonitor.trackCost(costEstimate)
+      
+      this.logger.info('🧬 ÉTAPE 2 - Routine personnalisée SUCCESS:', { 
+        requestId,
+        operation: 'routine_generation',
+        stage: 'success'
+      }, {
+        model: modelName,
+        fallbackUsed: modelConfig._meta.isFallback,
+        tokensUsed: response.usage?.total_tokens || 0,
+        tokensPrompt: response.usage?.prompt_tokens || 0,
+        tokensCompletion: response.usage?.completion_tokens || 0,
+        tokensReasoning,  // ✅ NOUVEAU (GPT-5 Thinking uniquement)
+        duration_ms: Math.round(stepDuration),
+        finishReason: response.choices[0]?.finish_reason,
+        // 💰 MÉTRIQUES COÛTS
+        cost_usd: costEstimate.cost_usd,
+        cost_breakdown: costEstimate.breakdown,
+        daily_cost_total_usd: dailySummary.total_usd,
+        daily_budget_percentage: dailySummary.percentage_used
       })
 
       const content = response.choices[0]?.message?.content
@@ -419,7 +564,48 @@ export class AnalysisService {
 
       // Parser et valider avec Zod
       const parsedContent = JSON.parse(cleanContent)
-      const validatedRoutine = PersonalizedRoutineSchema.parse(parsedContent)
+      let validatedRoutine = PersonalizedRoutineSchema.parse(parsedContent)
+
+      // ✅ VALIDATION COMPLIANCE V2 (si routineContext fourni)
+      if (routineContext) {
+        const validation = validateRoutineCompliance(validatedRoutine, routineContext)
+        
+        this.logger.info('🔍 Validation compliance routine', { 
+          requestId,
+          operation: 'routine_validation',
+          stage: 'post_processing'
+        }, {
+          valid: validation.valid,
+          errors: validation.errors,
+          warnings: validation.warnings,
+          metrics: validation.metrics
+        })
+        
+        // ❌ ERREURS CRITIQUES → BLOQUANT
+        if (!validation.valid) {
+          this.logger.error('❌ Routine non conforme Budget/Style/Sécurité', { requestId }, {
+            errors: validation.errors,
+            budgetTier: routineContext.constraints.budgetTier,
+            routineStyle: routineContext.constraints.style,
+            pregnancy: routineContext.profile.pregnancy
+          })
+          
+          throw new Error(
+            `Routine non conforme aux contraintes Budget/Style/Sécurité : ${validation.errors.join('; ')}`
+          )
+        }
+        
+        // ⚠️ WARNINGS → LOGS (non bloquant)
+        if (validation.warnings.length > 0) {
+          this.logger.warn('⚠️ Warnings validation (non bloquants)', {
+            requestId,
+            warnings: validation.warnings
+          })
+        }
+        
+        // ✅ ENRICHISSEMENT globalAdvice (si compromis Budget/Style)
+        validatedRoutine = enrichAdviceWithCompromises(validatedRoutine, routineContext, validation)
+      }
 
       // Mettre en cache
       await this.cache.set(cacheKey, validatedRoutine, 12 * 60 * 60 * 1000) // 12h
