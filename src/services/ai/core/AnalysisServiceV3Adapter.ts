@@ -82,14 +82,30 @@ export class AnalysisServiceV3Adapter {
       id: phaseId,
       durationLabel: phase.duration,
       education: phase.education || this.getDefaultEducation(phaseId),
-      steps: phase.steps.map(step => ({
-        ...step,
-        // Garantir champs requis V3
-        applicationInstructions: step.applicationInstructions || this.generateDefaultInstructions(step.careType),
-        restrictions: Array.isArray(step.restrictions) ? step.restrictions : [],
-        targetZones: Array.isArray(step.targetZones) ? step.targetZones : ['visage entier'],
-        alternatives: [] // Sera enrichi après
-      }))
+      steps: phase.steps.map(step => {
+        const normalizedStep = {
+          ...step,
+          // Garantir champs requis V3
+          applicationInstructions: step.applicationInstructions || this.generateDefaultInstructions(step.careType),
+          restrictions: Array.isArray(step.restrictions) ? step.restrictions : [],
+          targetZones: Array.isArray(step.targetZones) ? step.targetZones : ['visage entier'],
+          alternatives: [] // Sera enrichi après
+        };
+
+        // RÈGLE V3: Items weekly doivent être temporaires
+        if (step.timing === 'hebdomadaire' || step.frequency === '1x/week' || step.frequency?.includes('/week')) {
+          normalizedStep.isTemporary = true;
+          normalizedStep.is_continuous = false;
+          console.log('[analysis:weekly-normalized]', {
+            stepId: step.stepNumber,
+            timing: step.timing,
+            frequency: step.frequency,
+            forcedTemporary: true
+          });
+        }
+
+        return normalizedStep;
+      })
     }));
     
     return { phases: phasesArray };
@@ -167,10 +183,14 @@ export class AnalysisServiceV3Adapter {
             item.application_instructions = matchingProduct.applicationAdvice;
           }
           
-          // Enrichir restrictions
+          // Enrichir restrictions avec dédoublonnage
           if (matchingProduct.restrictions?.length) {
             const existingRestrictions = item.restrictions || [];
-            item.restrictions = [...existingRestrictions, ...matchingProduct.restrictions];
+            const allRestrictions = [...existingRestrictions, ...matchingProduct.restrictions];
+            item.restrictions = this.deduplicateRestrictions(allRestrictions);
+          } else if (item.restrictions?.length) {
+            // Dédupliquer même sans nouvelles restrictions
+            item.restrictions = this.deduplicateRestrictions(item.restrictions);
           }
         } else {
           console.warn('[analysis:product-not-found]', item.id, phase.id, `step-${stepCounter}`);
@@ -290,6 +310,28 @@ export class AnalysisServiceV3Adapter {
     if (c.includes('sérum') || c.includes('serum')) return 'treatment';
     
     return 'treatment';
+  }
+
+  /**
+   * Dédupliquer les restrictions avec normalisation
+   */
+  private static deduplicateRestrictions(restrictions: string[] = []): string[] {
+    const normalize = (s: string) => s
+      .toLowerCase()
+      .normalize('NFD').replace(/\p{Diacritic}/gu, '') // Supprime accents
+      .replace(/[^\p{L}\p{N}]+/gu, ' ') // Espaces uniformes
+      .trim();
+
+    const seen = new Set<string>();
+    return restrictions.filter(restriction => {
+      if (!restriction) return false;
+      
+      const normalized = normalize(restriction);
+      if (seen.has(normalized)) return false;
+      
+      seen.add(normalized);
+      return true;
+    });
   }
 
   /**

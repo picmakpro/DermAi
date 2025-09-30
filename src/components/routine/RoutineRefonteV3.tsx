@@ -692,7 +692,7 @@ function RoutineCard({
           {item.introduce_from_week !== undefined && (
             <EducationalBadge 
               type="observe" 
-              text={`Semaine ${item.introduce_from_week}`} 
+              text={`Semaine ${Math.max(1, item.introduce_from_week)}`} 
               variant={variant}
             />
           )}

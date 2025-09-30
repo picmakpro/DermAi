@@ -6,6 +6,8 @@ import { FallbackStrategy } from '@/utils/FallbackStrategy'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { CloudStorageService } from '@/services/storage/cloudStorage'
+import { uvRiskFromLatMonth, fallbackLatFromCountry } from '@/utils/uvRiskCalculator'
+import type { RoutineContext, UvBand } from '@/types/questionnaire'
 
 // Type pour le service AnalysisService
 interface ServiceAnalyzeRequest {
@@ -33,7 +35,7 @@ interface ServiceAnalyzeRequest {
 // Adaptateur pour convertir API request vers Service request
 function adaptApiRequestToService(apiRequest: ApiAnalyzeRequest): ServiceAnalyzeRequest {
   // Extraire le budget du currentRoutine
-  const budgetMapping = {
+  const budgetMapping: Record<string, number> = {
     '< 50€': 50,
     '50-100€': 100,
     '100-200€': 200,
@@ -41,7 +43,9 @@ function adaptApiRequestToService(apiRequest: ApiAnalyzeRequest): ServiceAnalyze
     'Pas de limite': 500
   }
   
-  const budget = budgetMapping[apiRequest.currentRoutine.monthlyBudget] || 100
+  const budget = apiRequest.currentRoutine.monthlyBudget 
+    ? budgetMapping[apiRequest.currentRoutine.monthlyBudget] || 100
+    : 100
   
   return {
     photos: apiRequest.photos.map(photo => ({
@@ -107,6 +111,62 @@ export async function POST(request: NextRequest) {
 
     // Parse du body
     apiBody = await request.json() as ApiAnalyzeRequest
+    
+    // ✅ LOGS QUESTIONNAIRE V2 - Sprint 1
+    console.info("[questionnaire_v2] payload", {
+      gender: apiBody.userProfile.gender,
+      isPregnant: apiBody.userProfile.pregnancy?.isPregnant ?? null,
+      city: apiBody.location?.city ?? null,
+      country: apiBody.location?.country ?? null,
+      lat: apiBody.location?.lat ?? null,
+      lon: apiBody.location?.lon ?? null,
+      budgetTier: apiBody.currentRoutine.budgetTier ?? "legacy",
+      routineStyle: apiBody.currentRoutine.routineStyle ?? "legacy",
+      concernsPrimary: apiBody.skinConcerns.primary,
+    });
+    
+    // ✅ CALCUL UV RISK - Sprint 1
+    let uvRiskBand: UvBand = "Moderate"; // Défaut
+    if (apiBody.location) {
+      const now = new Date();
+      const month = now.getUTCMonth() + 1;
+      const lat = apiBody.location.lat ?? fallbackLatFromCountry(apiBody.location.country);
+      uvRiskBand = uvRiskFromLatMonth(lat, month);
+      
+      logger.info(`UV Risk calculé: ${uvRiskBand}`, { 
+        stage: 'uv_calculation'
+      }, {
+        lat, 
+        month, 
+        country: apiBody.location.country 
+      });
+    }
+    
+    // ✅ CONTEXTE ROUTINE ENRICHI (pour Étape 2 IA) - Sprint 1
+    const routineContext: RoutineContext = {
+      profile: {
+        age: apiBody.userProfile.age,
+        gender: apiBody.userProfile.gender,
+        pregnancy: apiBody.userProfile.gender === "Femme" 
+          ? (apiBody.userProfile.pregnancy?.isPregnant ?? false) 
+          : false,
+      },
+      constraints: {
+        budgetTier: apiBody.currentRoutine.budgetTier ?? "Confort", // Fallback
+        style: apiBody.currentRoutine.routineStyle ?? "Équilibrée",
+      },
+      environment: {
+        uvRiskBand,
+      }
+    };
+    
+    logger.info('Contexte routine V2 construit', { stage: 'context_v2' }, {
+      hasPregnancy: routineContext.profile.pregnancy,
+      budgetTier: routineContext.constraints.budgetTier,
+      routineStyle: routineContext.constraints.style,
+      uvRiskBand: routineContext.environment.uvRiskBand,
+    });
+    
     const body = adaptApiRequestToService(apiBody)
 
     logger.info('Body reçu et parsé', { stage: 'parsing' }, {
@@ -152,7 +212,8 @@ export async function POST(request: NextRequest) {
     
     logger.info('🔥 Utilisation AnalysisService V2 Pure (IA-First)', { stage: 'analysis_v2_pure' })
     
-    const analysis = await AnalysisService.analyzeSkinComplete(body)
+    // ✅ Passer le contexte V2 au service IA
+    const analysis = await AnalysisService.analyzeSkinComplete(body, routineContext)
     
     const analysisDuration = Date.now() - analysisStartTime
 

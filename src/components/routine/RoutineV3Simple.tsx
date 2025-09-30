@@ -246,7 +246,7 @@ export default function RoutineV3Simple({ variant = "A" }: { variant?: DesignVar
                         {item.introduce_from_week !== undefined && (
                           <div className="inline-flex items-center gap-1 text-xs px-2 py-1 bg-blue-50 text-blue-700 rounded-lg border border-blue-200">
                             <Eye className="w-3 h-3" />
-                            Semaine {item.introduce_from_week}
+                            Semaine {Math.max(1, item.introduce_from_week)}
                           </div>
                         )}
                         {item.application_duration && (

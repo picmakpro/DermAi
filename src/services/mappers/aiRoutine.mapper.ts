@@ -129,7 +129,16 @@ function validateTemporaryItem(item: any, warnings: MissingFieldLog[], phase: Ph
   if (!item.is_temporary) return;
   
   for (const field of TEMPORARY_REQUIRED_FIELDS) {
-    if (!item[field]) {
+    let isMissing = false;
+    
+    // Test spécial pour introduce_from_week (0 est valide)
+    if (field === 'introduce_from_week') {
+      isMissing = !Number.isInteger(item[field]);
+    } else {
+      isMissing = !item[field];
+    }
+    
+    if (isMissing) {
       warnings.push(logMissingField(field, item.id || 'unknown', phase, slot));
     }
   }

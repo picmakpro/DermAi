@@ -17,6 +17,7 @@ import { AssemblyAndValidationService } from './core/AssemblyAndValidationServic
 import { AnalysisServiceV3Adapter } from './core/AnalysisServiceV3Adapter'
 import { getPromptForAttempt } from './core/prompts/diagnosticPur'
 import { ROUTINE_PERSONNALISEE_SYSTEM_PROMPT, buildRoutineUserPrompt } from './core/prompts/routinePersonnalisee'
+import type { RoutineContext } from '@/types/questionnaire'
 import { SELECTION_PRODUITS_SYSTEM_PROMPT, buildProductSelectionUserPrompt } from './core/prompts/selectionProduits'
 
 // Types pour les requêtes
@@ -78,7 +79,10 @@ export class AnalysisService {
   /**
    * Point d'entrée principal - Analyse complète 4 étapes
    */
-  static async analyzeSkinComplete(request: AnalyzeRequest): Promise<CompleteAnalysisV2> {
+  static async analyzeSkinComplete(
+    request: AnalyzeRequest,
+    routineContext?: RoutineContext  // ✅ NOUVEAU V2: Contexte enrichi optionnel
+  ): Promise<CompleteAnalysisV2> {
     const requestId = this.generateRequestId()
     const startTime = performance.now()
     
@@ -88,12 +92,27 @@ export class AnalysisService {
       photosCount: request.photos?.length,
       hasUserProfile: !!request.userProfile,
       hasSkinConcerns: !!request.skinConcerns,
-      hasConstraints: !!request.constraints
+      hasConstraints: !!request.constraints,
+      hasRoutineContext: !!routineContext  // ✅ V2
     })
 
     this.logger.info('🚀 Démarrage analyse complète V2', { 
       requestId
     })
+
+    // ✅ LOG CONTEXTE V2 SI FOURNI
+    if (routineContext) {
+      this.logger.info('✨ Contexte routine V2 détecté', { 
+        requestId,
+        operation: 'routine_context_v2',
+        stage: 'context_enrichment'
+      }, {
+        pregnancy: routineContext.profile.pregnancy,
+        budgetTier: routineContext.constraints.budgetTier,
+        routineStyle: routineContext.constraints.style,
+        uvRiskBand: routineContext.environment.uvRiskBand
+      })
+    }
 
     try {
       // 🔍 ÉTAPE 1: Diagnostic pur IA
@@ -119,7 +138,7 @@ export class AnalysisService {
       //   constraints: request.constraints
       // }, null, 2))
       
-      const routine = await this.generatePersonalizedRoutine(diagnostic, request, requestId)
+      const routine = await this.generatePersonalizedRoutine(diagnostic, request, requestId, routineContext)
       
       this.logger.info('📤 OUTPUT ÉTAPE 2 (Routine):', { requestId })
       // console.log('📤 OUTPUT ÉTAPE 2 (Routine) - CONTENU COMPLET:', JSON.stringify(routine, null, 2))
@@ -335,7 +354,8 @@ export class AnalysisService {
   static async generatePersonalizedRoutine(
     diagnostic: PureDiagnostic,
     request: AnalyzeRequest,
-    requestId: string
+    requestId: string,
+    routineContext?: RoutineContext  // ✅ NOUVEAU V2
   ): Promise<PersonalizedRoutine> {
     const cacheKey = this.cache.generateRoutineKey(diagnostic, request.userProfile)
     
@@ -366,7 +386,8 @@ export class AnalysisService {
               diagnostic,
               request.userProfile,
               request.skinConcerns,
-              request.constraints
+              request.constraints,
+              routineContext  // ✅ NOUVEAU V2: Passer contexte enrichi
             )
           }
         ]

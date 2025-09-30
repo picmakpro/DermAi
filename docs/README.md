@@ -25,6 +25,10 @@ Documentation centralisée avec `spec.md` comme source de vérité canonique.
 ### **Business & Monétisation**
 - **[business/monetization-strategy.md](./business/monetization-strategy.md)** - Catalogue interne & stratégie revenus
 
+### **Questionnaire & Personnalisation**
+- **[rapport-implementation-questionnaire-v2.md](./rapport-implementation-questionnaire-v2.md)** - 📋 Rapport implémentation Questionnaire V2
+- **[tests-questionnaire-v2.md](./tests-questionnaire-v2.md)** - 🧪 Plan de tests E2E & validation
+
 ## 🗂️ **ARCHIVE**
 - **[archive/](./archive/)** - Historique des sprints et fiches techniques exécutées
 

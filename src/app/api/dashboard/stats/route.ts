@@ -188,3 +188,6 @@ function calculateAverageTimeBetween(analyses: any[]): number {
   return Math.round(totalDays / intervals)
 }
 
+
+
+

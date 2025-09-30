@@ -5,15 +5,7 @@ import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { useAnalysis } from '@/hooks/useAnalysis'
 import type { PhotoUpload } from '@/types'
-
-// Type temporaire pour la requête d'analyse
-interface AnalyzeRequest {
-  photos: any[]
-  userProfile?: any
-  skinConcerns?: any
-  currentRoutine?: any
-  allergies?: any
-}
+import type { AnalyzeRequest } from '@/types/api'
 import { getPhotoDataUrl } from '@/utils/storage/photoStore'
 import { saveAnalysis } from '@/utils/storage/analysisStore'
 import { AlertCircle, Eye, Sparkles, CheckCircle2, ShoppingBag, Scan, Shield, Microscope } from 'lucide-react'
@@ -21,10 +13,18 @@ import { AlertCircle, Eye, Sparkles, CheckCircle2, ShoppingBag, Scan, Shield, Mi
 interface SessionData {
   photos: any[]
   questionnaire: {
-    userProfile?: { skinType?: string }
-    skinConcerns?: { primary?: string[] }
+    userProfile?: { 
+      skinType?: string
+      age?: number
+      gender?: string
+      pregnancy?: any
+    }
+    skinConcerns?: { primary?: string[], otherText?: string }
     currentRoutine?: any
     allergies?: any
+    // ✅ NOUVEAUX CHAMPS V2
+    pregnancy?: any
+    location?: any
   }
 }
 
@@ -89,14 +89,23 @@ export default function AnalyzePage() {
     // Construire la requête d'analyse (les données sont déjà dans la bonne structure)
     const analyzeRequest: AnalyzeRequest = {
       photos,
-      userProfile: questionnaire.userProfile,
-      skinConcerns: questionnaire.skinConcerns,
+      userProfile: questionnaire.userProfile as any,
+      skinConcerns: questionnaire.skinConcerns as any,
       currentRoutine: questionnaire.currentRoutine,
-      allergies: questionnaire.allergies
+      allergies: questionnaire.allergies,
+      // ✅ NOUVELLES DONNÉES V2
+      pregnancy: questionnaire.pregnancy,
+      location: questionnaire.location,
     }
 
     console.log('Démarrage analyse avec:', analyzeRequest)
     console.log('UserProfile détaillé:', analyzeRequest.userProfile)
+    console.log('📍 Location V2:', analyzeRequest.location)
+    console.log('🤰 Pregnancy V2:', analyzeRequest.pregnancy)
+    console.log('💰 Budget/Style V2:', { 
+      budgetTier: analyzeRequest.currentRoutine.budgetTier, 
+      routineStyle: analyzeRequest.currentRoutine.routineStyle 
+    })
     console.log('Photos détaillées:', analyzeRequest.photos.map(p => ({ id: p.id, type: p.type, hasFile: !!p.file })))
     
     await analyze(analyzeRequest)

@@ -1,353 +1,208 @@
-# 🔬 Logique Dermatologique DermAI - Routine 3 Phases
+# 🔬 Logique Dermatologique DermAI V3 - Référence Prompts IA
 
-## Vue d'ensemble
+## 🎯 **OBJECTIF DE CE DOCUMENT**
 
-Cette documentation détaille la logique dermatologique qui sous-tend le système de routine en 3 phases de DermAI V2. L'approche respecte les principes physiologiques de la peau et le cycle cellulaire naturel.
-
----
-
-## 🧬 **FONDEMENTS SCIENTIFIQUES**
-
-### **Cycle Cellulaire Cutané (28 jours)**
-
-```
-Jour 0-7    : Réparation barrière cutanée
-Jour 7-14   : Stabilisation et préparation  
-Jour 14-28  : Renouvellement cellulaire complet
-Jour 28+    : Adaptation aux nouveaux actifs
-```
-
-### **Physiologie de l'Adaptation**
-- **Barrière cutanée** : 5-14 jours pour la réparation
-- **Tolérance actifs** : 14-21 jours minimum d'adaptation
-- **Microbiome** : 21-28 jours pour l'équilibre
-- **Résultats visibles** : 4-6 semaines selon le problème
+**Base technique pour les prompts IA** - Étape 2 (Routine) et Étape 3 (Produits)
+- **Piliers porteurs** : Règles scientifiques non-négociables
+- **Mesures clés** : Durées, compatibilités, progressions
+- **Structure exploitable** : Format direct pour intégration prompts
 
 ---
 
-## 📋 **ALGORITHME DE TRANSITION INTELLIGENTE**
+## 🧬 **FONDEMENTS SCIENTIFIQUES VALIDÉS**
 
-### **1. Identification Base Durable vs Temporaire**
+### **Cycle Cellulaire de Référence (Niveau A)**
+```
+Renouvellement épidermique : 28 ± 4 jours (peau normale)
+Facteur âge : +7 jours par décennie après 30 ans
+Adaptation actifs : 14-21 jours minimum
+Récupération barrière : 5-14 jours maximum
+```
 
+### **Durées Physiologiques par Actif (Niveaux A/B)**
+- **Rétinoïdes** : 2-4 semaines adaptation minimum (A)
+- **AHA/BHA** : 1-2 semaines préparation (A)
+- **Vitamine C** : 7-10 jours introduction progressive (B)
+- **Niacinamide** : Tolérance immédiate, efficacité 2-4 semaines (B)
+
+## 🏗️ **ARCHITECTURE 3 PHASES - RÈGLES PILIERS**
+
+### **Phase Immédiate (1-3 semaines) - STABILISER**
+**Objectif** : Réparer barrière + traiter urgent + établir base durable
+**Principe** : Douceur maximale, zéro irritation, préparation cutanée
+**Durée personnalisée** :
+- Base : 14 jours
+- +7 jours si âge >50 ans
+- +3 jours par problème intense
+- +5 jours si peau sensible
+
+### **Phase Adaptation (3-8 semaines) - INTRODUIRE**
+**Objectif** : Conserver base + introduire actifs progressifs
+**Principe** : Tolérance progressive, montée en puissance contrôlée
+**Durée personnalisée** :
+- Base : 28 jours
+- +7 jours par actif complexe (rétinol, AHA, BHA)
+- +2 jours par zone traitée
+
+### **Phase Maintenance (Continu) - MAINTENIR**
+**Objectif** : Maintenir acquis + prévenir rechutes
+**Principe** : Routine établie, soins d'entretien, prévention
+
+## 🔗 **LOGIQUE DE TRANSITION - RÈGLES CRITIQUES**
+
+### **Base Durable vs Temporaire**
+**Base Durable** (à conserver entre phases) :
+- Nettoyage quotidien
+- Hydratation adaptée au type de peau
+- Protection SPF ≥30
+
+**Traitements Temporaires** (avec critères visuels) :
+- Cicatrisation : "jusqu'à fermeture complète"
+- Imperfections : "jusqu'à réduction visible"
+- Rougeurs : "jusqu'à apaisement"
+
+## 🧪 **COMPATIBILITÉS D'ACTIFS - MATRICE SIMPLIFIÉE**
+
+### **Associations Validées (Niveaux A/B)**
+```
+✅ Vitamine C + Niacinamide (B) - Synergie antioxydante
+✅ Azélaïque + Tout actif (A/B) - Très bien toléré
+✅ SPF + Tout actif (A) - Protection obligatoire
+```
+
+### **Associations à Alterner (Niveau C)**
+```
+⚠️ AHA/BHA + Rétinoïde - Alterner jours/zones (irritation cumulative)
+⚠️ BPO + Rétinoïde - Séparer moments d'application
+```
+
+### **Contre-indications Absolues**
+```
+❌ Rétinoïdes + Grossesse/Allaitement (A)
+❌ Sur-exfoliation (>3 actifs exfoliants simultanés)
+```
+
+## 📊 **PERSONNALISATION PAR PROFIL - RÈGLES CLÉS**
+
+### **Selon Âge (Facteur Physiologique)**
+- **<25 ans** : Tolérance élevée, focus prévention
+- **25-40 ans** : Équilibre correction/prévention
+- **40-55 ans** : Douceur accrue, anti-âge prioritaire
+- **>55 ans** : Douceur maximale, hydratation renforcée
+
+### **Selon Type de Peau (Facteur Barrière)**
+- **Sèche** : Hydratation++, actifs doux, céramides
+- **Grasse** : Régulation sébum, BHA, niacinamide
+- **Mixte** : Approche zonée (T-zone vs joues)
+- **Sensible** : Progression ultra-lente, azélaïque privilégié
+
+### **Selon Problèmes Prioritaires**
+- **Imperfections** : BHA + rétinoïde (alternance)
+- **Hyperpigmentation** : Vitamine C + azélaïque + SPF teinté
+- **Vieillissement** : Rétinoïde + vitamine C + SPF quotidien
+- **Rosacée** : Azélaïque + éviter AHA forts
+
+## 🎯 **ARCHITECTURE V3 - MÉTADONNÉES TECHNIQUES**
+
+### **Format JSON V3 - Champs Obligatoires**
 ```typescript
-function identifyProductTypes(immediatePhase: UnifiedRoutineStep[]) {
-  const baseDurable = immediatePhase.filter(step => {
-    return step.frequency === 'daily' &&
-           step.canBeMaintainedMonths === true &&
-           ['cleansing', 'hydration', 'protection'].includes(step.category) &&
-           !step.isTemporaryTreatment
-  })
+interface AiRoutineItem {
+  // Identification
+  id: string
+  title: string
+  category: 'cleanser' | 'treatment' | 'moisturizer' | 'spf' | 'exfoliant' | 'mask'
   
-  const temporaryTreatments = immediatePhase.filter(step => {
-    return step.isTemporaryTreatment === true ||
-           step.hasVisualCriteria === true ||
-           ['spot-treatment', 'healing'].includes(step.category)
-  })
+  // Timing & Fréquence
+  timing: 'morning' | 'evening' | 'weekly' // JAMAIS "both"
+  frequency: 'daily' | '2x/week' | '1x/week' | string
   
-  return { baseDurable, temporaryTreatments }
+  // Instructions (OBLIGATOIRES V3)
+  applicationInstructions: string
+  restrictions: string[]
+  targetZones: string[]
+  
+  // Métadonnées Temporaires
+  isTemporary: boolean
+  introduceFromWeek?: number // 0 = immédiat, 1 = semaine 2
+  applicationDuration?: string // "4-6 semaines"
 }
 ```
 
-### **2. Logique de Progression par Phase**
-
-#### **Phase Immédiate (1-3 semaines)**
-**Objectif :** Stabiliser + Traiter l'urgent + Identifier la base
-
-```typescript
-generateImmediatePhase() {
-  return [
-    ...generateBaseCare(),      // Nettoyage, hydratation de base
-    ...generateUrgentTreatments(), // Traitements temporaires ciblés
-    ...generateProtectionIfNeeded() // Protection selon profil
-  ]
-}
+### **Règles de Mapping V3**
+```
+frequency !== "daily" → timing = "weekly" (OBLIGATOIRE)
+timing "matin" → slot "morning"
+timing "soir" → slot "evening"
+timing "hebdomadaire" → slot "weekly"
 ```
 
-**Critères de fin :** Tous les traitements temporaires atteignent leurs objectifs visuels
+## 📋 **EXEMPLES TYPES SIMPLIFIÉS**
 
-#### **Phase Adaptation (3-8 semaines)**  
-**Objectif :** Conserver base + Introduire actifs progressifs
+### **Peau Jeune Mixte (25 ans)**
+```
+Phase Immédiate (14 jours) :
+- Nettoyage doux matin/soir
+- Hydratation légère zones sèches
+- SPF 30 quotidien
+- BHA T-zone (temporaire jusqu'à amélioration)
 
-```typescript
-generateAdaptationPhase(immediatePhase) {
-  const { baseDurable } = identifyProductTypes(immediatePhase)
-  
-  return [
-    ...evolveBaseProducts(baseDurable),  // Évolution si nécessaire
-    ...generateProgressiveActives(),     // Nouveaux actifs selon diagnostic
-    ...maintainEssentials(baseDurable)   // Continuité base non-évoluée
-  ]
-}
+Phase Adaptation (28 jours) :
+- Base conservée
+- + Niacinamide 3x/semaine
+- BHA → prévention 1x/semaine
 ```
 
-**Critères de fin :** Peau habituée aux nouveaux actifs, tolérance établie
-
-#### **Phase Maintenance (Continu)**
-**Objectif :** Maintenir acquis + Prévenir rechutes
-
-```typescript
-generateMaintenancePhase(adaptationPhase) {
-  const finalBase = optimizeBaseRoutine(adaptationPhase)
-  
-  return [
-    ...finalBase,                    // Base optimisée quotidienne
-    ...generatePreventiveCare(),     // Soins hebdomadaires/mensuels
-    ...generateTargetedMaintenance() // Soins ciblés selon besoins
-  ]
-}
+### **Peau Mature Sensible (55 ans)**
 ```
+Phase Immédiate (21 jours = 14+7 âge) :
+- Nettoyage très doux
+- Réparation barrière (temporaire)
+- Hydratation renforcée
+- SPF 50
+
+Phase Adaptation (35 jours = 28+7 actif) :
+- Base conservée
+- + Rétinol 1x/semaine progression lente
+- + Vitamine C matin faible dose
+```
+
+## ✅ **CRITÈRES DE VALIDATION PROMPTS IA**
+
+### **Validation Technique V3 (Étape 2 & 3)**
+- **Champs obligatoires** : applicationInstructions, restrictions, targetZones présents
+- **Timing cohérent** : Jamais "both", règle hebdomadaire respectée
+- **Métadonnées temporaires** : introduceFromWeek, applicationDuration si isTemporary=true
+- **Progression logique** : Base durable conservée entre phases
+
+### **Validation Dermatologique (Niveaux A/B/C)**
+- **Cycle cellulaire respecté** : Durées basées sur physiologie (28±4 jours)
+- **Compatibilités validées** : Matrice scientifique respectée
+- **Personnalisation effective** : Facteurs âge/type peau/problèmes intégrés
+- **Sécurité garantie** : Contre-indications absolues respectées
+
+### **Métriques Cibles Actuelles**
+- **Reproductibilité** : 95% résultats identiques (température 0.0)
+- **Personnalisation** : 95% routines différentes pour diagnostics différents
+- **Cohérence** : 90% cohérence diagnostic → routine → produits
+- **Performance** : <30s latence P95, <2% taux d'erreur
 
 ---
 
-## ⚙️ **MÉTHODES TECHNIQUES IMPLÉMENTÉES**
+## 📚 **RÉFÉRENCES SCIENTIFIQUES CONDENSÉES**
 
-### **Calcul Durées Personnalisées**
+### **Preuves Niveau A (Evidence-Based)**
+- SPF ≥30 quotidien ralentit photo-vieillissement (Hughes/Green, Ann Intern Med 2013)
+- Rétinoïdes efficaces acné + anti-âge (JAAD Guidelines 2024)
+- Azélaïque sûr grossesse/allaitement (AAD 2025)
 
-```typescript
-interface DurationCalculator {
-  calculateImmediateDuration(assessment: BeautyAssessment): string {
-    let baseDuration = 14 // 2 semaines standard
-    
-    // Facteur âge (cicatrisation plus lente)
-    if (assessment.age > 50) baseDuration += 7
-    if (assessment.age > 65) baseDuration += 7
-    
-    // Facteur gravité problèmes
-    const severeProblemCount = assessment.zoneSpecific
-      .filter(zone => zone.problems.some(p => p.intensity === 'intense')).length
-    baseDuration += severeProblemCount * 3
-    
-    // Facteur type de peau
-    if (assessment.skinType === 'sensitive') baseDuration += 5
-    
-    return this.formatDurationRange(baseDuration)
-  }
-  
-  calculateAdaptationDuration(treatments: UnifiedRoutineStep[]): string {
-    let baseDuration = 28 // 4 semaines standard
-    
-    // Facteur complexité traitements
-    const complexTreatments = treatments.filter(t => 
-      ['retinol', 'aha', 'bha', 'vitamin-c'].includes(t.activeType)
-    ).length
-    baseDuration += complexTreatments * 7
-    
-    // Facteur nombre zones traitées
-    const totalZones = new Set(
-      treatments.flatMap(t => t.zones || [])
-    ).size
-    baseDuration += totalZones * 2
-    
-    return this.formatDurationRange(baseDuration)
-  }
-}
-```
-
-### **Évolution Intelligente des Produits**
-
-```typescript
-function evolveBaseProducts(baseDurable: UnifiedRoutineStep[]): UnifiedRoutineStep[] {
-  return baseDurable.map(step => {
-    switch(step.category) {
-      case 'hydration':
-        // Évolution vers hydratation renforcée si peau sèche/mature
-        if (needsReinforcedHydration(step.diagnostic)) {
-          return {
-            ...step,
-            title: step.title.replace('globale', 'renforcée'),
-            recommendedProducts: getReinforcedHydrationProducts(),
-            applicationAdvice: getReinforcedAdvice()
-          }
-        }
-        return step
-        
-      case 'protection':
-        // Évolution vers SPF plus élevé si exposition/actifs
-        if (hasProgressiveActives() || hasHighExposure()) {
-          return {
-            ...step,
-            recommendedProducts: getHigherSPFProducts(),
-            applicationAdvice: getReinforced‌ProtectionAdvice()
-          }
-        }
-        return step
-        
-      default:
-        return step
-    }
-  })
-}
-```
-
-### **Critères Visuels d'Évolution**
-
-```typescript
-const visualCriteria = {
-  'poils_incarnés': {
-    goal: 'disparition des inflammations',
-    observation: 'Vérifier absence de rougeurs et gonflements',
-    estimatedDays: '7-14 jours',
-    nextStep: 'Continuer prévention rasage'
-  },
-  
-  'imperfections': {
-    goal: 'réduction visible des lésions',
-    observation: 'Compter diminution nombre boutons actifs',
-    estimatedDays: '14-21 jours', 
-    nextStep: 'Introduire prévention récidive'
-  },
-  
-  'rougeurs': {
-    goal: 'apaisement et uniformisation',
-    observation: 'Teint plus homogène, moins de réactivité',
-    estimatedDays: '7-14 jours',
-    nextStep: 'Renforcer barrière cutanée'
-  },
-  
-  'cicatrisation': {
-    goal: 'fermeture complète plaies',
-    observation: 'Peau lisse, couleur normalisée',
-    estimatedDays: '10-21 jours',
-    nextStep: 'Prévention cicatrices'
-  }
-}
-```
+### **Preuves Niveau B (Consensus Expert)**
+- Cycle cellulaire 28±4 jours, +7j/décennie >30 ans (Lambers 2006)
+- Vitamine C + Niacinamide compatibles (Al-Niaimi 2017)
+- BHA lipophile, AHA hydrophile (mécanismes différents)
 
 ---
 
-## 🎯 **EXEMPLES CONCRETS D'APPLICATION**
-
-### **Cas 1 : Utilisateur Jeune (25 ans) - Problèmes Légers**
-```
-Diagnostic : Imperfections légères T-zone, peau mixte
-
-Phase Immédiate (1-2 sem) :
-1. Nettoyage doux quotidien (base durable)
-2. Traitement imperfections T-zone (temporaire - jusqu'à réduction visible)
-3. Hydratation légère (base durable)
-4. Protection SPF 30 (base durable)
-
-Phase Adaptation (3-4 sem) :
-1. Nettoyage doux (base conservée)
-2. Hydratation légère (base conservée) 
-3. Niacinamide 2-3x/semaine (nouveau progressif)
-4. Protection SPF 30 (base conservée)
-
-Phase Maintenance (continu) :
-1. Routine base optimisée
-2. Exfoliation BHA 1x/semaine
-3. Protection maintenue
-```
-
-### **Cas 2 : Utilisateur Mature (55 ans) - Problèmes Complexes**
-```
-Diagnostic : Rides, taches, sécheresse, sensibilité
-
-Phase Immédiate (2-3 sem) :
-1. Nettoyage très doux (base durable)
-2. Réparation barrière cutanée (temporaire - jusqu'à apaisement)
-3. Hydratation intensive (base durable)
-4. Protection SPF 50 (base durable)
-
-Phase Adaptation (5-6 sem) :
-1. Nettoyage très doux (base conservée)
-2. Hydratation intensive renforcée (évolution base)
-3. Rétinol progressif 1x/semaine (nouveau)
-4. Vitamin C matin (nouveau)
-5. Protection SPF 50 (base conservée)
-
-Phase Maintenance (continu) :
-1. Routine anti-âge complète
-2. Rétinol optimisé 3x/semaine
-3. Soins dédiés hebdomadaires
-4. Protection renforcée
-```
-
----
-
-## 🔍 **VALIDATION ET TESTS**
-
-### **Critères de Validation Technique**
-- [ ] Numérotation cohérente (1,2,3 par phase)
-- [ ] Transition logique produits entre phases
-- [ ] Durées personnalisées selon diagnostic
-- [ ] Critères visuels définis pour chaque traitement
-- [ ] Base durable identifiée et conservée
-- [ ] Filtrage produits génériques fonctionnel
-
-### **Critères de Validation Dermatologique**
-- [ ] Respect cycle cellulaire 28 jours
-- [ ] Progression respectueuse physiologie cutanée  
-- [ ] Évite surcharge/irritation phase initiale
-- [ ] Introduction progressive actifs forts
-- [ ] Maintien équilibre barrière cutanée
-- [ ] Prévention effets rebonds
-
-### **Tests Utilisateur Requis**
-- [ ] Compréhension logique 3 phases
-- [ ] Clarté critères passage phase suivante
-- [ ] Autonomie gestion timing personnel
-- [ ] Satisfaction progression personnalisée
-- [ ] Efficacité résultats selon timing prévu
-
----
-
-## 📚 **RÉFÉRENCES SCIENTIFIQUES**
-
-### **Cycle Cellulaire**
-- Renouvellement épidermique : 28 ± 4 jours (peau normale)
-- Facteur âge : +7 jours par décennie après 30 ans
-- Récupération barrière : 14 jours maximum (peau saine)
-
-### **Adaptation Actifs**
-- Rétinol : 2-4 semaines adaptation minimum
-- AHA/BHA : 1-2 semaines préparation recommandée  
-- Vitamin C : 7-10 jours introduction progressive
-- Niacinamide : Tolérance immédiate, efficacité 2-4 semaines
-
-### **Facteurs Individuels**
-- **Âge** : Impact majeur durées cicatrisation et adaptation
-- **Type peau** : Sensible nécessite +30-50% temps adaptation
-- **Gravité** : Problèmes intenses rallongent phase immédiate
-- **Environnement** : Climat/pollution influence timing
-
----
-
-## ✅ **AMÉLIORATIONS APPLIQUÉES (11 septembre 2025)**
-
-### **🎯 Architecture Fiabilité Implémentée**
-- **Déterminisme IA** : Température 0.0 + seed fixe pour reproductibilité
-- **Validation Zod** : Schémas stricts pour tous outputs IA avec retry automatique
-- **Gestion d'erreurs** : Retry intelligent avec backoff exponentiel
-- **Fallback maîtrisé** : Mode dégradé transparent basé sur profil statistique
-
-### **🔄 Logique 2 Étapes Optimisée**
-- **ÉTAPE 1** : Diagnostic visuel pur avec validation stricte
-- **ÉTAPE 2** : Sélection produits basée sur diagnostic validé
-- **ÉTAPE 3** : Génération routine algorithmique (sans IA)
-- **Cohérence garantie** : Validation croisée entre toutes les étapes
-
-### **📊 Monitoring et Métriques**
-- **Métriques temps réel** : Taux d'erreur, latence P95, cohérence diagnostic
-- **Alerting intelligent** : Seuils adaptatifs avec escalade automatique
-- **Tests automatisés** : Couverture >90% avec tests E2E Playwright
-- **Dashboard opérationnel** : Visibilité complète sur santé système
-
-### **🎓 Interface Éducative Optimisée**
-- **Durées personnalisées** selon âge et gravité problèmes
-- **Objectifs par phase** : Stabiliser → Adapter → Maintenir
-- **Critères visuels** : "Jusqu'à cicatrisation" remplace timing arbitraire
-- **Badges temporels enrichis** : Observation + durée + objectif
-
-### **🔬 Validation Dermatologique Renforcée**
-- **Cycle cellulaire respecté** : Durées basées sur physiologie cutanée
-- **Transition intelligente** : Base durable vs traitements temporaires
-- **Critères scientifiques** : Validation par experts dermatologiques
-- **Personnalisation avancée** : Facteurs âge, type peau, gravité intégrés
-
----
-
-*Documentation technique DermAI V2 - Logique Dermatologique*  
-*Dernière mise à jour : 11 septembre 2025*
+*Documentation technique DermAI V3 - Référence Prompts IA*  
+*Dernière mise à jour : Janvier 2025 - Architecture V3 Intégrée*
 
 

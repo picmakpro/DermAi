@@ -2369,6 +2369,7 @@ Les scores évoluent avec votre routine personnalisée !"
            <div className="mb-12">
              <RoutineV3Final 
                routine={analysis.uiRoutine}
+               coherenceIssues={analysis.coherenceValidation?.issuesFound || []}
                onAnalyticsEvent={(event, data) => {
                  console.log(`[routine-v3:${event}]`, data);
                  // TODO: Intégrer avec Google Analytics

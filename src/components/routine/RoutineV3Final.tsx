@@ -31,6 +31,22 @@ import {
 // Types simplifiés pour production
 type Slot = "morning" | "evening" | "weekly";
 
+// Localisation des fréquences
+const FREQUENCY_FR: Record<string, string> = {
+  'daily': 'quotidienne',
+  '1x/week': '1×/sem',
+  '2x/week': '2×/sem', 
+  '3x/week': '3×/sem',
+  '3–5x/week': '3–5×/sem',
+  '2x/week puis daily': '2×/sem puis quotidien',
+  '2x/week puis 3x/week': '2×/sem puis 3×/sem',
+  '1x/week puis 2x/week': '1×/sem puis 2×/sem'
+};
+
+function localizeFrequency(frequency: string): string {
+  return FREQUENCY_FR[frequency] || frequency;
+}
+
 interface RoutineItem {
   id: string;
   title: string;
@@ -63,6 +79,7 @@ interface RoutineData {
 interface RoutineV3FinalProps {
   routine: RoutineData;
   onAnalyticsEvent?: (event: string, data: any) => void;
+  coherenceIssues?: string[]; // Avertissements de cohérence optionnels
 }
 
 // ===== DESIGN SYSTEM - VARIANTE B (GLOW) =====
@@ -298,7 +315,8 @@ function AlternativesModal({
 
 export default function RoutineV3Final({ 
   routine,
-  onAnalyticsEvent
+  onAnalyticsEvent,
+  coherenceIssues = []
 }: RoutineV3FinalProps) {
   const [activePhase, setActivePhase] = useState<string>(routine.phases[0]?.id || "immediate");
   const [slot, setSlot] = useState<Slot>("morning");
@@ -391,6 +409,24 @@ export default function RoutineV3Final({
           <p className={`text-base max-w-3xl leading-relaxed ${STYLES.typography.subtitle}`}>
             Votre routine dermatologique en 3 phases, organisée par horaire pour une application optimale.
           </p>
+
+          {/* Avertissements de cohérence */}
+          {coherenceIssues.length > 0 && (
+            <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-2xl">
+              <div className="flex items-center gap-3 mb-3 text-amber-700">
+                <AlertCircle className="w-5 h-5" />
+                <span className="font-semibold">Points d'attention</span>
+              </div>
+              <ul className="text-sm text-amber-800 space-y-1">
+                {coherenceIssues.map((issue, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <span className="text-amber-600 mt-1">•</span>
+                    <span>{issue}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </header>
 
         {/* Phase Tabs */}
@@ -536,7 +572,7 @@ function RoutineCard({
       {item.is_temporary && (
         <div className="flex flex-wrap gap-3 mb-6">
           {item.introduce_from_week !== undefined && (
-            <EducationalBadge type="observe" text={`Semaine ${item.introduce_from_week}`} />
+            <EducationalBadge type="observe" text={`Semaine ${Math.max(1, item.introduce_from_week)}`} />
           )}
           {item.application_duration && (
             <EducationalBadge type="duration" text={item.application_duration} />
@@ -611,7 +647,7 @@ function RoutineCard({
               {item.frequency && (
                 <span className="inline-flex items-center gap-2 text-xs px-3 py-2 rounded-xl border border-gray-200 bg-white font-medium">
                   <CalendarDays className="w-3.5 h-3.5" />
-                  <span className="opacity-75">Fréquence :</span> {item.frequency}
+                  <span className="opacity-75">Fréquence :</span> {localizeFrequency(item.frequency)}
                 </span>
               )}
               {item.application_duration && (
