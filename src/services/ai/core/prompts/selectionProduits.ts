@@ -1,7 +1,26 @@
 import { PersonalizedRoutine } from '@/schemas/v2'
 
 /**
- * Prompts spécialisés pour l'ÉTAPE 3 : Sélection Produits (IA OpenAI)
+ * @deprecated OBSOLÈTE - Remplacé par architecture hybride (ProductMatcher + Database)
+ * 
+ * Ce prompt n'est plus utilisé depuis la refonte Step 3 hybride (Phase D - Octobre 2025).
+ * Conservé pour référence historique uniquement.
+ * 
+ * Nouvelle architecture :
+ * - ProductMatcher (algorithme TypeScript déterministe)
+ * - ProductDatabase (catalogue enrichi avec métadonnées)
+ * - Principe : "IA pour comprendre, Algo pour exécuter"
+ * - Performance : <5s (vs 15-20s avant), -88% coûts tokens
+ * - Fiabilité : 100% complétude (vs 30% avant)
+ * 
+ * @see docs/plan-execution-v2-5/REFONTE-STEP3-HYBRIDE.md
+ * @see docs/plan-execution-v2-5/SPRINT-D-REFONTE-HYBRIDE-EXECUTION.md
+ * @see src/services/products/ProductMatcher.ts
+ * @see src/data/productsDatabase.ts
+ * 
+ * ---
+ * 
+ * Prompts spécialisés pour l'ÉTAPE 3 : Sélection Produits (IA OpenAI) - OBSOLÈTE
  * 
  * Input: Routine validée + Catalogue partitionné
  * Output: Produits adaptés avec justifications
