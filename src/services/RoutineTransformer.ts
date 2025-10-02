@@ -6,6 +6,22 @@ import {
 import { UnifiedRoutineStep, RecommendedProduct } from '@/types'
 
 /**
+ * @deprecated OBSOLÈTE - Utiliser AnalysisServiceV3Adapter à la place
+ * 
+ * Ce service sera supprimé dans la prochaine version.
+ * La nouvelle pipeline V3 utilise :
+ * - AnalysisServiceV3Adapter.transformForUIV3()
+ * - aiRoutine.mapper.ts
+ * 
+ * Migration :
+ * Ancien: RoutineTransformer.transformToUnified(routine, products)
+ * Nouveau: AnalysisServiceV3Adapter.transformForUIV3(diagnostic, routine, products)
+ * 
+ * @see src/services/ai/core/AnalysisServiceV3Adapter.ts
+ * @see src/services/mappers/aiRoutine.mapper.ts
+ * 
+ * ---
+ * 
  * Service de transformation des routines IA enrichies vers le format frontend
  * 
  * SPRINT 2 - REFONTE ROUTINES V2

@@ -176,7 +176,37 @@ export class CatalogLoaderV2 {
       this.logger.error('❌ Erreur critique chargement catalogue', {
         error: errorMessage
       })
-      throw new Error(`Impossible de charger le catalogue: ${errorMessage}`)
+      
+      // ✅ FALLBACK CATALOGUE BACKUP
+      this.logger.warn('🔄 Tentative chargement catalogue backup')
+      
+      try {
+        const catalogBackup = await import('@/data/catalogBackup.json')
+        const backupData = catalogBackup.default as PartitionedCatalog
+        
+        // Mettre en cache le backup
+        this.cache = backupData
+        this.lastLoadTime = Date.now()
+        
+        const totalBackup = Object.values(backupData).reduce(
+          (total, products) => total + products.length, 0
+        )
+        
+        this.logger.info('✅ Catalogue backup chargé', {
+          categories: Object.keys(backupData).length,
+          totalProducts: totalBackup,
+          source: 'catalogBackup.json'
+        })
+        
+        return backupData
+        
+      } catch (backupError) {
+        const backupErrorMessage = backupError instanceof Error ? backupError.message : 'Erreur inconnue'
+        this.logger.error('❌ Catalogue backup aussi en erreur', { 
+          backupError: backupErrorMessage 
+        })
+        throw new Error('CATALOGUE_UNAVAILABLE: Impossible de charger le catalogue (principal et backup échoués)')
+      }
     }
   }
 

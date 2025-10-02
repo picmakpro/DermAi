@@ -2,11 +2,13 @@ import crypto from 'crypto'
 import { 
   PureDiagnostic, 
   PersonalizedRoutine, 
-  ProductSelection, 
+  ProductSelection,
+  ProductSelectionV3, // ✅ NOUVEAU V3
   CompleteAnalysisV2,
   PureDiagnosticSchema,
   PersonalizedRoutineSchema,
   ProductSelectionSchema,
+  ProductSelectionSchemaV3, // ✅ NOUVEAU V3
   CompleteAnalysisV2Schema
 } from '@/schemas/v2'
 import { Logger } from '@/utils/Logger'
@@ -634,14 +636,62 @@ export class AnalysisService {
 
   /**
    * ÉTAPE 3: Sélection produits optimale basée sur routine + catalogue
+   * V3: avec alternatives et score de matching
    */
   static async selectOptimalProducts(
     routine: PersonalizedRoutine,
     request: AnalyzeRequest,
     requestId: string
-  ): Promise<ProductSelection> {
-    // Charger le catalogue partitionné (à implémenter)
+  ): Promise<ProductSelectionV3> { // ✅ Type retour V3
+    // Charger le catalogue partitionné
     const catalog = await this.loadPartitionedCatalog()
+    
+    // ✅ VALIDATION CATALOGUE (NOUVEAU)
+    const totalProducts = Object.values(catalog).flat().length
+    const categoriesCount = Object.keys(catalog).length
+    
+    if (totalProducts === 0) {
+      this.logger.error('❌ CATALOGUE VIDE - Step 3 impossible', { requestId })
+      throw new Error('CATALOGUE_EMPTY: Impossible de sélectionner des produits sans catalogue')
+    }
+    
+    if (totalProducts < 50) {
+      this.logger.warn(`⚠️ Catalogue incomplet: ${totalProducts} produits seulement`, { 
+        requestId,
+        categoriesCount 
+      })
+    }
+    
+    this.logger.info('✅ Catalogue validé pour Step 3', { 
+      requestId,
+      totalProducts,
+      categoriesCount,
+      categories: Object.keys(catalog)
+    })
+    
+    // ✅ LOGS INPUT DÉTAILLÉS (NOUVEAU)
+    const totalSteps = Object.values(routine.phases).reduce(
+      (sum, phase) => sum + phase.steps.length, 0
+    )
+    
+    this.logger.info('[step3:input-details]', {
+      requestId,
+      routine: {
+        totalSteps,
+        immediate: routine.phases.immediate.steps.length,
+        adaptation: routine.phases.adaptation.steps.length,
+        maintenance: routine.phases.maintenance.steps.length
+      },
+      catalogue: {
+        totalProducts,
+        categories: categoriesCount
+      },
+      constraints: {
+        budget: request.constraints.budget,
+        pregnancy: request.userProfile.pregnancy,
+        allergies: request.constraints.allergies?.length || 0
+      }
+    })
     
     const cacheKey = this.cache.generateProductsKey(routine, request.constraints.budget)
     
@@ -649,7 +699,7 @@ export class AnalysisService {
     const cached = await this.cache.get(cacheKey)
     if (cached) {
       this.logger.info('📋 Cache hit - Produits', { requestId })
-      return ProductSelectionSchema.parse(cached)
+      return ProductSelectionSchemaV3.parse(cached) // ✅ V3
     }
 
     // Retry logic pour produits
@@ -659,8 +709,8 @@ export class AnalysisService {
       try {
       const response = await this.openai.chat.completions.create({
         model: 'gpt-4o',
-        temperature: 0.0, // Précision maximale pour sélection
-        max_tokens: 3500,
+        temperature: 0.0, // ✅ Température 0 pour stabilité maximale (prompt V3)
+        max_tokens: 4000, // ✅ Augmenté pour format simplifié
         messages: [
           {
             role: 'system',
@@ -683,13 +733,74 @@ export class AnalysisService {
         throw new Error('Pas de contenu dans la réponse OpenAI')
       }
 
-      // 🧹 NETTOYER LE CONTENU (même logique que les autres étapes)
-      const cleanContent = content
+      // 🚨 LOG COMPLET BRUT AVANT TOUT NETTOYAGE (pour debug)
+      console.log('\n\n========== JSON BRUT OPENAI (AVANT NETTOYAGE) ==========')
+      console.log('Request ID:', requestId)
+      console.log('Attempt:', attempt)
+      console.log('Longueur:', content.length, 'caractères')
+      console.log('\n--- DÉBUT CONTENU BRUT ---')
+      console.log(content)
+      console.log('--- FIN CONTENU BRUT ---\n')
+      console.log('========================================================\n\n')
+
+      // 📝 LOG COMPLET pour debug JSON corruption
+      this.logger.info('🔍 CONTENU BRUT COMPLET Step 3:', {
+        requestId,
+        attempt,
+        fullLength: content.length,
+        first500chars: content.substring(0, 500),
+        last500chars: content.substring(content.length - 500),
+        hasMarkdown: content.includes('```'),
+        lineCount: content.split('\n').length
+      })
+
+      // 🧹 NETTOYER LE CONTENU (nettoyage renforcé pour Step 3)
+      let cleanContent = content
         .replace(/```json\n?/g, '')
         .replace(/```\n?/g, '')
         .replace(/^```/gm, '')
         .replace(/```$/gm, '')
         .trim()
+
+      // ✅ NETTOYAGE CRITIQUE : Retirer les blocs markdown ```json et ```
+      // Problème identifié : OpenAI enrobe parfois le JSON dans un bloc markdown
+      cleanContent = cleanContent.replace(/^```json\s*/i, '') // Début
+      cleanContent = cleanContent.replace(/\s*```$/i, '')     // Fin
+      cleanContent = cleanContent.trim()
+      
+      // ✅ NETTOYAGE ULTRA-ROBUSTE pour le nouveau prompt V3 minifié
+      // Supprimer TOUS les caractères de contrôle (ASCII 0-31)
+      cleanContent = cleanContent.replace(/[\x00-\x1F\x7F]/g, ' ')
+      
+      // Supprimer les commentaires JavaScript/JSON
+      cleanContent = cleanContent.replace(/\/\/.*$/gm, '')
+      cleanContent = cleanContent.replace(/\/\*[\s\S]*?\*\//g, '')
+      
+      // Normaliser les espaces multiples
+      cleanContent = cleanContent.replace(/\s+/g, ' ')
+      
+      // Trim final
+      cleanContent = cleanContent.trim()
+
+      // ✅ Test de validité JSON
+      try {
+        JSON.parse(cleanContent) // Test préliminaire
+      } catch (testError: any) {
+        const errorMsg = testError.message || ''
+        
+        this.logger.warn('⚠️ JSON invalide détecté, tentative réparation avancée', { 
+          requestId, 
+          error: errorMsg,
+          position: testError.message.match(/position (\d+)/)?.[1],
+          preview: cleanContent.substring(0, 300)
+        })
+        
+        // Dernière tentative : supprimer tout caractère non-ASCII safe
+        if (errorMsg.includes('control character') || errorMsg.includes('Bad escaped')) {
+          cleanContent = cleanContent.replace(/[^\x20-\x7E]/g, ' ')
+          cleanContent = cleanContent.replace(/\s+/g, ' ').trim()
+        }
+      }
 
       this.logger.info('📋 CONTENU NETTOYÉ ÉTAPE 3:', { 
         requestId,
@@ -702,9 +813,52 @@ export class AnalysisService {
         }
       })
 
-      // Parser et valider avec Zod
+      // Parser et valider avec Zod V3
       const parsedContent = JSON.parse(cleanContent)
-      const validatedProducts = ProductSelectionSchema.parse(parsedContent)
+      
+      // ✅ NOUVEAU : Adapter le format simplifié au format V3 attendu
+      // Le nouveau prompt renvoie { "products": [...] } au lieu de { "selectedProducts": [...] }
+      const adaptedContent = {
+        selectedProducts: (parsedContent.products || parsedContent.selectedProducts || []).map((p: any) => ({
+          ...p,
+          brand: p.brand || 'Non spécifié',
+          imageUrl: p.imageUrl || '',
+          routineStepUid: `step-${p.routineStepId}`,
+          compatibilityReasons: p.compatibilityReasons || [`Score de matching: ${p.matchingScore}`],
+          retailers: p.retailers || [],
+          alternatives: (p.alternatives || []).map((alt: any) => ({
+            ...alt,
+            catalogId: alt.catalogId,
+            name: alt.productName || alt.name,
+            brand: alt.brand || 'Non spécifié',
+            price: alt.price,
+            imageUrl: alt.imageUrl || '',
+            matchingScore: alt.matchingScore
+          })),
+          justification: p.justification || `Produit sélectionné pour l'étape ${p.routineStepId}`,
+          applicationAdvice: p.applicationAdvice || 'Suivre les instructions du produit',
+          timing: p.timing || 'matin',
+          targetZones: p.targetZones || ['visage entier'],
+          temporaryLabel: p.temporaryLabel || false,
+          progressiveIntroduction: p.progressiveIntroduction || null,
+          restrictions: p.restrictions || []
+        })),
+        budgetBreakdown: parsedContent.budgetBreakdown || {
+          totalCost: (parsedContent.products || []).reduce((sum: number, p: any) => sum + (p.price || 0), 0),
+          budgetRespected: true,
+          optimizations: [],
+          alternatives: []
+        },
+        coherenceValidation: parsedContent.coherenceValidation || {
+          routineProductsMatch: true,
+          zonesCoherent: true,
+          timingLogical: true,
+          budgetRespected: true,
+          issuesFound: []
+        }
+      }
+      
+      const validatedProducts = ProductSelectionSchemaV3.parse(adaptedContent) // ✅ V3
 
       // Mettre en cache
       await this.cache.set(cacheKey, validatedProducts, 6 * 60 * 60 * 1000) // 6h

@@ -224,6 +224,48 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 - **Mapper pur** : Zéro inférence métier, logs champs manquants
 - **Prompts ajustés** : Garantir champs requis sans changer logique clinique
 
+### 7.8. Plan Amélioration V2.5 - Page Résultats (Octobre 2025)
+
+**🎯 Objectif Global** : Finaliser la page Résultats à 100% avant toute autre feature (Dashboard, etc.)
+
+**Documentation complète** :
+- 📁 `docs/plan-execution-v2-5/` - **Dossier complet avec 8 fichiers détaillés**
+  - `00-INDEX-GENERAL.md` - Vue d'ensemble et timeline
+  - `01-NETTOYAGE-PIPELINE.md` - Phase 0 : Nettoyage (2h)
+  - `02-CORRECTION-STEP3-PRODUITS.md` - Phase 1 : Step 3 (1 jour)
+  - `03-AMELIORATION-UI-RESULTATS.md` - Phase 2 : UI/UX (1.5 jours)
+  - `04-RECAP-UTILISATEUR.md` - Phase 3 : Récap utilisateur (0.5 jour)
+  - `05-TESTS-VALIDATION.md` - Phase 4 : Tests & validation (0.5 jour)
+  - `06-DASHBOARD-PHASE2.md` - Phase 5 : Dashboard (1-2 semaines, optionnel)
+  - `README.md` + `QUICKSTART.md` - Guides d'utilisation
+
+**Problèmes Identifiés** :
+- ❌ **Step 3 instable** : "produits non spécifiés", pas d'alternatives, pas de score matching
+- ❌ **Incohérence schéma ↔ prompt** : 4 versions schémas concurrentes, double pipeline transformation
+- ❌ **Badges UI surchargés** : Tous badges affichés (timing, SPF, contours) → surcharge visuelle
+- ❌ **Alternatives invisibles** : Générées par IA mais pas affichées dans UI
+- ❌ **Pas de récap utilisateur** : Photos et questionnaire non visibles sur page résultats
+
+**Solutions Implémentées (Phases 0-4)** :
+- ✅ **Nettoyage pipeline** : Archivage schémas obsolètes, pipeline unique V3
+- ✅ **Step 3 corrigé** : Schéma V3 aligné avec prompt, score matching 0-100, alternatives 3-5 par produit
+- ✅ **UI améliorée** : Badges sélectifs (timing + alternance), score visible, modal alternatives
+- ✅ **Récap utilisateur** : Section "Vos entrées" avec photos cliquables, profil, UV/Budget/Style
+- ✅ **Tests & validation** : 20 cas variés, performance Step 3 < 15s, rapport final
+
+**Métriques de Succès V2.5** :
+- 🎯 0 "produit non spécifié" (100% mapping)
+- 🎯 Alternatives sur 100% produits (3-5 chacun)
+- 🎯 Score matching visible partout
+- 🎯 Performance Step 3 < 15s
+- 🎯 20 cas tests validés
+
+**Timeline** :
+- **Core V2.5 (Phases 0-4)** : 3-4 jours
+- **Dashboard (Phase 5, optionnel)** : +1-2 semaines après validation
+
+**Statut** : 📋 Planifié - En attente d'exécution
+
 ## 8. Roadmap et Planning Détaillé
 
 ### 8.1. État Actuel (Janvier 2025)

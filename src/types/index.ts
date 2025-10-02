@@ -285,20 +285,27 @@ export interface SkinConcerns {
   intensity?: 'légère' | 'modérée' | 'intense'
 }
 
-// Import des types de routine personnalisée depuis schemas/refonte.ts
+// Import des types de routine personnalisée depuis schemas V2
 export type { 
-  PersonalizedRoutine, 
-  RoutinePhase, 
-  RoutineStepPersonnalisee, 
-  PersonalizedTiming,
-  UserConstraints,
-  // 🔥 NOUVEAUX TYPES - SPRINT 2 REFONTE IA-FIRST
+  PersonalizedRoutine
+} from '@/schemas/v2/routine'
+
+// Import des types de sélection produits depuis schemas V2
+export type { 
   ProductSelection,
   SelectedProduct,
-  BudgetBreakdown,
-  DermatologicalCoherence,
-  ProductJustification
-} from '@/schemas/refonte'
+  BudgetBreakdown
+} from '@/schemas/v2/products'
+
+// Types UserConstraints défini localement (utilisé par prompts IA)
+export interface UserConstraints {
+  budget?: string // "50-100€", "Pas de limite", etc.
+  timeAvailable?: string // "5 min matin", "15 min soir", etc.
+  allergies?: string[] // Ingrédients à éviter
+  currentRoutine?: string // Routine actuelle si mentionnée
+  lifestyle?: string // "Voyage fréquent", "Vie active", etc.
+  preferences?: string[] // Préférences spécifiques
+}
 
 // 🔥 NOUVEAUX TYPES - SPRINT 2 REFONTE IA-FIRST
 // Types pour sélection produits IA

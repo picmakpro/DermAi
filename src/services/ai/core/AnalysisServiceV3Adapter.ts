@@ -124,6 +124,9 @@ export class AnalysisServiceV3Adapter {
       totalItems: this.countTotalItems(routine)
     });
     
+    // Debug matching
+    this.debugProductMatching(routine, products)
+    
     // Créer un index des produits par stepId pour matching plus efficace
     const productsByStepId = new Map();
     products.selectedProducts.forEach(product => {
@@ -200,7 +203,106 @@ export class AnalysisServiceV3Adapter {
       });
     });
     
+    // ✅ VALIDATION FINALE STRICTE (NOUVEAU)
+    let unmatchedItems: any[] = []
+    let totalItems = 0
+    
+    routine.phases.forEach(phase => {
+      Object.values(phase.slots).flat().forEach(item => {
+        totalItems++
+        
+        if (!item.product || item.product === 'Non spécifié' || item.product === '') {
+          unmatchedItems.push({
+            phase: phase.id,
+            slot: item.routine_slot,
+            category: item.category,
+            title: item.title
+          })
+          
+          console.warn(`[analysis:product-missing]`, {
+            phase: phase.id,
+            slot: item.routine_slot,
+            category: item.category,
+            title: item.title
+          })
+        }
+      })
+    })
+    
+    const matchedCount = totalItems - unmatchedItems.length
+    const matchRate = totalItems > 0 ? (matchedCount / totalItems * 100).toFixed(1) : '0'
+    
+    console.log(`[analysis:enrichment-complete]`, {
+      totalItems,
+      matched: matchedCount,
+      unmatched: unmatchedItems.length,
+      matchRate: `${matchRate}%`
+    })
+    
+    // ✅ ERREUR SI TROP DE PRODUITS MANQUANTS
+    if (unmatchedItems.length > 0) {
+      const threshold = 0.3 // 30% maximum de produits manquants
+      
+      if (unmatchedItems.length > totalItems * threshold) {
+        console.error(`[analysis:enrichment-failed]`, {
+          unmatchedItems,
+          threshold: `${threshold * 100}%`,
+          actual: matchRate
+        })
+        
+        throw new Error(
+          `ENRICHMENT_FAILED: ${unmatchedItems.length}/${totalItems} produits non mappés (${matchRate}% match). ` +
+          `Vérifier que Step 3 génère les bons catalogId et routineStepId.`
+        )
+      }
+      
+      // Warning si <100% mais >70%
+      console.warn(`⚠️ Enrichissement incomplet mais acceptable: ${matchRate}% match`)
+    }
+    
     return routine;
+  }
+
+  /**
+   * Debug helper pour diagnostiquer problèmes de matching
+   */
+  private static debugProductMatching(
+    routine: AiRoutineOutput,
+    products: ProductSelection
+  ): void {
+    
+    console.log('[analysis:debug-matching-start]')
+    
+    // Lister tous les stepIds de la routine
+    const routineStepIds: number[] = []
+    let stepCounter = 1
+    
+    routine.phases.forEach(phase => {
+      Object.values(phase.slots).flat().forEach(item => {
+        routineStepIds.push(stepCounter++)
+      })
+    })
+    
+    // Lister tous les routineStepId des produits
+    const productStepIds = products.selectedProducts.map(p => p.routineStepId)
+    
+    // Identifier les IDs manquants
+    const missingStepIds = routineStepIds.filter(id => !productStepIds.includes(id))
+    
+    if (missingStepIds.length > 0) {
+      console.warn('[analysis:debug-missing-stepids]', {
+        routineStepIds,
+        productStepIds,
+        missingStepIds,
+        message: `Step 3 n'a pas généré de produits pour les stepIds: ${missingStepIds.join(', ')}`
+      })
+    } else {
+      console.log('[analysis:debug-matching-ok]', {
+        routineSteps: routineStepIds.length,
+        productSteps: productStepIds.length,
+        message: 'Tous les stepIds sont couverts'
+      })
+    }
   }
 
   /**

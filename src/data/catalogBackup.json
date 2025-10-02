@@ -1,0 +1,122 @@
+{
+  "cleanser": [
+    {
+      "catalogId": "cerave_hydrating_cleanser",
+      "name": "Gel Nettoyant Hydratant",
+      "brand": "CeraVe",
+      "category": "cleanser",
+      "price": 12.99,
+      "targetSkinTypes": ["dry", "normal", "combination"],
+      "benefits": ["Nettoyage doux", "Hydratation"],
+      "activeIngredients": ["Céramides", "Acide hyaluronique"],
+      "applicationTiming": "morning_evening",
+      "targetZones": ["visage entier"]
+    },
+    {
+      "catalogId": "cetaphil_gentle_cleanser",
+      "name": "Nettoyant Doux",
+      "brand": "Cetaphil",
+      "category": "cleanser",
+      "price": 10.99,
+      "targetSkinTypes": ["sensitive", "dry", "normal"],
+      "benefits": ["Nettoyage ultra-doux", "Non irritant"],
+      "activeIngredients": ["Glycérine"],
+      "applicationTiming": "morning_evening",
+      "targetZones": ["visage entier"]
+    }
+  ],
+  "moisturizer": [
+    {
+      "catalogId": "cerave_moisturizing_cream",
+      "name": "Crème Hydratante",
+      "brand": "CeraVe",
+      "category": "moisturizer",
+      "price": 15.99,
+      "targetSkinTypes": ["dry", "normal"],
+      "benefits": ["Hydratation 24h", "Réparation barrière"],
+      "activeIngredients": ["Céramides", "Acide hyaluronique"],
+      "applicationTiming": "morning_evening",
+      "targetZones": ["visage entier"]
+    },
+    {
+      "catalogId": "neutrogena_hydro_boost",
+      "name": "Hydro Boost Gel-Crème",
+      "brand": "Neutrogena",
+      "category": "moisturizer",
+      "price": 13.50,
+      "targetSkinTypes": ["combination", "oily"],
+      "benefits": ["Hydratation légère", "Non-comédogène"],
+      "activeIngredients": ["Acide hyaluronique"],
+      "applicationTiming": "morning_evening",
+      "targetZones": ["visage entier"]
+    }
+  ],
+  "sunscreen": [
+    {
+      "catalogId": "lrp_anthelios_spf50",
+      "name": "Anthelios SPF50+",
+      "brand": "La Roche-Posay",
+      "category": "sunscreen",
+      "price": 18.99,
+      "targetSkinTypes": ["all"],
+      "benefits": ["Protection UVA/UVB", "Texture invisible"],
+      "activeIngredients": ["Filtres UV"],
+      "applicationTiming": "morning",
+      "targetZones": ["visage entier"]
+    },
+    {
+      "catalogId": "bioderma_photoderm_spf50",
+      "name": "Photoderm MAX SPF50+",
+      "brand": "Bioderma",
+      "category": "sunscreen",
+      "price": 16.99,
+      "targetSkinTypes": ["sensitive", "all"],
+      "benefits": ["Haute protection", "Résistant à l'eau"],
+      "activeIngredients": ["Filtres UV"],
+      "applicationTiming": "morning",
+      "targetZones": ["visage entier"]
+    }
+  ],
+  "serum": [
+    {
+      "catalogId": "ordinary_niacinamide_10",
+      "name": "Sérum Niacinamide 10%",
+      "brand": "The Ordinary",
+      "category": "serum",
+      "price": 7.50,
+      "targetSkinTypes": ["oily", "combination"],
+      "benefits": ["Resserre pores", "Régule sébum"],
+      "activeIngredients": ["Niacinamide", "Zinc"],
+      "applicationTiming": "evening",
+      "targetZones": ["visage entier", "zone T"]
+    },
+    {
+      "catalogId": "ordinary_hyaluronic_acid",
+      "name": "Acide Hyaluronique 2% + B5",
+      "brand": "The Ordinary",
+      "category": "serum",
+      "price": 8.50,
+      "targetSkinTypes": ["dry", "dehydrated"],
+      "benefits": ["Hydratation intense", "Repulpe"],
+      "activeIngredients": ["Acide hyaluronique", "Vitamine B5"],
+      "applicationTiming": "morning_evening",
+      "targetZones": ["visage entier"]
+    }
+  ],
+  "exfoliant": [
+    {
+      "catalogId": "paula_bha_2",
+      "name": "BHA 2% Exfoliant Liquide",
+      "brand": "Paula's Choice",
+      "category": "exfoliant",
+      "price": 33.00,
+      "targetSkinTypes": ["oily", "acne-prone"],
+      "benefits": ["Désincruste pores", "Anti-imperfections"],
+      "activeIngredients": ["Acide salicylique 2%"],
+      "applicationTiming": "evening",
+      "targetZones": ["zone T", "zones à imperfections"],
+      "restrictions": ["Usage progressif", "Éviter contour yeux"]
+    }
+  ]
+}
+

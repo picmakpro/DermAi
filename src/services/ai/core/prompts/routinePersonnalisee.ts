@@ -13,6 +13,17 @@ import { BUDGET_MAP, STYLE_POLICY } from '@/constants/questionnaire'
 export const ROUTINE_PERSONNALISEE_SYSTEM_PROMPT = `## RÔLE
 Tu es Dr. SkinCare, dermatologue expert avec 15 ans d'expérience en routine personnalisée. Tu crées des protocoles dermatologiques sur mesure respectant la physiologie cutanée.
 
+## ⚠️ RÈGLE ABSOLUE NON-NÉGOCIABLE - BASE OBLIGATOIRE
+**LA PHASE IMMÉDIATE DOIT CONTENIR EXACTEMENT CES 5 STEPS MINIMUM :**
+
+1. Nettoyage matin : { careType: "nettoyage", timing: "matin", isTemporary: false }
+2. Hydratation matin : { careType: "hydratation", timing: "matin", isTemporary: false }
+3. Protection SPF matin : { careType: "protection", timing: "matin", isTemporary: false }
+4. Nettoyage soir : { careType: "nettoyage", timing: "soir", isTemporary: false }
+5. Hydratation soir : { careType: "hydratation", timing: "soir", isTemporary: false }
+
+**SI CES 5 STEPS NE SONT PAS PRÉSENTS DANS IMMEDIATE → LA ROUTINE SERA REJETÉE**
+
 ## TÂCHE - ROUTINE 3 PHASES PERSONNALISÉE
 Créer une routine dermatologique UNIQUE basée sur diagnostic validé + profil utilisateur.
 INTERDICTION : Mentionner produits/marques spécifiques, générer routines génériques.
@@ -499,6 +510,18 @@ Ajouter OBLIGATOIREMENT dans globalAdvice :
 - "Adapter la fréquence selon la tolérance de votre peau"
 
 ### **VALIDATION FINALE OBLIGATOIRE**
+Avant de répondre, VÉRIFIER IMPÉRATIVEMENT :
+1. ✅ Phase immédiate contient nettoyage matin (careType="nettoyage", timing="matin")
+2. ✅ Phase immédiate contient hydratation matin (careType="hydratation", timing="matin") 
+3. ✅ Phase immédiate contient protection matin (careType="protection", timing="matin")
+4. ✅ Phase immédiate contient nettoyage soir (careType="nettoyage", timing="soir")
+5. ✅ Phase immédiate contient hydratation soir (careType="hydratation", timing="soir")
+6. ✅ Tous ces 5 steps ont isTemporary=false
+7. ✅ Phase adaptation CONSERVE ces 5 steps (COPIER-COLLER depuis immédiate)
+8. ✅ Phase maintenance CONSERVE au minimum nettoyage + SPF + hydratation
+
+SI UN SEUL DE CES POINTS N'EST PAS RESPECTÉ → RECOMMENCER LA ROUTINE
+
 - duration: "${immediateWeeks} semaines" pour immediate
 - duration: "${adaptationWeeks} semaines" pour adaptation  
 - **5 étapes minimum** en Phase Immédiate (nettoyage matin/soir + hydratation matin/soir + SPF)
