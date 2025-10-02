@@ -137,16 +137,21 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 
 ## 4. IA et Machine Learning
 
-### 4.1. Architecture IA-First Pure (Refonte V2)
+### 4.1. Architecture IA Hybride (Refonte V2.5 - Octobre 2025)
 
 - **Modèle**: GPT-4o Vision avec configuration déterministe (température 0.0)
-- **Logique 4 Étapes IA Pures**:
+- **Logique 4 Étapes Optimisée**:
   - **ÉTAPE 1**: Diagnostic visuel pur (IA OpenAI) avec validation Zod stricte
   - **ÉTAPE 2**: Routine personnalisée (IA OpenAI) basée sur diagnostic + profil
-  - **ÉTAPE 3**: Sélection produits (IA OpenAI) basée sur routine + catalogue
+  - **ÉTAPE 3**: 🔄 **HYBRIDE IA + ALGO** - Architecture refondée pour fiabilité 100%
+    - **Micro-IA** : Mapping conceptuel léger (500 tokens, 2s par step)
+    - **Database** : Catalogue enrichi avec métadonnées dermatologiques
+    - **Algorithme** : Sélection déterministe TypeScript (scoring multi-critères)
+    - **Garanties** : 1 produit + 3 alternatives par step, 0% "non spécifié"
   - **ÉTAPE 4**: Assemblage et validation (algorithmique) pour cohérence finale
 - **Prompts**: Prompts spécialisés par étape avec chaînage des outputs
 - **Personnalisation**: 95% de routines différentes pour diagnostics différents
+- **Performance**: Step 3 < 5s (vs 15-20s avant), -88% coûts tokens
 
 ### 4.2. Fiabilité et Déterminisme V2
 
@@ -229,7 +234,7 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 **🎯 Objectif Global** : Finaliser la page Résultats à 100% avant toute autre feature (Dashboard, etc.)
 
 **Documentation complète** :
-- 📁 `docs/plan-execution-v2-5/` - **Dossier complet avec 8 fichiers détaillés**
+- 📁 `docs/plan-execution-v2-5/` - **Dossier complet avec 12 fichiers détaillés**
   - `00-INDEX-GENERAL.md` - Vue d'ensemble et timeline
   - `01-NETTOYAGE-PIPELINE.md` - Phase 0 : Nettoyage (2h)
   - `02-CORRECTION-STEP3-PRODUITS.md` - Phase 1 : Step 3 (1 jour)
@@ -237,34 +242,50 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
   - `04-RECAP-UTILISATEUR.md` - Phase 3 : Récap utilisateur (0.5 jour)
   - `05-TESTS-VALIDATION.md` - Phase 4 : Tests & validation (0.5 jour)
   - `06-DASHBOARD-PHASE2.md` - Phase 5 : Dashboard (1-2 semaines, optionnel)
+  - `PIPELINE-VALIDEE.md` - Architecture pipeline validée
+  - `RAPPORT-NETTOYAGE.md` - Rapport Phase 0 (terminée)
+  - 🔥 `REFONTE-STEP3-HYBRIDE.md` - **Architecture hybride IA + Algo (EN COURS)**
   - `README.md` + `QUICKSTART.md` - Guides d'utilisation
 
 **Problèmes Identifiés** :
 - ❌ **Step 3 instable** : "produits non spécifiés", pas d'alternatives, pas de score matching
+- ❌ **JSON incomplet** : 5 produits générés au lieu de 15-20 (routines complexes non couvertes)
+- ❌ **Limite architecture monolithique** : Token limit OpenAI atteint, latence élevée (15-20s)
 - ❌ **Incohérence schéma ↔ prompt** : 4 versions schémas concurrentes, double pipeline transformation
 - ❌ **Badges UI surchargés** : Tous badges affichés (timing, SPF, contours) → surcharge visuelle
-- ❌ **Alternatives invisibles** : Générées par IA mais pas affichées dans UI
-- ❌ **Pas de récap utilisateur** : Photos et questionnaire non visibles sur page résultats
 
-**Solutions Implémentées (Phases 0-4)** :
-- ✅ **Nettoyage pipeline** : Archivage schémas obsolètes, pipeline unique V3
-- ✅ **Step 3 corrigé** : Schéma V3 aligné avec prompt, score matching 0-100, alternatives 3-5 par produit
-- ✅ **UI améliorée** : Badges sélectifs (timing + alternance), score visible, modal alternatives
-- ✅ **Récap utilisateur** : Section "Vos entrées" avec photos cliquables, profil, UV/Budget/Style
-- ✅ **Tests & validation** : 20 cas variés, performance Step 3 < 15s, rapport final
+**Solutions Implémentées** :
+- ✅ **Phase 0 : Nettoyage pipeline** (2h) - Archivage schémas obsolètes, pipeline unique V3, build stable
+- ✅ **Phase 1 : Debug Step 3** (3h) - Identification problème JSON (markdown wrapping), nettoyage robuste
+- ✅ **Diagnostic architectural** - Approche monolithique IA pure = limite atteinte
+- 🚧 **Refonte hybride Step 3** (EN COURS) - Architecture IA + Algo pour fiabilité 100%
+
+**Architecture Hybride Step 3 (Refonte actuelle)** :
+- **Principe** : "IA pour comprendre, Algo pour exécuter"
+- **Micro-IA** : Mapping conceptuel léger (500 tokens vs 4000+ avant)
+- **Database** : Catalogue enrichi avec métadonnées (careType, concerns, ingredients)
+- **Algorithme TypeScript** : Scoring multi-critères déterministe (<100ms par produit)
+- **Garanties** : 100% complétude, 1 produit + 3 alternatives par step, 0% "non spécifié"
+- **Performance** : <5s total (vs 15-20s avant), -88% coûts tokens, 99% fiabilité
 
 **Métriques de Succès V2.5** :
-- 🎯 0 "produit non spécifié" (100% mapping)
-- 🎯 Alternatives sur 100% produits (3-5 chacun)
-- 🎯 Score matching visible partout
-- 🎯 Performance Step 3 < 15s
-- 🎯 20 cas tests validés
+- 🎯 100% complétude (tous steps couverts, 0 "produit non spécifié")
+- 🎯 3 alternatives minimum par produit
+- 🎯 Performance Step 3 < 5s (pour routine 20 steps)
+- 🎯 Coût < 1000 tokens Step 3 (-88%)
+- 🎯 0% erreur JSON parsing (algo déterministe)
+- 🎯 Respect budget ±10%
 
 **Timeline** :
-- **Core V2.5 (Phases 0-4)** : 3-4 jours
-- **Dashboard (Phase 5, optionnel)** : +1-2 semaines après validation
+- ✅ **Phase 0** : Nettoyage pipeline (2h) - TERMINÉE
+- ✅ **Phase 1A-C** : Debug Step 3 JSON (3h) - TERMINÉE
+- 🚧 **Phase 1D** : Refonte hybride (5h) - EN COURS
+- 📋 **Phases 2-4** : UI + Récap + Tests (2.5 jours) - PLANIFIÉ
+- 📋 **Phase 5** : Dashboard (1-2 semaines, optionnel) - APRÈS VALIDATION
 
-**Statut** : 📋 Planifié - En attente d'exécution
+**Statut** : 🚧 EN COURS - Phase 1D (Refonte hybride Step 3)  
+**Branche** : `refonte-step3-hybride-ia-algo`  
+**Sauvegarde** : `sauvegarde-app-complete-2025-09-30` (commit `7aa0d98`)
 
 ## 8. Roadmap et Planning Détaillé
 
@@ -417,104 +438,99 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 
 ## 9. Documentation Technique de Référence
 
-### 9.1. Fiche Technique Évolutive
+### 9.1. Plan V2.5 - Page Résultats (Octobre 2025) 🔥 **EN COURS**
 
-**[diagnostic-technique-refonte-ia-complete.md](./diagnostic-technique-refonte-ia-complete.md)** - 🔥 **REFONTE MAJEURE V2** :
-- Architecture IA-First Pure (4 étapes 100% IA)
-- Schémas de validation Zod spécialisés
-- Prompts opérationnels pour chaque étape IA
-- Planning d'implémentation détaillé (3 semaines)
-- Métriques de personnalisation et cohérence
+**📁 [docs/plan-execution-v2-5/](./plan-execution-v2-5/)** - **Dossier complet (12 fichiers)** :
+- `00-INDEX-GENERAL.md` - Vue d'ensemble plan V2.5
+- `01-NETTOYAGE-PIPELINE.md` - Phase 0 : Nettoyage (✅ terminée)
+- `02-CORRECTION-STEP3-PRODUITS.md` - Phase 1 : Step 3
+- `03-AMELIORATION-UI-RESULTATS.md` - Phase 2 : UI/UX
+- `04-RECAP-UTILISATEUR.md` - Phase 3 : Récap utilisateur
+- `05-TESTS-VALIDATION.md` - Phase 4 : Tests & validation
+- `06-DASHBOARD-PHASE2.md` - Phase 5 : Dashboard (optionnel)
+- `PIPELINE-VALIDEE.md` - Architecture pipeline validée
+- `RAPPORT-NETTOYAGE.md` - Rapport Phase 0 (✅ terminée)
+- 🔥 **`REFONTE-STEP3-HYBRIDE.md`** - Architecture hybride IA + Algo (🚧 en cours)
+- `README.md` + `QUICKSTART.md` - Guides utilisation
 
-**[diagnostic-technique-complet.md](./diagnostic-technique-complet.md)** - Document de référence historique :
-- Diagnostic complet des problèmes identifiés (architecture hybride)
-- Solutions techniques détaillées avec implémentation
-- Roadmap priorisée sur 8 semaines (4 sprints)
-- ⚠️ **OBSOLÈTE** - Remplacé par refonte IA complète
-
-**[diagnostic-technique-affichage-routines.md](./diagnostic-technique-affichage-routines.md)** - Corrections affichage routines :
-- Audit complet problèmes affichage identifiés par l'utilisateur
-- Solutions techniques pour badges, titres, timing, zones
-- Plan d'action en 3 sprints avec prompts opérationnels
-- Tests de validation et critères de succès
-
-**[planning-execution-refonte-routines.md](./planning-execution-refonte-routines.md)** - Planning opérationnel refonte :
-- Tableau de bord progression sprints avec statuts temps réel
-- Prompts opérationnels prêts à l'emploi pour chaque sprint
-- Prompts de vérification et debug pour validation qualité
-- Métriques cibles et comparaison avant/après refonte
-- ✅ **REFONTE TERMINÉE** : 3 sprints complétés avec succès
-
-**[formats-json-ia.md](./formats-json-ia.md)** - Formats JSON IA stables :
-- Schémas Zod complets pour validation runtime stricte
-- Architecture A/B testing pour optimisation prompts
-- Pipeline validation avec retry automatique et fallback
-- Documentation technique complète formats stables
+**Focus actuel** : Refonte Step 3 avec architecture hybride (IA + Algo) pour fiabilité 100%
 
 ### 9.2. Architecture et Logique Métier
-**[architecture-fiabilite.md](./architecture-fiabilite.md)** - Spécifications techniques de l'architecture de fiabilité
-**[dermatological-logic.md](./dermatological-logic.md)** - Logique dermatologique et routine 3 phases
 
-### 9.3. Correction Mapping Frontend
-**[diagnostic-technique-mapping-v2-frontend.md](./diagnostic-technique-mapping-v2-frontend.md)** - 🔥 **CORRECTION CRITIQUE** - Diagnostic technique pour corriger le mapping V2→Frontend
-**[planning-execution-mapping-v2-frontend.md](./planning-execution-mapping-v2-frontend.md)** - Planning d'exécution avec prompts opérationnels pour l'implémentation
+**[architecture/fiabilite.md](./architecture/fiabilite.md)** - Architecture de fiabilité :
+- Retry intelligent avec backoff exponentiel
+- Fallback maîtrisé et mode dégradé
+- Monitoring métriques temps réel
+- Cache multi-niveaux et optimisation
 
-### 9.4. Synchronisation Produits ↔ Routine (NOUVEAU - Sprint 1 Terminé)
-**[specification-technique-synchronisation-produits-routine.md](./specification-technique-synchronisation-produits-routine.md)** - 🔥 **IMPLÉMENTATION TERMINÉE** :
-- Architecture complète de synchronisation bidirectionnelle
-- Services Core : ProductRoutineSyncService, AlternativeProductService, ProductEnrichmentService
-- Hooks React optimisés : useProductSync, useAlternatives, useProductReplacement
-- Tests unitaires complets (75+ tests, 5,516 lignes de code)
-- Système d'alternatives intelligentes avec critères de comparaison
-- Catégorisation par problème de peau (8 catégories)
-- Cache multi-niveaux et gestion d'erreurs robuste
+**[domain/dermatological-logic.md](./domain/dermatological-logic.md)** - Logique dermatologique :
+- Routine 3 phases (Immédiate, Adaptation, Maintenance)
+- Cycle cellulaire et progressivité
+- Traitements temporaires vs base durable
+- Alternances et introductions progressives
 
-**[planning-execution-synchronisation-produits-routine.md](./planning-execution-synchronisation-produits-routine.md)** - Planning d'exécution détaillé :
-- Sprint 1 (5 jours) : Architecture & Services Core ✅ **TERMINÉ**
-- Sprint 2 (5 jours) : Interface Utilisateur & Alternatives ✅ **TERMINÉ**
-- Sprint 3 (5 jours) : Intégration, Tests & Optimisation 📋 **PRÊT**
+**[ai/diagnostic-improvement-strategy.md](./ai/diagnostic-improvement-strategy.md)** - Stratégie amélioration IA :
+- Optimisation prompts par étape
+- Métriques de personnalisation
+- A/B testing et itération continue
 
-**[sprint2-final-report.md](./sprint2-final-report.md)** - 🎉 **SPRINT 2 TERMINÉ AVEC SUCCÈS** :
-- Interface utilisateur complète avec 4 composants avancés
-- Système d'alternatives intelligentes avec comparaison
-- Modal de prévention utilisateur avec analyse d'impact
-- 75+ tests unitaires avec couverture complète
-- Intégration parfaite avec les services Sprint 1
-- Taux de validation : 100% (24/24 tests réussis)
+### 9.3. Business et Monétisation
 
-### 9.5. Phase 2 - Dashboard Utilisateur (NOUVEAU)
-**[fiche-technique-phase2-dashboard.md](./fiche-technique-phase2-dashboard.md)** - 🎯 **ARCHITECTURE PHASE 2** :
-- Architecture complète dashboard avec widgets temps réel
-- Modèles de données étendus (routine_completions, user_product_shelves, user_badges, ai_coach_conversations)
-- Spécifications UI/UX détaillées pour chaque feature
-- API routes nécessaires pour toutes les fonctionnalités
-- Intégration coach IA avec contexte personnalisé
+**[business/monetization-strategy.md](./business/monetization-strategy.md)** - Stratégie monétisation :
+- Affiliation produits (Amazon, Sephora, Douglas)
+- Abonnement Premium avec coach IA
+- Métriques revenus et conversion
 
-**[planning-execution-phase2-dashboard.md](./planning-execution-phase2-dashboard.md)** - Planning opérationnel Phase 2 :
-- Sprint 2.1 : Architecture Dashboard (3-4 jours)
-- Sprint 2.2 : Historique Analyses & Comparaison (4-5 jours)
-- Sprint 2.3 : Routine Tracker & Étagères (5-6 jours)
-- Sprint 2.4 : Paramètres Utilisateur (2-3 jours)
-- Sprint 2.5 : Coach IA & Badges (3-4 jours)
-- Prompts opérationnels prêts à l'emploi pour chaque composant
+### 9.4. UX et Interface
 
-### 9.6. Refonte Routine UI V3 (NOUVEAU - Janvier 2025) 🔥 **REFONTE COMPLÈTE**
+**[ux/educational-interface.md](./ux/educational-interface.md)** - Interface éducative :
+- Badges pédagogiques (durée, observation, objectif)
+- Tooltips explicatifs
+- Progressive disclosure et guidage utilisateur
 
-**[planning-execution-refonte-routine-ui-v3.md](./planning-execution-refonte-routine-ui-v3.md)** - 🎯 **PLAN D'EXÉCUTION COMPLET** :
-- Sprint 1 : Fondations & Types (2-3 jours) - Types TypeScript + Mapper + Spec
-- Sprint 2 : Intégration Preview UI (3-4 jours) - Variantes A/B/C + Composants
-- Sprint 3 : Ajustements Prompts IA (2 jours) - Champs requis + Tests E2E
-- Sprint 4 : QA & Finitions (2 jours) - Accessibilité + Analytics + Performance
-- **Durée totale** : 9-11 jours avec prompts opérationnels détaillés
+**[planning-execution-refonte-routine-ui-v3.md](./planning-execution-refonte-routine-ui-v3.md)** - 🔥 **Refonte UI V3** :
+- Architecture onglets Phase → Slots (Matin/Soir/Hebdo)
+- 3 variantes design (Clinical/Glow/Editorial)
+- Mobile-first et accessibilité
+- **Durée** : 9-11 jours (4 sprints)
 
-**Architecture Cible** :
-- **Transformation UX** : Liste linéaire → Onglets Phase → Slots (Matin/Soir/Hebdo)
-- **Règles strictes** : Produits continus sans badge, temporaires avec métadonnées
-- **Mobile-first** : Slots sticky, 3 variantes design (Clinical/Glow/Editorial)
-- **Mapping pur** : Front ne fait que mapper, zéro inférence métier
+### 9.5. Déploiement et Opérations
 
-**Critères de Succès (DoD)** :
-- Parité Preview ≥ 99% (mobile-first, 3 variantes)
+**[deployment/guide-deploiement-production.md](./deployment/guide-deploiement-production.md)** - Guide déploiement :
+- Configuration environnements (staging/production)
+- Variables d'environnement requises
+- Checklist pré-déploiement
+
+**[deployment/rollback-procedure.md](./deployment/rollback-procedure.md)** - Procédure rollback :
+- Rollback rapide en cas d'incident
+- Sauvegarde et restauration
+- Tests post-rollback
+
+**[operations/deployment-guide.md](./operations/deployment-guide.md)** - Guide opérationnel :
+- Monitoring production (Sentry, Vercel Analytics)
+- Alerting et incidents
+- Maintenance préventive
+
+**[operations/runbooks-incidents.md](./operations/runbooks-incidents.md)** - Runbooks incidents :
+- Procédures d'intervention par type d'incident
+- Escalade et contacts
+- Post-mortem et amélioration continue
+
+**[monitoring-guide.md](./monitoring-guide.md)** - Guide monitoring :
+- Métriques clés (latence, erreurs, coûts IA)
+- Dashboards et alertes
+- SLO et SLI
+
+### 9.6. Configuration
+
+**[CONFIGURATION-FINALE-GPT4O.md](./CONFIGURATION-FINALE-GPT4O.md)** - Configuration OpenAI production :
+- Température, seed, max_tokens par étape
+- Retry et fallback
+- Coûts et optimisation
+
+**[configuration-gpt5-staging.md](./configuration-gpt5-staging.md)** - Configuration staging GPT-5 :
+- Tests futurs GPT-5 (référence)
+- Comparaison performances vs GPT-4o
 - Hebdomadaire = tous ≥ hebdo (jamais badge "Continu")
 - Temporaires : métadonnées obligatoires (intro/durée/fréquence)
 - Performance Lighthouse > 90, Accessibilité WCAG AA
