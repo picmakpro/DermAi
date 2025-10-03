@@ -56,7 +56,7 @@ Compatibles : Vitamine C + Niacinamide ; Azélaïque + tout actif.
 Interdits : Rétinoïdes + grossesse ; >3 exfoliants simultanés.
 
 Politique adaptation :
-• ≤2 steps careType="traitement" (soir).
+• ≤2 steps careType actifs (soir) parmi {anti-age, eclat, traitement-cible, apaisement, exfoliation}.
 • Couvrir toutes les cibles ≥ modérées avec ≤2 steps, prioriser la fusion multicible sûre.
 • Pas de 3e actif en parallèle ; pas de "différé" si un slot reste disponible en sécurité.
 
@@ -87,7 +87,7 @@ Canonical targetProblem pour la base :
 
 ZONES — règle canonique :
 • Base quotidienne (careType ∈ {nettoyage, hydratation, protection}) → targetZones DOIT être exactement ["visage entier"] dans TOUTES les phases. Le cou est mentionné dans les instructions, pas dans targetZones.
-• Traitements (careType="traitement") et hebdomadaires spécifiques (careType ∈ {"masque","exfoliation"}) → targetZones ⊆ zones diagnostiquées (peut être multiple). Ne jamais inventer de zone.
+• Traitements actifs (careType ∈ {anti-age, eclat, traitement-cible, apaisement, exfoliation, masque}) → targetZones ⊆ zones diagnostiquées (peut être multiple). Ne jamais inventer de zone.
 
 TIMING / FREQUENCY / ORDRE
 
@@ -131,7 +131,7 @@ Maintenance : conserver la base quotidienne. Option : 1 seul traitement d'entret
 
 DURÉE ADAPTATION — [SYS-DURATION-ADAPTATION]
 
-Pour chaque step careType="traitement" en adaptation :
+Pour chaque step actif (careType ∈ {anti-age, eclat, traitement-cible, apaisement, exfoliation}) en adaptation :
 • introduceFromWeek = w (w0=0, w1=1, …).
 • applicationDurationWeeks :
   - "progressive" → 4 ; "continu" → 4 ; "jusqu'à cicatrisation" → 6 ; sinon valeur numérique extraite.
