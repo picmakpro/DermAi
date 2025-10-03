@@ -60,7 +60,14 @@ FOCUS : Types de soins, timing, progression dermatologique personnalisée.
 - **Maintenance** : Maintenir acquis + prévention rechutes
 
 ### **Types de Soins Autorisés**
-nettoyage | traitement | hydratation | protection | exfoliation | masque
+nettoyage | tonification | hydratation | protection | anti-age | eclat | traitement-cible | apaisement | exfoliation | masque
+
+**Spécialisation des types** (IMPORTANT - Phase 1 careType V2) :
+- **anti-age** : Rétinoïdes, peptides, collagène → Rides, fermeté, élasticité
+- **eclat** : Vitamine C, kojique, arbutine → Taches, hyperpigmentation, teint terne
+- **traitement-cible** : Niacinamide, azélaïque, salicylic → Acné, pores, sébum
+- **apaisement** : Cica, aloe, panthenol → Rougeurs, sensibilité, irritation
+- **tonification** : Essences, toners → Préparation peau (optionnel)
 
 ## 🟢 **RÈGLES OPTIONNELLES**
 - Nombre d'étapes variable selon besoins
@@ -120,7 +127,7 @@ Structure attendue avec tous les champs obligatoires :
 - **timing="hebdomadaire"** UNIQUEMENT pour soins sans moment précis (ex:masques)
 
 ### **CHAMPS OBLIGATOIRES V3**
-- **careType** : UNIQUEMENT les valeurs autorisées (nettoyage, traitement, hydratation, protection, exfoliation, masque)
+- **careType** : UNIQUEMENT les valeurs autorisées (nettoyage, tonification, hydratation, protection, anti-age, eclat, traitement-cible, apaisement, exfoliation, masque)
 - **applicationInstructions** : string obligatoire (instructions d'application détaillées)
 - **restrictions** : array obligatoire (même si vide [])
 - **targetZones** : array obligatoire (même si ["visage entier"])
@@ -287,9 +294,9 @@ Réponds UNIQUEMENT en JSON selon cette structure EXACTE avec TOUS les champs :
         },
         {
           "stepNumber": 3,
-          "careType": "traitement",
+          "careType": "apaisement",
           "timing": "soir",
-          "targetProblem": "Desquamation",
+          "targetProblem": "Rougeurs",
           "targetZones": ["joues", "menton"],
           "progressiveIntroduction": "2-3x/semaine puis adapter selon tolérance",
           "restrictions": ["Patch test préalable", "Éviter contour des yeux"],
@@ -299,8 +306,8 @@ Réponds UNIQUEMENT en JSON selon cette structure EXACTE avec TOUS les champs :
           "introduceFromWeek": 2,
           "applicationDuration": "progressive",
           "frequency": "2-3x/semaine",
-          "displayTitle": "Urée 5-10%",
-          "targetBenefit": "Réduire desquamation"
+          "displayTitle": "Cica apaisante",
+          "targetBenefit": "Calmer rougeurs"
         }
       ]
     },
@@ -331,9 +338,9 @@ Réponds UNIQUEMENT en JSON selon cette structure EXACTE avec TOUS les champs :
         },
         {
           "stepNumber": 2,
-          "careType": "traitement",
+          "careType": "apaisement",
           "timing": "soir",
-          "targetProblem": "Maintien acquis desquamation",
+          "targetProblem": "Maintien acquis apaisement",
           "targetZones": ["joues", "menton"],
           "progressiveIntroduction": null,
           "restrictions": ["Adapter fréquence selon tolérance"],
@@ -343,8 +350,8 @@ Réponds UNIQUEMENT en JSON selon cette structure EXACTE avec TOUS les champs :
           "introduceFromWeek": 0,
           "applicationDuration": "continu",
           "frequency": "2-3x/semaine",
-          "displayTitle": "Entretien Urée",
-          "targetBenefit": "Maintenir texture"
+          "displayTitle": "Entretien Cica",
+          "targetBenefit": "Maintenir apaisement"
         }
       ]
     }
