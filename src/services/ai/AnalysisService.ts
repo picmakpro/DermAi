@@ -854,13 +854,22 @@ export class AnalysisService {
         source: userSkinType === 'Je ne sais pas' || !userSkinType ? 'IA Step 1' : 'User'
       })
 
-      // ========== 3. POUR CHAQUE STEP : MATCHING ALGO ==========
-      const selectedProducts: SelectedProductV3[] = []
+      // ========== 3. POUR CHAQUE STEP : MATCHING ALGO (SANS BUDGET) ==========
+      // 🆕 BUDGET OPTIMIZATION V2 (3 Oct 2025)
+      // Phase 1 : Matching pur pour routine idéale (sans contrainte budget)
+      // Phase 2 : Optimisation budget globale (si dépassement)
+      
+      const idealMatches: Array<{
+        step: typeof allSteps[0]
+        match: any
+      }> = []
       const failures: Array<{ stepNumber: number; error: string }> = []
+
+      this.logger.info('[selectOptimalProducts] 🔥 Phase 1 : Matching pur (sans contrainte budget)')
 
       for (const step of allSteps) {
         try {
-          // Matching algorithmique
+          // Matching algorithmique SANS contrainte budget unitaire
           const match = await matcher.selectForRoutineStep(
             step,
             {
@@ -870,12 +879,112 @@ export class AnalysisService {
             },
             {
               maxBudget: request.constraints.budget,
-              expectedSteps: allSteps.length
+              expectedSteps: allSteps.length,
+              // 🆕 Budget géré globalement après matching complet
+              enableSmartOptimization: true
             }
           )
 
-          // Formater pour schéma V3
-          selectedProducts.push({
+          idealMatches.push({ step, match })
+        } catch (matchError: any) {
+          this.logger.warn(
+            `[selectOptimalProducts] ⚠️ Matching échoué step ${step.stepNumber}:`,
+            matchError.message
+          )
+          failures.push({ stepNumber: step.stepNumber, error: matchError.message })
+        }
+      }
+
+      // ========== 3.5 OPTIMISATION BUDGET GLOBALE ==========
+      this.logger.info('[selectOptimalProducts] 💰 Phase 2 : Optimisation budget globale')
+      
+      // Calculer coût routine idéale
+      const idealCost = idealMatches.reduce((sum, { match }) => sum + match.mainProduct.price, 0)
+      this.logger.info(`[selectOptimalProducts] 💵 Coût routine idéale : ${idealCost.toFixed(2)}€`)
+
+      let selectedProducts: SelectedProductV3[]
+      let budgetOptimizationResult: any = null
+
+      // Si budget dépassé → optimisation intelligente
+      if (request.constraints.budget && idealCost > request.constraints.budget) {
+        this.logger.info(
+          `[selectOptimalProducts] ⚠️ Dépassement budget : ${idealCost.toFixed(2)}€ > ${request.constraints.budget}€ (+${(idealCost - request.constraints.budget).toFixed(2)}€)`
+        )
+        this.logger.info('[selectOptimalProducts] 🧠 Lancement BudgetOptimizer...')
+
+        // Importer BudgetOptimizer
+        const { BudgetOptimizer } = await import('@/services/products/BudgetOptimizer')
+        const { CARETYPE_BUDGET_PRIORITIES } = await import('@/types')
+
+        // Convertir au format BudgetOptimizer.ProductMatch
+        const idealRoutineForOptimizer = idealMatches.map(({ step, match }) => ({
+          step: {
+            stepNumber: step.stepNumber,
+            careType: step.careType,
+            displayTitle: step.displayTitle || step.careType,
+            targetZones: step.targetZones
+          },
+          mainProduct: match.mainProduct,
+          alternatives: match.alternatives || [],
+          matchingScore: match.matchingScore,
+          reasoning: match.reasoning
+        }))
+
+        // Appeler BudgetOptimizer
+        const optimized = BudgetOptimizer.optimize(
+          idealRoutineForOptimizer,
+          {
+            maxBudget: request.constraints.budget,
+            expectedSteps: allSteps.length,
+            priority: 'balanced',
+            flexibility: 0.1,
+            enableSmartOptimization: true
+          },
+          (msg: string) => this.logger.info(`[BudgetOptimizer] ${msg}`)
+        )
+
+        budgetOptimizationResult = {
+          applied: optimized.optimized,
+          originalCost: optimized.originalCost,
+          finalCost: optimized.finalCost,
+          savings: optimized.savings,
+          substitutionsCount: optimized.substitutions.length,
+          stepsRemovedCount: optimized.stepsRemoved.length,
+          preservedCritical: optimized.preservedCritical,
+          details: {
+            substitutions: optimized.substitutions.map((sub) => ({
+              stepNumber: sub.stepNumber,
+              careType: sub.careType,
+              from: sub.originalProduct.name,
+              to: sub.substituteProduct.name,
+              priceSaved: sub.priceSaved,
+              scoreLost: sub.scoreLost
+            })),
+            stepsRemoved: optimized.stepsRemoved
+          }
+        }
+
+        this.logger.info(
+          `[selectOptimalProducts] ✅ Optimisation terminée : ${optimized.originalCost.toFixed(2)}€ → ${optimized.finalCost.toFixed(2)}€ (économie: ${optimized.savings.toFixed(2)}€)`
+        )
+        this.logger.info(
+          `[selectOptimalProducts] 📊 ${optimized.substitutions.length} substitutions, ${optimized.stepsRemoved.length} suppressions`
+        )
+        this.logger.info(
+          `[selectOptimalProducts] ${optimized.preservedCritical ? '✅' : '⚠️'} SPF + Nettoyant : ${optimized.preservedCritical ? 'PRÉSERVÉS' : 'COMPROMIS'}`
+        )
+
+        // Convertir routine optimisée vers SelectedProductV3
+        selectedProducts = optimized.routine.map((optimizedMatch) => {
+          const step = optimizedMatch.step
+          const match = {
+            mainProduct: optimizedMatch.mainProduct,
+            alternatives: optimizedMatch.alternatives,
+            matchingScore: optimizedMatch.matchingScore,
+            reasoning: optimizedMatch.reasoning
+          }
+
+          return {
             routineStepId: step.stepNumber,
             routineStepUid: `step-${step.stepNumber}`,
             catalogId: match.mainProduct.catalogId,
@@ -888,27 +997,60 @@ export class AnalysisService {
             retailers: match.mainProduct.retailers || [],
             alternatives: match.alternatives.map((alt, idx) => ({
               catalogId: alt.catalogId,
-              name: alt.name, // ✅ Correction: 'name' au lieu de 'productName'
+              name: alt.name,
               brand: alt.brand,
               price: alt.price,
               imageUrl: alt.imageUrl || '',
-              matchingScore: Math.round(match.matchingScore - (idx + 1) * 5) // Score décroissant alternatives
+              matchingScore: Math.round(match.matchingScore - (idx + 1) * 5)
             })),
-            justification: match.reasoning,
-            applicationAdvice: `Appliquer ${step.timing === 'morning' ? 'le matin' : step.timing === 'evening' ? 'le soir' : 'matin et soir'} sur ${step.targetZones.join(', ')}`,
-            timing: step.timing,
+            justification: match.reasoning || 'Sélectionné pour correspondance optimale',
+            applicationAdvice: `Appliquer ${
+              allSteps.find((s) => s.stepNumber === step.stepNumber)?.timing === 'morning'
+                ? 'le matin'
+                : allSteps.find((s) => s.stepNumber === step.stepNumber)?.timing === 'evening'
+                ? 'le soir'
+                : 'matin et soir'
+            } sur ${step.targetZones.join(', ')}`,
+            timing: allSteps.find((s) => s.stepNumber === step.stepNumber)?.timing || 'both',
             targetZones: step.targetZones,
             temporaryLabel: false,
             progressiveIntroduction: null,
             restrictions: []
-          })
-        } catch (matchError: any) {
-          this.logger.warn(
-            `[selectOptimalProducts] ⚠️ Matching échoué step ${step.stepNumber}:`,
-            matchError.message
-          )
-          failures.push({ stepNumber: step.stepNumber, error: matchError.message })
-        }
+          }
+        })
+      } else {
+        // Budget OK → utiliser routine idéale sans optimisation
+        this.logger.info(
+          `[selectOptimalProducts] ✅ Budget respecté (${idealCost.toFixed(2)}€ ≤ ${request.constraints.budget || 'illimité'}€) - Pas d'optimisation requise`
+        )
+
+        selectedProducts = idealMatches.map(({ step, match }) => ({
+          routineStepId: step.stepNumber,
+          routineStepUid: `step-${step.stepNumber}`,
+          catalogId: match.mainProduct.catalogId,
+          productName: match.mainProduct.name,
+          brand: match.mainProduct.brand,
+          price: match.mainProduct.price,
+          imageUrl: match.mainProduct.imageUrl || '',
+          matchingScore: match.matchingScore,
+          compatibilityReasons: match.mainProduct.targetConcerns.slice(0, 3),
+          retailers: match.mainProduct.retailers || [],
+          alternatives: match.alternatives.map((alt, idx) => ({
+            catalogId: alt.catalogId,
+            name: alt.name,
+            brand: alt.brand,
+            price: alt.price,
+            imageUrl: alt.imageUrl || '',
+            matchingScore: Math.round(match.matchingScore - (idx + 1) * 5)
+          })),
+          justification: match.reasoning,
+          applicationAdvice: `Appliquer ${step.timing === 'morning' ? 'le matin' : step.timing === 'evening' ? 'le soir' : 'matin et soir'} sur ${step.targetZones.join(', ')}`,
+          timing: step.timing,
+          targetZones: step.targetZones,
+          temporaryLabel: false,
+          progressiveIntroduction: null,
+          restrictions: []
+        }))
       }
 
       // ========== VALIDATION COMPLÉTUDE ==========
@@ -968,23 +1110,48 @@ export class AnalysisService {
         budgetRespected: request.constraints.budget
           ? realTotalCost <= request.constraints.budget
           : true,
-          optimizations: [],
-          alternatives: []
+        optimizations: [],
+        alternatives: []
       }
 
-      if (request.constraints.budget && realTotalCost > request.constraints.budget) {
-        const overspend = realTotalCost - request.constraints.budget
-        if (!budgetBreakdown.optimizations) {
-          budgetBreakdown.optimizations = []
+      // 🆕 Ajouter informations optimisation budget intelligente
+      if (budgetOptimizationResult) {
+        budgetBreakdown.optimizations = budgetBreakdown.optimizations || []
+        
+        if (budgetOptimizationResult.applied) {
+          budgetBreakdown.optimizations.push(
+            `✅ Optimisation budget appliquée : ${budgetOptimizationResult.originalCost.toFixed(2)}€ → ${budgetOptimizationResult.finalCost.toFixed(2)}€ (économie: ${budgetOptimizationResult.savings.toFixed(2)}€)`
+          )
+          
+          if (budgetOptimizationResult.substitutionsCount > 0) {
+            budgetBreakdown.optimizations.push(
+              `🔄 ${budgetOptimizationResult.substitutionsCount} substitution(s) intelligente(s) pour respecter votre budget`
+            )
+          }
+          
+          if (budgetOptimizationResult.stepsRemovedCount > 0) {
+            budgetBreakdown.optimizations.push(
+              `⚠️ ${budgetOptimizationResult.stepsRemovedCount} produit(s) optionnel(s) retiré(s)`
+            )
+          }
+          
+          if (budgetOptimizationResult.preservedCritical) {
+            budgetBreakdown.optimizations.push(
+              `✅ SPF et nettoyant préservés (priorités dermatologiques critiques)`
+            )
+          } else {
+            budgetBreakdown.optimizations.push(
+              `⚠️ Attention : SPF ou nettoyant compromis pour respecter budget`
+            )
+          }
         }
+      } else if (request.constraints.budget && realTotalCost > request.constraints.budget) {
+        const overspend = realTotalCost - request.constraints.budget
         budgetBreakdown.optimizations.push(
           `Budget dépassé de ${overspend.toFixed(2)}€. Consultez les alternatives pour optimiser vos dépenses.`
         )
       } else if (savings > 0) {
         // Message d'économies réalisées grâce au déduplicate
-        if (!budgetBreakdown.optimizations) {
-          budgetBreakdown.optimizations = []
-        }
         budgetBreakdown.optimizations.push(
           `Économie de ${savings.toFixed(2)}€ grâce à l'achat de ${uniqueProducts.size} produits uniques pour ${selectedProducts.length} étapes.`
         )
@@ -1009,7 +1176,11 @@ export class AnalysisService {
         savings: `${savings.toFixed(2)}€`,
         successRate: `${successRate.toFixed(1)}%`,
         duration: `${duration}ms`,
-        budgetRespected: budgetBreakdown.budgetRespected
+        budgetRespected: budgetBreakdown.budgetRespected,
+        budgetOptimizationApplied: budgetOptimizationResult?.applied || false,
+        budgetOptimizationSavings: budgetOptimizationResult?.savings 
+          ? `${budgetOptimizationResult.savings.toFixed(2)}€` 
+          : '0€'
       })
 
       const result: ProductSelectionV3 = {
