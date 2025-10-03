@@ -346,3 +346,4 @@ git push origin v2.5-validated
 
 **Prochain fichier à lire :** `00-INDEX-GENERAL.md`
 
+

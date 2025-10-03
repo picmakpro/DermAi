@@ -84,6 +84,16 @@ nettoyage | traitement | hydratation | protection | exfoliation | masque
 - **INTERDICTION** : Traiter des zones non diagnostiquées
 - **INTERDICTION** : Ignorer des zones diagnostiquées
 
+### **🚨 REGROUPEMENT TRAITEMENTS - RÈGLES CRITIQUES**
+- **Si ≤ 2 problèmes diagnostiqués** → TOUJOURS créer des traitements SÉPARÉS (PAS de regroupement)
+- **Si 3+ problèmes** → Regroupement possible MAIS vérifier compatibilité zones
+- **ZONES SENSIBLES INTERDITES pour actifs** :
+  - ❌ Lèvres : INTERDICTION BHA, AHA, Niacinamide, Rétinol, Exfoliants
+  - ❌ Contour yeux : INTERDICTION tous actifs (sauf produits eye-safe spécifiques)
+  - ✅ Lèvres : UNIQUEMENT baumes hydratants, céramides, occlusifs
+- **Si zones incompatibles** → SÉPARER les traitements même si >3 problèmes
+- **Priorisation** : Traiter d'abord intensité "intense"/"modérée", reporter "légère" si incompatibilité
+
 ### **PROGRESSION SÉCURISÉE OBLIGATOIRE**
 - **Phase Immédiate** : Base durable UNIQUEMENT (aucun traitement actif)
 - **Phase Adaptation** : Conserver base + MAX 2 nouveaux actifs
@@ -475,7 +485,30 @@ ${routineContext.environment.uvRiskBand === 'VeryHigh' || routineContext.environ
 ✅ **UNIQUEMENT** : Nettoyage + Hydratation + SPF + apaisement si nécessaire
 
 ### **ZONES COHÉRENTES OBLIGATOIRES**
-Problèmes diagnostiqués : ${diagnostic.zoneSpecificIssues.map(issue => `${issue.zone}: ${issue.problem}`).join(' | ')}
+Problèmes diagnostiqués : ${diagnostic.zoneSpecificIssues.map(issue => `${issue.zone}: ${issue.problem} (${issue.intensity})`).join(' | ')}
+
+**🚨 VALIDATION REGROUPEMENT OBLIGATOIRE :**
+- **Nombre de problèmes** : ${diagnostic.zoneSpecificIssues.length}
+${diagnostic.zoneSpecificIssues.length <= 2 ? `
+  → ⚠️ RÈGLE CRITIQUE : ${diagnostic.zoneSpecificIssues.length} problème(s) ≤ 2 
+  → ✅ CRÉER DES TRAITEMENTS SÉPARÉS (PAS de regroupement)
+  → ✅ 1 traitement par problème en phase adaptation
+` : `
+  → ${diagnostic.zoneSpecificIssues.length} problèmes > 2
+  → ⚠️ Regroupement possible MAIS vérifier compatibilité zones AVANT
+`}
+${diagnostic.zoneSpecificIssues.some(issue => issue.zone === 'lèvres' || issue.zone.includes('lèvres')) ? `
+  → 🚨 ATTENTION : Problème détecté sur LÈVRES
+  → ❌ INTERDICTION ABSOLUE : BHA, AHA, Niacinamide, Rétinol, Exfoliants sur lèvres
+  → ✅ UNIQUEMENT : Baumes hydratants, céramides, occlusifs (vaseline, beurres)
+  → ✅ CRÉER UN TRAITEMENT SÉPARÉ pour les lèvres avec produit adapté
+` : ''}
+${diagnostic.zoneSpecificIssues.some(issue => issue.zone.includes('contour') || issue.zone.includes('yeux')) ? `
+  → 🚨 ATTENTION : Problème détecté sur CONTOUR YEUX
+  → ❌ INTERDICTION : Tous actifs sauf produits eye-safe spécifiques
+  → ✅ CRÉER UN TRAITEMENT SÉPARÉ avec produit contour yeux dédié
+` : ''}
+
 **RÈGLE** : Traiter ces zones UNIQUEMENT en phase adaptation (pas immédiate)
 
 ### **PROGRESSION SÉCURISÉE OBLIGATOIRE (Guide Niveau A)**
@@ -490,10 +523,78 @@ Problèmes diagnostiqués : ${diagnostic.zoneSpecificIssues.map(issue => `${issu
   - Pigmentation/PIH : "Azélaïque 10-20%" ou "Vitamine C stabilisée"
   - Rides/Texture : "Rétinol faible dose" ou "Rétinal progressif"
   - Desquamation : "Urée 5-10%" ou "Acide lactique doux"
+  - **LÈVRES (sécheresse/irritation)** : "Céramides" ou "Beurre de karité" ou "Occlusifs (vaseline)" ou "Baume réparateur"
+  - **CONTOUR YEUX** : "Produit contour yeux spécifique" (JAMAIS d'actifs classiques)
 - **Fréquence OBLIGATOIRE** : "2-3x/semaine puis adapter selon tolérance"
 - **Restrictions OBLIGATOIRES** pour chaque actif :
   - "Patch test préalable" (TOUJOURS)
   - Si AHA/BHA/Rétinoïde : "Photosensibilisation : SPF strict quotidien"
+- **⚠️ INTERDICTIONS ZONES SENSIBLES** :
+  - Si zone = "lèvres" → NE JAMAIS utiliser BHA, AHA, Niacinamide, Rétinol, Exfoliants
+  - Si zone = "lèvres" → UNIQUEMENT Céramides, Occlusifs, Baumes hydratants
+  - Si zone = "contour yeux" → UNIQUEMENT produits eye-safe spécifiques
+
+### **🚨 RÈGLES REGROUPEMENT TRAITEMENTS - CRITIQUES**
+
+**RÈGLE 1 : PAS DE REGROUPEMENT SI ≤ 2 PROBLÈMES**
+- Si le diagnostic contient **2 problèmes ou moins** → TOUJOURS créer des traitements séparés
+- Ne JAMAIS regrouper "Problème A + Problème B" dans un seul traitement si possible de les séparer
+- Exemple : 2 problèmes = 2 traitements distincts en phase adaptation (max 2 traitements autorisés)
+
+**RÈGLE 2 : COMPATIBILITÉ ZONES OBLIGATOIRE**
+- **AVANT de regrouper** deux problèmes, VÉRIFIER la compatibilité des zones avec le produit ciblé
+- **ZONES INCOMPATIBLES à ne JAMAIS traiter avec produits actifs** :
+  - ❌ Lèvres : INTERDICTION totale pour BHA, AHA, Niacinamide, Rétinol, Exfoliants
+  - ❌ Contour yeux : INTERDICTION pour tous actifs sauf produits spécifiques contour yeux
+  - ✅ Lèvres : UNIQUEMENT baumes hydratants, céramides, occlusifs (vaseline, beurres)
+  - ✅ Contour yeux : UNIQUEMENT produits "eye-safe" spécifiques
+
+**RÈGLE 3 : LOGIQUE DE REGROUPEMENT INTELLIGENT**
+- **Si 3+ problèmes** → Regroupement possible MAIS vérifier compatibilité zones
+- **Si zones incompatibles** → Créer des traitements séparés même si >3 problèmes
+- **Priorisation** : Traiter en priorité les problèmes d'intensité "intense" ou "modérée"
+- **Report intelligent** : Si incompatibilité, reporter le problème d'intensité "légère" en maintenance
+
+**EXEMPLE CORRECT : 2 problèmes, zones incompatibles**
+Diagnostic : 
+- Nez : Pores visibles (modérée)
+- Lèvres : Sécheresse ou Irritation (légère)
+
+❌ INCORRECT : Utiliser le même actif pour les deux zones
+  Traitement 1: targetProblem: "Niacinamide 2-5%", targetZones: ["nez"]  ✓
+  Traitement 2: targetProblem: "Niacinamide 2-5%", targetZones: ["lèvres"]  ✗ DANGEREUX !
+
+✅ CORRECT : Créer deux traitements avec actifs adaptés à chaque zone
+  Traitement 1 (pour nez):
+    stepNumber: 5, careType: "traitement"
+    displayTitle: "Traitement Pores visibles"
+    targetZones: ["nez"]
+    targetProblem: "Niacinamide 2-5%"  ← Actif safe pour le nez
+    restrictions: ["Ne pas appliquer sur lèvres ni contour yeux", "Patch test préalable"]
+  
+  Traitement 2 (pour lèvres):
+    stepNumber: 6, careType: "traitement"
+    displayTitle: "Soin réparateur lèvres"
+    targetZones: ["lèvres"]
+    targetProblem: "Céramides + Occlusifs"  ← Actif safe pour les lèvres
+    restrictions: ["Produit spécifique lèvres uniquement", "Réappliquer fréquemment"]
+
+🚨 RÈGLE ABSOLUE : Chaque zone nécessite un actif ADAPTÉ à sa sensibilité !
+- Nez/Front/Joues : Actifs classiques OK (Niacinamide, BHA, Rétinol, etc.)
+- Lèvres : UNIQUEMENT Céramides, Occlusifs, Baumes (JAMAIS d'actifs exfoliants)
+- Contour yeux : UNIQUEMENT produits eye-safe spécifiques
+
+**VALIDATION AVANT RÉPONSE :**
+1. ✅ Compter le nombre de problèmes diagnostiqués
+2. ✅ Si ≤ 2 problèmes → Créer des traitements SÉPARÉS
+3. ✅ Si regroupement nécessaire → Vérifier compatibilité zones AVANT
+4. ✅ Si zones incompatibles → Séparer les traitements
+5. ✅ **Pour CHAQUE traitement avec targetZones contenant "lèvres"** :
+   - Vérifier que targetProblem contient "Céramides" OU "Occlusifs" OU "Baume" OU "Beurre de karité"
+   - Vérifier que targetProblem NE contient PAS "Niacinamide", "BHA", "AHA", "Rétinol", "Exfoliant"
+6. ✅ **Pour CHAQUE traitement avec targetZones contenant "contour" ou "yeux"** :
+   - Vérifier que targetProblem contient "contour yeux spécifique"
+   - Vérifier que targetProblem NE contient PAS d'actifs classiques
 
 ### **PHASE MAINTENANCE - RÈGLES SPÉCIFIQUES**  
 - **SPF quotidien** = pilier absolu (A)
@@ -511,6 +612,8 @@ Ajouter OBLIGATOIREMENT dans globalAdvice :
 
 ### **VALIDATION FINALE OBLIGATOIRE**
 Avant de répondre, VÉRIFIER IMPÉRATIVEMENT :
+
+**A. Structure de base (5 steps obligatoires) :**
 1. ✅ Phase immédiate contient nettoyage matin (careType="nettoyage", timing="matin")
 2. ✅ Phase immédiate contient hydratation matin (careType="hydratation", timing="matin") 
 3. ✅ Phase immédiate contient protection matin (careType="protection", timing="matin")
@@ -520,15 +623,47 @@ Avant de répondre, VÉRIFIER IMPÉRATIVEMENT :
 7. ✅ Phase adaptation CONSERVE ces 5 steps (COPIER-COLLER depuis immédiate)
 8. ✅ Phase maintenance CONSERVE au minimum nettoyage + SPF + hydratation
 
-SI UN SEUL DE CES POINTS N'EST PAS RESPECTÉ → RECOMMENCER LA ROUTINE
+**B. Regroupement traitements (CRITIQUE) :**
+9. ✅ Si ${diagnostic.zoneSpecificIssues.length} problème(s) ≤ 2 → J'ai créé des traitements SÉPARÉS
+10. ✅ Si regroupement fait → J'ai vérifié compatibilité zones AVANT regroupement
+11. ✅ AUCUN actif (BHA/AHA/Niacinamide/Rétinol/Exfoliant) n'est appliqué sur lèvres
+12. ✅ AUCUN actif n'est appliqué sur contour yeux (sauf produits eye-safe)
+13. ✅ Si problème sur lèvres → J'ai créé traitement SÉPARÉ avec baume/céramides/occlusifs UNIQUEMENT
+14. ✅ Si zones incompatibles → J'ai créé des traitements SÉPARÉS même si >3 problèmes
+15. ✅ **VÉRIFICATION ACTIFS PAR ZONE** : 
+    - Pour chaque traitement, j'ai vérifié que l'actif choisi est COMPATIBLE avec la zone ciblée
+    - Zones lèvres → UNIQUEMENT Céramides/Occlusifs/Baumes (pas Niacinamide, pas BHA, pas AHA)
+    - Zones normales → Actifs classiques OK
 
-- duration: "${immediateWeeks} semaines" pour immediate
-- duration: "${adaptationWeeks} semaines" pour adaptation  
-- **5 étapes minimum** en Phase Immédiate (nettoyage matin/soir + hydratation matin/soir + SPF)
-- **AUCUN traitement actif** en Phase Immédiate
-- **SPF présent** dans TOUTES les phases
-- **Actif nommé précisément** en Phase Adaptation
-- **Patch test** mentionné dans restrictions
+**C. Cohérence globale :**
+16. ✅ Duration: "${immediateWeeks} semaines" pour immediate
+17. ✅ Duration: "${adaptationWeeks} semaines" pour adaptation  
+18. ✅ AUCUN traitement actif en Phase Immédiate
+19. ✅ SPF présent dans TOUTES les phases
+20. ✅ Actifs nommés précisément en Phase Adaptation
+21. ✅ "Patch test" mentionné dans restrictions des actifs
+
+**🚨 SI UN SEUL DE CES 21 POINTS N'EST PAS RESPECTÉ → RECOMMENCER LA ROUTINE**
+
+**RAPPEL FINAL ZONES SENSIBLES :**
+- Lèvres détectées : ${diagnostic.zoneSpecificIssues.some(issue => issue.zone === 'lèvres' || issue.zone.includes('lèvres')) ? 'OUI → Traitement séparé obligatoire avec Céramides/Occlusifs/Baume UNIQUEMENT' : 'NON'}
+- Nombre de problèmes : ${diagnostic.zoneSpecificIssues.length} ${diagnostic.zoneSpecificIssues.length <= 2 ? '→ SÉPARER les traitements avec actifs adaptés à chaque zone' : '→ Vérifier compatibilité zones'}
+
+**🚨 DERNIÈRE VÉRIFICATION CRITIQUE AVANT GÉNÉRATION :**
+${diagnostic.zoneSpecificIssues.some(issue => issue.zone === 'lèvres' || issue.zone.includes('lèvres')) ? `
+⚠️ ATTENTION : Problème détecté sur les LÈVRES !
+→ Je DOIS créer un traitement séparé pour les lèvres
+→ Pour ce traitement lèvres, je DOIS utiliser UNIQUEMENT :
+   • targetProblem: "Céramides + Occlusifs" OU
+   • targetProblem: "Baume réparateur" OU  
+   • targetProblem: "Beurre de karité"
+→ Je NE DOIS JAMAIS utiliser pour les lèvres :
+   • "Niacinamide" ❌
+   • "BHA" ❌
+   • "AHA" ❌
+   • "Rétinol" ❌
+   • "Exfoliant" ❌
+` : ''}
 
 Générer routine respectant TOUTES ces contraintes absolues en JSON uniquement.`
 }

@@ -187,3 +187,4 @@ function printRequiredVars() {
   })
   console.log('')
 }
+

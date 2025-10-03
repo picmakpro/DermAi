@@ -91,6 +91,17 @@ function normalizeZone(zone: string): string {
     'Cou': 'cou',
     'COU': 'cou',
     
+    // ✅ Ajout lèvres/bouche
+    'lèvres': 'lèvres',
+    'Lèvres': 'lèvres',
+    'levres': 'lèvres',
+    'Levres': 'lèvres',
+    'lèvre': 'lèvres',
+    'Lèvre': 'lèvres',
+    'bouche': 'bouche',
+    'Bouche': 'bouche',
+    'BOUCHE': 'bouche',
+    
     'zone T': 'zone T',
     'Zone T': 'zone T',
     'zone-t': 'zone-t',

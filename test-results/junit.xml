@@ -1,75 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="13" failures="5" errors="0" time="7.478">
-  <testsuite name="RetryStrategy - Sprint 2 Robustesse" errors="0" failures="5" skipped="0" timestamp="2025-10-01T12:56:23" time="6.508" tests="13">
-    <testcase classname="RetryStrategy - Sprint 2 Robustesse 🔄 Tests Retry avec Injection d&apos;Erreurs Retry réussi après erreur réseau temporaire" name="RetryStrategy - Sprint 2 Robustesse 🔄 Tests Retry avec Injection d&apos;Erreurs Retry réussi après erreur réseau temporaire" time="0.38">
+<testsuites name="jest tests" tests="8" failures="0" errors="0" time="1.631">
+  <testsuite name="PHASE 0 : Validation restrictedZones" errors="0" failures="0" skipped="0" timestamp="2025-10-03T12:38:00" time="0.595" tests="8">
+    <testcase classname="PHASE 0 : Validation restrictedZones Complétude du catalogue devrait avoir 110 produits" name="PHASE 0 : Validation restrictedZones Complétude du catalogue devrait avoir 110 produits" time="0.004">
     </testcase>
-    <testcase classname="RetryStrategy - Sprint 2 Robustesse 🔄 Tests Retry avec Injection d&apos;Erreurs Retry échoue après erreur de validation (non-retriable)" name="RetryStrategy - Sprint 2 Robustesse 🔄 Tests Retry avec Injection d&apos;Erreurs Retry échoue après erreur de validation (non-retriable)" time="0.008">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: 1
-Received: 3
-    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/utils/__tests__/RetryStrategy.test.ts:52:31)</failure>
+    <testcase classname="PHASE 0 : Validation restrictedZones Complétude du catalogue tous les produits doivent avoir le champ restrictedZones" name="PHASE 0 : Validation restrictedZones Complétude du catalogue tous les produits doivent avoir le champ restrictedZones" time="0.021">
     </testcase>
-    <testcase classname="RetryStrategy - Sprint 2 Robustesse 🔄 Tests Retry avec Injection d&apos;Erreurs Retry avec timeout sur opération lente" name="RetryStrategy - Sprint 2 Robustesse 🔄 Tests Retry avec Injection d&apos;Erreurs Retry avec timeout sur opération lente" time="1.102">
+    <testcase classname="PHASE 0 : Validation restrictedZones Détection actifs irritants produits avec actifs irritants doivent avoir restrictedZones" name="PHASE 0 : Validation restrictedZones Détection actifs irritants produits avec actifs irritants doivent avoir restrictedZones" time="0.001">
     </testcase>
-    <testcase classname="RetryStrategy - Sprint 2 Robustesse 🔄 Tests Retry avec Injection d&apos;Erreurs Backoff exponentiel avec jitter" name="RetryStrategy - Sprint 2 Robustesse 🔄 Tests Retry avec Injection d&apos;Erreurs Backoff exponentiel avec jitter" time="3.019">
-      <failure>Error: expect(received).toHaveLength(expected)
-
-Expected length: 2
-Received length: 3
-Received array:  [928.5213638134207, 1821.311186574585, 3690.6023852628123]
-    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/utils/__tests__/RetryStrategy.test.ts:97:22)</failure>
+    <testcase classname="PHASE 0 : Validation restrictedZones Détection actifs irritants produits eye-care/lip-care ne doivent PAS avoir de restrictedZones" name="PHASE 0 : Validation restrictedZones Détection actifs irritants produits eye-care/lip-care ne doivent PAS avoir de restrictedZones" time="0.001">
     </testcase>
-    <testcase classname="RetryStrategy - Sprint 2 Robustesse 📊 Tests Classification d&apos;Erreurs Classification erreurs réseau (retriable)" name="RetryStrategy - Sprint 2 Robustesse 📊 Tests Classification d&apos;Erreurs Classification erreurs réseau (retriable)" time="0.001">
+    <testcase classname="PHASE 0 : Validation restrictedZones Statistiques enrichissement devrait avoir 13-17% de produits avec restrictions" name="PHASE 0 : Validation restrictedZones Statistiques enrichissement devrait avoir 13-17% de produits avec restrictions" time="0.029">
     </testcase>
-    <testcase classname="RetryStrategy - Sprint 2 Robustesse 📊 Tests Classification d&apos;Erreurs Classification erreurs validation (non-retriable)" name="RetryStrategy - Sprint 2 Robustesse 📊 Tests Classification d&apos;Erreurs Classification erreurs validation (non-retriable)" time="0.001">
+    <testcase classname="PHASE 0 : Validation restrictedZones Statistiques enrichissement devrait avoir 9-13% de produits eye-care/lip-care" name="PHASE 0 : Validation restrictedZones Statistiques enrichissement devrait avoir 9-13% de produits eye-care/lip-care" time="0.003">
     </testcase>
-    <testcase classname="RetryStrategy - Sprint 2 Robustesse 📊 Tests Classification d&apos;Erreurs Classification erreurs timeout (retriable)" name="RetryStrategy - Sprint 2 Robustesse 📊 Tests Classification d&apos;Erreurs Classification erreurs timeout (retriable)" time="0.001">
+    <testcase classname="PHASE 0 : Validation restrictedZones Cas limites Niacinamide &gt;5% doit avoir restrictedZones" name="PHASE 0 : Validation restrictedZones Cas limites Niacinamide &gt;5% doit avoir restrictedZones" time="0.001">
     </testcase>
-    <testcase classname="RetryStrategy - Sprint 2 Robustesse 📊 Tests Classification d&apos;Erreurs Classification erreurs rate limit (retriable)" name="RetryStrategy - Sprint 2 Robustesse 📊 Tests Classification d&apos;Erreurs Classification erreurs rate limit (retriable)" time="0.001">
-    </testcase>
-    <testcase classname="RetryStrategy - Sprint 2 Robustesse ⚙️ Tests Configurations Prédéfinies Configuration DIAGNOSTIC a les bonnes valeurs" name="RetryStrategy - Sprint 2 Robustesse ⚙️ Tests Configurations Prédéfinies Configuration DIAGNOSTIC a les bonnes valeurs" time="0.001">
-    </testcase>
-    <testcase classname="RetryStrategy - Sprint 2 Robustesse ⚙️ Tests Configurations Prédéfinies Configuration PRODUCT_SELECTION a les bonnes valeurs" name="RetryStrategy - Sprint 2 Robustesse ⚙️ Tests Configurations Prédéfinies Configuration PRODUCT_SELECTION a les bonnes valeurs" time="0">
-    </testcase>
-    <testcase classname="RetryStrategy - Sprint 2 Robustesse 📈 Tests Métriques Retry Calcul métriques de retry correctes" name="RetryStrategy - Sprint 2 Robustesse 📈 Tests Métriques Retry Calcul métriques de retry correctes" time="0.002">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: 0.25
-Received: 0.5
-    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/utils/__tests__/RetryStrategy.test.ts:202:33)
-    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
-    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
-    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
-    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
-    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
-    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
-    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
-    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
-    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
-    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
-    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
-    </testcase>
-    <testcase classname="RetryStrategy - Sprint 2 Robustesse 🚨 Tests Scénarios d&apos;Erreur Critique Simulation coupure API OpenAI" name="RetryStrategy - Sprint 2 Robustesse 🚨 Tests Scénarios d&apos;Erreur Critique Simulation coupure API OpenAI" time="0.003">
-      <failure>Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: 1
-Received: 3
-    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/src/utils/__tests__/RetryStrategy.test.ts:222:31)</failure>
-    </testcase>
-    <testcase classname="RetryStrategy - Sprint 2 Robustesse 🚨 Tests Scénarios d&apos;Erreur Critique Simulation surcharge réseau avec retry progressif" name="RetryStrategy - Sprint 2 Robustesse 🚨 Tests Scénarios d&apos;Erreur Critique Simulation surcharge réseau avec retry progressif" time="1.437">
-      <failure>Error: Operation timeout
-    at /Users/mak/dermai-v2/src/utils/RetryStrategy.ts:44:35
-    at Timeout.task [as _onTimeout] (/Users/mak/dermai-v2/node_modules/jsdom/lib/jsdom/browser/Window.js:520:19)
-    at listOnTimeout (node:internal/timers:594:17)
-    at processTimers (node:internal/timers:529:7)</failure>
-      <failure>Error: Operation timeout
-    at /Users/mak/dermai-v2/src/utils/RetryStrategy.ts:44:35
-    at Timeout.task [as _onTimeout] (/Users/mak/dermai-v2/node_modules/jsdom/lib/jsdom/browser/Window.js:520:19)
-    at listOnTimeout (node:internal/timers:594:17)
-    at processTimers (node:internal/timers:529:7)</failure>
+    <testcase classname="PHASE 0 : Validation restrictedZones Cas limites AHA/BHA doivent avoir restrictedZones" name="PHASE 0 : Validation restrictedZones Cas limites AHA/BHA doivent avoir restrictedZones" time="0.001">
     </testcase>
   </testsuite>
 </testsuites>

@@ -1,3744 +1,2677 @@
 [
   {
-    "catalogId": "B0107QPFBU",
+    "id": "B0107QPFBU",
     "name": "Aquaphor Healing Ointment Advanced Therapy",
     "brand": "Aquaphor",
     "category": "balm",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [],
+    "price": 12.91,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71E0r7aurgL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0107QPFBU/",
     "activeIngredients": [
       "Pétrolatum",
       "Panthénol",
       "Glycérine"
     ],
-    "allergens": [],
-    "price": 12.91,
-    "popularity": 65,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/71E0r7aurgL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0107QPFBU/",
-        "price": 12.91
-      }
+    "skinTypes": [
+      "très sèche",
+      "crevassée",
+      "irritée"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "réparation intense",
+      "multi-usage",
+      "protection"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B016F3MG2U",
+    "id": "B016F3MG2U",
     "name": "CeraVe Healing Ointment",
     "brand": "CeraVe",
     "category": "balm",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 19.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61pIL2maVKL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B016F3MG2U/",
     "activeIngredients": [
       "Pétrolatum",
       "Acide Hyaluronique",
       "Céramides"
     ],
-    "allergens": [],
-    "price": 19.99,
-    "popularity": 70,
-    "dermatologistRating": 95,
-    "imageUrl": "https://m.media-amazon.com/images/I/61pIL2maVKL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B016F3MG2U/",
-        "price": 19.99
-      }
+    "skinTypes": [
+      "abîmée",
+      "très sèche"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "protège et répare",
+      "non comédogène"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B006IB5T4W",
+    "id": "B006IB5T4W",
     "name": "Aquaphor Healing Ointment Pot",
     "brand": "Aquaphor",
     "category": "balm",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [],
+    "price": 18.37,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/81mMTMvoH0L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B006IB5T4W/",
     "activeIngredients": [
       "Pétrolatum 41%"
     ],
-    "allergens": [],
-    "price": 18.37,
-    "popularity": 50,
-    "dermatologistRating": 70,
-    "imageUrl": "https://m.media-amazon.com/images/I/81mMTMvoH0L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B006IB5T4W/",
-        "price": 18.37
-      }
+    "skinTypes": [
+      "gerçures",
+      "coupures mineures",
+      "brûlures"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "guérison accélérée",
+      "protection barrière"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B01N0K3Y28",
+    "id": "B01N0K3Y28",
     "name": "CeraVe Baby Healing Ointment",
     "brand": "CeraVe",
     "category": "balm",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 9.98,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71jdcrAdwbL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B01N0K3Y28/",
     "activeIngredients": [
       "Céramides",
       "Vitamine E",
       "sans lanoline"
     ],
-    "allergens": [],
-    "price": 9.98,
-    "popularity": 85,
-    "dermatologistRating": 100,
-    "imageUrl": "https://m.media-amazon.com/images/I/71jdcrAdwbL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B01N0K3Y28/",
-        "price": 9.98
-      }
+    "skinTypes": [
+      "très sensible",
+      "bébé",
+      "eczéma"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "extra-doux",
+      "barrière protectrice",
+      "sans parfum"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B093W4D1T7",
+    "id": "B093W4D1T7",
     "name": "O'Keeffe's Cracked Skin Repair Balm",
     "brand": "O'Keeffe's",
     "category": "balm",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [],
+    "price": 12.04,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71E0r7aurgL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B093W4D1T7/",
     "activeIngredients": [
       "agents réparateurs"
     ],
-    "allergens": [],
-    "price": 12.04,
-    "popularity": 65,
-    "dermatologistRating": 70,
-    "imageUrl": "https://m.media-amazon.com/images/I/71E0r7aurgL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B093W4D1T7/",
-        "price": 12.04
-      }
+    "skinTypes": [
+      "très rugueuse",
+      "crevassée"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "répare fissures profondes",
+      "hypoallergénique"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B00BNUY3HE",
+    "id": "B00BNUY3HE",
     "name": "La Roche-Posay Cicaplast Baume B5",
     "brand": "La Roche-Posay",
     "category": "balm",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "acne"
-    ],
+    "price": 13.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61Ze3zqMLTL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B00BNUY3HE/",
     "activeIngredients": [
       "Panthénol 5%",
       "Madécassoside",
       "Zinc"
     ],
-    "allergens": [],
-    "price": 13.99,
-    "popularity": 65,
-    "dermatologistRating": 90,
-    "imageUrl": "https://m.media-amazon.com/images/I/61Ze3zqMLTL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B00BNUY3HE/",
-        "price": 13.99
-      }
+    "skinTypes": [
+      "irritée",
+      "abîmée",
+      "post-procédure"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "réparation",
+      "apaise",
+      "accélère guérison"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B003JSEGNC",
+    "id": "B003JSEGNC",
     "name": "La Roche-Posay Effaclar Gel Nettoyant Purifiant",
     "brand": "La Roche-Posay",
     "category": "cleanser",
-    "careType": "nettoyage",
-    "targetSkinTypes": [
-      "oily",
-      "combination",
-      "acne-prone"
-    ],
-    "targetConcerns": [
-      "acne"
-    ],
+    "price": 18.74,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61Ze3zqMLTL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B003JSEGNC/",
     "activeIngredients": [
       "Zinc Pidolate",
       "agents purifiants"
     ],
-    "allergens": [],
-    "price": 18.74,
-    "popularity": 50,
-    "dermatologistRating": 90,
-    "imageUrl": "https://m.media-amazon.com/images/I/61Ze3zqMLTL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B003JSEGNC/",
-        "price": 18.74
-      }
+    "skinTypes": [
+      "grasse",
+      "mixte",
+      "acnéique"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "élimine excès sébum",
+      "purifie",
+      "respecte barrière cutanée"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0036SFTK4",
+    "id": "B0036SFTK4",
     "name": "Bioderma Sensibio H2O Eau Micellaire",
     "brand": "Bioderma",
     "category": "cleanser",
-    "careType": "nettoyage",
-    "targetSkinTypes": [
-      "sensitive",
-      "normal"
-    ],
-    "targetConcerns": [],
+    "price": 10.49,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/51D9UzBWcqL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0036SFTK4/",
     "activeIngredients": [
       "micelles biomimétiques"
     ],
-    "allergens": [],
-    "price": 10.49,
-    "popularity": 65,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/51D9UzBWcqL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0036SFTK4/",
-        "price": 10.49
-      }
+    "skinTypes": [
+      "sensible",
+      "tous types"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "démaquille",
+      "nettoie",
+      "apaise sans rinçage"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B01MSSDEPK",
+    "id": "B01MSSDEPK",
     "name": "CeraVe Nettoyant Hydratant",
     "brand": "CeraVe",
     "category": "cleanser",
-    "careType": "nettoyage",
-    "targetSkinTypes": [
-      "dry",
-      "normal",
-      "sensitive"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 15.49,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61jeXEEvGAL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B01MSSDEPK/",
     "activeIngredients": [
       "Céramides",
       "Acide Hyaluronique",
       "Glycérine"
     ],
-    "allergens": [],
-    "price": 15.49,
-    "popularity": 70,
-    "dermatologistRating": 95,
-    "imageUrl": "https://m.media-amazon.com/images/I/61jeXEEvGAL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B01MSSDEPK/",
-        "price": 15.49
-      }
+    "skinTypes": [
+      "sèche",
+      "normale",
+      "sensible"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "nettoie tout en hydratant",
+      "restaure barrière cutanée"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B08CQDF382",
+    "id": "B08CQDF382",
     "name": "CeraVe Nettoyant Crème à Mousse",
     "brand": "CeraVe",
     "category": "cleanser",
-    "careType": "nettoyage",
-    "targetSkinTypes": [
-      "dry",
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness",
-      "texture"
-    ],
+    "price": 15.13,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61ix-m8e4UL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B08CQDF382/",
     "activeIngredients": [
       "Acide Hyaluronique",
       "Céramides"
     ],
-    "allergens": [],
-    "price": 15.13,
-    "popularity": 70,
-    "dermatologistRating": 100,
-    "imageUrl": "https://m.media-amazon.com/images/I/61ix-m8e4UL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B08CQDF382/",
-        "price": 15.13
-      }
+    "skinTypes": [
+      "sèche",
+      "normale"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "démaquille",
+      "texture crème à mousse",
+      "hydrate"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B08CQ9T6KN",
+    "id": "B08CQ9T6KN",
     "name": "CeraVe Nettoyant à l'Acide Salicylique",
     "brand": "CeraVe",
     "category": "cleanser",
-    "careType": "nettoyage",
-    "targetSkinTypes": [
-      "oily",
-      "combination",
-      "acne-prone"
-    ],
-    "targetConcerns": [
-      "acne",
-      "dryness",
-      "hyperpigmentation",
-      "texture"
-    ],
+    "price": 14.24,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61pIL2maVKL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B08CQ9T6KN/",
     "activeIngredients": [
       "Acide Salicylique",
       "Niacinamide",
       "Céramides"
     ],
-    "allergens": [],
-    "price": 14.24,
-    "popularity": 85,
-    "dermatologistRating": 100,
-    "imageUrl": "https://m.media-amazon.com/images/I/61pIL2maVKL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B08CQ9T6KN/",
-        "price": 14.24
-      }
+    "skinTypes": [
+      "grasse",
+      "mixte",
+      "acnéique"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
+    "benefits": [
+      "exfoliation douce BHA",
+      "lisse",
+      "adoucit"
+    ],
+    "restrictedZones": [
+      "lèvres",
+      "yeux"
     ]
   },
   {
-    "catalogId": "B01CDPCWYG",
+    "id": "B01CDPCWYG",
     "name": "Bioderma Sensibio H2O Lingettes",
     "brand": "Bioderma",
     "category": "cleanser",
-    "careType": "nettoyage",
-    "targetSkinTypes": [
-      "sensitive",
-      "normal"
-    ],
-    "targetConcerns": [
-      "redness",
-      "sensitivity"
-    ],
+    "price": 12.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61RK0VFmkzL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B01CDPCWYG/",
     "activeIngredients": [
       "micelles",
       "agents apaisants"
     ],
-    "allergens": [],
-    "price": 12.99,
-    "popularity": 65,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/61RK0VFmkzL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B01CDPCWYG/",
-        "price": 12.99
-      }
+    "skinTypes": [
+      "sensible",
+      "voyage"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "démaquillage nomade",
+      "apaise",
+      "pratique"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0C37XZYZ1",
+    "id": "B0C37XZYZ1",
     "name": "Bioderma Sensibio Huile Micellaire",
     "brand": "Bioderma",
     "category": "cleanser",
-    "careType": "nettoyage",
-    "targetSkinTypes": [
-      "sensitive",
-      "dry"
-    ],
-    "targetConcerns": [
-      "texture"
-    ],
+    "price": 17.24,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/51Dr8YqbVDL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0C37XZYZ1/",
     "activeIngredients": [
       "huiles végétales",
       "micelles"
     ],
-    "allergens": [],
-    "price": 17.24,
-    "popularity": 50,
-    "dermatologistRating": 70,
-    "imageUrl": "https://m.media-amazon.com/images/I/51Dr8YqbVDL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0C37XZYZ1/",
-        "price": 17.24
-      }
+    "skinTypes": [
+      "sensible",
+      "sèche"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "démaquillage en profondeur",
+      "texture huile-lait"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B00B27040G",
+    "id": "B00B27040G",
     "name": "Bioderma Sébium H2O Eau Micellaire",
     "brand": "Bioderma",
     "category": "cleanser",
-    "careType": "nettoyage",
-    "targetSkinTypes": [
-      "combination",
-      "oily"
-    ],
-    "targetConcerns": [
-      "acne"
-    ],
+    "price": 20.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61NS8KEjA7L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B00B27040G/",
     "activeIngredients": [
       "micelles purifiantes",
       "complexe sébo-correcteur"
     ],
-    "allergens": [],
-    "price": 20.99,
-    "popularity": 50,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/61NS8KEjA7L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B00B27040G/",
-        "price": 20.99
-      }
+    "skinTypes": [
+      "mixte",
+      "grasse"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "purifie",
+      "régule sébum",
+      "resserre pores"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B01ES79K4M",
+    "id": "B01ES79K4M",
     "name": "Bioderma Hydrabio H2O Eau Micellaire",
     "brand": "Bioderma",
     "category": "cleanser",
-    "careType": "nettoyage",
-    "targetSkinTypes": [
-      "normal",
-      "sensitive"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 14.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61NS8KEjA7L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B01ES79K4M/",
     "activeIngredients": [
       "aquagenium",
       "micelles hydratantes"
     ],
-    "allergens": [],
-    "price": 14.99,
-    "popularity": 65,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/61NS8KEjA7L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B01ES79K4M/",
-        "price": 14.99
-      }
+    "skinTypes": [
+      "déshydratée",
+      "sensible"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "réhydrate",
+      "démaquille",
+      "apaise"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0C7J7CWBN",
+    "id": "B0C7J7CWBN",
     "name": "CeraVe Nettoyant Huile Moussante",
     "brand": "CeraVe",
     "category": "cleanser",
-    "careType": "nettoyage",
-    "targetSkinTypes": [
-      "normal",
-      "sensitive"
-    ],
-    "targetConcerns": [
-      "dryness",
-      "texture"
-    ],
+    "price": 18.38,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71wZCEu0P0L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0C7J7CWBN/",
     "activeIngredients": [
       "Squalane",
       "Acide Hyaluronique",
       "Céramides"
     ],
-    "allergens": [],
-    "price": 18.38,
-    "popularity": 70,
-    "dermatologistRating": 100,
-    "imageUrl": "https://m.media-amazon.com/images/I/71wZCEu0P0L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0C7J7CWBN/",
-        "price": 18.38
-      }
+    "skinTypes": [
+      "très sèche",
+      "sensible"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "nettoie sans résidu",
+      "hydrate",
+      "texture unique"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B00949CTQQ",
+    "id": "B00949CTQQ",
     "name": "Paula's Choice SKIN PERFECTING 2% BHA",
     "brand": "Paula's Choice",
     "category": "exfoliant",
-    "careType": "exfoliation",
-    "targetSkinTypes": [
-      "oily",
-      "combination",
-      "normal"
-    ],
-    "targetConcerns": [
-      "acne",
-      "texture"
-    ],
+    "price": 37,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61RHq4MT34L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B00949CTQQ/",
     "activeIngredients": [
       "Acide Salicylique 2%"
     ],
-    "allergens": [],
-    "price": 37,
-    "popularity": 50,
-    "dermatologistRating": 90,
-    "imageUrl": "https://m.media-amazon.com/images/I/61RHq4MT34L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B00949CTQQ/",
-        "price": 37
-      }
+    "skinTypes": [
+      "grasse",
+      "mixte",
+      "pores dilatés"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
+    "benefits": [
+      "désobstrue pores",
+      "réduit points noirs",
+      "lisse"
+    ],
+    "restrictedZones": [
+      "lèvres",
+      "yeux"
     ]
   },
   {
-    "catalogId": "B071D4D5DT",
+    "id": "B071D4D5DT",
     "name": "The Ordinary AHA 30% + BHA 2% Peeling Solution",
     "brand": "The Ordinary",
     "category": "exfoliant",
-    "careType": "exfoliation",
-    "targetSkinTypes": [
-      "normal",
-      "oily"
-    ],
-    "targetConcerns": [
-      "dullness",
-      "texture"
-    ],
+    "price": 9.5,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71kjyCh8yyL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B071D4D5DT/",
     "activeIngredients": [
       "AHA 30%",
       "BHA 2%"
     ],
-    "allergens": [],
-    "price": 9.5,
-    "popularity": 85,
-    "dermatologistRating": 90,
-    "imageUrl": "https://m.media-amazon.com/images/I/71kjyCh8yyL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B071D4D5DT/",
-        "price": 9.5
-      }
+    "skinTypes": [
+      "normale",
+      "grasse",
+      "expérimentés"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
+    "benefits": [
+      "peeling intense",
+      "éclat",
+      "texture de peau"
+    ],
+    "restrictedZones": [
+      "lèvres",
+      "yeux"
     ]
   },
   {
-    "catalogId": "B01M5FEYKA",
+    "id": "B01M5FEYKA",
     "name": "Paula's Choice SKIN PERFECTING 2% BHA Lotion",
     "brand": "Paula's Choice",
     "category": "exfoliant",
-    "careType": "exfoliation",
-    "targetSkinTypes": [
-      "sensitive",
-      "dry"
-    ],
-    "targetConcerns": [
-      "acne",
-      "dryness",
-      "texture"
-    ],
+    "price": 35,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61xqbLC414L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B01M5FEYKA/",
     "activeIngredients": [
       "Acide Salicylique 2%"
     ],
-    "allergens": [],
-    "price": 35,
-    "popularity": 50,
-    "dermatologistRating": 90,
-    "imageUrl": "https://m.media-amazon.com/images/I/61xqbLC414L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B01M5FEYKA/",
-        "price": 35
-      }
+    "skinTypes": [
+      "sensible",
+      "sèche"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
+    "benefits": [
+      "exfoliation douce",
+      "texture lotion",
+      "hydrate"
+    ],
+    "restrictedZones": [
+      "lèvres",
+      "yeux"
     ]
   },
   {
-    "catalogId": "B089973QWM",
+    "id": "B089973QWM",
     "name": "Paula's Choice 25% AHA + 2% BHA Liquid",
     "brand": "Paula's Choice",
     "category": "exfoliant",
-    "careType": "exfoliation",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [],
+    "price": 45,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71BgHPmzoXL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B089973QWM/",
     "activeIngredients": [
       "AHA 25%",
       "BHA 2%"
     ],
-    "allergens": [],
-    "price": 45,
-    "popularity": 50,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/71BgHPmzoXL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B089973QWM/",
-        "price": 45
-      }
+    "skinTypes": [
+      "expérimentés",
+      "résistante"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
+    "benefits": [
+      "peeling professionnel",
+      "résultats intenses"
+    ],
+    "restrictedZones": [
+      "lèvres",
+      "yeux"
     ]
   },
   {
-    "catalogId": "B00KOAMZCW",
+    "id": "B00KOAMZCW",
     "name": "Paula's Choice RESIST Daily Pore Refining 2% BHA",
     "brand": "Paula's Choice",
     "category": "exfoliant",
-    "careType": "exfoliation",
-    "targetSkinTypes": [
-      "normal",
-      "combination",
-      "mature"
-    ],
-    "targetConcerns": [
-      "acne",
-      "aging",
-      "dryness"
-    ],
+    "price": 37,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71EIkbcXEhL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B00KOAMZCW/",
     "activeIngredients": [
       "Acide Salicylique 2%",
       "Acide Hyaluronique"
     ],
-    "allergens": [],
-    "price": 37,
-    "popularity": 50,
-    "dermatologistRating": 100,
-    "imageUrl": "https://m.media-amazon.com/images/I/71EIkbcXEhL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B00KOAMZCW/",
-        "price": 37
-      }
+    "skinTypes": [
+      "normale",
+      "mixte",
+      "mature"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
+    "benefits": [
+      "raffine pores",
+      "hydrate",
+      "anti-âge"
+    ],
+    "restrictedZones": [
+      "lèvres",
+      "yeux"
     ]
   },
   {
-    "catalogId": "B0DMTDN158",
+    "id": "B0DMTDN158",
     "name": "The Ordinary Glycolic Acid 7% Toning Solution",
     "brand": "The Ordinary",
     "category": "exfoliant",
-    "careType": "exfoliation",
-    "targetSkinTypes": [
-      "normal",
-      "oily"
-    ],
-    "targetConcerns": [
-      "dullness",
-      "texture"
-    ],
+    "price": 8.7,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61DAurbQboL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0DMTDN158/",
     "activeIngredients": [
       "Acide Glycolique 7%"
     ],
-    "allergens": [],
-    "price": 8.7,
-    "popularity": 85,
-    "dermatologistRating": 90,
-    "imageUrl": "https://m.media-amazon.com/images/I/61DAurbQboL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0DMTDN158/",
-        "price": 8.7
-      }
+    "skinTypes": [
+      "normale",
+      "grasse"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
+    "benefits": [
+      "texture améliorée",
+      "éclat quotidien",
+      "lisse"
+    ],
+    "restrictedZones": [
+      "lèvres",
+      "yeux"
     ]
   },
   {
-    "catalogId": "B07DK27V2F",
+    "id": "B07DK27V2F",
     "name": "Paula's Choice AHA 8% + BHA 2% Duo",
     "brand": "Paula's Choice",
     "category": "exfoliant",
-    "careType": "exfoliation",
-    "targetSkinTypes": [
-      "combination",
-      "mature"
-    ],
-    "targetConcerns": [
-      "acne",
-      "aging"
-    ],
+    "price": 25.5,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/81-GXMJRa3L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B07DK27V2F/",
     "activeIngredients": [
       "Acide Glycolique",
       "Acide Salicylique"
     ],
-    "allergens": [],
-    "price": 25.5,
-    "popularity": 50,
-    "dermatologistRating": 90,
-    "imageUrl": "https://m.media-amazon.com/images/I/81-GXMJRa3L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B07DK27V2F/",
-        "price": 25.5
-      }
+    "skinTypes": [
+      "mixte",
+      "mature"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
+    "benefits": [
+      "routine complète",
+      "anti-âge",
+      "purifiante"
+    ],
+    "restrictedZones": [
+      "lèvres",
+      "yeux"
     ]
   },
   {
-    "catalogId": "B09DP7P4QN",
+    "id": "B09DP7P4QN",
     "name": "AHA 30% + BHA 2% Peeling Solution Alternative",
     "brand": "Generic",
     "category": "exfoliant",
-    "careType": "exfoliation",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [],
+    "price": 6.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71mvc9NBS6L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B09DP7P4QN/",
     "activeIngredients": [
       "AHA 30%",
       "BHA 2%"
     ],
-    "allergens": [],
-    "price": 6.99,
-    "popularity": 65,
-    "dermatologistRating": 70,
-    "imageUrl": "https://m.media-amazon.com/images/I/71mvc9NBS6L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B09DP7P4QN/",
-        "price": 6.99
-      }
+    "skinTypes": [
+      "expérimentés",
+      "économique"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
+    "benefits": [
+      "peeling chimique",
+      "alternative abordable"
+    ],
+    "restrictedZones": [
+      "lèvres",
+      "yeux"
     ]
   },
   {
-    "catalogId": "B0F6VGGDGC",
+    "id": "B0F6VGGDGC",
     "name": "Under Eye Cream for Dark Circles and Puffiness",
     "brand": "Generic",
     "category": "eye-care",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging",
-      "dryness"
-    ],
+    "price": 14.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71E0r7aurgL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0F6VGGDGC/",
     "activeIngredients": [
       "Caféine",
       "Rétinol",
       "Peptides",
       "Acide Hyaluronique"
     ],
-    "allergens": [],
-    "price": 14.99,
-    "popularity": 65,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/71E0r7aurgL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0F6VGGDGC/",
-        "price": 14.99
-      }
+    "skinTypes": [
+      "tous types",
+      "cernes"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "réduit cernes",
+      "anti-poches",
+      "anti-âge"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0FC1W53QN",
+    "id": "B0FC1W53QN",
     "name": "Retinol & Caffeine Eye Cream",
     "brand": "Generic",
     "category": "eye-care",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging"
-    ],
+    "price": 9.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61jUF1tFgbL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0FC1W53QN/",
     "activeIngredients": [
       "Rétinol",
       "Caféine"
     ],
-    "allergens": [],
-    "price": 9.99,
-    "popularity": 65,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/61jUF1tFgbL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0FC1W53QN/",
-        "price": 9.99
-      }
+    "skinTypes": [
+      "tous types",
+      "rides"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "anti-rides",
+      "décongestionnant",
+      "testé dermato"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0F6CZZCFM",
+    "id": "B0F6CZZCFM",
     "name": "Retinol Eye Cream with Caffeine",
     "brand": "Generic",
     "category": "eye-care",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "mature",
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging",
-      "dryness",
-      "hyperpigmentation"
-    ],
+    "price": 9.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71RnHuqXYtL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0F6CZZCFM/",
     "activeIngredients": [
       "Rétinol",
       "Caféine",
       "Acide Hyaluronique",
       "Vitamine C"
     ],
-    "allergens": [],
-    "price": 9.99,
-    "popularity": 65,
-    "dermatologistRating": 80,
-    "imageUrl": "https://m.media-amazon.com/images/I/71RnHuqXYtL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0F6CZZCFM/",
-        "price": 9.99
-      }
+    "skinTypes": [
+      "mature",
+      "cernes",
+      "poches"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "anti-âge global yeux",
+      "réduit cernes et rides"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0F24FGXRB",
+    "id": "B0F24FGXRB",
     "name": "Caffeine Eye Cream Under Eye Brightener",
     "brand": "Generic",
     "category": "eye-care",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging",
-      "texture"
-    ],
+    "price": 14.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/51VyHDqBElL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0F24FGXRB/",
     "activeIngredients": [
       "Caféine",
       "Rétinol"
     ],
-    "allergens": [],
-    "price": 14.99,
-    "popularity": 65,
-    "dermatologistRating": 80,
-    "imageUrl": "https://m.media-amazon.com/images/I/51VyHDqBElL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0F24FGXRB/",
-        "price": 14.99
-      }
+    "skinTypes": [
+      "cernes foncés",
+      "femmes"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "éclaircit cernes",
+      "texture crème"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0FKLYN5JK",
+    "id": "B0FKLYN5JK",
     "name": "Eye Cream Retinol for Dark Circles",
     "brand": "Generic",
     "category": "eye-care",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "mature",
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging",
-      "dryness",
-      "texture"
-    ],
+    "price": 15.98,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/31HrnpdbMeL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0FKLYN5JK/",
     "activeIngredients": [
       "Rétinol",
       "Acide Hyaluronique",
       "Peptides",
       "Caféine"
     ],
-    "allergens": [],
-    "price": 15.98,
-    "popularity": 50,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/31HrnpdbMeL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0FKLYN5JK/",
-        "price": 15.98
-      }
+    "skinTypes": [
+      "mature",
+      "cernes"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "réduit poches",
+      "lisse rides",
+      "anti-cernes"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B01N3Y9J54",
+    "id": "B01N3Y9J54",
     "name": "CeraVe Eye Repair Cream",
     "brand": "CeraVe",
     "category": "eye-care",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "sensitive",
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness",
-      "hyperpigmentation"
-    ],
+    "price": 16.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71jdcrAdwbL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B01N3Y9J54/",
     "activeIngredients": [
       "Céramides",
       "Acide Hyaluronique",
       "Niacinamide"
     ],
-    "allergens": [],
-    "price": 16.99,
-    "popularity": 70,
-    "dermatologistRating": 95,
-    "imageUrl": "https://m.media-amazon.com/images/I/71jdcrAdwbL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B01N3Y9J54/",
-        "price": 16.99
-      }
+    "skinTypes": [
+      "sensible",
+      "tous types"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "hydratation douce",
+      "restaure barrière"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B095P98YRH",
+    "id": "B095P98YRH",
     "name": "Cliganic Organic Marula Oil",
     "brand": "Cliganic",
     "category": "face-oil",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal",
-      "dry"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 9.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/81iw+HHuWIL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B095P98YRH/",
     "activeIngredients": [
       "Huile de Marula 100% pure"
     ],
-    "allergens": [],
-    "price": 9.99,
-    "popularity": 65,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/81iw+HHuWIL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B095P98YRH/",
-        "price": 9.99
-      }
+    "skinTypes": [
+      "tous types",
+      "sèche"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "hydratation profonde",
+      "antioxydant",
+      "non comédogène"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B098B1TW5F",
+    "id": "B098B1TW5F",
     "name": "ANAI RUI Squalane + Vitamin E Rosehip Oil",
     "brand": "ANAI RUI",
     "category": "face-oil",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "mature",
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging",
-      "dryness"
-    ],
+    "price": 11.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71nT7j8p2vL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B098B1TW5F/",
     "activeIngredients": [
       "Squalane",
       "Vitamine E",
       "Huile Rosehip"
     ],
-    "allergens": [],
-    "price": 11.99,
-    "popularity": 65,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/71nT7j8p2vL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B098B1TW5F/",
-        "price": 11.99
-      }
+    "skinTypes": [
+      "mature",
+      "cicatrices"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "réduit cicatrices",
+      "anti-âge",
+      "hydrate"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0D1VWDW9S",
+    "id": "B0D1VWDW9S",
     "name": "Brookethorne Gua Sha Oil",
     "brand": "Brookethorne Naturals",
     "category": "face-oil",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [],
+    "price": 21.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71nT7j8p2vL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0D1VWDW9S/",
     "activeIngredients": [
       "Jojoba",
       "Rosehip",
       "Argan",
       "AHA"
     ],
-    "allergens": [],
-    "price": 21.99,
-    "popularity": 50,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/71nT7j8p2vL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0D1VWDW9S/",
-        "price": 21.99
-      }
+    "skinTypes": [
+      "tous types",
+      "massage"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
+    "benefits": [
+      "massage Gua Sha",
+      "raffermit",
+      "restaure"
+    ],
+    "restrictedZones": [
+      "lèvres",
+      "yeux"
     ]
   },
   {
-    "catalogId": "B0D8Y4WDKM",
+    "id": "B0D8Y4WDKM",
     "name": "Katz Beauty Miracle Beauty Oil",
     "brand": "Katz Beauty",
     "category": "face-oil",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging",
-      "dullness"
-    ],
+    "price": 19.89,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71nT7j8p2vL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0D8Y4WDKM/",
     "activeIngredients": [
       "Jojoba",
       "Argan",
       "Marula"
     ],
-    "allergens": [],
-    "price": 19.89,
-    "popularity": 50,
-    "dermatologistRating": 70,
-    "imageUrl": "https://m.media-amazon.com/images/I/71nT7j8p2vL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0D8Y4WDKM/",
-        "price": 19.89
-      }
+    "skinTypes": [
+      "tous types",
+      "anti-âge"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "éclat anti-âge",
+      "non comédogène"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B09D1BQS8D",
+    "id": "B09D1BQS8D",
     "name": "Blossom Essentials Hydration Oil",
     "brand": "Blossom Essentials",
     "category": "face-oil",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging",
-      "dryness"
-    ],
+    "price": 34.96,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/81iw+HHuWIL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B09D1BQS8D/",
     "activeIngredients": [
       "Marula",
       "Jojoba",
       "Rosehip",
       "Squalane"
     ],
-    "allergens": [],
-    "price": 34.96,
-    "popularity": 50,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/81iw+HHuWIL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B09D1BQS8D/",
-        "price": 34.96
-      }
+    "skinTypes": [
+      "tous types",
+      "premium"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "hydratation profonde",
+      "anti-âge",
+      "antioxydant"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B01N0GR5GG",
+    "id": "B01N0GR5GG",
     "name": "The Ordinary 100% Plant-Derived Squalane",
     "brand": "The Ordinary",
     "category": "face-oil",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal",
-      "sensitive"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 9.9,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B01N0GR5GG/",
     "activeIngredients": [
       "Squalane 100% végétal"
     ],
-    "allergens": [],
-    "price": 9.9,
-    "popularity": 85,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B01N0GR5GG/",
-        "price": 9.9
-      }
+    "skinTypes": [
+      "tous types",
+      "sensible"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "hydratation légère",
+      "compatible tous produits"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B06XDCPYYL",
+    "id": "B06XDCPYYL",
     "name": "Aquaphor Lip Repair",
     "brand": "Aquaphor",
     "category": "lip-care",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 8.35,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61jUF1tFgbL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B06XDCPYYL/",
     "activeIngredients": [
       "Panthénol",
       "Vitamines",
       "Cire d'abeille"
     ],
-    "allergens": [],
-    "price": 8.35,
-    "popularity": 65,
-    "dermatologistRating": 70,
-    "imageUrl": "https://m.media-amazon.com/images/I/61jUF1tFgbL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B06XDCPYYL/",
-        "price": 8.35
-      }
+    "skinTypes": [
+      "lèvres très sèches",
+      "gercées"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "réparation immédiate",
+      "hydratation longue durée"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B004FHZKOA",
+    "id": "B004FHZKOA",
     "name": "Aquaphor Lip Repair Ointment",
     "brand": "Aquaphor",
     "category": "lip-care",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "texture"
-    ],
+    "price": 4.49,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71E0r7aurgL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B004FHZKOA/",
     "activeIngredients": [
       "Pétrolatum",
       "Panthénol"
     ],
-    "allergens": [],
-    "price": 4.49,
-    "popularity": 65,
-    "dermatologistRating": 70,
-    "imageUrl": "https://m.media-amazon.com/images/I/71E0r7aurgL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B004FHZKOA/",
-        "price": 4.49
-      }
+    "skinTypes": [
+      "lèvres très abîmées"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "texture baume riche",
+      "guérison rapide"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B07SRRLVQ1",
+    "id": "B07SRRLVQ1",
     "name": "Aquaphor Lip Repair Stick",
     "brand": "Aquaphor",
     "category": "lip-care",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [],
+    "price": 8.36,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/81SQR9M+xUL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B07SRRLVQ1/",
     "activeIngredients": [
       "Beurre de Karité",
       "Cires"
     ],
-    "allergens": [],
-    "price": 8.36,
-    "popularity": 65,
-    "dermatologistRating": 70,
-    "imageUrl": "https://m.media-amazon.com/images/I/81SQR9M+xUL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B07SRRLVQ1/",
-        "price": 8.36
-      }
+    "skinTypes": [
+      "lèvres sèches",
+      "quotidien"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "format stick pratique",
+      "soulage sécheresse"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0D14XMH8R",
+    "id": "B0D14XMH8R",
     "name": "Aquaphor Lip Repair with SPF 30",
     "brand": "Aquaphor",
     "category": "lip-care",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [],
+    "price": 8.98,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/51VyHDqBElL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0D14XMH8R/",
     "activeIngredients": [
       "SPF 30",
       "agents réparateurs"
     ],
-    "allergens": [],
-    "price": 8.98,
-    "popularity": 65,
-    "dermatologistRating": 70,
-    "imageUrl": "https://m.media-amazon.com/images/I/51VyHDqBElL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0D14XMH8R/",
-        "price": 8.98
-      }
+    "skinTypes": [
+      "lèvres exposées soleil"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "réparation + protection solaire"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B008SQSBJK",
+    "id": "B008SQSBJK",
     "name": "Aquaphor Lip Protectant SPF 30",
     "brand": "Aquaphor",
     "category": "lip-care",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [],
+    "price": 4.49,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/31HrnpdbMeL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B008SQSBJK/",
     "activeIngredients": [
       "SPF 30 large spectre"
     ],
-    "allergens": [],
-    "price": 4.49,
-    "popularity": 65,
-    "dermatologistRating": 70,
-    "imageUrl": "https://m.media-amazon.com/images/I/31HrnpdbMeL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B008SQSBJK/",
-        "price": 4.49
-      }
+    "skinTypes": [
+      "lèvres gercées",
+      "protection"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "soulage gerçures",
+      "protection UV"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B081FK6L1G",
+    "id": "B081FK6L1G",
     "name": "Aztec Secret Indian Healing Clay",
     "brand": "Aztec Secret",
     "category": "mask",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "oily",
-      "acne-prone",
-      "normal"
-    ],
-    "targetConcerns": [],
+    "price": 14.95,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71OElrEWgCL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B081FK6L1G/",
     "activeIngredients": [
       "Argile Bentonite Calcium 100%"
     ],
-    "allergens": [],
-    "price": 14.95,
-    "popularity": 65,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/71OElrEWgCL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B081FK6L1G/",
-        "price": 14.95
-      }
+    "skinTypes": [
+      "grasse",
+      "acnéique",
+      "pores dilatés"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "detox profonde",
+      "resserre pores",
+      "purifie"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B007CY2C76",
+    "id": "B007CY2C76",
     "name": "Freeman Dead Sea Clay Mask",
     "brand": "Freeman",
     "category": "mask",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [],
+    "price": 4.95,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71Neu0lx++L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B007CY2C76/",
     "activeIngredients": [
       "Argile Mer Morte",
       "Lavande",
       "Sel marin"
     ],
-    "allergens": [],
-    "price": 4.95,
-    "popularity": 65,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/71Neu0lx++L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B007CY2C76/",
-        "price": 4.95
-      }
+    "skinTypes": [
+      "stress",
+      "tous types"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "anti-stress",
+      "équilibre",
+      "apaise"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B092MWFKWJ",
+    "id": "B092MWFKWJ",
     "name": "Freeman Exotic Blends Facial Mask Set",
     "brand": "Freeman",
     "category": "mask",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 9.06,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/81dOZfDBZcL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B092MWFKWJ/",
     "activeIngredients": [
       "Variés selon masque"
     ],
-    "allergens": [],
-    "price": 9.06,
-    "popularity": 65,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/81dOZfDBZcL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B092MWFKWJ/",
-        "price": 9.06
-      }
+    "skinTypes": [
+      "tous types",
+      "découverte"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "kit 4 masques",
+      "peel-off",
+      "hydratant"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B01AO7CFUQ",
+    "id": "B01AO7CFUQ",
     "name": "Freeman Apple Cider Vinegar Clay Mask",
     "brand": "Freeman",
     "category": "mask",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "oily",
-      "combination"
-    ],
-    "targetConcerns": [],
+    "price": 9.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71+02KeB+-L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B01AO7CFUQ/",
     "activeIngredients": [
       "Vinaigre Cidre",
       "Argile",
       "Pierre Ponce"
     ],
-    "allergens": [],
-    "price": 9.99,
-    "popularity": 65,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/71+02KeB+-L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B01AO7CFUQ/",
-        "price": 9.99
-      }
+    "skinTypes": [
+      "grasse",
+      "mixte"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "tonifie",
+      "purifie",
+      "exfolie"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B00RDJTKZW",
+    "id": "B00RDJTKZW",
     "name": "Freeman Clearing Peel-Off Clay Mask",
     "brand": "Freeman",
     "category": "mask",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "acne-prone",
-      "normal"
-    ],
-    "targetConcerns": [],
+    "price": 8.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/91nvYTEAx3L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B00RDJTKZW/",
     "activeIngredients": [
       "Thé",
       "Citron",
       "Argile"
     ],
-    "allergens": [],
-    "price": 8.99,
-    "popularity": 65,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/91nvYTEAx3L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B00RDJTKZW/",
-        "price": 8.99
-      }
+    "skinTypes": [
+      "acnéique",
+      "terne"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "éclairant",
+      "peel-off",
+      "antioxydant"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B00005NFBD",
+    "id": "B00005NFBD",
     "name": "Freeman Avocado & Oatmeal Clay Masque",
     "brand": "Freeman",
     "category": "mask",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "dry",
-      "sensitive"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 8.97,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/917vLEZRL4L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B00005NFBD/",
     "activeIngredients": [
       "Avocat",
       "Avoine",
       "Argile"
     ],
-    "allergens": [],
-    "price": 8.97,
-    "popularity": 65,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/917vLEZRL4L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B00005NFBD/",
-        "price": 8.97
-      }
+    "skinTypes": [
+      "sèche",
+      "sensible"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "hydrate",
+      "apaise",
+      "nourrissant"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0F6VHMDB5",
+    "id": "B0F6VHMDB5",
     "name": "Mediheal Hyaluronate Sheet Masks",
     "brand": "Mediheal",
     "category": "mask",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 7.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71Neu0lx++L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0F6VHMDB5/",
     "activeIngredients": [
       "Hyalu Active 3x"
     ],
-    "allergens": [],
-    "price": 7.99,
-    "popularity": 65,
-    "dermatologistRating": 70,
-    "imageUrl": "https://m.media-amazon.com/images/I/71Neu0lx++L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0F6VHMDB5/",
-        "price": 7.99
-      }
+    "skinTypes": [
+      "tous types",
+      "déshydratée"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "hydratation intense",
+      "format tissu pratique"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B01NCM25K7",
+    "id": "B01NCM25K7",
     "name": "New York Biology Dead Sea Mud Mask",
     "brand": "New York Biology",
     "category": "mask",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal",
-      "oily"
-    ],
-    "targetConcerns": [
-      "acne"
-    ],
+    "price": 15.26,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/817krianHrL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B01NCM25K7/",
     "activeIngredients": [
       "Boue Mer Morte pure"
     ],
-    "allergens": [],
-    "price": 15.26,
-    "popularity": 50,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/817krianHrL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B01NCM25K7/",
-        "price": 15.26
-      }
+    "skinTypes": [
+      "acné",
+      "points noirs",
+      "grasse"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "réducteur de pores",
+      "anti-acné",
+      "raffermit"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B000O7PH34",
+    "id": "B000O7PH34",
     "name": "Avène Thermal Spring Water",
     "brand": "Avène",
     "category": "mist",
-    "careType": "tonification",
-    "targetSkinTypes": [
-      "sensitive",
-      "normal"
-    ],
-    "targetConcerns": [],
+    "price": 10,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/51D9UzBWcqL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B000O7PH34/",
     "activeIngredients": [
       "Eau thermale Avène pure"
     ],
-    "allergens": [],
-    "price": 10,
-    "popularity": 65,
-    "dermatologistRating": 90,
-    "imageUrl": "https://m.media-amazon.com/images/I/51D9UzBWcqL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B000O7PH34/",
-        "price": 10
-      }
+    "skinTypes": [
+      "sensible",
+      "irritée",
+      "tous types"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "apaise",
+      "rafraîchit",
+      "propriétés minérales"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B001RO8MNK",
+    "id": "B001RO8MNK",
     "name": "Evian Brumisateur Facial",
     "brand": "Evian",
     "category": "mist",
-    "careType": "tonification",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 19.5,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61NS8KEjA7L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B001RO8MNK/",
     "activeIngredients": [
       "Eau minérale naturelle Evian"
     ],
-    "allergens": [],
-    "price": 19.5,
-    "popularity": 50,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/61NS8KEjA7L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B001RO8MNK/",
-        "price": 19.5
-      }
+    "skinTypes": [
+      "tous types",
+      "hydratation quotidienne"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "rafraîchit maquillage",
+      "tonifie",
+      "hydrate"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B002NX0B4W",
+    "id": "B002NX0B4W",
     "name": "La Roche-Posay Eau Thermale Spray",
     "brand": "La Roche-Posay",
     "category": "mist",
-    "careType": "tonification",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 13.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/51D9UzBWcqL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B002NX0B4W/",
     "activeIngredients": [
       "Eau thermale",
       "Sélénium antioxydant"
     ],
-    "allergens": [],
-    "price": 13.99,
-    "popularity": 65,
-    "dermatologistRating": 90,
-    "imageUrl": "https://m.media-amazon.com/images/I/51D9UzBWcqL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B002NX0B4W/",
-        "price": 13.99
-      }
+    "skinTypes": [
+      "tous types",
+      "antioxydant"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "hydrate",
+      "apaise",
+      "protège du stress oxydatif"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B000ULBC5Q",
+    "id": "B000ULBC5Q",
     "name": "Evian Facial Spray Mini",
     "brand": "Evian",
     "category": "mist",
-    "careType": "tonification",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 23.5,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61NS8KEjA7L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B000ULBC5Q/",
     "activeIngredients": [
       "Eau minérale Evian"
     ],
-    "allergens": [],
-    "price": 23.5,
-    "popularity": 50,
-    "dermatologistRating": 70,
-    "imageUrl": "https://m.media-amazon.com/images/I/61NS8KEjA7L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B000ULBC5Q/",
-        "price": 23.5
-      }
+    "skinTypes": [
+      "voyage",
+      "retouches maquillage"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "format voyage TSA",
+      "hydratation nomade"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0D8BZ5K3S",
+    "id": "B0D8BZ5K3S",
     "name": "Evian Protect Facial Mist",
     "brand": "Evian",
     "category": "mist",
-    "careType": "tonification",
-    "targetSkinTypes": [
-      "sensitive",
-      "normal"
-    ],
-    "targetConcerns": [],
+    "price": 22,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61NS8KEjA7L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0D8BZ5K3S/",
     "activeIngredients": [
       "Eau minérale",
       "Aloe",
       "Extraits naturels"
     ],
-    "allergens": [],
-    "price": 22,
-    "popularity": 50,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/61NS8KEjA7L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0D8BZ5K3S/",
-        "price": 22
-      }
+    "skinTypes": [
+      "sensible",
+      "protection"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "rafraîchit",
+      "protège barrière",
+      "formule enrichie"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B000YJ2SLG",
+    "id": "B000YJ2SLG",
     "name": "CeraVe Crème Hydratante Quotidienne",
     "brand": "CeraVe",
     "category": "moisturizer",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "dry",
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 11.26,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61jeXEEvGAL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B000YJ2SLG/",
     "activeIngredients": [
       "Céramides",
       "Acide Hyaluronique"
     ],
-    "allergens": [],
-    "price": 11.26,
-    "popularity": 85,
-    "dermatologistRating": 95,
-    "imageUrl": "https://m.media-amazon.com/images/I/61jeXEEvGAL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B000YJ2SLG/",
-        "price": 11.26
-      }
+    "skinTypes": [
+      "sèche",
+      "tous types"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "hydratation 24h",
+      "restaure barrière cutanée"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B00TTD9BRC",
+    "id": "B00TTD9BRC",
     "name": "CeraVe Crème Réparatrice",
     "brand": "CeraVe",
     "category": "moisturizer",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness",
-      "texture"
-    ],
+    "price": 18.39,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61pIL2maVKL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B00TTD9BRC/",
     "activeIngredients": [
       "Céramides",
       "Acide Hyaluronique",
       "Cholestérol"
     ],
-    "allergens": [],
-    "price": 18.39,
-    "popularity": 70,
-    "dermatologistRating": 95,
-    "imageUrl": "https://m.media-amazon.com/images/I/61pIL2maVKL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B00TTD9BRC/",
-        "price": 18.39
-      }
+    "skinTypes": [
+      "très sèche",
+      "abîmée"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "réparation intense",
+      "texture riche"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B00365DABC",
+    "id": "B00365DABC",
     "name": "CeraVe PM Lotion Hydratante Nuit",
     "brand": "CeraVe",
     "category": "moisturizer",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal",
-      "sensitive"
-    ],
-    "targetConcerns": [
-      "dryness",
-      "hyperpigmentation",
-      "texture"
-    ],
+    "price": 14.97,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71jdcrAdwbL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B00365DABC/",
     "activeIngredients": [
       "Niacinamide",
       "Céramides",
       "Acide Hyaluronique"
     ],
-    "allergens": [],
-    "price": 14.97,
-    "popularity": 85,
-    "dermatologistRating": 95,
-    "imageUrl": "https://m.media-amazon.com/images/I/71jdcrAdwbL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B00365DABC/",
-        "price": 14.97
-      }
+    "skinTypes": [
+      "tous types",
+      "sensible"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "régénération nocturne",
+      "texture légère"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B00F97FHAW",
+    "id": "B00F97FHAW",
     "name": "CeraVe AM Lotion Hydratante SPF 30",
     "brand": "CeraVe",
     "category": "moisturizer",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness",
-      "hyperpigmentation"
-    ],
+    "price": 14.97,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61PcGo1BiJL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B00F97FHAW/",
     "activeIngredients": [
       "SPF 30",
       "Niacinamide",
       "Céramides"
     ],
-    "allergens": [],
-    "price": 14.97,
-    "popularity": 85,
-    "dermatologistRating": 95,
-    "imageUrl": "https://m.media-amazon.com/images/I/61PcGo1BiJL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B00F97FHAW/",
-        "price": 14.97
-      }
+    "skinTypes": [
+      "tous types",
+      "quotidien"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "hydratation + protection solaire",
+      "non comédogène"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0CX3CCJWV",
+    "id": "B0CX3CCJWV",
     "name": "Neutrogena Hydro Boost Gel Cream Set",
     "brand": "Neutrogena",
     "category": "moisturizer",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "dry",
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 18.4,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71h8bcec4eL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0CX3CCJWV/",
     "activeIngredients": [
       "Acide Hyaluronique"
     ],
-    "allergens": [],
-    "price": 18.4,
-    "popularity": 70,
-    "dermatologistRating": 80,
-    "imageUrl": "https://m.media-amazon.com/images/I/71h8bcec4eL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0CX3CCJWV/",
-        "price": 18.4
-      }
+    "skinTypes": [
+      "sèche",
+      "normale"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "kit découverte",
+      "hydratation intense"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B00NR1YQHM",
+    "id": "B00NR1YQHM",
     "name": "Neutrogena Hydro Boost Water Gel",
     "brand": "Neutrogena",
     "category": "moisturizer",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal",
-      "oily"
-    ],
-    "targetConcerns": [
-      "dryness",
-      "texture"
-    ],
+    "price": 14.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71jXZS3BjsL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B00NR1YQHM/",
     "activeIngredients": [
       "Acide Hyaluronique"
     ],
-    "allergens": [],
-    "price": 14.99,
-    "popularity": 85,
-    "dermatologistRating": 80,
-    "imageUrl": "https://m.media-amazon.com/images/I/71jXZS3BjsL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B00NR1YQHM/",
-        "price": 14.99
-      }
+    "skinTypes": [
+      "normale",
+      "grasse"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "hydratation 24h",
+      "texture gel non grasse"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B07GRBQXTV",
+    "id": "B07GRBQXTV",
     "name": "Neutrogena Hydro Boost City Shield SPF 25",
     "brand": "Neutrogena",
     "category": "moisturizer",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 19.97,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61pljs9R+8L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B07GRBQXTV/",
     "activeIngredients": [
       "Acide Hyaluronique",
       "SPF 25"
     ],
-    "allergens": [],
-    "price": 19.97,
-    "popularity": 70,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/61pljs9R+8L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B07GRBQXTV/",
-        "price": 19.97
-      }
+    "skinTypes": [
+      "urbaine",
+      "pollution"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "protection urbaine",
+      "hydrate",
+      "bouclier anti-pollution"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B07DJPC8JB",
+    "id": "B07DJPC8JB",
     "name": "Neutrogena Hydro Boost Body Gel Cream",
     "brand": "Neutrogena",
     "category": "moisturizer",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "normal",
-      "dry"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 12.29,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61tWVPPaqKL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B07DJPC8JB/",
     "activeIngredients": [
       "Acide Hyaluronique"
     ],
-    "allergens": [],
-    "price": 12.29,
-    "popularity": 85,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/61tWVPPaqKL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B07DJPC8JB/",
-        "price": 12.29
-      }
+    "skinTypes": [
+      "normale",
+      "sèche",
+      "corps"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "absorption rapide",
+      "non grasse",
+      "corps et visage"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B00SNPCSUY",
+    "id": "B00SNPCSUY",
     "name": "Olay Regenerist Night Recovery Cream",
     "brand": "Olay",
     "category": "moisturizer",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "mature",
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging",
-      "dryness",
-      "hyperpigmentation"
-    ],
+    "price": 17.44,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71wZCEu0P0L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B00SNPCSUY/",
     "activeIngredients": [
       "Niacinamide",
       "Complexe Peptides",
       "Acide Hyaluronique"
     ],
-    "allergens": [],
-    "price": 17.44,
-    "popularity": 50,
-    "dermatologistRating": 80,
-    "imageUrl": "https://m.media-amazon.com/images/I/71wZCEu0P0L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B00SNPCSUY/",
-        "price": 17.44
-      }
+    "skinTypes": [
+      "mature",
+      "anti-âge"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "régénération nocturne",
+      "anti-rides"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0C7HHKH3G",
+    "id": "B0C7HHKH3G",
     "name": "CeraVe Ultra-Light Moisturizing Gel",
     "brand": "CeraVe",
     "category": "moisturizer",
-    "careType": "hydratation",
-    "targetSkinTypes": [
-      "oily",
-      "combination"
-    ],
-    "targetConcerns": [
-      "dryness",
-      "hyperpigmentation"
-    ],
+    "price": 16.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71cpGfSXMfL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0C7HHKH3G/",
     "activeIngredients": [
       "Niacinamide",
       "Céramides",
       "Vitamine B3"
     ],
-    "allergens": [],
-    "price": 16.99,
-    "popularity": 70,
-    "dermatologistRating": 100,
-    "imageUrl": "https://m.media-amazon.com/images/I/71cpGfSXMfL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0C7HHKH3G/",
-        "price": 16.99
-      }
+    "skinTypes": [
+      "grasse",
+      "mixte"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "ultra-léger",
+      "matifiant",
+      "hydratation gel"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B09XMYFTB7",
+    "id": "B09XMYFTB7",
     "name": "e.l.f. Power Grip Primer",
     "brand": "e.l.f.",
     "category": "primer",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness",
-      "texture"
-    ],
+    "price": 10,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71h8bcec4eL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B09XMYFTB7/",
     "activeIngredients": [
       "base gel hydratante"
     ],
-    "allergens": [],
-    "price": 10,
-    "popularity": 65,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/71h8bcec4eL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B09XMYFTB7/",
-        "price": 10
-      }
+    "skinTypes": [
+      "tous types",
+      "base maquillage"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "lisse peau",
+      "grip maquillage",
+      "hydrate"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0814SFKG9",
+    "id": "B0814SFKG9",
     "name": "Neutrogena Hydro Boost Glow Booster Primer",
     "brand": "Neutrogena",
     "category": "primer",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "dry",
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 15.29,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71jXZS3BjsL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0814SFKG9/",
     "activeIngredients": [
       "Acide Hyaluronique purifié"
     ],
-    "allergens": [],
-    "price": 15.29,
-    "popularity": 70,
-    "dermatologistRating": 80,
-    "imageUrl": "https://m.media-amazon.com/images/I/71jXZS3BjsL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0814SFKG9/",
-        "price": 15.29
-      }
+    "skinTypes": [
+      "sèche",
+      "terne"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "hydrate + accroche maquillage",
+      "fini rosée"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B079RYB74X",
+    "id": "B079RYB74X",
     "name": "e.l.f. Hydrating Face Primer",
     "brand": "e.l.f.",
     "category": "primer",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "dry",
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness",
-      "texture"
-    ],
+    "price": 10,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71h8bcec4eL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B079RYB74X/",
     "activeIngredients": [
       "agents hydratants"
     ],
-    "allergens": [],
-    "price": 10,
-    "popularity": 65,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/71h8bcec4eL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B079RYB74X/",
-        "price": 10
-      }
+    "skinTypes": [
+      "sèche",
+      "maquillage"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "lisse pores",
+      "hydrate",
+      "base parfaite"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0CQKFTGH1",
+    "id": "B0CQKFTGH1",
     "name": "essence Jelly Grip Hydrating Primer",
     "brand": "essence",
     "category": "primer",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 5.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71jXZS3BjsL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0CQKFTGH1/",
     "activeIngredients": [
       "gel hydratant"
     ],
-    "allergens": [],
-    "price": 5.99,
-    "popularity": 65,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/71jXZS3BjsL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0CQKFTGH1/",
-        "price": 5.99
-      }
+    "skinTypes": [
+      "tous types",
+      "économique"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "hydrate peau",
+      "accroche maquillage",
+      "longue tenue"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0DMQM25H9",
+    "id": "B0DMQM25H9",
     "name": "Maybelline Grippy Serum Primer",
     "brand": "Maybelline",
     "category": "primer",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal",
-      "combination"
-    ],
-    "targetConcerns": [
-      "acne",
-      "hyperpigmentation"
-    ],
+    "price": 9.97,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71jXZS3BjsL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0DMQM25H9/",
     "activeIngredients": [
       "Niacinamide 2%"
     ],
-    "allergens": [],
-    "price": 9.97,
-    "popularity": 65,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/71jXZS3BjsL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0DMQM25H9/",
-        "price": 9.97
-      }
+    "skinTypes": [
+      "pores dilatés",
+      "mixte"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "tenue 24h",
+      "resserre pores",
+      "contrôle sébum"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B01MYEZPC8",
+    "id": "B01MYEZPC8",
     "name": "The Ordinary Hyaluronic Acid 2% + B5",
     "brand": "The Ordinary",
     "category": "serum",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness"
-    ],
+    "price": 9.9,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B01MYEZPC8/",
     "activeIngredients": [
       "Acide Hyaluronique 2%",
       "Vitamine B5",
       "Céramides"
     ],
-    "allergens": [],
-    "price": 9.9,
-    "popularity": 85,
-    "dermatologistRating": 95,
-    "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B01MYEZPC8/",
-        "price": 9.9
-      }
+    "skinTypes": [
+      "tous types",
+      "déshydratée"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "hydratation multi-profondeur",
+      "repulpe"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B01MDTVZTZ",
+    "id": "B01MDTVZTZ",
     "name": "The Ordinary Niacinamide 10% + Zinc 1%",
     "brand": "The Ordinary",
     "category": "serum",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "oily",
-      "combination",
-      "normal"
-    ],
-    "targetConcerns": [
-      "acne",
-      "hyperpigmentation"
-    ],
+    "price": 6,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61QBAJHZNhL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B01MDTVZTZ/",
     "activeIngredients": [
       "Niacinamide 10%",
       "Zinc 1%"
     ],
-    "allergens": [],
-    "price": 6,
-    "popularity": 85,
-    "dermatologistRating": 100,
-    "imageUrl": "https://m.media-amazon.com/images/I/61QBAJHZNhL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B01MDTVZTZ/",
-        "price": 6
-      }
+    "skinTypes": [
+      "grasse",
+      "mixte",
+      "pores dilatés"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
+    "benefits": [
+      "régule sébum",
+      "resserre pores",
+      "matifie"
+    ],
+    "restrictedZones": [
+      "lèvres",
+      "yeux"
     ]
   },
   {
-    "catalogId": "B0DP1GMQK4",
+    "id": "B0DP1GMQK4",
     "name": "The Ordinary Skin Support Basics Duo",
     "brand": "The Ordinary",
     "category": "serum",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "acne",
-      "dryness",
-      "hyperpigmentation"
-    ],
+    "price": 15.9,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71GGYOOrm1L._UF350,350_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0DP1GMQK4/",
     "activeIngredients": [
       "Acide Hyaluronique",
       "Niacinamide",
       "Zinc"
     ],
-    "allergens": [],
-    "price": 15.9,
-    "popularity": 70,
-    "dermatologistRating": 100,
-    "imageUrl": "https://m.media-amazon.com/images/I/71GGYOOrm1L._UF350,350_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0DP1GMQK4/",
-        "price": 15.9
-      }
+    "skinTypes": [
+      "tous types",
+      "routine complète"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "kit découverte",
+      "hydratation",
+      "régulation"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B07QFHZZZL",
+    "id": "B07QFHZZZL",
     "name": "The Ordinary Most Loved Skincare Trio",
     "brand": "The Ordinary",
     "category": "serum",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness",
-      "hyperpigmentation"
-    ],
+    "price": 22.59,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71rdx655AxL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B07QFHZZZL/",
     "activeIngredients": [
       "Acide Hyaluronique",
       "Niacinamide",
       "Caféine"
     ],
-    "allergens": [],
-    "price": 22.59,
-    "popularity": 70,
-    "dermatologistRating": 100,
-    "imageUrl": "https://m.media-amazon.com/images/I/71rdx655AxL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B07QFHZZZL/",
-        "price": 22.59
-      }
+    "skinTypes": [
+      "tous types",
+      "routine complète"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "kit découverte",
+      "hydratation",
+      "régulation",
+      "yeux"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0BLHW7JZM",
+    "id": "B0BLHW7JZM",
     "name": "The Ordinary Multi-Peptide + HA",
     "brand": "The Ordinary",
     "category": "serum",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "mature",
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging",
-      "dryness"
-    ],
+    "price": 19.9,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71EHCTpCkEL._UF350,350_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0BLHW7JZM/",
     "activeIngredients": [
       "Multi-peptides",
       "Acide Hyaluronique"
     ],
-    "allergens": [],
-    "price": 19.9,
-    "popularity": 70,
-    "dermatologistRating": 100,
-    "imageUrl": "https://m.media-amazon.com/images/I/71EHCTpCkEL._UF350,350_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0BLHW7JZM/",
-        "price": 19.9
-      }
+    "skinTypes": [
+      "mature",
+      "ridules"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "anti-âge global",
+      "fermeté",
+      "élasticité"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B071J1PBQ6",
+    "id": "B071J1PBQ6",
     "name": "The Ordinary Matrixyl 10% + HA",
     "brand": "The Ordinary",
     "category": "serum",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "mature",
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging",
-      "dryness"
-    ],
+    "price": 10.9,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71MhQ9hGQGL._UF350,350_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B071J1PBQ6/",
     "activeIngredients": [
       "Matrixyl 10%",
       "Acide Hyaluronique"
     ],
-    "allergens": [],
-    "price": 10.9,
-    "popularity": 85,
-    "dermatologistRating": 100,
-    "imageUrl": "https://m.media-amazon.com/images/I/71MhQ9hGQGL._UF350,350_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B071J1PBQ6/",
-        "price": 10.9
-      }
+    "skinTypes": [
+      "mature",
+      "ridules"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "anti-rides",
+      "fermeté",
+      "hydratation"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B07P5TMHD9",
+    "id": "B07P5TMHD9",
     "name": "Eclat Skincare Vitamin C Face Serum",
     "brand": "Eclat Skincare",
     "category": "serum",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness",
-      "hyperpigmentation",
-      "dullness"
-    ],
+    "price": 9.98,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B07P5TMHD9/",
     "activeIngredients": [
       "Vitamine C",
       "Acide Hyaluronique",
       "Acide Férulique"
     ],
-    "allergens": [],
-    "price": 9.98,
-    "popularity": 65,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B07P5TMHD9/",
-        "price": 9.98
-      }
+    "skinTypes": [
+      "tous types",
+      "taches"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "éclat",
+      "anti-taches",
+      "antioxydant"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B09FYLQH4G",
+    "id": "B09FYLQH4G",
     "name": "Vitamin C Serum Korean Skincare",
     "brand": "Generic",
     "category": "serum",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging",
-      "hyperpigmentation",
-      "dullness"
-    ],
+    "price": 9.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61ogMFv+A0L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B09FYLQH4G/",
     "activeIngredients": [
       "Vitamine C",
       "Niacinamide"
     ],
-    "allergens": [],
-    "price": 9.99,
-    "popularity": 65,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/61ogMFv+A0L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B09FYLQH4G/",
-        "price": 9.99
-      }
+    "skinTypes": [
+      "tous types",
+      "Glass Skin"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "éclat coréen",
+      "anti-âge",
+      "luminosité"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B082YJF4ZY",
+    "id": "B082YJF4ZY",
     "name": "Bliss Vitamin C + Tri-Peptide Bright Idea Serum",
     "brand": "Bliss",
     "category": "serum",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal",
-      "mature"
-    ],
-    "targetConcerns": [
-      "aging",
-      "hyperpigmentation",
-      "dullness"
-    ],
+    "price": 16.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61ogMFv+A0L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B082YJF4ZY/",
     "activeIngredients": [
       "Vitamine C 15%",
       "Tri-Peptides"
     ],
-    "allergens": [],
-    "price": 16.99,
-    "popularity": 50,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/61ogMFv+A0L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B082YJF4ZY/",
-        "price": 16.99
-      }
+    "skinTypes": [
+      "tous types",
+      "mature"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "éclat",
+      "raffermit",
+      "boost collagène"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0F8RDWX1D",
+    "id": "B0F8RDWX1D",
     "name": "Vitamin C Retinol Serum Anti-Aging",
     "brand": "Generic",
     "category": "serum",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "mature",
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging",
-      "hyperpigmentation",
-      "dullness",
-      "texture"
-    ],
+    "price": 19.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61ogMFv+A0L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0F8RDWX1D/",
     "activeIngredients": [
       "Vitamine C",
       "Rétinol",
       "Peptides"
     ],
-    "allergens": [],
-    "price": 19.99,
-    "popularity": 50,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/61ogMFv+A0L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0F8RDWX1D/",
-        "price": 19.99
-      }
+    "skinTypes": [
+      "mature",
+      "expérimentée"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "raffermit",
+      "lisse",
+      "éclat",
+      "anti-taches"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B076611KCY",
+    "id": "B076611KCY",
     "name": "Vitamin C Serum For Face Anti-Aging",
     "brand": "Generic",
     "category": "serum",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness",
-      "hyperpigmentation",
-      "dullness"
-    ],
+    "price": 14.82,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61ogMFv+A0L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B076611KCY/",
     "activeIngredients": [
       "Vitamine C",
       "Acide Hyaluronique",
       "Niacinamide"
     ],
-    "allergens": [],
-    "price": 14.82,
-    "popularity": 65,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/61ogMFv+A0L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B076611KCY/",
-        "price": 14.82
-      }
+    "skinTypes": [
+      "tous types",
+      "terne"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "éclat",
+      "anti-taches",
+      "antioxydant"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B07XJ7XWLW",
+    "id": "B07XJ7XWLW",
     "name": "CeraVe Anti Aging Retinol Serum",
     "brand": "CeraVe",
     "category": "serum",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "mature",
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging",
-      "dryness",
-      "hyperpigmentation",
-      "texture"
-    ],
+    "price": 22.77,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71zvPJqU7FL._UF894,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B07XJ7XWLW/",
     "activeIngredients": [
       "Rétinol encapsulé",
       "Acide Hyaluronique",
       "Niacinamide"
     ],
-    "allergens": [],
-    "price": 22.77,
-    "popularity": 70,
-    "dermatologistRating": 100,
-    "imageUrl": "https://m.media-amazon.com/images/I/71zvPJqU7FL._UF894,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B07XJ7XWLW/",
-        "price": 22.77
-      }
+    "skinTypes": [
+      "mature",
+      "tous types"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "anti-âge",
+      "lisse rides",
+      "éclaircit"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B00387F42G",
+    "id": "B00387F42G",
     "name": "RoC Retinol Correxion Deep Wrinkle Serum",
     "brand": "RoC",
     "category": "serum",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "mature",
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging",
-      "texture"
-    ],
+    "price": 19.71,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61FQmT6QklL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B00387F42G/",
     "activeIngredients": [
       "Rétinol",
       "Acide Ascorbique"
     ],
-    "allergens": [],
-    "price": 19.71,
-    "popularity": 50,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/61FQmT6QklL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B00387F42G/",
-        "price": 19.71
-      }
+    "skinTypes": [
+      "mature",
+      "ridules"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "anti-rides profond",
+      "lisse",
+      "raffermit"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0FB5YZ7V6",
+    "id": "B0FB5YZ7V6",
     "name": "Retinol Serum with Hyaluronic Acid & Vitamin E",
     "brand": "Generic",
     "category": "serum",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "mature",
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging",
-      "dryness",
-      "texture"
-    ],
+    "price": 9.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61FQmT6QklL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0FB5YZ7V6/",
     "activeIngredients": [
       "Rétinol",
       "Acide Hyaluronique",
       "Vitamine E"
     ],
-    "allergens": [],
-    "price": 9.99,
-    "popularity": 65,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/61FQmT6QklL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0FB5YZ7V6/",
-        "price": 9.99
-      }
+    "skinTypes": [
+      "mature",
+      "ridules"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "anti-âge",
+      "hydrate",
+      "lisse"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B088419TZG",
+    "id": "B088419TZG",
     "name": "RoC Retinol Correxion Night Serum Capsules",
     "brand": "RoC",
     "category": "serum",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "mature",
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging"
-    ],
+    "price": 24.97,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71QOiN5LfAL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B088419TZG/",
     "activeIngredients": [
       "Rétinol pur",
       "antioxydants"
     ],
-    "allergens": [],
-    "price": 24.97,
-    "popularity": 50,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/71QOiN5LfAL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B088419TZG/",
-        "price": 24.97
-      }
+    "skinTypes": [
+      "mature",
+      "expérimentée"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "anti-rides",
+      "capsules fraîcheur",
+      "résultats visibles"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B004W55086",
+    "id": "B004W55086",
     "name": "La Roche-Posay Anthelios Fluid SPF 50",
     "brand": "La Roche-Posay",
     "category": "sunscreen",
-    "careType": "protection",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [],
+    "price": 39.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/51ktFW0Lo-L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B004W55086/",
     "activeIngredients": [
       "Dioxyde de Titane minéral"
     ],
-    "allergens": [],
-    "price": 39.99,
-    "popularity": 50,
-    "dermatologistRating": 90,
-    "imageUrl": "https://m.media-amazon.com/images/I/51ktFW0Lo-L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B004W55086/",
-        "price": 39.99
-      }
+    "skinTypes": [
+      "tous types",
+      "quotidien"
     ],
-    "applicationTiming": "morning",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "ultra-léger",
+      "absorption rapide",
+      "fini mat"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B002CML1VG",
+    "id": "B002CML1VG",
     "name": "La Roche-Posay Anthelios Melt-In Milk SPF 60",
     "brand": "La Roche-Posay",
     "category": "sunscreen",
-    "careType": "protection",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [],
+    "price": 37.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61H-DTdM-5L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B002CML1VG/",
     "activeIngredients": [
       "large spectre",
       "antioxydants"
     ],
-    "allergens": [],
-    "price": 37.99,
-    "popularity": 50,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/61H-DTdM-5L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B002CML1VG/",
-        "price": 37.99
-      }
+    "skinTypes": [
+      "corps et visage",
+      "sport"
     ],
-    "applicationTiming": "morning",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "absorption rapide",
+      "résistant eau/sueur"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0C6V719TC",
+    "id": "B0C6V719TC",
     "name": "La Roche-Posay Anthelios Clear Skin SPF 60",
     "brand": "La Roche-Posay",
     "category": "sunscreen",
-    "careType": "protection",
-    "targetSkinTypes": [
-      "oily",
-      "acne-prone"
-    ],
-    "targetConcerns": [
-      "acne"
-    ],
+    "price": 26.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/712-UPRPfoL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0C6V719TC/",
     "activeIngredients": [
       "filtres chimiques",
       "agents matifiants"
     ],
-    "allergens": [],
-    "price": 26.99,
-    "popularity": 50,
-    "dermatologistRating": 90,
-    "imageUrl": "https://m.media-amazon.com/images/I/712-UPRPfoL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0C6V719TC/",
-        "price": 26.99
-      }
+    "skinTypes": [
+      "grasse",
+      "acnéique"
     ],
-    "applicationTiming": "morning",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "absorbe sébum",
+      "toucher sec",
+      "antioxydants"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B083VTP119",
+    "id": "B083VTP119",
     "name": "Blue Lizard Sensitive Mineral Stick SPF 50+",
     "brand": "Blue Lizard",
     "category": "sunscreen",
-    "careType": "protection",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "acne"
-    ],
+    "price": 8.77,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/51ktFW0Lo-L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B083VTP119/",
     "activeIngredients": [
       "Oxyde de Zinc minéral"
     ],
-    "allergens": [],
-    "price": 8.77,
-    "popularity": 65,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/51ktFW0Lo-L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B083VTP119/",
-        "price": 8.77
-      }
+    "skinTypes": [
+      "très sensible",
+      "enfants"
     ],
-    "applicationTiming": "morning",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "résistant eau",
+      "sans parfum",
+      "application facile"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B00CICLTAI",
+    "id": "B00CICLTAI",
     "name": "CeraVe Mineral Sunscreen Stick SPF 50",
     "brand": "CeraVe",
     "category": "sunscreen",
-    "careType": "protection",
-    "targetSkinTypes": [
-      "sensitive",
-      "normal"
-    ],
-    "targetConcerns": [
-      "acne",
-      "dryness"
-    ],
+    "price": 8.97,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71jdcrAdwbL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B00CICLTAI/",
     "activeIngredients": [
       "Zinc + Dioxyde Titane",
       "Céramides"
     ],
-    "allergens": [],
-    "price": 8.97,
-    "popularity": 85,
-    "dermatologistRating": 95,
-    "imageUrl": "https://m.media-amazon.com/images/I/71jdcrAdwbL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B00CICLTAI/",
-        "price": 8.97
-      }
+    "skinTypes": [
+      "sensible",
+      "application facile"
     ],
-    "applicationTiming": "morning",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "100% minéral",
+      "format stick pratique"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B083VT9WN3",
+    "id": "B083VT9WN3",
     "name": "Blue Lizard Baby Mineral Stick SPF 50+",
     "brand": "Blue Lizard",
     "category": "sunscreen",
-    "careType": "protection",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "acne"
-    ],
+    "price": 8.74,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61H-DTdM-5L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B083VT9WN3/",
     "activeIngredients": [
       "Oxyde de Zinc"
     ],
-    "allergens": [],
-    "price": 8.74,
-    "popularity": 65,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/61H-DTdM-5L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B083VT9WN3/",
-        "price": 8.74
-      }
+    "skinTypes": [
+      "bébé",
+      "très sensible"
     ],
-    "applicationTiming": "morning",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "résistant eau",
+      "sans parfum",
+      "ultra-doux"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B084ZP848Y",
+    "id": "B084ZP848Y",
     "name": "Blue Lizard Sensitive Mineral SPF 50",
     "brand": "Blue Lizard",
     "category": "sunscreen",
-    "careType": "protection",
-    "targetSkinTypes": [
-      "sensitive",
-      "normal"
-    ],
-    "targetConcerns": [
-      "acne"
-    ],
+    "price": 14.98,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/712-UPRPfoL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B084ZP848Y/",
     "activeIngredients": [
       "Oxyde de Zinc 50+"
     ],
-    "allergens": [],
-    "price": 14.98,
-    "popularity": 65,
-    "dermatologistRating": 70,
-    "imageUrl": "https://m.media-amazon.com/images/I/712-UPRPfoL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B084ZP848Y/",
-        "price": 14.98
-      }
+    "skinTypes": [
+      "sensible",
+      "quotidien"
     ],
-    "applicationTiming": "morning",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "protection UVA/UVB",
+      "technologie Smart Cap"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0CSPP8MML",
+    "id": "B0CSPP8MML",
     "name": "Blue Lizard Mineral SPF 15 Lip Balm 3-Pack",
     "brand": "Blue Lizard",
     "category": "sunscreen",
-    "careType": "protection",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "hyperpigmentation"
-    ],
+    "price": 8.89,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/51ktFW0Lo-L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0CSPP8MML/",
     "activeIngredients": [
       "minéraux",
       "8 huiles naturelles",
       "Kakadu Plum"
     ],
-    "allergens": [],
-    "price": 8.89,
-    "popularity": 65,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/51ktFW0Lo-L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0CSPP8MML/",
-        "price": 8.89
-      }
+    "skinTypes": [
+      "lèvres",
+      "protection"
     ],
-    "applicationTiming": "morning",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "riche Vitamine C",
+      "végan",
+      "saveur coco"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B09NR1DMVT",
+    "id": "B09NR1DMVT",
     "name": "La Roche-Posay Anthelios UV Correct SPF 70",
     "brand": "La Roche-Posay",
     "category": "sunscreen",
-    "careType": "protection",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging",
-      "hyperpigmentation"
-    ],
+    "price": 39.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61WCfKRaveL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B09NR1DMVT/",
     "activeIngredients": [
       "SPF 70",
       "Niacinamide"
     ],
-    "allergens": [],
-    "price": 39.99,
-    "popularity": 50,
-    "dermatologistRating": 100,
-    "imageUrl": "https://m.media-amazon.com/images/I/61WCfKRaveL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B09NR1DMVT/",
-        "price": 39.99
-      }
+    "skinTypes": [
+      "anti-âge",
+      "taches"
     ],
-    "applicationTiming": "morning",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "unifie teint",
+      "anti-âge",
+      "protection maximale"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0CF7VZQ3V",
+    "id": "B0CF7VZQ3V",
     "name": "La Roche-Posay Anthelios Melt-In Milk SPF 100",
     "brand": "La Roche-Posay",
     "category": "sunscreen",
-    "careType": "protection",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [],
+    "price": 38.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/712-UPRPfoL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0CF7VZQ3V/",
     "activeIngredients": [
       "SPF 100",
       "antioxydants"
     ],
-    "allergens": [],
-    "price": 38.99,
-    "popularity": 50,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/712-UPRPfoL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0CF7VZQ3V/",
-        "price": 38.99
-      }
+    "skinTypes": [
+      "peau sensible au soleil"
     ],
-    "applicationTiming": "morning",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "protection maximale",
+      "sans oxybenzone"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B002CML1XE",
+    "id": "B002CML1XE",
     "name": "La Roche-Posay Anthelios Light Fluid SPF 60",
     "brand": "La Roche-Posay",
     "category": "sunscreen",
-    "careType": "protection",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [],
+    "price": 35.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61WCfKRaveL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B002CML1XE/",
     "activeIngredients": [
       "large spectre",
       "antioxydants"
     ],
-    "allergens": [],
-    "price": 35.99,
-    "popularity": 50,
-    "dermatologistRating": 90,
-    "imageUrl": "https://m.media-amazon.com/images/I/61WCfKRaveL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B002CML1XE/",
-        "price": 35.99
-      }
+    "skinTypes": [
+      "visage",
+      "texture fluide"
     ],
-    "applicationTiming": "morning",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "léger",
+      "sans oxybenzone",
+      "format voyage"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B00KH6QX08",
+    "id": "B00KH6QX08",
     "name": "Pixi Glow Tonic",
     "brand": "Pixi",
     "category": "toner",
-    "careType": "tonification",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dullness",
-      "texture"
-    ],
+    "price": 29,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61lw7881TNL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B00KH6QX08/",
     "activeIngredients": [
       "Acide Glycolique",
       "Ginseng",
       "Aloe Vera"
     ],
-    "allergens": [],
-    "price": 29,
-    "popularity": 50,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/61lw7881TNL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B00KH6QX08/",
-        "price": 29
-      }
+    "skinTypes": [
+      "tous types",
+      "terne"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
+    "benefits": [
+      "éclat immédiat",
+      "lisse",
+      "équilibre"
+    ],
+    "restrictedZones": [
+      "lèvres",
+      "yeux"
     ]
   },
   {
-    "catalogId": "B072JKKXW2",
+    "id": "B072JKKXW2",
     "name": "Pixi Glow Tonic To-Go",
     "brand": "Pixi",
     "category": "toner",
-    "careType": "tonification",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dullness"
-    ],
+    "price": 18,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61A4jPLmgsL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B072JKKXW2/",
     "activeIngredients": [
       "Acide Glycolique"
     ],
-    "allergens": [],
-    "price": 18,
-    "popularity": 50,
-    "dermatologistRating": 70,
-    "imageUrl": "https://m.media-amazon.com/images/I/61A4jPLmgsL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B072JKKXW2/",
-        "price": 18
-      }
+    "skinTypes": [
+      "tous types",
+      "voyage"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
+    "benefits": [
+      "format pratique",
+      "éclat quotidien"
+    ],
+    "restrictedZones": [
+      "lèvres",
+      "yeux"
     ]
   },
   {
-    "catalogId": "B07Q342M1Q",
+    "id": "B07Q342M1Q",
     "name": "Pixi Vitamin-C Tonic",
     "brand": "Pixi",
     "category": "toner",
-    "careType": "tonification",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "hyperpigmentation",
-      "dullness"
-    ],
+    "price": 15,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71szvtL1qxL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B07Q342M1Q/",
     "activeIngredients": [
       "Vitamine C",
       "Acide Férulique"
     ],
-    "allergens": [],
-    "price": 15,
-    "popularity": 50,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/71szvtL1qxL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B07Q342M1Q/",
-        "price": 15
-      }
+    "skinTypes": [
+      "terne",
+      "fatiguée"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "éclat",
+      "luminosité",
+      "antioxydant"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B07JGGTCS3",
+    "id": "B07JGGTCS3",
     "name": "Pixi Glow Tonic Travel Size",
     "brand": "Pixi",
     "category": "toner",
-    "careType": "tonification",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dullness"
-    ],
+    "price": 12,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71pSHes3q7L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B07JGGTCS3/",
     "activeIngredients": [
       "Acide Glycolique",
       "Ginseng"
     ],
-    "allergens": [],
-    "price": 12,
-    "popularity": 65,
-    "dermatologistRating": 75,
-    "imageUrl": "https://m.media-amazon.com/images/I/71pSHes3q7L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B07JGGTCS3/",
-        "price": 12
-      }
+    "skinTypes": [
+      "tous types",
+      "format voyage"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
+    "benefits": [
+      "éclat",
+      "format 100ml",
+      "pratique"
+    ],
+    "restrictedZones": [
+      "lèvres",
+      "yeux"
     ]
   },
   {
-    "catalogId": "B0BHV1PBLY",
+    "id": "B0BHV1PBLY",
     "name": "Paula's Choice CALM Nourishing Milky Toner",
     "brand": "Paula's Choice",
     "category": "toner",
-    "careType": "tonification",
-    "targetSkinTypes": [
-      "sensitive",
-      "dry",
-      "normal"
-    ],
-    "targetConcerns": [
-      "redness",
-      "dryness"
-    ],
+    "price": 29,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71BgHPmzoXL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0BHV1PBLY/",
     "activeIngredients": [
       "Céramides",
       "Cholestérol"
     ],
-    "allergens": [],
-    "price": 29,
-    "popularity": 50,
-    "dermatologistRating": 100,
-    "imageUrl": "https://m.media-amazon.com/images/I/71BgHPmzoXL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0BHV1PBLY/",
-        "price": 29
-      }
+    "skinTypes": [
+      "sensible",
+      "sèche",
+      "rosacée"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "apaise rougeurs",
+      "hydrate",
+      "restaure"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B00949CII0",
+    "id": "B00949CII0",
     "name": "Paula's Choice Skin Recovery Calming Toner",
     "brand": "Paula's Choice",
     "category": "toner",
-    "careType": "tonification",
-    "targetSkinTypes": [
-      "dry",
-      "sensitive",
-      "mature"
-    ],
-    "targetConcerns": [
-      "redness",
-      "sensitivity"
-    ],
+    "price": 29,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61RHq4MT34L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B00949CII0/",
     "activeIngredients": [
       "antioxydants",
       "agents apaisants"
     ],
-    "allergens": [],
-    "price": 29,
-    "popularity": 50,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/61RHq4MT34L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B00949CII0/",
-        "price": 29
-      }
+    "skinTypes": [
+      "sèche",
+      "sensible",
+      "mature"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "calme irritations",
+      "prépare la peau"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B00CJWACX2",
+    "id": "B00CJWACX2",
     "name": "Paula's Choice RESIST Advanced Replenishing Toner",
     "brand": "Paula's Choice",
     "category": "toner",
-    "careType": "tonification",
-    "targetSkinTypes": [
-      "mature",
-      "dry"
-    ],
-    "targetConcerns": [
-      "aging",
-      "dryness"
-    ],
+    "price": 29,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/71EIkbcXEhL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B00CJWACX2/",
     "activeIngredients": [
       "Acide Hyaluronique",
       "Vitamines C & E"
     ],
-    "allergens": [],
-    "price": 29,
-    "popularity": 50,
-    "dermatologistRating": 100,
-    "imageUrl": "https://m.media-amazon.com/images/I/71EIkbcXEhL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B00CJWACX2/",
-        "price": 29
-      }
+    "skinTypes": [
+      "mature",
+      "sèche"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "anti-âge",
+      "hydratation légère",
+      "antioxydant"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0779QRV23",
+    "id": "B0779QRV23",
     "name": "The Ordinary Retinol 0.2% in Squalane",
     "brand": "The Ordinary",
     "category": "treatment",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal",
-      "sensitive"
-    ],
-    "targetConcerns": [
-      "aging"
-    ],
+    "price": 8.9,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0779QRV23/",
     "activeIngredients": [
       "Rétinol 0,2%",
       "Squalane"
     ],
-    "allergens": [],
-    "price": 8.9,
-    "popularity": 85,
-    "dermatologistRating": 95,
-    "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0779QRV23/",
-        "price": 8.9
-      }
+    "skinTypes": [
+      "débutants rétinol",
+      "sensible"
     ],
-    "applicationTiming": "evening",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "introduction douce au rétinol",
+      "anti-âge"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0779QGTV8",
+    "id": "B0779QGTV8",
     "name": "The Ordinary Retinol 0.5% in Squalane",
     "brand": "The Ordinary",
     "category": "treatment",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging"
-    ],
+    "price": 9.4,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0779QGTV8/",
     "activeIngredients": [
       "Rétinol 0,5%",
       "Squalane"
     ],
-    "allergens": [],
-    "price": 9.4,
-    "popularity": 85,
-    "dermatologistRating": 95,
-    "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0779QGTV8/",
-        "price": 9.4
-      }
+    "skinTypes": [
+      "intermédiaire rétinol"
     ],
-    "applicationTiming": "evening",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "anti-âge modéré",
+      "progression rétinol"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0779YGB2G",
+    "id": "B0779YGB2G",
     "name": "The Ordinary Retinol 1% in Squalane",
     "brand": "The Ordinary",
     "category": "treatment",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "mature",
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging",
-      "texture"
-    ],
+    "price": 9.9,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0779YGB2G/",
     "activeIngredients": [
       "Rétinol 1%",
       "Squalane"
     ],
-    "allergens": [],
-    "price": 9.9,
-    "popularity": 85,
-    "dermatologistRating": 100,
-    "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0779YGB2G/",
-        "price": 9.9
-      }
+    "skinTypes": [
+      "mature",
+      "expérimentés rétinol"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "anti-âge puissant",
+      "lisse rides",
+      "renouvellement"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B01MUZQ7GQ",
+    "id": "B01MUZQ7GQ",
     "name": "The Ordinary Alpha Arbutin 2% + HA",
     "brand": "The Ordinary",
     "category": "treatment",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness",
-      "hyperpigmentation"
-    ],
+    "price": 9.9,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B01MUZQ7GQ/",
     "activeIngredients": [
       "Alpha Arbutine 2%",
       "Acide Hyaluronique"
     ],
-    "allergens": [],
-    "price": 9.9,
-    "popularity": 85,
-    "dermatologistRating": 95,
-    "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B01MUZQ7GQ/",
-        "price": 9.9
-      }
+    "skinTypes": [
+      "taches",
+      "hyperpigmentation"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "éclaircit taches",
+      "unifie teint"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0779VRTRC",
+    "id": "B0779VRTRC",
     "name": "The Ordinary Azelaic Acid Suspension 10%",
     "brand": "The Ordinary",
     "category": "treatment",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "acne",
-      "redness"
-    ],
+    "price": 9.9,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0779VRTRC/",
     "activeIngredients": [
       "Acide Azélaïque 10%"
     ],
-    "allergens": [],
-    "price": 9.9,
-    "popularity": 85,
-    "dermatologistRating": 90,
-    "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0779VRTRC/",
-        "price": 9.9
-      }
+    "skinTypes": [
+      "acné",
+      "rosacée",
+      "taches"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
+    "benefits": [
+      "anti-acné",
+      "anti-inflammatoire",
+      "unifie"
+    ],
+    "restrictedZones": [
+      "lèvres",
+      "yeux"
     ]
   },
   {
-    "catalogId": "B01MUZQ8GH",
+    "id": "B01MUZQ8GH",
     "name": "The Ordinary Vitamin C Suspension 23% + HA",
     "brand": "The Ordinary",
     "category": "treatment",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "normal"
-    ],
-    "targetConcerns": [
-      "dryness",
-      "hyperpigmentation",
-      "dullness"
-    ],
+    "price": 11.9,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B01MUZQ8GH/",
     "activeIngredients": [
       "Vitamine C pure 23%",
       "Acide Hyaluronique"
     ],
-    "allergens": [],
-    "price": 11.9,
-    "popularity": 85,
-    "dermatologistRating": 95,
-    "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B01MUZQ8GH/",
-        "price": 11.9
-      }
+    "skinTypes": [
+      "résistante",
+      "expérimentée"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "antioxydant maximum",
+      "éclat intense"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B0CKR3XWPC",
+    "id": "B0CKR3XWPC",
     "name": "Retinol Serum Liposome Delivery System",
     "brand": "Generic",
     "category": "treatment",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "mature",
-      "normal"
-    ],
-    "targetConcerns": [
-      "aging",
-      "dryness"
-    ],
+    "price": 9.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61FQmT6QklL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B0CKR3XWPC/",
     "activeIngredients": [
       "Rétinol Liposome",
       "Acide Hyaluronique",
       "Vitamine E"
     ],
-    "allergens": [],
-    "price": 9.99,
-    "popularity": 65,
-    "dermatologistRating": 85,
-    "imageUrl": "https://m.media-amazon.com/images/I/61FQmT6QklL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B0CKR3XWPC/",
-        "price": 9.99
-      }
+    "skinTypes": [
+      "mature",
+      "ridules"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "réparation peau",
+      "anti-rides",
+      "système avancé"
+    ],
+    "restrictedZones": []
   },
   {
-    "catalogId": "B00LXFVMZG",
+    "id": "B00LXFVMZG",
     "name": "La Roche-Posay Effaclar Duo+",
     "brand": "La Roche-Posay",
     "category": "treatment",
-    "careType": "traitement",
-    "targetSkinTypes": [
-      "acne-prone",
-      "normal"
-    ],
-    "targetConcerns": [
-      "acne",
-      "hyperpigmentation"
-    ],
+    "price": 16.99,
+    "currency": "EUR",
+    "imageUrl": "https://m.media-amazon.com/images/I/61Ze3zqMLTL._UF1000,1000_QL80_.jpg",
+    "affiliateLink": "https://amazon.fr/dp/B00LXFVMZG/",
     "activeIngredients": [
       "Niacinamide",
       "LHA",
       "Zinc"
     ],
-    "allergens": [],
-    "price": 16.99,
-    "popularity": 50,
-    "dermatologistRating": 95,
-    "imageUrl": "https://m.media-amazon.com/images/I/61Ze3zqMLTL._UF1000,1000_QL80_.jpg",
-    "retailers": [
-      {
-        "name": "Amazon",
-        "url": "https://amazon.fr/dp/B00LXFVMZG/",
-        "price": 16.99
-      }
+    "skinTypes": [
+      "acnéique",
+      "pores obstrués"
     ],
-    "applicationTiming": "both",
-    "targetZones": [
-      "visage entier"
-    ]
+    "benefits": [
+      "anti-imperfections",
+      "prévient marques"
+    ],
+    "restrictedZones": []
   }
 ]

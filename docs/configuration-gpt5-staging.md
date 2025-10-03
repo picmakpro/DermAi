@@ -265,3 +265,4 @@ Variables à monitorer :
 
 **Configuration documentée : 30 septembre 2025**  
 **Prochaine révision : Après Sprint 1**
+

@@ -316,3 +316,4 @@ vercel deploy --prod
 **Procédure validée :** 30 septembre 2025  
 **Dernière révision :** Post-déploiement GPT-5  
 **Prochaine révision :** Mensuelle
+

@@ -35,7 +35,13 @@ export const EnrichedProductSchema = z.object({
     'mask',
     'exfoliant',
     'balm',
-    'oil'
+    'oil',
+    // ✅ Catégories additionnelles (fix validation 27 produits échoués)
+    'eye-care',
+    'face-oil',
+    'lip-care',
+    'mist',
+    'primer'
   ]),
 
   // ========== MÉTADONNÉES DERMATOLOGIQUES ==========
@@ -132,7 +138,14 @@ export const EnrichedProductSchema = z.object({
   /**
    * Zones cibles par défaut
    */
-  targetZones: z.array(z.string()).default(['visage entier'])
+  targetZones: z.array(z.string()).default(['visage entier']),
+
+  /**
+   * Zones restreintes (où le produit NE DOIT PAS être appliqué)
+   * Ex: ['lèvres', 'yeux'] pour actifs irritants (Retinol, AHA, BHA, Niacinamide >5%)
+   * Utilisé pour filtrage strict lors du matching
+   */
+  restrictedZones: z.array(z.string()).default([])
 })
 
 /**

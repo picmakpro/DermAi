@@ -117,3 +117,4 @@ Après rollback, vérifier :
 
 **Archive créée : 30 septembre 2025**  
 **Validité rollback : Illimitée (tant que GPT-4o disponible)**
+

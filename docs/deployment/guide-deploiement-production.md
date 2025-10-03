@@ -363,3 +363,4 @@ vercel logs --prod | grep "RÉPONSE OPENAI" | \
 
 **Guide mis à jour :** 30 septembre 2025  
 **Prochaine révision :** Après rollout 100%
+

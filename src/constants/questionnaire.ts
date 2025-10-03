@@ -66,3 +66,4 @@ export const ROUTINE_STYLES_UI = [
   { value: "Équilibrée" as const, label: "Équilibrée — Standard : 3 matin, 3-4 soir" },
   { value: "Complète" as const, label: "Complète — Détaillée : 3 matin, 3-4 soir + hebdo" },
 ] as const;
+

@@ -247,3 +247,4 @@ Pour toute question :
 3. Confirmer les feature flags : `grep "USE_GPT5" .env.local`
 
 **Votre application est maintenant prête pour la production ! 🚀**
+

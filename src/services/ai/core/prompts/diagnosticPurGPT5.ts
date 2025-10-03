@@ -44,3 +44,4 @@ RÈGLES:
 export const buildDiagnosticUserPromptGPT5 = () => {
   return `Analyse les photos fournies et génère le diagnostic JSON.`
 }
+

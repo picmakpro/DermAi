@@ -51,3 +51,4 @@ OPENAI_COST_ALERT_WEBHOOK=https://hooks.slack.com/services/xxx
 
 LOG_LEVEL=info
 LOG_STRUCTURED=true
+

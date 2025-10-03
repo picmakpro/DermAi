@@ -433,3 +433,4 @@ grep "Routine non conforme" logs/app.log | \
 
 **Dernière mise à jour :** 30 septembre 2025  
 **Contact :** #tech-ia Slack
+

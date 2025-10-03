@@ -3,14 +3,14 @@ import { z } from 'zod'
 // Schéma pour les détails de score
 export const ScoreDetailSchema = z.object({
   value: z.number().min(0).max(100),
-  justification: z.string().min(10).max(200),
+  justification: z.string().min(10).max(300), // ✅ Augmenté pour justifications détaillées
   confidence: z.number().min(0).max(1),
   basedOn: z.array(z.string()).min(1).max(5)
 })
 
 // Schéma pour les problèmes par zone
 export const ZoneIssueSchema = z.object({
-  zone: z.enum(['front', 'joues', 'nez', 'menton', 'contour-yeux', 'cou', 'zone T', 'zone-t', 'T-zone', 't-zone']),
+  zone: z.enum(['front', 'joues', 'nez', 'menton', 'contour-yeux', 'cou', 'lèvres', 'bouche', 'zone T', 'zone-t', 'T-zone', 't-zone']), // ✅ Ajout lèvres/bouche
   problem: z.string().min(3).max(100), // Réduit pour permettre "Rides", "Pores"
   intensity: z.enum(['légère', 'modérée', 'intense']),
   description: z.string().min(10).max(200)

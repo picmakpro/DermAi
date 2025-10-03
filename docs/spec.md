@@ -23,14 +23,58 @@ DermAI V2 est une application web de diagnostic dermatologique basée sur l'inte
 
 **IA & APIs Externes**
 - **IA:** OpenAI GPT-4o Vision API
-- **Affiliation:** APIs Sephora, Amazon Associates, Douglas
+- **Affiliation:** Amazon Product Advertising API (2000+ produits)
 - **Analytics:** Google Analytics 4 + Enhanced Ecommerce
 - **Monitoring:** Sentry (error tracking), Vercel Analytics
 
 **Stockage & Données**
-- **Stockage cloud:** Supabase (analyses, profils utilisateurs)
+- **Stockage cloud:** Supabase (analyses, profils utilisateurs, catalogue produits scalable)
 - **Stockage local:** IndexedDB (cache offline), SessionStorage (session)
 - **Compression:** LZ-String (partage de résultats)
+
+### 2.2. Architecture Catalogue Produits (Scaling V2)
+
+**⚠️ IMPORTANT** : Voir documentation détaillée → **`/docs/architecture/README-SCALING-V2.md`**
+
+**Pipeline Import Produits** :
+```
+Amazon Product Advertising API (2000+ produits)
+  ↓
+GPT-4o-mini Enrichment ($0.33 total)
+  ↓
+Supabase PostgreSQL (stockage scalable)
+  ↓
+ProductDatabaseLoaderV2 (cache 1h par careType)
+  ↓
+ProductMatcherV2 (scoring 5 critères dont 35% ingrédients)
+  ↓
+Sélection optimale (8-10 alternatives par step)
+```
+
+**Taxonomie careType V2** : 10 types spécialisés
+- Base : `nettoyage`, `tonification`, `hydratation`, `protection`, `exfoliation`, `masque`
+- Traitements : `anti-age`, `eclat`, `traitement-cible`, `apaisement`
+
+**Scoring Produits V2** : 5 critères pondérés
+- 35% Compatibilité ingrédients × type de peau (🆕 NOUVEAU)
+- 30% Alignement problématique (vs 40% avant)
+- 20% Qualité dermatologique (vs 30% avant)
+- 10% Prix (vs 20% avant)
+- 5% Popularité (vs 10% avant)
+
+**Métriques Cibles** :
+- Catalogue : 110 → **2000+ produits** (+1718%)
+- Couverture profils : 75% → **95%** (+27%)
+- Matching scores : 60-70 → **70-85** (+15%)
+- Alternatives par step : 3 → **8-10** (+233%)
+- Anomalies zones : 2-3% → **0%** (-100%)
+
+**Conformité Légale** : ✅ Programme Partenaires Amazon
+- Divulgation partenaire obligatoire affichée
+- Liens d'affiliation avec tag correct
+- Mise à jour prix quotidienne (<24h)
+- Cache produits <7 jours (conformité API)
+- Voir détails → **`/docs/architecture/AMAZON-LEGAL-COMPLIANCE.md`**
 
 ### 2.2. Structure du Projet
 
@@ -708,7 +752,97 @@ vercel --prod
 curl https://votre-app.vercel.app/api/test
 ```
 
-## 11. Conclusion et Prochaines Étapes
+## 11. Documentation Architecture Détaillée
 
-DermAI V2 représente une évolution majeure du diagnostic dermatologique IA. L'approche en deux étapes (questionnaire + photos), la routine en 3 phases et la monétisation via affiliation créent un produit différenciant sur le marché. Les choix techniques (Next.js 15, Supabase, GPT-4o Vision) assurent performance et scalabilité. La roadmap ambitieuse mais réaliste permet un développement itératif avec validation utilisateur à chaque étape.
+### 11.1. Scaling Catalogue & Architecture Ingrédients (V2)
+
+**⚠️ DOCUMENTS CENTRAUX** : Tous situés dans `/docs/architecture/`
+
+#### **Guide Démarrage** : `README-SCALING-V2.md`
+📚 Guide complet de navigation et démarrage rapide
+- Vue d'ensemble des 5 documents
+- Checklist complète (10 semaines)
+- Troubleshooting commun
+- Ordre de lecture recommandé
+
+#### **Plan Principal** : `MASTER-PLAN-SCALING-V2.md`
+🎯 Vue d'ensemble stratégique complète
+- Planning 10 semaines (5 phases)
+- Architecture cible (Amazon → GPT-4 → Supabase → Matching)
+- Métriques succès & ROI
+- Risques & mitigation
+- Budget total ($300/an)
+
+#### **Taxonomie** : `CARETYPE-TAXONOMY-V2.md`
+🏷️ Spécification complète 10 careTypes
+- Évolution 6 → 10 types spécialisés
+- Détail chaque type (ingrédients clés, concerns, safety)
+- Script migration automatique
+- Implémentation Zod + Prompts IA
+
+#### **Scoring Ingrédients** : `INGREDIENT-SCORING-ARCHITECTURE.md`
+🧬 Architecture scoring V2 (35% ingrédients)
+- Formule détaillée 5 critères pondérés
+- Database 200-300 ingrédients avec compatibilité × skinType
+- Calculs compatibilité, safety, concentration, interactions
+- Impact attendu (+15% précision)
+
+#### **Database Scalable** : `SUPABASE-SCHEMA.md`
+💾 Schema PostgreSQL optimisé
+- Schema complet table `products` (2000+ produits)
+- Index optimisés (GIN, composite)
+- Queries optimisées (<100ms)
+- Monitoring & sécurité RLS
+- Sizing & performance
+
+#### **Conformité Légale** : `AMAZON-LEGAL-COMPLIANCE.md`
+⚖️ Analyse conformité Programme Partenaires Amazon
+- ✅ Verdict : CONFORME (avec ajustements mineurs)
+- Analyse détaillée conditions Amazon
+- Obligations légales (divulgation, liens, cache 7j)
+- Checklist conformité complète
+- Risques & mitigation
+
+---
+
+### 11.2. Architecture Technique Actuelle
+
+**Documents complémentaires** (déjà existants) :
+- `docs/architecture/product-matching-analysis.md` - Analyse matching actuel (Phase D3)
+- `docs/plan-execution-v2-5/REFONTE-STEP3-HYBRIDE.md` - Refonte hybride IA+Algo
+- `docs/plan-execution-v2-5/SPRINT-D-REFONTE-HYBRIDE-EXECUTION.md` - Sprint D détaillé
+- `docs/diagnostic-technique-refonte-ia-complete.md` - **RÉFÉRENCE OFFICIELLE** (obsolète après V2)
+
+---
+
+### 11.3. Timeline Implémentation Scaling V2
+
+**Phase 0** (Sem 1) : ✅ **TERMINÉE** - Corrections actuelles (restrictedZones 110 produits)
+**Phase 1** (Sem 2) : 📋 **EN COURS** - Migration taxonomie careType V2
+**Phase 2** (Sem 3-4) : Migration Supabase (database scalable)
+**Phase 3** (Sem 5-6) : Scoring ingrédients (35% du score)
+**Phase 4** (Sem 7-9) : Import Amazon 2000 produits
+**Phase 5** (Sem 10) : Production + monitoring
+
+**Total** : **10 semaines** (2.5 mois)
+
+#### Phase 0 : Rapport Détaillé (3 Oct 2025) ✅
+
+**Durée** : 1 heure | **Coût** : $0 | **Statut** : TERMINÉ
+
+- ✅ 110 produits enrichis avec `restrictedZones`
+- ✅ 15 produits avec restrictions (13.6%) : AHA, BHA, Retinol, Niacinamide >5%
+- ✅ 0 anomalie détectée (produits inadaptés zones lèvres/yeux)
+- ✅ 8/8 tests de validation réussis
+- ✅ Rapport complet : `docs/architecture/PHASE-0-RAPPORT.md`
+
+---
+
+## 12. Conclusion et Prochaines Étapes
+
+DermAI V2 représente une évolution majeure du diagnostic dermatologique IA. L'approche en deux étapes (questionnaire + photos), la routine en 3 phases et la monétisation via affiliation créent un produit différenciant sur le marché. Les choix techniques (Next.js 15, Supabase, GPT-4o Vision) assurent performance et scalabilité.
+
+**Prochaine Phase Critique** : Scaling du catalogue de 110 → 2000+ produits avec scoring ingrédients dermatologiques (voir section 11.1). Cette évolution permettra de passer de 75% → 95% de couverture des profils utilisateurs (+27%), avec une amélioration de +15% de la précision du matching grâce à la compatibilité ingrédients × type de peau.
+
+La roadmap ambitieuse mais réaliste permet un développement itératif avec validation utilisateur à chaque étape, tout en respectant les contraintes légales du Programme Partenaires Amazon.
 

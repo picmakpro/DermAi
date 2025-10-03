@@ -84,3 +84,4 @@ Voir `docs/CONFIGURATION-FINALE-GPT4O.md` pour :
 ---
 
 **Une fois que tout fonctionne, vous êtes prêt pour la production ! 🚀**
+

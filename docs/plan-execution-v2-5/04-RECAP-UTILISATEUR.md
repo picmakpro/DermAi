@@ -614,3 +614,4 @@ git commit -m "test: validate user input recap with E2E tests"
 **⏱️ DURÉE TOTALE PHASE 3 :** ~4h (0.5 jour)  
 **🎯 VALIDATION :** Test E2E + ancre #recap fonctionnelle
 
+

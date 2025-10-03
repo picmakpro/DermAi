@@ -118,3 +118,4 @@ if (!gpt5Response.scores.skinAge && normalized.scores.skinAge) {
 }
 
 console.log('\n✅ Normaliseur fonctionne !')
+

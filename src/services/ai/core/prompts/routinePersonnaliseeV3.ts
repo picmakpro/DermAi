@@ -393,3 +393,4 @@ Répondre UNIQUEMENT en JSON valide (aucun texte avant/après).`
 
   return prompt
 }
+

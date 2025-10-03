@@ -191,49 +191,52 @@ export class ProductMatcher {
       }
     }
 
-    // FILTRE 2 : Budget (SOUPLE)
-    if (budget.maxBudget && budget.maxBudget > 0) {
-      const avgBudgetPerStep = budget.maxBudget / budget.expectedSteps
-      const maxPrice = avgBudgetPerStep * 1.2 // Marge 20%
+  // FILTRE 2 : Budget (SOUPLE)
+  if (budget.maxBudget && budget.maxBudget > 0) {
+    const avgBudgetPerStep = budget.maxBudget / budget.expectedSteps
+    // ✅ FIX : Augmenter marge budget de 20% → 80% pour budgets serrés
+    // Si budget/step < 10€, marge 80% permet de trouver plus de candidats
+    const marginPercent = avgBudgetPerStep < 10 ? 1.8 : 1.5 // 80% ou 50% marge
+    const maxPrice = avgBudgetPerStep * marginPercent
 
-      const beforeBudget = candidates.length
-      const budgetCandidates = candidates.filter((p) => p.price <= maxPrice)
+    const beforeBudget = candidates.length
+    const budgetCandidates = candidates.filter((p) => p.price <= maxPrice)
 
-      if (budgetCandidates.length > 0) {
-        candidates = budgetCandidates
-        const removed = beforeBudget - candidates.length
+    if (budgetCandidates.length > 0) {
+      candidates = budgetCandidates
+      const removed = beforeBudget - candidates.length
 
-        if (removed > 0) {
-          this.logger(
-            `   💰 ${removed} produits exclus (budget: ${maxPrice.toFixed(2)}€ max)`
-          )
-        }
-      } else {
-        this.logger(
-          `   ⚠️ Filtre budget relâché (0 candidats < ${maxPrice.toFixed(2)}€)`
-        )
-      }
-    }
-
-    // FILTRE 3 : SkinType (SOUPLE - peut être relâché)
-    const beforeSkinType = candidates.length
-    const skinTypeCandidates = candidates.filter((p) =>
-      p.targetSkinTypes.includes(profile.skinType as any)
-    )
-
-    if (skinTypeCandidates.length > 0) {
-      candidates = skinTypeCandidates
-      const removed = beforeSkinType - candidates.length
       if (removed > 0) {
         this.logger(
-          `   🧴 ${removed} produits exclus (skinType: ${profile.skinType})`
+          `   💰 ${removed} produits exclus (budget: ${maxPrice.toFixed(2)}€ max, marge ${Math.round((marginPercent - 1) * 100)}%)`
         )
       }
     } else {
       this.logger(
-        `   ⚠️ Filtre skinType relâché (0 candidats compatibles ${profile.skinType})`
+        `   ⚠️ Filtre budget relâché (0 candidats < ${maxPrice.toFixed(2)}€)`
       )
     }
+  }
+
+  // FILTRE 3 : SkinType (SOUPLE - peut être relâché)
+  const beforeSkinType = candidates.length
+  const skinTypeCandidates = candidates.filter((p) =>
+    p.targetSkinTypes.includes(profile.skinType as any)
+  )
+
+  if (skinTypeCandidates.length > 0) {
+    candidates = skinTypeCandidates
+    const removed = beforeSkinType - candidates.length
+    if (removed > 0) {
+      this.logger(
+        `   🧴 ${removed} produits exclus (skinType: ${profile.skinType})`
+      )
+    }
+  } else {
+    this.logger(
+      `   ⚠️ Filtre skinType relâché (0 candidats compatibles ${profile.skinType})`
+    )
+  }
 
     this.logger(`   ✅ ${candidates.length} candidats finaux`)
 

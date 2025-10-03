@@ -105,3 +105,4 @@ export function uvPolicyMessage(uvBand: UvBand): string {
   };
   return messages[uvBand];
 }
+

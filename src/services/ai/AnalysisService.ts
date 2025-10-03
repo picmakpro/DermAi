@@ -184,7 +184,7 @@ export class AnalysisService {
       //   catalogueInfo: 'Catalogue partitionné V2 chargé'
       // }, null, 2))
       
-      const products = await this.selectOptimalProducts(routine, request, requestId)
+      const products = await this.selectOptimalProducts(routine, diagnostic, request, requestId)
       
       this.logger.info('📤 OUTPUT ÉTAPE 3 (Produits):', { requestId })
       // console.log('📤 OUTPUT ÉTAPE 3 (Produits) - CONTENU COMPLET:', JSON.stringify(products, null, 2))
@@ -706,7 +706,13 @@ export class AnalysisService {
       exfoliant: 'exfoliation',
       mask: 'traitement',
       balm: 'hydratation',
-      oil: 'hydratation'
+      oil: 'hydratation',
+      // ✅ Nouvelles catégories (fix 27 produits échoués)
+      'eye-care': 'traitement',
+      'face-oil': 'hydratation',
+      'lip-care': 'hydratation',
+      mist: 'tonification',
+      primer: 'protection'
     }
 
     return mapping[category || ''] || 'hydratation' // Fallback hydratation
@@ -764,6 +770,7 @@ export class AnalysisService {
    */
   static async selectOptimalProducts(
     routine: PersonalizedRoutine,
+    diagnostic: PureDiagnostic,
     request: AnalyzeRequest,
     requestId: string
   ): Promise<ProductSelectionV3> {
@@ -792,6 +799,32 @@ export class AnalysisService {
       const allSteps = this.extractAllSteps(routine)
       this.logger.info(`[selectOptimalProducts] 📋 ${allSteps.length} steps à matcher`)
 
+      // 🧬 Déterminer skinType effectif (User ou IA)
+      const userSkinType = request.userProfile.skinType
+      const effectiveSkinType = 
+        userSkinType === 'Je ne sais pas' || !userSkinType
+          ? diagnostic.skinType
+          : userSkinType
+      
+      // 🔄 Mapper skinType français → anglais (pour compatibilité catalogue)
+      const skinTypeMapping: Record<string, string> = {
+        'Mixte': 'combination',
+        'Grasse': 'oily',
+        'Sèche': 'dry',
+        'Normale': 'normal',
+        'Sensible': 'sensitive'
+      }
+      
+      const catalogSkinType = skinTypeMapping[effectiveSkinType] || effectiveSkinType.toLowerCase()
+      
+      this.logger.info('[selectOptimalProducts] 🧬 SkinType déterminé', {
+        userChoice: userSkinType,
+        aiDiagnosed: diagnostic.skinType,
+        effective: effectiveSkinType,
+        catalogMapped: catalogSkinType,
+        source: userSkinType === 'Je ne sais pas' || !userSkinType ? 'IA Step 1' : 'User'
+      })
+
       // ========== 3. POUR CHAQUE STEP : MATCHING ALGO ==========
       const selectedProducts: SelectedProductV3[] = []
       const failures: Array<{ stepNumber: number; error: string }> = []
@@ -802,7 +835,7 @@ export class AnalysisService {
           const match = await matcher.selectForRoutineStep(
             step,
             {
-              skinType: request.userProfile.skinType || 'normal',
+              skinType: catalogSkinType, // ✅ Mappé français → anglais pour catalogue
               allergies: request.constraints.allergies || [],
               preferences: []
             },
@@ -865,25 +898,66 @@ export class AnalysisService {
         )
       }
 
-      // ========== 4. VALIDATION BUDGET ==========
-      const totalCost = selectedProducts.reduce((sum, p) => sum + p.price, 0)
+      // ========== 4. VALIDATION BUDGET (avec déduplicate) ==========
+      // 💡 Compter produits uniques (pas les répétitions)
+      const uniqueProducts = new Map<string, { price: number; count: number; name: string }>()
+      
+      selectedProducts.forEach((p) => {
+        if (uniqueProducts.has(p.catalogId)) {
+          const existing = uniqueProducts.get(p.catalogId)!
+          existing.count += 1
+        } else {
+          uniqueProducts.set(p.catalogId, {
+            price: p.price,
+            count: 1,
+            name: p.productName
+          })
+        }
+      })
+
+      // Calculer coût réel (produits uniques seulement)
+      const realTotalCost = Array.from(uniqueProducts.values()).reduce(
+        (sum, prod) => sum + prod.price,
+        0
+      )
+      
+      // Calculer coût naïf (si on comptait toutes les répétitions)
+      const naiveTotalCost = selectedProducts.reduce((sum, p) => sum + p.price, 0)
+      const savings = naiveTotalCost - realTotalCost
+
+      this.logger.info('[selectOptimalProducts] 💰 Budget Déduplicate', {
+        uniqueProductsCount: uniqueProducts.size,
+        totalStepsCount: selectedProducts.length,
+        realCost: `${realTotalCost.toFixed(2)}€`,
+        naiveCost: `${naiveTotalCost.toFixed(2)}€`,
+        savings: `${savings.toFixed(2)}€`,
+        savingsPercent: `${((savings / naiveTotalCost) * 100).toFixed(1)}%`
+      })
+
       const budgetBreakdown: BudgetBreakdown = {
-        totalCost,
+        totalCost: realTotalCost, // ✅ Utiliser coût réel dédupliqué
         budgetRespected: request.constraints.budget
-          ? totalCost <= request.constraints.budget
+          ? realTotalCost <= request.constraints.budget
           : true,
           optimizations: [],
           alternatives: []
       }
 
-      if (request.constraints.budget && totalCost > request.constraints.budget) {
-        const overspend = totalCost - request.constraints.budget
-        // ✅ Initialiser optimizations si undefined
+      if (request.constraints.budget && realTotalCost > request.constraints.budget) {
+        const overspend = realTotalCost - request.constraints.budget
         if (!budgetBreakdown.optimizations) {
           budgetBreakdown.optimizations = []
         }
         budgetBreakdown.optimizations.push(
           `Budget dépassé de ${overspend.toFixed(2)}€. Consultez les alternatives pour optimiser vos dépenses.`
+        )
+      } else if (savings > 0) {
+        // Message d'économies réalisées grâce au déduplicate
+        if (!budgetBreakdown.optimizations) {
+          budgetBreakdown.optimizations = []
+        }
+        budgetBreakdown.optimizations.push(
+          `Économie de ${savings.toFixed(2)}€ grâce à l'achat de ${uniqueProducts.size} produits uniques pour ${selectedProducts.length} étapes.`
         )
       }
 
@@ -901,7 +975,9 @@ export class AnalysisService {
       this.logger.info('[selectOptimalProducts] ✅ HYBRIDE COMPLETE', {
         requestId,
         products: selectedProducts.length,
-        totalCost: `${totalCost.toFixed(2)}€`,
+        uniqueProducts: uniqueProducts.size,
+        realCost: `${realTotalCost.toFixed(2)}€`,
+        savings: `${savings.toFixed(2)}€`,
         successRate: `${successRate.toFixed(1)}%`,
         duration: `${duration}ms`,
         budgetRespected: budgetBreakdown.budgetRespected

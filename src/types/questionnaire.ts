@@ -37,3 +37,4 @@ export interface RoutineContext {
     uvRiskBand: UvBand;
   };
 }
+

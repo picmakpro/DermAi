@@ -252,9 +252,8 @@ export default function SkinQuestionnaire() {
 
   // Validation complète du formulaire
   const isFormComplete = () => {
-    // Étape 1: Profil (tranche d'âge sélectionnée + grossesse si Femme)
+    // Étape 1: Profil (tranche d'âge sélectionnée)
     const step1Valid = selectedAgeRange !== ''
-    const pregnancyValid = data.userProfile.gender !== 'Femme' || data.userProfile.pregnancy !== undefined
 
     // ✅ Étape 2: Localisation (ville et pays requis)
     const locationValid = !!(data.location?.city && data.location?.country)
@@ -267,13 +266,12 @@ export default function SkinQuestionnaire() {
 
     console.log('Validation formulaire:', { 
       step1Valid, 
-      pregnancyValid, 
       locationValid, 
       step3Valid, 
       step8Valid, 
       currentStep 
     })
-    return step1Valid && pregnancyValid && locationValid && step3Valid && step8Valid
+    return step1Valid && locationValid && step3Valid && step8Valid
   }
 
   // Validation de l'étape actuelle
@@ -282,10 +280,8 @@ export default function SkinQuestionnaire() {
       case 0: // IntroBeforeAfterScreen
         return true
       case 1: // Profil
-        // ✅ MODIFIÉ: Vérifier aussi pregnancy si Femme
-        const profileValid = selectedAgeRange !== ''
-        const pregnancyValid = data.userProfile.gender !== 'Femme' || data.userProfile.pregnancy !== undefined
-        return profileValid && pregnancyValid
+        // Tranche d'âge sélectionnée (grossesse optionnelle)
+        return selectedAgeRange !== ''
       case 2: // ✅ NOUVEAU: Localisation
         return !!(data.location?.city && data.location?.country)
       case 3: // Préoccupations
@@ -530,9 +526,12 @@ export default function SkinQuestionnaire() {
                       type="button"
                       onClick={() => {
                         updateData('userProfile', { gender: option as any })
-                        // ✅ Reset pregnancy si pas Femme
+                        // ✅ Reset pregnancy si pas Femme, initialiser à false si Femme
                         if (option !== 'Femme') {
                           updateData('userProfile', { pregnancy: undefined })
+                        } else {
+                          // Initialiser à false par défaut pour les femmes
+                          updateData('userProfile', { pregnancy: { isPregnant: false } })
                         }
                       }}
                       className={`p-3 text-sm rounded-xl border-2 transition-all hover-lift ${
@@ -552,9 +551,9 @@ export default function SkinQuestionnaire() {
                 <div className="p-4 bg-dermai-ai-50 rounded-xl border border-dermai-ai-200">
                   <label className="flex items-center justify-between cursor-pointer">
                     <div className="flex-1">
-                      <div className="text-sm font-medium text-dermai-neutral-900">Grossesse en cours *</div>
+                      <div className="text-sm font-medium text-dermai-neutral-900">Grossesse en cours (optionnel)</div>
                       <p className="text-xs text-dermai-neutral-600 mt-1">
-                        Nous adapterons votre routine (exclusion rétinol, acides forts, etc.)
+                        Si cochée, nous adapterons votre routine (exclusion rétinol, acides forts, etc.)
                       </p>
                     </div>
                     <input

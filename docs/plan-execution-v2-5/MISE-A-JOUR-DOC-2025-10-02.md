@@ -164,3 +164,4 @@ docs/
 **Auteur** : Assistant IA + Utilisateur  
 **Statut** : ✅ TERMINÉ
 
+

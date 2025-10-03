@@ -902,3 +902,4 @@ git commit -m "style: optimize responsive and add micro-interactions"
 **⏱️ DURÉE TOTALE PHASE 2 :** ~12h (1.5 jours)  
 **🎯 VALIDATION :** Tests visuels 3 devices + modal fluide
 
+

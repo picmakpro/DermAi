@@ -42,10 +42,6 @@ export const zStep2Questionnaire = z.object({
   skinConcerns: z.object({
     primary: z.array(z.string()).max(3, "Maximum 3 préoccupations").default([]),
   }),
-})
-.refine(
-  (d) => d.userProfile.gender !== "Femme" || d.pregnancy !== undefined,
-  { message: "Statut grossesse requis pour les femmes", path: ["pregnancy"] }
-);
+});
 
 export type QuestionnaireV2 = z.infer<typeof zStep2Questionnaire>;
