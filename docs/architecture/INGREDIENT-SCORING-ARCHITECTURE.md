@@ -57,8 +57,10 @@ score =
 - **35% Ingrédients** : Facteur #1 de compatibilité dermatologique (irritation, efficacité)
 - **30% Concerns** : Toujours important mais insuffisant seul
 - **20% Quality** : Note dermatologique générale
-- **10% Price** : Secondaire (budget déjà filtré en amont)
+- **10% Price** : Secondaire (budget optimisé globalement après matching, pas par produit)
 - **5% Popularity** : Indicateur faible de qualité réelle
+
+**⚠️ NOTE IMPORTANTE** : Le budget n'est PAS filtré au niveau unitaire (par produit) mais optimisé **globalement** après matching complet via `BudgetOptimizer`. Voir **`BUDGET-OPTIMIZATION-REFONTE.md`** pour détails.
 
 ---
 

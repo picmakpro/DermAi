@@ -472,9 +472,35 @@ Sélection optimale (8-10 alternatives par step)
 - **Feedback Loop**: Collecte anonyme de satisfaction pour améliorer prompts
 - **A/B Testing**: Tests de variantes de prompts avec métriques de qualité
 - **Analyse de Cohérence**: Détection automatique d'incohérences dans les résultats
-- **Optimisation Budgétaire**: Respect strict des contraintes financières utilisateur
 
-#### **8.3.3. Accessibilité et Internationalisation**
+#### **8.3.3. Optimisation Budget Intelligente** 🆕 **REFONTE EN COURS**
+
+**⚠️ IMPORTANT** : Voir documentation complète → **`/docs/architecture/BUDGET-OPTIMIZATION-REFONTE.md`**
+
+**Problématique** : L'approche actuelle (division uniforme budget/steps) ignore les priorités dermatologiques.
+
+**Nouvelle Approche (Validée)** :
+1. **Matching pur** : Sélection produits optimale sans contrainte budget (critères dermato)
+2. **Optimisation globale** : Si dépassement budget, substitution intelligente basée sur :
+   - Priorités careType (protection=10, nettoyage=9, masque=3)
+   - Efficience (€ économisé / score perdu)
+   - Préservation SPF + nettoyant (critiques pour santé peau)
+
+**Priorités Dermatologiques** :
+- 🔴 **Critique (10/10)** : Protection SPF (santé + obligatoire avec actifs)
+- 🔴 **Critique (9/10)** : Nettoyant (fondation routine)
+- 🟠 **Haute (8/10)** : Traitements actifs (anti-age, eclat, traitement-cible)
+- 🟡 **Moyenne (6/10)** : Hydratation (nombreuses options économiques)
+- 🟢 **Basse (3-5/10)** : Tonification, masque (optionnels ou temporaires)
+
+**Amélioration Attendue** :
+- ✅ SPF/Nettoyant préservés 100% des cas
+- ✅ Score moyen : ≥ 90% du score idéal (vs 60% avant)
+- ✅ +20% pertinence dermatologique vs approche naïve
+
+**Implémentation** : Sprint Budget Optimization (1 semaine) - Détails dans document référence
+
+#### **8.3.4. Accessibilité et Internationalisation**
 - **WCAG 2.1 AA**: Conformité complète pour accessibilité
 - **i18n Ready**: Architecture préparée pour multi-langues
 - **Responsive Design**: Optimisation mobile-first avec PWA
@@ -500,6 +526,13 @@ Sélection optimale (8-10 alternatives par step)
 **Focus actuel** : Refonte Step 3 avec architecture hybride (IA + Algo) pour fiabilité 100%
 
 ### 9.2. Architecture et Logique Métier
+
+**[architecture/BUDGET-OPTIMIZATION-REFONTE.md](./architecture/BUDGET-OPTIMIZATION-REFONTE.md)** - 🆕 **Optimisation Budget Intelligente** :
+- Matching pur sans contrainte budget
+- Algorithme substitution avec priorités careType
+- Préservation SPF + nettoyant (critiques santé)
+- Efficience (€ économisé / score perdu)
+- **Plan implémentation** : 7 phases sur 1 semaine
 
 **[architecture/fiabilite.md](./architecture/fiabilite.md)** - Architecture de fiabilité :
 - Retry intelligent avec backoff exponentiel
