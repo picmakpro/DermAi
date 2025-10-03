@@ -793,7 +793,36 @@ export class AnalysisService {
         careTypes: productDatabase.byCareType.size
       })
 
-      const matcher = new ProductMatcher(productDatabase)
+      // ========== FEATURE FLAG : PRODUCT MATCHER V2 ==========
+      const useMatcherV2 = process.env.USE_PRODUCT_MATCHER_V2 === 'true'
+      
+      if (useMatcherV2) {
+        console.log('[AnalysisService] 🔥 Using ProductMatcherV2 (ingredient scoring)')
+        const { ProductMatcherV2 } = await import('@/services/products/ProductMatcherV2')
+        const matcherV2 = new ProductMatcherV2(productDatabase)
+        
+        // Adapter V2 interface vers V1 (temporaire)
+        const matcher = {
+          selectForRoutineStep: async (step: any, profile: any, budget: any) => {
+            const matchV2 = await matcherV2.selectForRoutineStep(step, profile, budget)
+            // Convert V2 output to V1 format
+            return {
+              mainProduct: matchV2.selectedProduct,
+              alternatives: matchV2.alternatives,
+              matchingScore: matchV2.matchingScore,
+              reasoning: matchV2.reasoning
+            }
+          }
+        }
+        
+        // Continue with matcher V2...
+        var matcherInstance = matcher
+      } else {
+        console.log('[AnalysisService] 📊 Using ProductMatcher V1 (classic scoring)')
+        var matcherInstance = new ProductMatcher(productDatabase)
+      }
+
+      const matcher = matcherInstance
 
       // ========== 2. EXTRAIRE LES STEPS DE LA ROUTINE ==========
       const allSteps = this.extractAllSteps(routine)
