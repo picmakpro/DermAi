@@ -193,12 +193,17 @@ export class ProductMatcherV2 {
       }
     }
 
-    const candidatesBeforeBudget = [...candidates]
-
-    // 3. Filtrer par budget (MARGE 80% comme V1 au lieu de 20%)
-    if (budget.maxBudget && budget.expectedSteps > 0) {
+    // 3. 💰 Filtrer par budget (DÉSACTIVÉ si optimisation globale activée)
+    // 🆕 BUDGET OPTIMIZATION V2 (3 Oct 2025)
+    // Le budget est géré globalement par BudgetOptimizer après matching complet
+    // Voir: docs/architecture/BUDGET-OPTIMIZATION-REFONTE.md
+    
+    const enableBudgetFilter = budget.enableSmartOptimization === false // Désactivé par défaut
+    
+    if (enableBudgetFilter && budget.maxBudget && budget.expectedSteps > 0) {
+      const candidatesBeforeBudget = [...candidates]
       const maxPricePerStep = budget.maxBudget / budget.expectedSteps
-      candidates = candidates.filter((p) => p.price <= maxPricePerStep * 1.8) // +80% tolérance (comme V1)
+      candidates = candidates.filter((p) => p.price <= maxPricePerStep * 1.8) // +80% tolérance
       
       // FALLBACK: Si 0 résultat, relâcher budget
       if (candidates.length === 0) {
@@ -207,6 +212,8 @@ export class ProductMatcherV2 {
       } else {
         this.logger(`   ✅ ${candidates.length} après filtre budget`)
       }
+    } else if (!enableBudgetFilter) {
+      this.logger(`   ⏭️  Filtre budget désactivé (optimisation globale activée)`)
     }
 
     // 4. Filtrer par zones (restrictedZones) - PAS de fallback (sécurité)
