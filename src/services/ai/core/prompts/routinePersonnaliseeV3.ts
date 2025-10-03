@@ -72,11 +72,15 @@ ENCODAGE MULTICIBLE & TITRES
 
 Si multicible : targetProblem = "A + B (+ C)" (séparateur exact " + ").
 
-displayTitle :
+displayTitle (MAX 40 caractères - STRICT) :
 • adaptation : "Traitement {targetProblem}"
 • maintenance : "Entretien {targetProblem}"
 
-Interdit : noms d'actifs, %, acronymes (BHA, rétinol, …) dans displayTitle.
+RÈGLES displayTitle :
+• ⚠️ LIMITE ABSOLUE : 40 caractères maximum (validation Zod)
+• Si targetProblem trop long → utiliser version courte (ex: "Acné + Rougeurs" au lieu de "Acné + Rougeurs + Hyperpigmentation")
+• Exemples valides : "Traitement Acné" (17 car), "Entretien Rides" (15 car), "Traitement Taches + Rides" (27 car)
+• Interdit : noms d'actifs, %, acronymes (BHA, rétinol, …) dans displayTitle
 
 CANONICALS & ZONES (NORME)
 
