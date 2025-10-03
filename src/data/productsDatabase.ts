@@ -48,14 +48,23 @@ export const EnrichedProductSchema = z.object({
   /**
    * Type de soin (utilisé pour matching par careType)
    * PRIORITAIRE pour l'algorithme de sélection
+   * 
+   * ✅ PHASE 1 : Taxonomie V2 (10 types spécialisés)
+   * - Conservés : nettoyage, tonification, hydratation, protection, exfoliation
+   * - Nouveaux : anti-age, eclat, traitement-cible, apaisement, masque
+   * - Supprimé : traitement (reclassifié dans les 4 nouveaux types)
    */
   careType: z.enum([
     'nettoyage',
     'tonification',
-    'traitement',
     'hydratation',
     'protection',
-    'exfoliation'
+    'exfoliation',
+    'masque',
+    'anti-age',
+    'eclat',
+    'traitement-cible',
+    'apaisement'
   ]),
 
   /**

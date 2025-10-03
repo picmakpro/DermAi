@@ -53,8 +53,8 @@ export class ProductDatabaseLoader {
 
     try {
       // ========== CHARGEMENT CATALOGUE ==========
-      // ✅ PHASE 0 : Utilise enrichedCatalogV2.json avec restrictedZones
-      const catalogData = await import('@/data/enrichedCatalogV2.json')
+      // ✅ PHASE 1 : Utilise enrichedCatalogV3.json avec careType V2 (10 types)
+      const catalogData = await import('@/data/enrichedCatalogV3.json')
       const rawProducts = catalogData.default || []
 
       if (!Array.isArray(rawProducts)) {

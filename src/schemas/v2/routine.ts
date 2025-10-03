@@ -1,9 +1,21 @@
 import { z } from 'zod'
 
 // Schéma pour une étape de routine (V1 - rétrocompatible)
+// ✅ PHASE 1 : Taxonomie V2 (10 types spécialisés)
 export const RoutineStepSchema = z.object({
   stepNumber: z.number().min(1).max(20),
-  careType: z.enum(['nettoyage', 'traitement', 'hydratation', 'protection', 'exfoliation', 'masque']),
+  careType: z.enum([
+    'nettoyage',
+    'tonification',
+    'hydratation',
+    'protection',
+    'exfoliation',
+    'masque',
+    'anti-age',
+    'eclat',
+    'traitement-cible',
+    'apaisement'
+  ]),
   timing: z.string(), // Assouplir : accepter toutes les chaînes ("matin et soir", "1-2 fois par semaine", etc.)
   targetProblem: z.string().optional(),
   targetZones: z.array(z.string()).optional(),
@@ -19,9 +31,21 @@ export const RoutineStepSchema = z.object({
 })
 
 // Schéma enrichi pour les nouvelles routines V2 (tous champs requis)
+// ✅ PHASE 1 : Taxonomie V2 (10 types spécialisés)
 export const EnrichedRoutineStepSchema = z.object({
   stepNumber: z.number().min(1).max(20),
-  careType: z.enum(['nettoyage', 'traitement', 'hydratation', 'protection', 'exfoliation', 'masque']),
+  careType: z.enum([
+    'nettoyage',
+    'tonification',
+    'hydratation',
+    'protection',
+    'exfoliation',
+    'masque',
+    'anti-age',
+    'eclat',
+    'traitement-cible',
+    'apaisement'
+  ]),
   timing: z.string(),
   targetProblem: z.string().optional(),
   targetZones: z.array(z.string()).optional(),

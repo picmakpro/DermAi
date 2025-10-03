@@ -1,21 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="8" failures="0" errors="0" time="1.631">
-  <testsuite name="PHASE 0 : Validation restrictedZones" errors="0" failures="0" skipped="0" timestamp="2025-10-03T12:38:00" time="0.595" tests="8">
-    <testcase classname="PHASE 0 : Validation restrictedZones Complétude du catalogue devrait avoir 110 produits" name="PHASE 0 : Validation restrictedZones Complétude du catalogue devrait avoir 110 produits" time="0.004">
+<testsuites name="jest tests" tests="18" failures="0" errors="0" time="2.026">
+  <testsuite name="PHASE 1 : Validation taxonomie careType V2" errors="0" failures="0" skipped="0" timestamp="2025-10-03T12:49:43" time="0.792" tests="18">
+    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Complétude du catalogue devrait avoir 110 produits" name="PHASE 1 : Validation taxonomie careType V2 Complétude du catalogue devrait avoir 110 produits" time="0.003">
     </testcase>
-    <testcase classname="PHASE 0 : Validation restrictedZones Complétude du catalogue tous les produits doivent avoir le champ restrictedZones" name="PHASE 0 : Validation restrictedZones Complétude du catalogue tous les produits doivent avoir le champ restrictedZones" time="0.021">
+    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Complétude du catalogue tous les produits doivent avoir un careType valide" name="PHASE 1 : Validation taxonomie careType V2 Complétude du catalogue tous les produits doivent avoir un careType valide" time="0.019">
     </testcase>
-    <testcase classname="PHASE 0 : Validation restrictedZones Détection actifs irritants produits avec actifs irritants doivent avoir restrictedZones" name="PHASE 0 : Validation restrictedZones Détection actifs irritants produits avec actifs irritants doivent avoir restrictedZones" time="0.001">
+    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Complétude du catalogue aucun produit ne doit avoir careType &quot;traitement&quot; (obsolète)" name="PHASE 1 : Validation taxonomie careType V2 Complétude du catalogue aucun produit ne doit avoir careType &quot;traitement&quot; (obsolète)" time="0.001">
     </testcase>
-    <testcase classname="PHASE 0 : Validation restrictedZones Détection actifs irritants produits eye-care/lip-care ne doivent PAS avoir de restrictedZones" name="PHASE 0 : Validation restrictedZones Détection actifs irritants produits eye-care/lip-care ne doivent PAS avoir de restrictedZones" time="0.001">
+    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Distribution careTypes tous les 10 careTypes doivent être représentés" name="PHASE 1 : Validation taxonomie careType V2 Distribution careTypes tous les 10 careTypes doivent être représentés" time="0.003">
     </testcase>
-    <testcase classname="PHASE 0 : Validation restrictedZones Statistiques enrichissement devrait avoir 13-17% de produits avec restrictions" name="PHASE 0 : Validation restrictedZones Statistiques enrichissement devrait avoir 13-17% de produits avec restrictions" time="0.029">
+    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Distribution careTypes aucun careType ne doit avoir moins de 5 produits" name="PHASE 1 : Validation taxonomie careType V2 Distribution careTypes aucun careType ne doit avoir moins de 5 produits" time="0.002">
     </testcase>
-    <testcase classname="PHASE 0 : Validation restrictedZones Statistiques enrichissement devrait avoir 9-13% de produits eye-care/lip-care" name="PHASE 0 : Validation restrictedZones Statistiques enrichissement devrait avoir 9-13% de produits eye-care/lip-care" time="0.003">
+    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Distribution careTypes hydratation devrait être le plus représenté (~20%)" name="PHASE 1 : Validation taxonomie careType V2 Distribution careTypes hydratation devrait être le plus représenté (~20%)" time="0.001">
     </testcase>
-    <testcase classname="PHASE 0 : Validation restrictedZones Cas limites Niacinamide &gt;5% doit avoir restrictedZones" name="PHASE 0 : Validation restrictedZones Cas limites Niacinamide &gt;5% doit avoir restrictedZones" time="0.001">
+    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Distribution careTypes afficher distribution complète" name="PHASE 1 : Validation taxonomie careType V2 Distribution careTypes afficher distribution complète" time="0.059">
     </testcase>
-    <testcase classname="PHASE 0 : Validation restrictedZones Cas limites AHA/BHA doivent avoir restrictedZones" name="PHASE 0 : Validation restrictedZones Cas limites AHA/BHA doivent avoir restrictedZones" time="0.001">
+    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Mapping logique category → careType tous les cleansers doivent être &quot;nettoyage&quot;" name="PHASE 1 : Validation taxonomie careType V2 Mapping logique category → careType tous les cleansers doivent être &quot;nettoyage&quot;" time="0.005">
+    </testcase>
+    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Mapping logique category → careType tous les sunscreens doivent être &quot;protection&quot;" name="PHASE 1 : Validation taxonomie careType V2 Mapping logique category → careType tous les sunscreens doivent être &quot;protection&quot;" time="0.003">
+    </testcase>
+    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Mapping logique category → careType tous les masks doivent être &quot;masque&quot;" name="PHASE 1 : Validation taxonomie careType V2 Mapping logique category → careType tous les masks doivent être &quot;masque&quot;" time="0.002">
+    </testcase>
+    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Mapping logique category → careType tous les exfoliants doivent être &quot;exfoliation&quot;" name="PHASE 1 : Validation taxonomie careType V2 Mapping logique category → careType tous les exfoliants doivent être &quot;exfoliation&quot;" time="0.002">
+    </testcase>
+    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements au moins 8 produits &quot;anti-age&quot; (retinol, peptides)" name="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements au moins 8 produits &quot;anti-age&quot; (retinol, peptides)" time="0.003">
+    </testcase>
+    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements au moins 5 produits &quot;eclat&quot; (Vitamin C, kojic)" name="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements au moins 5 produits &quot;eclat&quot; (Vitamin C, kojic)" time="0.005">
+    </testcase>
+    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements au moins 5 produits &quot;traitement-cible&quot; (niacinamide, acides)" name="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements au moins 5 produits &quot;traitement-cible&quot; (niacinamide, acides)" time="0.002">
+    </testcase>
+    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements au moins 8 produits &quot;apaisement&quot; (baumes, cica)" name="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements au moins 8 produits &quot;apaisement&quot; (baumes, cica)" time="0.002">
+    </testcase>
+    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements serum/treatment category doivent être classifiés intelligemment" name="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements serum/treatment category doivent être classifiés intelligemment" time="0.007">
+    </testcase>
+    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Cohérence métadonnées tous les produits doivent avoir catalogId" name="PHASE 1 : Validation taxonomie careType V2 Cohérence métadonnées tous les produits doivent avoir catalogId" time="0.032">
+    </testcase>
+    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Cohérence métadonnées tous les produits doivent avoir restrictedZones (Phase 0)" name="PHASE 1 : Validation taxonomie careType V2 Cohérence métadonnées tous les produits doivent avoir restrictedZones (Phase 0)" time="0.025">
     </testcase>
   </testsuite>
 </testsuites>
