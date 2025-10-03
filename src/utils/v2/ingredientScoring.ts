@@ -308,21 +308,39 @@ export function calculateIngredientCompatibility(
 /**
  * Détermine si un produit est sûr pour l'utilisateur
  * (utilisé pour filtrage avant scoring)
+ * 
+ * AJUSTEMENT SPRINT 3.4 : Seuils adaptatifs selon careType
  */
 export function isProductSafeForUser(
   product: EnrichedProduct,
-  profile: UserProfile
+  profile: UserProfile,
+  careType?: string
 ): boolean {
-  // Filtre critique : grossesse
+  // Filtre critique : grossesse (STRICT)
   if (profile.isPregnant && !product.pregnancySafe) {
     return false
   }
   
-  // Filtre : peau sensible + très irritant
+  // Filtre : peau sensible + irritant (SOUPLE selon careType)
   if (profile.skinType === 'sensitive' && product.irritant) {
     const safetyScore = calculateSafetyScore(product, profile)
-    if (safetyScore < 0.3) {
-      return false  // Trop irritant pour peau sensible
+    
+    // Seuils adaptatifs selon careType
+    const thresholds: Record<string, number> = {
+      'anti-age': 0.2,        // Tolérant (Retinol 0.2% acceptable)
+      'eclat': 0.25,          // Moyennement tolérant
+      'exfoliation': 0.2,     // Tolérant (AHA/BHA contrôlés)
+      'traitement-cible': 0.25, // Moyennement tolérant
+      'hydratation': 0.4,     // Strict (hydratants doivent être doux)
+      'nettoyage': 0.3,       // Moyennement strict
+      'protection': 0.5,      // Très strict (SPF sans irritation)
+      'apaisement': 0.5       // Très strict (produits calmants)
+    }
+    
+    const threshold = careType ? (thresholds[careType] || 0.3) : 0.3
+    
+    if (safetyScore < threshold) {
+      return false  // Trop irritant pour peau sensible dans ce careType
     }
   }
   

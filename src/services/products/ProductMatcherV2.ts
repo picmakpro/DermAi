@@ -207,14 +207,14 @@ export class ProductMatcherV2 {
       this.logger(`   ✅ ${candidates.length} après filtre zones`)
     }
 
-    // 5. 🆕 Filtrer par sécurité ingrédients
+    // 5. 🆕 Filtrer par sécurité ingrédients (avec careType pour seuils adaptatifs)
     const ingredientProfile: IngredientUserProfile = {
       skinType: profile.skinType,
       isPregnant: profile.isPregnant,
       concerns: profile.concerns
     }
 
-    candidates = candidates.filter((p) => isProductSafeForUser(p, ingredientProfile))
+    candidates = candidates.filter((p) => isProductSafeForUser(p, ingredientProfile, step.careType))
     this.logger(`   ✅ ${candidates.length} après filtre sécurité`)
 
     return candidates
