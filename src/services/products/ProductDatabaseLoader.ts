@@ -25,6 +25,10 @@ import {
 /**
  * Loader statique de la database produits avec cache singleton
  * 
+ * ✅ PHASE 2 : Feature flag Supabase
+ * - USE_SUPABASE_CATALOG=true → ProductDatabaseLoaderV2 (Supabase)
+ * - USE_SUPABASE_CATALOG=false → V1 (JSON local)
+ * 
  * Usage :
  * ```typescript
  * const db = await ProductDatabaseLoader.load()
@@ -42,6 +46,25 @@ export class ProductDatabaseLoader {
    * @throws Error si fichier introuvable ou validation échoue
    */
   static async load(): Promise<ProductDatabase> {
+    // ========== FEATURE FLAG : SUPABASE V2 ==========
+    const useSupabase = process.env.USE_SUPABASE_CATALOG === 'true'
+    
+    if (useSupabase) {
+      console.log('[ProductDatabaseLoader] 🔄 Using Supabase V2')
+      // Dynamically import pour éviter erreur si Supabase pas configuré
+      try {
+        const { ProductDatabaseLoaderV2 } = await import('./ProductDatabaseLoaderV2')
+        return await ProductDatabaseLoaderV2.load()
+      } catch (error: any) {
+        console.error('[ProductDatabaseLoader] ❌ Supabase V2 failed, fallback to JSON V1')
+        console.error('Error:', error.message)
+        // Fallback vers V1 si erreur
+      }
+    }
+    
+    // ========== V1 : JSON LOCAL ==========
+    console.log('[ProductDatabaseLoader] 📁 Using JSON V1 (local file)')
+    
     // Cache hit : retourner database déjà chargée
     if (this.cache) {
       console.log('[ProductDatabaseLoader] 📦 Cache hit - Database déjà chargée')

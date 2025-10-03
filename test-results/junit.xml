@@ -1,41 +1,153 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="18" failures="0" errors="0" time="2.026">
-  <testsuite name="PHASE 1 : Validation taxonomie careType V2" errors="0" failures="0" skipped="0" timestamp="2025-10-03T12:49:43" time="0.792" tests="18">
-    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Complétude du catalogue devrait avoir 110 produits" name="PHASE 1 : Validation taxonomie careType V2 Complétude du catalogue devrait avoir 110 produits" time="0.003">
+<testsuites name="jest tests" tests="11" failures="8" errors="0" time="2.011">
+  <testsuite name="Phase 2 : Validation Supabase" errors="0" failures="8" skipped="3" timestamp="2025-10-03T13:35:35" time="0.96" tests="11">
+    <testcase classname="Phase 2 : Validation Supabase ProductDatabaseLoaderV2 (Supabase) devrait charger 110 produits depuis Supabase" name="Phase 2 : Validation Supabase ProductDatabaseLoaderV2 (Supabase) devrait charger 110 produits depuis Supabase" time="0.056">
+      <failure>Error: SUPABASE_CONFIG_MISSING: Variables Supabase non configurées
+    at Function.load (/Users/mak/dermai-v2/src/services/products/ProductDatabaseLoaderV2.ts:70:15)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/tests/integration/phase2-supabase-validation.test.ts:23:48)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Complétude du catalogue tous les produits doivent avoir un careType valide" name="PHASE 1 : Validation taxonomie careType V2 Complétude du catalogue tous les produits doivent avoir un careType valide" time="0.019">
+    <testcase classname="Phase 2 : Validation Supabase ProductDatabaseLoaderV2 (Supabase) devrait avoir tous les careTypes V2 (10 types)" name="Phase 2 : Validation Supabase ProductDatabaseLoaderV2 (Supabase) devrait avoir tous les careTypes V2 (10 types)" time="0.009">
+      <failure>Error: SUPABASE_CONFIG_MISSING: Variables Supabase non configurées
+    at Function.load (/Users/mak/dermai-v2/src/services/products/ProductDatabaseLoaderV2.ts:70:15)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/tests/integration/phase2-supabase-validation.test.ts:31:48)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Complétude du catalogue aucun produit ne doit avoir careType &quot;traitement&quot; (obsolète)" name="PHASE 1 : Validation taxonomie careType V2 Complétude du catalogue aucun produit ne doit avoir careType &quot;traitement&quot; (obsolète)" time="0.001">
+    <testcase classname="Phase 2 : Validation Supabase ProductDatabaseLoaderV2 (Supabase) devrait avoir une distribution cohérente" name="Phase 2 : Validation Supabase ProductDatabaseLoaderV2 (Supabase) devrait avoir une distribution cohérente" time="0.007">
+      <failure>Error: SUPABASE_CONFIG_MISSING: Variables Supabase non configurées
+    at Function.load (/Users/mak/dermai-v2/src/services/products/ProductDatabaseLoaderV2.ts:70:15)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/tests/integration/phase2-supabase-validation.test.ts:53:48)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Distribution careTypes tous les 10 careTypes doivent être représentés" name="PHASE 1 : Validation taxonomie careType V2 Distribution careTypes tous les 10 careTypes doivent être représentés" time="0.003">
+    <testcase classname="Phase 2 : Validation Supabase ProductDatabaseLoaderV2 (Supabase) devrait valider tous les produits avec Zod" name="Phase 2 : Validation Supabase ProductDatabaseLoaderV2 (Supabase) devrait valider tous les produits avec Zod" time="0.006">
+      <failure>Error: SUPABASE_CONFIG_MISSING: Variables Supabase non configurées
+    at Function.load (/Users/mak/dermai-v2/src/services/products/ProductDatabaseLoaderV2.ts:70:15)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/tests/integration/phase2-supabase-validation.test.ts:64:48)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Distribution careTypes aucun careType ne doit avoir moins de 5 produits" name="PHASE 1 : Validation taxonomie careType V2 Distribution careTypes aucun careType ne doit avoir moins de 5 produits" time="0.002">
+    <testcase classname="Phase 2 : Validation Supabase ProductDatabaseLoaderV2 (Supabase) devrait avoir des restrictedZones valides (Phase 0)" name="Phase 2 : Validation Supabase ProductDatabaseLoaderV2 (Supabase) devrait avoir des restrictedZones valides (Phase 0)" time="0.006">
+      <failure>Error: SUPABASE_CONFIG_MISSING: Variables Supabase non configurées
+    at Function.load (/Users/mak/dermai-v2/src/services/products/ProductDatabaseLoaderV2.ts:70:15)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/tests/integration/phase2-supabase-validation.test.ts:95:48)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Distribution careTypes hydratation devrait être le plus représenté (~20%)" name="PHASE 1 : Validation taxonomie careType V2 Distribution careTypes hydratation devrait être le plus représenté (~20%)" time="0.001">
+    <testcase classname="Phase 2 : Validation Supabase ProductDatabaseLoaderV2 (Supabase) devrait utiliser le cache correctement" name="Phase 2 : Validation Supabase ProductDatabaseLoaderV2 (Supabase) devrait utiliser le cache correctement" time="0.005">
+      <failure>Error: SUPABASE_CONFIG_MISSING: Variables Supabase non configurées
+    at Function.load (/Users/mak/dermai-v2/src/services/products/ProductDatabaseLoaderV2.ts:70:15)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/tests/integration/phase2-supabase-validation.test.ts:115:37)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Distribution careTypes afficher distribution complète" name="PHASE 1 : Validation taxonomie careType V2 Distribution careTypes afficher distribution complète" time="0.059">
+    <testcase classname="Phase 2 : Validation Supabase ProductDatabaseLoaderV2 (Supabase) devrait retourner stats cache valides" name="Phase 2 : Validation Supabase ProductDatabaseLoaderV2 (Supabase) devrait retourner stats cache valides" time="0.008">
+      <failure>Error: SUPABASE_CONFIG_MISSING: Variables Supabase non configurées
+    at Function.load (/Users/mak/dermai-v2/src/services/products/ProductDatabaseLoaderV2.ts:70:15)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/tests/integration/phase2-supabase-validation.test.ts:135:37)
+    at Promise.then.completed (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:298:28)
+    at new Promise (&lt;anonymous&gt;)
+    at callAsyncCircusFn (/Users/mak/dermai-v2/node_modules/jest-circus/build/utils.js:231:10)
+    at _callCircusTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:252:3)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:126:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at _runTestsForDescribeBlock (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:121:9)
+    at run (/Users/mak/dermai-v2/node_modules/jest-circus/build/run.js:71:3)
+    at runAndTransformResultsToJestFormat (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)
+    at jestAdapter (/Users/mak/dermai-v2/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)
+    at runTestInternal (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:367:16)
+    at runTest (/Users/mak/dermai-v2/node_modules/jest-runner/build/runTest.js:444:34)</failure>
     </testcase>
-    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Mapping logique category → careType tous les cleansers doivent être &quot;nettoyage&quot;" name="PHASE 1 : Validation taxonomie careType V2 Mapping logique category → careType tous les cleansers doivent être &quot;nettoyage&quot;" time="0.005">
+    <testcase classname="Phase 2 : Validation Supabase Feature Flag (USE_SUPABASE_CATALOG) devrait charger depuis JSON V1 par défaut" name="Phase 2 : Validation Supabase Feature Flag (USE_SUPABASE_CATALOG) devrait charger depuis JSON V1 par défaut" time="0.071">
+      <failure>Error: PRODUCT_DATABASE_LOAD_FAILED: PRODUCT_DATABASE_EMPTY: Aucun produit valide après validation Zod
+    at Function.load (/Users/mak/dermai-v2/src/services/products/ProductDatabaseLoader.ts:179:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at Object.&lt;anonymous&gt; (/Users/mak/dermai-v2/tests/integration/phase2-supabase-validation.test.ts:149:18)</failure>
     </testcase>
-    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Mapping logique category → careType tous les sunscreens doivent être &quot;protection&quot;" name="PHASE 1 : Validation taxonomie careType V2 Mapping logique category → careType tous les sunscreens doivent être &quot;protection&quot;" time="0.003">
+    <testcase classname="Phase 2 : Validation Supabase Régression V1 vs V2 devrait avoir les mêmes données entre V1 et V2" name="Phase 2 : Validation Supabase Régression V1 vs V2 devrait avoir les mêmes données entre V1 et V2" time="0">
+      <skipped/>
     </testcase>
-    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Mapping logique category → careType tous les masks doivent être &quot;masque&quot;" name="PHASE 1 : Validation taxonomie careType V2 Mapping logique category → careType tous les masks doivent être &quot;masque&quot;" time="0.002">
+    <testcase classname="Phase 2 : Validation Supabase Régression V1 vs V2 devrait avoir les mêmes catalogIds entre V1 et V2" name="Phase 2 : Validation Supabase Régression V1 vs V2 devrait avoir les mêmes catalogIds entre V1 et V2" time="0">
+      <skipped/>
     </testcase>
-    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Mapping logique category → careType tous les exfoliants doivent être &quot;exfoliation&quot;" name="PHASE 1 : Validation taxonomie careType V2 Mapping logique category → careType tous les exfoliants doivent être &quot;exfoliation&quot;" time="0.002">
-    </testcase>
-    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements au moins 8 produits &quot;anti-age&quot; (retinol, peptides)" name="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements au moins 8 produits &quot;anti-age&quot; (retinol, peptides)" time="0.003">
-    </testcase>
-    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements au moins 5 produits &quot;eclat&quot; (Vitamin C, kojic)" name="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements au moins 5 produits &quot;eclat&quot; (Vitamin C, kojic)" time="0.005">
-    </testcase>
-    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements au moins 5 produits &quot;traitement-cible&quot; (niacinamide, acides)" name="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements au moins 5 produits &quot;traitement-cible&quot; (niacinamide, acides)" time="0.002">
-    </testcase>
-    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements au moins 8 produits &quot;apaisement&quot; (baumes, cica)" name="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements au moins 8 produits &quot;apaisement&quot; (baumes, cica)" time="0.002">
-    </testcase>
-    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements serum/treatment category doivent être classifiés intelligemment" name="PHASE 1 : Validation taxonomie careType V2 Classification intelligente sérums/traitements serum/treatment category doivent être classifiés intelligemment" time="0.007">
-    </testcase>
-    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Cohérence métadonnées tous les produits doivent avoir catalogId" name="PHASE 1 : Validation taxonomie careType V2 Cohérence métadonnées tous les produits doivent avoir catalogId" time="0.032">
-    </testcase>
-    <testcase classname="PHASE 1 : Validation taxonomie careType V2 Cohérence métadonnées tous les produits doivent avoir restrictedZones (Phase 0)" name="PHASE 1 : Validation taxonomie careType V2 Cohérence métadonnées tous les produits doivent avoir restrictedZones (Phase 0)" time="0.025">
+    <testcase classname="Phase 2 : Validation Supabase Régression V1 vs V2 devrait avoir les mêmes restrictedZones entre V1 et V2" name="Phase 2 : Validation Supabase Régression V1 vs V2 devrait avoir les mêmes restrictedZones entre V1 et V2" time="0">
+      <skipped/>
     </testcase>
   </testsuite>
 </testsuites>
