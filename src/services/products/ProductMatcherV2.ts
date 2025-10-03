@@ -152,10 +152,10 @@ export class ProductMatcherV2 {
   /**
    * Filtre les candidats selon careType, skinType, budget, zones, sécurité
    * 
-   * Critères V2 :
-   * - careType match
-   * - skinType compatible (targetSkinTypes)
-   * - Budget respecté (budget/expectedSteps)
+   * Critères V2 avec FALLBACKS (comme V1) :
+   * - careType match (STRICT)
+   * - skinType compatible (RELÂCHÉ si 0 résultat)
+   * - Budget respecté (MARGE 80% comme V1)
    * - Zones compatibles (restrictedZones)
    * - 🆕 Sécurité ingrédients (pregnancy, sensitive skin)
    */
@@ -174,26 +174,44 @@ export class ProductMatcherV2 {
     this.logger(`   📦 ${productsByCareType.length} produits ${step.careType}`)
 
     let candidates = [...productsByCareType]
+    const candidatesBeforeSkinType = [...candidates]
 
-    // 2. Filtrer par skinType
+    // 2. Filtrer par skinType (avec FALLBACK si 0 résultat)
     if (profile.skinType) {
       candidates = candidates.filter((p) =>
         p.targetSkinTypes.some((t) =>
           t.toLowerCase().includes(profile.skinType.toLowerCase())
         )
       )
-      this.logger(`   ✅ ${candidates.length} après filtre skinType`)
+      
+      // FALLBACK: Si 0 résultat, relâcher filtre skinType
+      if (candidates.length === 0) {
+        this.logger(`   ⚠️ Filtre skinType relâché (0 candidats compatibles ${profile.skinType})`)
+        candidates = candidatesBeforeSkinType
+      } else {
+        this.logger(`   ✅ ${candidates.length} après filtre skinType`)
+      }
     }
 
-    // 3. Filtrer par budget
+    const candidatesBeforeBudget = [...candidates]
+
+    // 3. Filtrer par budget (MARGE 80% comme V1 au lieu de 20%)
     if (budget.maxBudget && budget.expectedSteps > 0) {
       const maxPricePerStep = budget.maxBudget / budget.expectedSteps
-      candidates = candidates.filter((p) => p.price <= maxPricePerStep * 1.2) // +20% tolérance
-      this.logger(`   ✅ ${candidates.length} après filtre budget`)
+      candidates = candidates.filter((p) => p.price <= maxPricePerStep * 1.8) // +80% tolérance (comme V1)
+      
+      // FALLBACK: Si 0 résultat, relâcher budget
+      if (candidates.length === 0) {
+        this.logger(`   ⚠️ Filtre budget relâché (0 candidats < ${(maxPricePerStep * 1.8).toFixed(2)}€)`)
+        candidates = candidatesBeforeBudget
+      } else {
+        this.logger(`   ✅ ${candidates.length} après filtre budget`)
+      }
     }
 
-    // 4. Filtrer par zones (restrictedZones)
+    // 4. Filtrer par zones (restrictedZones) - PAS de fallback (sécurité)
     if (step.targetZones && step.targetZones.length > 0) {
+      const candidatesBeforeZones = [...candidates]
       candidates = candidates.filter((p) => {
         // Vérifier si produit a des zones restreintes qui overlappent avec target zones
         const hasRestriction = step.targetZones.some((zone) =>
@@ -204,10 +222,17 @@ export class ProductMatcherV2 {
         )
         return !hasRestriction
       })
-      this.logger(`   ✅ ${candidates.length} après filtre zones`)
+      
+      if (candidates.length === 0 && candidatesBeforeZones.length > 0) {
+        this.logger(`   ⚠️ ${candidatesBeforeZones.length} produits exclus (restrictedZones)`)
+      } else {
+        this.logger(`   ✅ ${candidates.length} après filtre zones`)
+      }
     }
 
-    // 5. 🆕 Filtrer par sécurité ingrédients (avec careType pour seuils adaptatifs)
+    const candidatesBeforeSecurity = [...candidates]
+
+    // 5. 🆕 Filtrer par sécurité ingrédients (avec fallback adaptatif)
     const ingredientProfile: IngredientUserProfile = {
       skinType: profile.skinType,
       isPregnant: profile.isPregnant,
@@ -215,7 +240,19 @@ export class ProductMatcherV2 {
     }
 
     candidates = candidates.filter((p) => isProductSafeForUser(p, ingredientProfile, step.careType))
-    this.logger(`   ✅ ${candidates.length} après filtre sécurité`)
+    
+    // FALLBACK: Si 0 résultat après sécurité, relâcher seulement pour careTypes de base
+    if (candidates.length === 0 && candidatesBeforeSecurity.length > 0) {
+      const baseCareTypes = ['nettoyage', 'hydratation', 'protection']
+      if (baseCareTypes.includes(step.careType)) {
+        this.logger(`   ⚠️ Filtre sécurité relâché (careType base: ${step.careType})`)
+        candidates = candidatesBeforeSecurity
+      } else {
+        this.logger(`   ⚠️ ${candidatesBeforeSecurity.length} produits exclus (sécurité ingrédients)`)
+      }
+    } else {
+      this.logger(`   ✅ ${candidates.length} après filtre sécurité`)
+    }
 
     return candidates
   }
