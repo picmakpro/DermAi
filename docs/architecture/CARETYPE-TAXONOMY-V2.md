@@ -529,3 +529,5 @@ Step 2 : { careType: 'eclat', targetProblem: 'Taches' }
 **Dernière mise à jour** : 2 Octobre 2025  
 **Prochaine révision** : Post-migration (Sem 3)
 
+
+

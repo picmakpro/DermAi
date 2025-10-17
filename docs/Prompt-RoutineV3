@@ -256,3 +256,25 @@ Si, après 1–4, l’ensemble dépasse encore la limite induite par budgetTier/
 Sortie requise (intégrée aux champs existants) :
 • Expliquer dans education.text (adaptation) en 1–2 phrases comment Budget/Style ont été pris en compte (ex. “fusion multicible”, “hebdo limité”).
 • Ajouter dans globalAdvice une ligne sur l’adaptation au budget/style (ex. “Routine calée sur budget Essentiel : privilégier les soins multifonctions, limiter les hebdos.”).
+
+ CONTRAINTES BUDGET/STYLE (ARBITRAGE)
+- Respecter simultanément:
+  • budgetTier ∈ {Essentiel, Confort, Expert} avec plafonds: 
+    Essentiel: skuMax=5, treatmentsMax=1, hebdoMax=1
+    Confort:   skuMax=6, treatmentsMax=2, hebdoMax=1
+    Expert:    skuMax=8, treatmentsMax=2, hebdoMax=2
+  • routineStyle ∈ {Express, Équilibrée, Complète}:
+    Express: Matin≤3, Soir≤3, treatmentsMax=1, hebdoMax=1
+    Équilibrée: Matin≤3, Soir≤4, treatmentsMax=2, hebdoMax=1
+    Complète: Matin≤4, Soir≤4, treatmentsMax=2, hebdoMax=2
+- Arbitrage si conflit:
+  1) Priorité sécurité (grossesse/compatibilités).
+  2) Budget > Style: si les limites budget ne permettent pas le style demandé:
+     • appliquer fusion multicible; 
+     • réduire d’abord les hebdomadaires jusqu’à hebdoMax;
+     • si besoin, limiter à treatmentsMax;
+     • ne jamais dépasser skuMax.
+  3) Expliquer brièvement en globalAdvice le compromis appliqué.
+- Interdits:
+  • Ajouter un 3e actif en parallèle.
+  • Dépasser skuMax, treatmentsMax, hebdoMax, ou les limites Matin/Soir liées au style.

@@ -895,47 +895,109 @@ export class AnalysisService {
         }
       }
 
-      // ========== 3.5 OPTIMISATION BUDGET GLOBALE ==========
-      this.logger.info('[selectOptimalProducts] 💰 Phase 2 : Optimisation budget globale')
+      // ========== 3.5 DÉDUPLICATION PRODUITS UNIQUES ==========
+      // 🆕 FIX CRITIQUE (3 Oct 2025) : Dédupliquer AVANT optimisation budget
+      // Problème identifié : BudgetOptimizer travaillait sur coût gonflé avec dupliqués
+      // Solution : Identifier produits uniques d'abord, puis optimiser si nécessaire
       
-      // Calculer coût routine idéale
-      const idealCost = idealMatches.reduce((sum, { match }) => sum + match.mainProduct.price, 0)
-      this.logger.info(`[selectOptimalProducts] 💵 Coût routine idéale : ${idealCost.toFixed(2)}€`)
+      this.logger.info('[selectOptimalProducts] 🔍 Phase 2 : Déduplication produits uniques')
+      
+      // Identifier produits uniques et leurs occurrences
+      const productOccurrences = new Map<string, {
+        product: any // EnrichedProduct from ProductMatcher
+        stepNumbers: number[]
+        matchingScore: number
+        alternatives: any[]
+        reasoning: string
+      }>()
+      
+      idealMatches.forEach(({ step, match }) => {
+        const catalogId = match.mainProduct.catalogId
+        if (productOccurrences.has(catalogId)) {
+          // Produit déjà rencontré, ajouter cette occurrence
+          productOccurrences.get(catalogId)!.stepNumbers.push(step.stepNumber)
+        } else {
+          // Premier fois qu'on voit ce produit
+          productOccurrences.set(catalogId, {
+            product: match.mainProduct,
+            stepNumbers: [step.stepNumber],
+            matchingScore: match.matchingScore,
+            alternatives: match.alternatives || [],
+            reasoning: match.reasoning
+          })
+        }
+      })
+      
+      const uniqueProductsCount = productOccurrences.size
+      const totalStepsCount = idealMatches.length
+      
+      // Calculer coût RÉEL (produits uniques seulement)
+      const realCost = Array.from(productOccurrences.values()).reduce(
+        (sum, { product }) => sum + product.price,
+        0
+      )
+      
+      // Calculer coût naïf (avec dupliqués pour comparaison)
+      const naiveCost = idealMatches.reduce((sum, { match }) => sum + match.mainProduct.price, 0)
+      const savingsFromDeduplication = naiveCost - realCost
+      
+      this.logger.info('[selectOptimalProducts] 📊 Déduplication résultats', {
+        uniqueProducts: uniqueProductsCount,
+        totalSteps: totalStepsCount,
+        realCost: `${realCost.toFixed(2)}€`,
+        naiveCost: `${naiveCost.toFixed(2)}€`,
+        savings: `${savingsFromDeduplication.toFixed(2)}€`,
+        savingsPercent: `${((savingsFromDeduplication / naiveCost) * 100).toFixed(1)}%`
+      })
+
+      // ========== 3.6 OPTIMISATION BUDGET (SI NÉCESSAIRE) ==========
+      this.logger.info('[selectOptimalProducts] 💰 Phase 3 : Vérification budget')
+      this.logger.info(`[selectOptimalProducts] 💵 Coût réel (produits uniques) : ${realCost.toFixed(2)}€`)
+      this.logger.info(`[selectOptimalProducts] 🎯 Budget cible : ${request.constraints.budget || 'illimité'}€`)
 
       let selectedProducts: SelectedProductV3[]
       let budgetOptimizationResult: any = null
 
-      // Si budget dépassé → optimisation intelligente
-      if (request.constraints.budget && idealCost > request.constraints.budget) {
+      // Si coût RÉEL dépassé → optimisation intelligente
+      if (request.constraints.budget && realCost > request.constraints.budget) {
         this.logger.info(
-          `[selectOptimalProducts] ⚠️ Dépassement budget : ${idealCost.toFixed(2)}€ > ${request.constraints.budget}€ (+${(idealCost - request.constraints.budget).toFixed(2)}€)`
+          `[selectOptimalProducts] ⚠️ Dépassement budget RÉEL : ${realCost.toFixed(2)}€ > ${request.constraints.budget}€ (+${(realCost - request.constraints.budget).toFixed(2)}€)`
         )
-        this.logger.info('[selectOptimalProducts] 🧠 Lancement BudgetOptimizer...')
+        this.logger.info('[selectOptimalProducts] 🧠 Lancement BudgetOptimizer sur produits UNIQUES...')
 
         // Importer BudgetOptimizer
         const { BudgetOptimizer } = await import('@/services/products/BudgetOptimizer')
         const { CARETYPE_BUDGET_PRIORITIES } = await import('@/types')
 
-        // Convertir au format BudgetOptimizer.ProductMatch
-        const idealRoutineForOptimizer = idealMatches.map(({ step, match }) => ({
-          step: {
-            stepNumber: step.stepNumber,
-            careType: step.careType,
-            displayTitle: step.displayTitle || step.careType,
-            targetZones: step.targetZones
-          },
-          mainProduct: match.mainProduct,
-          alternatives: match.alternatives || [],
-          matchingScore: match.matchingScore,
-          reasoning: match.reasoning
-        }))
+        // Convertir produits UNIQUES au format BudgetOptimizer.ProductMatch
+        // Pour chaque produit unique, on prend la première occurrence comme représentant
+        const uniqueRoutineForOptimizer = Array.from(productOccurrences.entries()).map(([catalogId, data]) => {
+          // Trouver le premier step qui utilise ce produit
+          const firstStepNumber = data.stepNumbers[0]
+          const firstStep = allSteps.find(s => s.stepNumber === firstStepNumber)!
+          
+          return {
+            step: {
+              stepNumber: firstStepNumber,
+              careType: firstStep.careType,
+              displayTitle: firstStep.careType, // Utiliser careType comme fallback
+              targetZones: firstStep.targetZones
+            },
+            mainProduct: data.product,
+            alternatives: data.alternatives,
+            matchingScore: data.matchingScore,
+            reasoning: data.reasoning,
+            // 🆕 Ajouter info sur les steps dupliqués pour réapplication ultérieure
+            affectedSteps: data.stepNumbers
+          }
+        })
 
-        // Appeler BudgetOptimizer
+        // Appeler BudgetOptimizer sur produits UNIQUES
         const optimized = BudgetOptimizer.optimize(
-          idealRoutineForOptimizer,
+          uniqueRoutineForOptimizer as any, // Cast temporaire, BudgetOptimizer ignore affectedSteps
           {
             maxBudget: request.constraints.budget,
-            expectedSteps: allSteps.length,
+            expectedSteps: uniqueProductsCount, // 🆕 Nombre de produits uniques, pas steps totaux
             priority: 'balanced',
             flexibility: 0.1,
             enableSmartOptimization: true
@@ -945,7 +1007,7 @@ export class AnalysisService {
 
         budgetOptimizationResult = {
           applied: optimized.optimized,
-          originalCost: optimized.originalCost,
+          originalCost: realCost, // 🆕 Coût réel au lieu de naïf
           finalCost: optimized.finalCost,
           savings: optimized.savings,
           substitutionsCount: optimized.substitutions.length,
@@ -956,16 +1018,50 @@ export class AnalysisService {
               stepNumber: sub.stepNumber,
               careType: sub.careType,
               from: sub.originalProduct.name,
-              to: sub.substituteProduct.name,
+              to: sub.substituteProduct?.name || 'N/A',
               priceSaved: sub.priceSaved,
               scoreLost: sub.scoreLost
             })),
             stepsRemoved: optimized.stepsRemoved
           }
         }
+        
+        // 🆕 RÉAPPLIQUER les substitutions aux steps dupliqués
+        // Si un produit unique a été substitué, il faut appliquer cette substitution
+        // à TOUS les steps qui utilisaient ce produit
+        const substitutionMap = new Map<string, EnrichedProduct>()
+        optimized.substitutions.forEach((sub) => {
+          if (sub.substituteProduct) {
+            substitutionMap.set(sub.originalProduct.catalogId, sub.substituteProduct)
+          }
+        })
+        
+        // Mettre à jour productOccurrences avec les substitutions
+        productOccurrences.forEach((data, catalogId) => {
+          if (substitutionMap.has(catalogId)) {
+            const substitute = substitutionMap.get(catalogId)!
+            this.logger.info(
+              `[selectOptimalProducts] 🔄 Réapplication substitution : ${data.product.name} → ${substitute.name} (${data.stepNumbers.length} steps affectés : ${data.stepNumbers.join(', ')})`
+            )
+            data.product = substitute
+          }
+        })
+        
+        // Supprimer produits qui ont été retirés (si stepsRemoved existe et est un tableau)
+        if (Array.isArray(optimized.stepsRemoved) && optimized.stepsRemoved.length > 0) {
+          optimized.stepsRemoved.forEach((removed: any) => {
+            const catalogId = removed.catalogId || removed
+            if (typeof catalogId === 'string' && productOccurrences.has(catalogId)) {
+              this.logger.info(
+                `[selectOptimalProducts] ❌ Suppression produit : ${removed.productName || catalogId} (${productOccurrences.get(catalogId)!.stepNumbers.length} steps affectés)`
+              )
+              productOccurrences.delete(catalogId)
+            }
+          })
+        }
 
         this.logger.info(
-          `[selectOptimalProducts] ✅ Optimisation terminée : ${optimized.originalCost.toFixed(2)}€ → ${optimized.finalCost.toFixed(2)}€ (économie: ${optimized.savings.toFixed(2)}€)`
+          `[selectOptimalProducts] ✅ Optimisation terminée : ${realCost.toFixed(2)}€ → ${optimized.finalCost.toFixed(2)}€ (économie: ${optimized.savings.toFixed(2)}€)`
         )
         this.logger.info(
           `[selectOptimalProducts] 📊 ${optimized.substitutions.length} substitutions, ${optimized.stepsRemoved.length} suppressions`
@@ -974,83 +1070,94 @@ export class AnalysisService {
           `[selectOptimalProducts] ${optimized.preservedCritical ? '✅' : '⚠️'} SPF + Nettoyant : ${optimized.preservedCritical ? 'PRÉSERVÉS' : 'COMPROMIS'}`
         )
 
-        // Convertir routine optimisée vers SelectedProductV3
-        selectedProducts = optimized.routine.map((optimizedMatch) => {
-          const step = optimizedMatch.step
-          const match = {
-            mainProduct: optimizedMatch.mainProduct,
-            alternatives: optimizedMatch.alternatives,
-            matchingScore: optimizedMatch.matchingScore,
-            reasoning: optimizedMatch.reasoning
-          }
-
-          return {
-            routineStepId: step.stepNumber,
-            routineStepUid: `step-${step.stepNumber}`,
-            catalogId: match.mainProduct.catalogId,
-            productName: match.mainProduct.name,
-            brand: match.mainProduct.brand,
-            price: match.mainProduct.price,
-            imageUrl: match.mainProduct.imageUrl || '',
-            matchingScore: match.matchingScore,
-            compatibilityReasons: match.mainProduct.targetConcerns.slice(0, 3),
-            retailers: match.mainProduct.retailers || [],
-            alternatives: match.alternatives.map((alt, idx) => ({
-              catalogId: alt.catalogId,
-              name: alt.name,
-              brand: alt.brand,
-              price: alt.price,
-              imageUrl: alt.imageUrl || '',
-              matchingScore: Math.round(match.matchingScore - (idx + 1) * 5)
-            })),
-            justification: match.reasoning || 'Sélectionné pour correspondance optimale',
-            applicationAdvice: `Appliquer ${
-              allSteps.find((s) => s.stepNumber === step.stepNumber)?.timing === 'morning'
-                ? 'le matin'
-                : allSteps.find((s) => s.stepNumber === step.stepNumber)?.timing === 'evening'
-                ? 'le soir'
+        // 🆕 Générer selectedProducts à partir de productOccurrences mis à jour
+        // Chaque produit unique génère N SelectedProductV3 (un par step où il est utilisé)
+        selectedProducts = []
+        productOccurrences.forEach((data) => {
+          data.stepNumbers.forEach((stepNumber) => {
+            const step = allSteps.find(s => s.stepNumber === stepNumber)!
+            const isSubstituted = substitutionMap.has(data.product.catalogId)
+            
+            selectedProducts.push({
+              routineStepId: stepNumber,
+              routineStepUid: `step-${stepNumber}`,
+              catalogId: data.product.catalogId,
+              productName: data.product.name,
+              brand: data.product.brand,
+              price: data.product.price,
+              imageUrl: data.product.imageUrl || '',
+              matchingScore: data.matchingScore,
+              compatibilityReasons: data.product.targetConcerns.slice(0, 3),
+              retailers: data.product.retailers || [],
+              alternatives: data.alternatives.map((alt, idx) => ({
+                catalogId: alt.catalogId,
+                name: alt.name,
+                brand: alt.brand,
+                price: alt.price,
+                imageUrl: alt.imageUrl || '',
+                matchingScore: Math.round(data.matchingScore - (idx + 1) * 5)
+              })),
+              justification: isSubstituted 
+                ? `Substitution budgétaire (économie ${optimized.savings.toFixed(2)}€)`
+                : data.reasoning || 'Sélectionné pour correspondance optimale',
+              applicationAdvice: `Appliquer ${
+                step.timing === 'morning' ? 'le matin' 
+                : step.timing === 'evening' ? 'le soir' 
                 : 'matin et soir'
-            } sur ${step.targetZones.join(', ')}`,
-            timing: allSteps.find((s) => s.stepNumber === step.stepNumber)?.timing || 'both',
-            targetZones: step.targetZones,
-            temporaryLabel: false,
-            progressiveIntroduction: null,
-            restrictions: []
-          }
+              } sur ${step.targetZones.join(', ')}`,
+              timing: step.timing,
+              targetZones: step.targetZones,
+              temporaryLabel: false,
+              progressiveIntroduction: null,
+              restrictions: []
+            })
+          })
         })
       } else {
         // Budget OK → utiliser routine idéale sans optimisation
         this.logger.info(
-          `[selectOptimalProducts] ✅ Budget respecté (${idealCost.toFixed(2)}€ ≤ ${request.constraints.budget || 'illimité'}€) - Pas d'optimisation requise`
+          `[selectOptimalProducts] ✅ Budget respecté (${realCost.toFixed(2)}€ ≤ ${request.constraints.budget || 'illimité'}€) - Pas d'optimisation requise`
         )
 
-        selectedProducts = idealMatches.map(({ step, match }) => ({
-          routineStepId: step.stepNumber,
-          routineStepUid: `step-${step.stepNumber}`,
-          catalogId: match.mainProduct.catalogId,
-          productName: match.mainProduct.name,
-          brand: match.mainProduct.brand,
-          price: match.mainProduct.price,
-          imageUrl: match.mainProduct.imageUrl || '',
-          matchingScore: match.matchingScore,
-          compatibilityReasons: match.mainProduct.targetConcerns.slice(0, 3),
-          retailers: match.mainProduct.retailers || [],
-          alternatives: match.alternatives.map((alt, idx) => ({
-            catalogId: alt.catalogId,
-            name: alt.name,
-            brand: alt.brand,
-            price: alt.price,
-            imageUrl: alt.imageUrl || '',
-            matchingScore: Math.round(match.matchingScore - (idx + 1) * 5)
-          })),
-          justification: match.reasoning,
-          applicationAdvice: `Appliquer ${step.timing === 'morning' ? 'le matin' : step.timing === 'evening' ? 'le soir' : 'matin et soir'} sur ${step.targetZones.join(', ')}`,
-          timing: step.timing,
-          targetZones: step.targetZones,
-          temporaryLabel: false,
-          progressiveIntroduction: null,
-          restrictions: []
-        }))
+        // 🆕 Générer selectedProducts à partir de productOccurrences (sans substitution)
+        selectedProducts = []
+        productOccurrences.forEach((data) => {
+          data.stepNumbers.forEach((stepNumber) => {
+            const step = allSteps.find(s => s.stepNumber === stepNumber)!
+            
+            selectedProducts.push({
+              routineStepId: stepNumber,
+              routineStepUid: `step-${stepNumber}`,
+              catalogId: data.product.catalogId,
+              productName: data.product.name,
+              brand: data.product.brand,
+              price: data.product.price,
+              imageUrl: data.product.imageUrl || '',
+              matchingScore: data.matchingScore,
+              compatibilityReasons: data.product.targetConcerns.slice(0, 3),
+              retailers: data.product.retailers || [],
+              alternatives: data.alternatives.map((alt, idx) => ({
+                catalogId: alt.catalogId,
+                name: alt.name,
+                brand: alt.brand,
+                price: alt.price,
+                imageUrl: alt.imageUrl || '',
+                matchingScore: Math.round(data.matchingScore - (idx + 1) * 5)
+              })),
+              justification: data.reasoning || 'Sélectionné pour correspondance optimale',
+              applicationAdvice: `Appliquer ${
+                step.timing === 'morning' ? 'le matin' 
+                : step.timing === 'evening' ? 'le soir' 
+                : 'matin et soir'
+              } sur ${step.targetZones.join(', ')}`,
+              timing: step.timing,
+              targetZones: step.targetZones,
+              temporaryLabel: false,
+              progressiveIntroduction: null,
+              restrictions: []
+            })
+          })
+        })
       }
 
       // ========== VALIDATION COMPLÉTUDE ==========
@@ -1058,7 +1165,7 @@ export class AnalysisService {
       this.logger.info(
         `[selectOptimalProducts] ✅ ${selectedProducts.length}/${allSteps.length} produits matchés (${successRate.toFixed(1)}%)`,
         {
-        requestId,
+          requestId,
           failedSteps: failures.length > 0 ? failures.map((f) => f.stepNumber) : []
         }
       )
@@ -1069,92 +1176,70 @@ export class AnalysisService {
         )
       }
 
-      // ========== 4. VALIDATION BUDGET (avec déduplicate) ==========
-      // 💡 Compter produits uniques (pas les répétitions)
-      const uniqueProducts = new Map<string, { price: number; count: number; name: string }>()
+      // ========== 4. BUDGET BREAKDOWN ==========
+      // 🆕 Calculer coût final après optimisation (si appliquée)
+      const finalRealCost = budgetOptimizationResult?.finalCost || realCost
       
-      selectedProducts.forEach((p) => {
-        if (uniqueProducts.has(p.catalogId)) {
-          const existing = uniqueProducts.get(p.catalogId)!
-          existing.count += 1
-        } else {
-          uniqueProducts.set(p.catalogId, {
-            price: p.price,
-            count: 1,
-            name: p.productName
-          })
-        }
+      this.logger.info('[selectOptimalProducts] 💰 Budget Final', {
+        uniqueProducts: productOccurrences.size,
+        totalSteps: selectedProducts.length,
+        originalRealCost: `${realCost.toFixed(2)}€`,
+        finalCost: `${finalRealCost.toFixed(2)}€`,
+        naiveCost: `${naiveCost.toFixed(2)}€`,
+        savingsFromDeduplication: `${savingsFromDeduplication.toFixed(2)}€`,
+        savingsFromOptimization: budgetOptimizationResult?.savings ? `${budgetOptimizationResult.savings.toFixed(2)}€` : '0€'
       })
 
-      // Calculer coût réel (produits uniques seulement)
-      const realTotalCost = Array.from(uniqueProducts.values()).reduce(
-        (sum, prod) => sum + prod.price,
-        0
-      )
+      // 🆕 Préparer les messages d'optimisation
+      const optimizationMessages: string[] = []
       
-      // Calculer coût naïf (si on comptait toutes les répétitions)
-      const naiveTotalCost = selectedProducts.reduce((sum, p) => sum + p.price, 0)
-      const savings = naiveTotalCost - realTotalCost
-
-      this.logger.info('[selectOptimalProducts] 💰 Budget Déduplicate', {
-        uniqueProductsCount: uniqueProducts.size,
-        totalStepsCount: selectedProducts.length,
-        realCost: `${realTotalCost.toFixed(2)}€`,
-        naiveCost: `${naiveTotalCost.toFixed(2)}€`,
-        savings: `${savings.toFixed(2)}€`,
-        savingsPercent: `${((savings / naiveTotalCost) * 100).toFixed(1)}%`
-      })
-
-      const budgetBreakdown: BudgetBreakdown = {
-        totalCost: realTotalCost, // ✅ Utiliser coût réel dédupliqué
-        budgetRespected: request.constraints.budget
-          ? realTotalCost <= request.constraints.budget
-          : true,
-        optimizations: [],
-        alternatives: []
-      }
-
-      // 🆕 Ajouter informations optimisation budget intelligente
-      if (budgetOptimizationResult) {
-        budgetBreakdown.optimizations = budgetBreakdown.optimizations || []
+      if (budgetOptimizationResult && budgetOptimizationResult.applied) {
+        optimizationMessages.push(
+          `✅ Optimisation budget appliquée : ${realCost.toFixed(2)}€ → ${finalRealCost.toFixed(2)}€ (économie: ${budgetOptimizationResult.savings.toFixed(2)}€)`
+        )
         
-        if (budgetOptimizationResult.applied) {
-          budgetBreakdown.optimizations.push(
-            `✅ Optimisation budget appliquée : ${budgetOptimizationResult.originalCost.toFixed(2)}€ → ${budgetOptimizationResult.finalCost.toFixed(2)}€ (économie: ${budgetOptimizationResult.savings.toFixed(2)}€)`
+        if (budgetOptimizationResult.substitutionsCount > 0) {
+          optimizationMessages.push(
+            `🔄 ${budgetOptimizationResult.substitutionsCount} substitution(s) intelligente(s) appliquée(s) aux produits uniques`
           )
-          
-          if (budgetOptimizationResult.substitutionsCount > 0) {
-            budgetBreakdown.optimizations.push(
-              `🔄 ${budgetOptimizationResult.substitutionsCount} substitution(s) intelligente(s) pour respecter votre budget`
-            )
-          }
-          
-          if (budgetOptimizationResult.stepsRemovedCount > 0) {
-            budgetBreakdown.optimizations.push(
-              `⚠️ ${budgetOptimizationResult.stepsRemovedCount} produit(s) optionnel(s) retiré(s)`
-            )
-          }
-          
-          if (budgetOptimizationResult.preservedCritical) {
-            budgetBreakdown.optimizations.push(
-              `✅ SPF et nettoyant préservés (priorités dermatologiques critiques)`
-            )
-          } else {
-            budgetBreakdown.optimizations.push(
-              `⚠️ Attention : SPF ou nettoyant compromis pour respecter budget`
-            )
-          }
         }
-      } else if (request.constraints.budget && realTotalCost > request.constraints.budget) {
-        const overspend = realTotalCost - request.constraints.budget
-        budgetBreakdown.optimizations.push(
+        
+        if (budgetOptimizationResult.stepsRemovedCount > 0) {
+          optimizationMessages.push(
+            `⚠️ ${budgetOptimizationResult.stepsRemovedCount} produit(s) optionnel(s) retiré(s)`
+          )
+        }
+        
+        if (budgetOptimizationResult.preservedCritical) {
+          optimizationMessages.push(
+            `✅ SPF et nettoyant préservés (priorités dermatologiques critiques)`
+          )
+        } else {
+          optimizationMessages.push(
+            `⚠️ Attention : SPF ou nettoyant compromis pour respecter budget`
+          )
+        }
+      } else if (request.constraints.budget && finalRealCost > request.constraints.budget) {
+        const overspend = finalRealCost - request.constraints.budget
+        optimizationMessages.push(
           `Budget dépassé de ${overspend.toFixed(2)}€. Consultez les alternatives pour optimiser vos dépenses.`
         )
-      } else if (savings > 0) {
-        // Message d'économies réalisées grâce au déduplicate
-        budgetBreakdown.optimizations.push(
-          `Économie de ${savings.toFixed(2)}€ grâce à l'achat de ${uniqueProducts.size} produits uniques pour ${selectedProducts.length} étapes.`
+      }
+      
+      // Toujours afficher l'économie grâce à la déduplication
+      if (savingsFromDeduplication > 0) {
+        optimizationMessages.push(
+          `💡 Économie de ${savingsFromDeduplication.toFixed(2)}€ grâce à l'achat de ${productOccurrences.size} produits uniques pour ${selectedProducts.length} étapes.`
         )
+      }
+
+      const budgetBreakdown: BudgetBreakdown = {
+        totalCost: finalRealCost, // 🆕 Coût final (après optimisation si appliquée)
+        budgetRespected: request.constraints.budget
+          ? finalRealCost <= request.constraints.budget
+          : true,
+        optimizations: optimizationMessages.length > 0 ? optimizationMessages : undefined,
+        alternatives: []
       }
 
       // ========== 5. VALIDATION COHÉRENCE ==========
@@ -1171,9 +1256,9 @@ export class AnalysisService {
       this.logger.info('[selectOptimalProducts] ✅ HYBRIDE COMPLETE', {
         requestId,
         products: selectedProducts.length,
-        uniqueProducts: uniqueProducts.size,
-        realCost: `${realTotalCost.toFixed(2)}€`,
-        savings: `${savings.toFixed(2)}€`,
+        uniqueProducts: productOccurrences.size,
+        realCost: `${finalRealCost.toFixed(2)}€`,
+        savingsFromDeduplication: `${savingsFromDeduplication.toFixed(2)}€`,
         successRate: `${successRate.toFixed(1)}%`,
         duration: `${duration}ms`,
         budgetRespected: budgetBreakdown.budgetRespected,

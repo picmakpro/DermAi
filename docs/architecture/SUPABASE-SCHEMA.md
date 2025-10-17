@@ -458,3 +458,5 @@ USE_SUPABASE_CATALOG=true npm run test:e2e
 **Dernière mise à jour** : 2 Octobre 2025  
 **Prochaine révision** : Post-migration (Sem 5)
 
+
+
