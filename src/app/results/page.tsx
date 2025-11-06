@@ -2199,7 +2199,7 @@ Les scores évoluent avec votre routine personnalisée !"
                 {(analysis as any).beautyAssessment.overview.slice(0, 3).map((item: string, idx: number) => (
                   <div key={idx} className="bg-gradient-to-br from-dermai-ai-50 to-dermai-nude-50 rounded-2xl p-4 border border-dermai-ai-200">
                     <div className="flex items-start space-x-3">
-                      <div className="w-6 h-6 bg-gradient-to-br from-dermai-ai-500 to-dermai-ai-600 text-white rounded-full flex items-center justify-center text-sm font-bold">{idx + 1}</div>
+                      <div className="px-3 h-6 bg-gradient-to-br from-dermai-ai-500 to-dermai-ai-600 text-white rounded-xl inline-flex items-center justify-center text-sm font-bold shadow">{idx + 1}</div>
                       <p className="text-gray-800 text-sm">{item}</p>
                     </div>
                   </div>
@@ -2211,9 +2211,7 @@ Les scores évoluent avec votre routine personnalisée !"
              {analysis.beautyAssessment.visualFindings.slice(0, 3).map((observation: string, index: number) => (
                <div key={index} className="bg-gradient-to-br from-dermai-ai-50 to-dermai-nude-50 rounded-2xl p-4 border border-dermai-ai-200">
                  <div className="flex items-start space-x-3">
-                   <div className="w-6 h-6 bg-gradient-to-br from-dermai-ai-500 to-dermai-ai-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
-                     {index + 1}
-                   </div>
+                   <div className="px-3 h-6 bg-gradient-to-br from-dermai-ai-500 to-dermai-ai-600 text-white rounded-xl inline-flex items-center justify-center text-sm font-bold shadow">{index + 1}</div>
                    <p className="text-gray-800 text-sm">{observation}</p>
                  </div>
                </div>

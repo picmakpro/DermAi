@@ -90,7 +90,7 @@ const STYLES = {
   cardHover: "hover:shadow-[0_12px_40px_rgba(143,123,255,0.15)] hover:border-[#8F7BFF]/20",
   button: {
     primary: "bg-gradient-to-r from-[#8F7BFF] to-[#5A4AE3] text-white shadow-[0_4px_16px_rgba(143,123,255,0.3)] hover:shadow-[0_8px_24px_rgba(143,123,255,0.4)] transition-all duration-300",
-    secondary: "bg-white/80 backdrop-blur-sm border border-white/30 text-gray-700 hover:bg-white/90"
+    secondary: "bg-[#F4F0FF] border border-[#E3D7FF] text-[#6B47DC] hover:bg-[#E8DEFF] hover:text-[#5A4AE3] hover:border-[#D1BFFF] transition-all duration-200"
   },
   typography: {
     title: "font-semibold text-gray-900",
@@ -429,8 +429,8 @@ export default function RoutineV3Final({
           )}
         </header>
 
-        {/* Phase Tabs */}
-        <div className="flex flex-wrap gap-3 mb-8">
+        {/* Phase Tabs - sticky & horizontal scrollable, parfaitement positionné sous le header sticky */}
+        <div className="mb-8 sticky top-20 z-40 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-2xl border border-gray-100 inline-flex items-center gap-3 w-full overflow-x-auto whitespace-nowrap">
           {routine.phases.map((phase) => (
             <button
               key={phase.id}
@@ -464,7 +464,7 @@ export default function RoutineV3Final({
         )}
 
         {/* Slot Switch - STICKY */}
-        <div className="mb-10 sticky top-16 sm:top-20 z-50">
+        <div className="mb-10 sticky top-40 z-50">
           <SlotSwitch active={slot} onChange={handleSlotChange} availableSlots={availableSlots} />
         </div>
 

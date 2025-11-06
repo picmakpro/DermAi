@@ -491,21 +491,22 @@ export default function RoutineRefonteV3({
             </div>
           </header>
 
-          {/* Phase Tabs */}
-          <div className="flex flex-wrap gap-3 mb-8">
-            {routine.phases.map((phase) => (
-              <button
-                key={phase.id}
-                onClick={() => handlePhaseChange(phase.id)}
-                className={`px-6 py-3 rounded-2xl transition-all duration-300 text-sm font-semibold ${
-                  phase.id === activePhase
-                    ? styles.button.primary
-                    : styles.button.secondary
-                } ${variant === "C" ? "rounded-3xl" : ""}`}
-              >
-                {phase.label}
-              </button>
-            ))}
+          {/* Phase Tabs - sticky & horizontal scrollable, parfaitement en-dessous du header sticky */}
+          <div className="mb-8">
+            {/* top-20 = header sticky avec padding (py-4) + logo, évite d'être masqué */}
+            <div className="sticky top-20 z-40 bg-white/90 backdrop-blur-sm rounded-2xl p-2 border border-gray-100 inline-flex items-center gap-3 w-full overflow-x-auto whitespace-nowrap">
+              {routine.phases.map((phase) => (
+                <button
+                  key={phase.id}
+                  onClick={() => setActivePhase(phase.id)}
+                  className={`px-6 py-3 rounded-2xl transition-all duration-300 text-sm font-semibold ${
+                    phase.id === activePhase ? styles.button.primary : styles.button.secondary
+                  }`}
+                >
+                  {phase.label}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Phase Header */}
