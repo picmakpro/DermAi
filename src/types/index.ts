@@ -28,6 +28,19 @@ export interface SkinAnalysis {
   beautyAssessment: BeautyAssessment
   recommendations: ProductRecommendations
   createdAt: Date
+  // Support pour les données V2 de la refonte IA-First
+  diagnostic?: {
+    skinType?: string
+    scores?: SkinScores
+    skinAgeEstimate?: number
+    generalObservation?: string
+    zoneSpecificIssues?: Array<{
+      zone: string
+      problem: string
+      intensity: 'légère' | 'modérée' | 'intense'
+      description: string
+    }>
+  }
 }
 
 export interface SkinScores {
@@ -246,6 +259,7 @@ export interface RecommendedProduct {
   price?: number
   affiliateLink?: string
   catalogId?: string
+  justification?: string // 🔥 SPRINT 2: Ajout justification pour affichage
 }
 
 // Interface pour timing badges
@@ -255,3 +269,223 @@ export interface TimingBadgeInfo {
   details?: string // Détails comme "1x/semaine, soir sans rétinol"
   color: 'blue' | 'purple' | 'green' | 'orange' // Couleur du badge
 }
+
+// 🔥 NOUVEAUX TYPES - SPRINT 1 REFONTE IA-FIRST
+// Types pour profil utilisateur et contraintes (input AIRoutineGenerator)
+export interface UserProfile {
+  age: number
+  gender?: 'homme' | 'femme' | 'autre'
+  skinType: string
+  lifestyle?: string
+}
+
+export interface SkinConcerns {
+  primary?: string[]
+  secondary?: string[]
+  intensity?: 'légère' | 'modérée' | 'intense'
+}
+
+// Import des types de routine personnalisée depuis schemas V2
+export type { 
+  PersonalizedRoutine
+} from '@/schemas/v2/routine'
+
+// Import des types de sélection produits depuis schemas V2
+export type { 
+  ProductSelection,
+  SelectedProduct,
+  BudgetBreakdown
+} from '@/schemas/v2/products'
+
+// Types UserConstraints défini localement (utilisé par prompts IA)
+export interface UserConstraints {
+  budget?: string // "50-100€", "Pas de limite", etc.
+  timeAvailable?: string // "5 min matin", "15 min soir", etc.
+  allergies?: string[] // Ingrédients à éviter
+  currentRoutine?: string // Routine actuelle si mentionnée
+  lifestyle?: string // "Voyage fréquent", "Vie active", etc.
+  preferences?: string[] // Préférences spécifiques
+}
+
+// 🔥 NOUVEAUX TYPES - SPRINT 2 REFONTE IA-FIRST
+// Types pour sélection produits IA
+
+// 🆕 BUDGET OPTIMIZATION V2 (3 Oct 2025)
+// Interface unifiée pour optimisation budget intelligente
+export interface BudgetConstraints {
+  maxBudget: number // Budget maximum en euros
+  expectedSteps: number // Nombre de steps attendus dans la routine
+  priority: 'essential' | 'balanced' | 'premium' // Stratégie budgétaire globale
+  flexibility: number // Flexibilité 0-20% du budget
+  enableSmartOptimization?: boolean // Activer optimisation intelligente (default: true)
+}
+
+// 🆕 Priorités dermatologiques par careType pour optimisation budget
+export interface BudgetPriority {
+  careType: string
+  priority: number // 1-10 (10 = critique, ne jamais sacrifier)
+  minBudget: number // Budget minimum recommandé (€)
+  maxBudget: number // Budget maximum raisonnable (€)
+  allowSubstitution: boolean // Peut-on remplacer par alternative moins chère ?
+  description?: string // Justification dermatologique
+}
+
+// 🆕 Hiérarchie priorités dermatologiques (validée par expertise)
+export const CARETYPE_BUDGET_PRIORITIES: Record<string, BudgetPriority> = {
+  protection: {
+    careType: 'protection',
+    priority: 10, // CRITIQUE
+    minBudget: 15,
+    maxBudget: 40,
+    allowSubstitution: false, // Ne JAMAIS sacrifier qualité SPF
+    description: 'Santé peau + obligatoire avec actifs (AHA, BHA, Retinol)',
+  },
+  nettoyage: {
+    careType: 'nettoyage',
+    priority: 9, // CRITIQUE
+    minBudget: 8,
+    maxBudget: 25,
+    allowSubstitution: true, // OK si préserve pH + douceur
+    description: 'Fondation routine, mauvais nettoyant = routine compromise',
+  },
+  'traitement-cible': {
+    careType: 'traitement-cible',
+    priority: 8, // HAUTE
+    minBudget: 10,
+    maxBudget: 50,
+    allowSubstitution: true, // OK si même famille actifs
+    description: 'Acné, pores, sébum - concentration actifs critique',
+  },
+  'anti-age': {
+    careType: 'anti-age',
+    priority: 8, // HAUTE
+    minBudget: 15,
+    maxBudget: 80,
+    allowSubstitution: true, // OK si même famille (Retinol → Bakuchiol)
+    description: 'Rides, fermeté - concentration actifs détermine efficacité',
+  },
+  eclat: {
+    careType: 'eclat',
+    priority: 8, // HAUTE
+    minBudget: 10,
+    maxBudget: 50,
+    allowSubstitution: true, // OK si même famille
+    description: 'Taches, hyperpigmentation - actifs éclaircissants',
+  },
+  hydratation: {
+    careType: 'hydratation',
+    priority: 6, // MOYENNE
+    minBudget: 5,
+    maxBudget: 30,
+    allowSubstitution: true, // Nombreuses alternatives économiques excellentes
+    description: 'Options économiques excellentes (CeraVe, The Ordinary)',
+  },
+  apaisement: {
+    careType: 'apaisement',
+    priority: 5, // MOYENNE
+    minBudget: 5,
+    maxBudget: 25,
+    allowSubstitution: true,
+    description: 'Souvent temporaire, alternatives naturelles',
+  },
+  exfoliation: {
+    careType: 'exfoliation',
+    priority: 5, // BASSE
+    minBudget: 5,
+    maxBudget: 30,
+    allowSubstitution: true, // Temporaire 2x/semaine, dure longtemps
+    description: 'Temporaire (2x/semaine), dure longtemps',
+  },
+  tonification: {
+    careType: 'tonification',
+    priority: 3, // BASSE
+    minBudget: 5,
+    maxBudget: 20,
+    allowSubstitution: true, // OPTIONNEL dans routine moderne
+    description: 'OPTIONNEL dans routine dermatologique moderne',
+  },
+  masque: {
+    careType: 'masque',
+    priority: 3, // BASSE
+    minBudget: 3,
+    maxBudget: 25,
+    allowSubstitution: true, // Hebdomadaire, effet temporaire
+    description: 'Hebdomadaire, effet temporaire, économiser ici',
+  },
+}
+
+export interface UserPreferences {
+  brandPreferences?: string[] // Marques préférées
+  avoidIngredients?: string[] // Ingrédients à éviter
+  texturePreferences?: string[] // Préférences de texture
+  lifestyle?: 'busy' | 'standard' | 'thorough' // Mode de vie
+  travelFrequent?: boolean // Voyage fréquent
+  sensitivityLevel?: 'low' | 'medium' | 'high' // Niveau de sensibilité
+}
+
+export interface ProductCatalog {
+  products: CatalogProduct[]
+  lastUpdated: Date
+  version: string
+}
+
+export interface CatalogProduct {
+  id: string
+  name: string
+  brand: string
+  category: string
+  price: number
+  currency: string
+  imageUrl?: string
+  affiliateLink?: string
+  activeIngredients?: string[]
+  skinTypes?: string[]
+  benefits?: string[]
+  // 🔥 NOUVEAUX CHAMPS - ENRICHISSEMENT CATALOGUE SPRINT 2
+  pH?: number // pH du produit
+  concentration?: string // Concentration des actifs
+  compatibilities?: string[] // Compatibilités avec autres ingrédients
+  contraindications?: string[] // Contre-indications
+  applicationOrder?: number // Ordre d'application recommandé
+  photosensitizing?: boolean // Produit photosensibilisant
+  pregnancySafe?: boolean // Sûr pendant grossesse
+  targetZones?: string[] // Zones d'application spécifiques
+  potency?: 'gentle' | 'medium' | 'strong' // Puissance du produit
+  texture?: string // Texture du produit
+  finishType?: string // Type de fini
+  volumeSize?: number // Taille en ml
+  usageDuration?: string // Durée d'usage estimée
+  clinicallyTested?: boolean // Testé cliniquement
+  dermatologistRecommended?: boolean // Recommandé par dermatologues
+  awards?: string[] // Prix ou certifications
+  reviewScore?: number // Score d'avis clients
+  availability?: 'in-stock' | 'limited' | 'out-of-stock' // Disponibilité
+}
+
+// 🔄 EXPORTS SYNCHRONISATION PRODUITS ↔ ROUTINE
+export type {
+  EnrichedProduct,
+  AlternativeProduct,
+  ProductProblemCategory,
+  SyncResult,
+  ProductReplacement,
+  ComparisonMatrix,
+  ComparisonCriterion,
+  ProductRoutineContext
+} from './productSync'
+
+export type {
+  AlternativeServiceConfig,
+  AlternativeSearchResult,
+  AlternativeCriteria,
+  PriceFilter,
+  NaturalnessFilter,
+  PotencyFilter,
+  AlternativeScoring,
+  ComparisonMetadata,
+  AlternativeFeedback,
+  AlternativeStats,
+  ComparisonType,
+  AlternativeStatus,
+  AlternativeAlgorithmConfig
+} from './alternatives'

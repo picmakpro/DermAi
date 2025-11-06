@@ -1,0 +1,147 @@
+{
+  "category": "balm",
+  "count": 6,
+  "products": [
+    {
+      "id": "B0107QPFBU",
+      "name": "Aquaphor Healing Ointment Advanced Therapy",
+      "brand": "Aquaphor",
+      "category": "balm",
+      "price": 12.91,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71E0r7aurgL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0107QPFBU/",
+      "activeIngredients": [
+        "Pétrolatum",
+        "Panthénol",
+        "Glycérine"
+      ],
+      "skinTypes": [
+        "très sèche",
+        "crevassée",
+        "irritée"
+      ],
+      "benefits": [
+        "réparation intense",
+        "multi-usage",
+        "protection"
+      ]
+    },
+    {
+      "id": "B016F3MG2U",
+      "name": "CeraVe Healing Ointment",
+      "brand": "CeraVe",
+      "category": "balm",
+      "price": 19.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61pIL2maVKL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B016F3MG2U/",
+      "activeIngredients": [
+        "Pétrolatum",
+        "Acide Hyaluronique",
+        "Céramides"
+      ],
+      "skinTypes": [
+        "abîmée",
+        "très sèche"
+      ],
+      "benefits": [
+        "protège et répare",
+        "non comédogène"
+      ]
+    },
+    {
+      "id": "B006IB5T4W",
+      "name": "Aquaphor Healing Ointment Pot",
+      "brand": "Aquaphor",
+      "category": "balm",
+      "price": 18.37,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/81mMTMvoH0L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B006IB5T4W/",
+      "activeIngredients": [
+        "Pétrolatum 41%"
+      ],
+      "skinTypes": [
+        "gerçures",
+        "coupures mineures",
+        "brûlures"
+      ],
+      "benefits": [
+        "guérison accélérée",
+        "protection barrière"
+      ]
+    },
+    {
+      "id": "B01N0K3Y28",
+      "name": "CeraVe Baby Healing Ointment",
+      "brand": "CeraVe",
+      "category": "balm",
+      "price": 9.98,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71jdcrAdwbL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B01N0K3Y28/",
+      "activeIngredients": [
+        "Céramides",
+        "Vitamine E",
+        "sans lanoline"
+      ],
+      "skinTypes": [
+        "très sensible",
+        "bébé",
+        "eczéma"
+      ],
+      "benefits": [
+        "extra-doux",
+        "barrière protectrice",
+        "sans parfum"
+      ]
+    },
+    {
+      "id": "B093W4D1T7",
+      "name": "O'Keeffe's Cracked Skin Repair Balm",
+      "brand": "O'Keeffe's",
+      "category": "balm",
+      "price": 12.04,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71E0r7aurgL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B093W4D1T7/",
+      "activeIngredients": [
+        "agents réparateurs"
+      ],
+      "skinTypes": [
+        "très rugueuse",
+        "crevassée"
+      ],
+      "benefits": [
+        "répare fissures profondes",
+        "hypoallergénique"
+      ]
+    },
+    {
+      "id": "B00BNUY3HE",
+      "name": "La Roche-Posay Cicaplast Baume B5",
+      "brand": "La Roche-Posay",
+      "category": "balm",
+      "price": 13.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61Ze3zqMLTL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B00BNUY3HE/",
+      "activeIngredients": [
+        "Panthénol 5%",
+        "Madécassoside",
+        "Zinc"
+      ],
+      "skinTypes": [
+        "irritée",
+        "abîmée",
+        "post-procédure"
+      ],
+      "benefits": [
+        "réparation",
+        "apaise",
+        "accélère guérison"
+      ]
+    }
+  ]
+}

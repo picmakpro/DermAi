@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { 
   Calendar, 
@@ -18,15 +18,47 @@ import {
   BookOpen,
   Shield,
   TrendingUp,
-  Heart
+  Heart,
+  Globe,
+  ChevronRight,
+  Sparkles
 } from 'lucide-react'
 import type { UnifiedRoutineStep, BeautyAssessment } from '@/types'
+
+// SPRINT 2 : Extension du type pour les étapes fusionnées
+type MergedRoutineStep = UnifiedRoutineStep & {
+  isMergedStep?: boolean
+  originalSteps?: number
+}
 import { PhaseTimingCalculator, type PhaseTiming } from '@/services/educational/phaseTimingCalculator'
+import { PhaseDependencyCalculator, type PhaseDependencies, type PhaseInfo } from '@/services/educational/PhaseDependencyCalculator'
 import { EducationalTooltip, MobileEducationalTooltip } from '@/components/shared/EducationalTooltip'
+import { AIRoutineIndicator } from '@/components/shared/AIIndicator'
+import { 
+  isTemporaryTreatment, 
+  validateAndCleanTitle, 
+  getDetailedTiming, 
+  renderZoneBadge,
+  formatApplicationDuration,
+  type PhaseContext
+} from '@/utils/RoutineDisplayHelpers'
+import { 
+  ensureProductMapping, 
+  applyFullCoherence,
+  applyIntelligentDeduplication 
+} from '@/utils/ProductMappingHelpers'
+import { WeeklyScheduleDisplay } from '@/components/results/WeeklyScheduleDisplay'
 
 interface UnifiedRoutineSectionProps {
   routine: UnifiedRoutineStep[]
   beautyAssessment?: BeautyAssessment // Nécessaire pour calcul durées personnalisées
+  // 🔥 SPRINT 3: Support contenu IA dynamique
+  isAIGenerated?: boolean // Indique si le contenu vient de l'IA
+  personalizedContent?: {
+    phaseDescriptions?: Record<string, string>
+    globalAdvice?: string[]
+    personalizationSummary?: string
+  }
 }
 
 const timeIcons = {
@@ -57,11 +89,59 @@ const phaseLabels = {
 
 // Removed unused categoryIcons
 
-export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRoutineSectionProps) {
+export function UnifiedRoutineSection({ 
+  routine, 
+  beautyAssessment, 
+  isAIGenerated = false,
+  personalizedContent 
+}: UnifiedRoutineSectionProps) {
   const [activePhase, setActivePhase] = useState<'immediate' | 'adaptation' | 'maintenance'>('immediate')
   const [viewMode, setViewMode] = useState<'phases' | 'schedule'>('phases')
   const [isMobile, setIsMobile] = useState(false)
   const [phaseTimings, setPhaseTimings] = useState<Record<string, PhaseTiming>>({})
+  const [coherentRoutine, setCoherentRoutine] = useState<UnifiedRoutineStep[]>(routine)
+  
+  // 🔥 SPRINT 2 RÉEL: Appliquer la déduplication intelligente AVANT la cohérence
+  const deduplicatedRoutine = useMemo(() => {
+    console.log('🔄 Application déduplication intelligente...')
+    // 1. D'abord déduplication sur les données brutes (avec displayTitle de l'IA)
+    const deduplicated = applyIntelligentDeduplication(routine)
+    // 2. Puis cohérence sur les données déduplicées (préserve les titres)
+    const withCoherence = applyFullCoherence(deduplicated)
+    console.log('✅ Déduplication + Cohérence appliquées', { 
+      avant: routine.length, 
+      après: withCoherence.length 
+    })
+    return withCoherence
+  }, [routine])
+  
+  // 🔥 REFONTE V2: Détection du contenu dynamique IA
+  const isDynamicContent = isAIGenerated && routine.some(step => 
+    step.title.length > 50 || // Titre long personnalisé
+    step.applicationAdvice.includes('votre') || // Personnalisation
+    step.applicationAdvice.includes('selon') || // Adaptation
+    /[éàùç🧴💧]/.test(step.applicationAdvice) // Caractères spéciaux ou émojis
+  )
+
+  // Helper pour tronquer le texte long de manière intelligente
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length <= maxLength) return text
+    
+    // Chercher la dernière phrase complète avant la limite
+    const truncated = text.substring(0, maxLength)
+    const lastSentence = truncated.lastIndexOf('.')
+    const lastSpace = truncated.lastIndexOf(' ')
+    
+    const cutPoint = lastSentence > maxLength * 0.7 ? lastSentence + 1 : lastSpace
+    return text.substring(0, cutPoint) + '...'
+  }
+
+  // Helper pour détecter si le contenu nécessite un affichage spécial
+  const needsSpecialRendering = (step: UnifiedRoutineStep) => {
+    return step.title.length > 80 || 
+           step.applicationAdvice.length > 300 ||
+           /[🧴💧✨🌟💆‍♀️]/.test(step.applicationAdvice) // Émojis cosmétiques
+  }
 
   // Détection mobile
   useEffect(() => {
@@ -71,13 +151,28 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
+  // 🔥 SPRINT 2: Application cohérence produits
+  useEffect(() => {
+    if (routine.length > 0) {
+      try {
+        console.log('🔄 Application cohérence produits à la routine')
+        const enhancedRoutine = applyFullCoherence(routine)
+        setCoherentRoutine(enhancedRoutine)
+        console.log(`✅ Cohérence appliquée: ${enhancedRoutine.length} étapes`)
+      } catch (error) {
+        console.warn('❌ Erreur application cohérence:', error)
+        setCoherentRoutine(routine) // Fallback vers routine originale
+      }
+    }
+  }, [routine])
+
   // Calcul des durées personnalisées
   useEffect(() => {
-    if (beautyAssessment && routine.length > 0) {
-      const timings = PhaseTimingCalculator.calculateCompleteTiming(beautyAssessment, routine)
+    if (beautyAssessment && deduplicatedRoutine.length > 0) {
+      const timings = PhaseTimingCalculator.calculateCompleteTiming(beautyAssessment, deduplicatedRoutine)
       setPhaseTimings(timings)
     }
-  }, [beautyAssessment, routine])
+  }, [beautyAssessment, deduplicatedRoutine])
 
   if (!routine || routine.length === 0) {
     return null
@@ -86,10 +181,87 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
   // Organiser par phases
   const organizeByPhases = () => {
     return {
-      immediate: routine.filter(step => step.phase === 'immediate'),
-      adaptation: routine.filter(step => step.phase === 'adaptation'),
-      maintenance: routine.filter(step => step.phase === 'maintenance')
+      immediate: deduplicatedRoutine.filter(step => step.phase === 'immediate'),
+      adaptation: deduplicatedRoutine.filter(step => step.phase === 'adaptation'),
+      maintenance: deduplicatedRoutine.filter(step => step.phase === 'maintenance')
     }
+  }
+
+  // SPRINT 2 TÂCHE 2.1 : Génération clé de regroupement intelligente
+  const generateProductKey = (step: UnifiedRoutineStep): string => {
+    const category = step.category as string
+    
+    // Regrouper par fonction principale, pas par produit exact
+    if (category === 'cleansing') return 'Nettoyage quotidien'
+    if (category === 'protection') return 'Protection solaire'
+    if (category === 'hydration' || category === 'moisturizing') return 'Hydratation de base'
+    
+    // Pour traitements, regrouper par problème ciblé
+    if (category === 'treatment') {
+      const problem = step.targetArea || step.zones?.[0] || 'général'
+      return `Traitement ${problem}`
+    }
+    
+    // Exfoliants : toujours séparés (fréquence différente)
+    if (category === 'exfoliation') {
+      return `${step.title}_${step.stepNumber}` // Garder séparés
+    }
+    
+    // Traitements spécifiques : regrouper par zone
+    if (category === 'spot-treatment' || category === 'healing') {
+      const zone = step.zones?.[0] || step.targetArea || 'localisé'
+      return `${category}_${zone}`
+    }
+    
+    return step.title
+  }
+
+  // SPRINT 2 TÂCHE 2.2 : Fusion intelligente des étapes dupliquées
+  const mergeRoutineSteps = (
+    stepsGroup: UnifiedRoutineStep[], 
+    productKey: string
+  ): UnifiedRoutineStep => {
+    const baseStep = stepsGroup[0]
+    
+    // Fusionner les timings
+    const timings = stepsGroup.map(s => s.timeOfDay)
+    const mergedTiming = getMergedTiming(timings)
+    
+    // Fusionner les conseils d'application
+    const uniqueAdvices = stepsGroup
+      .map(s => s.applicationAdvice)
+      .filter((advice, i, arr) => arr.indexOf(advice) === i)
+    
+    const finalAdvice = uniqueAdvices.length > 1
+      ? `${uniqueAdvices[0]} (adapté selon le moment)`
+      : uniqueAdvices[0]
+    
+    // Déterminer durée finale
+    const isBaseCare = ['cleansing', 'hydration', 'protection'].includes(baseStep.category)
+    const finalDuration = isBaseCare ? "En continu" : baseStep.applicationDuration
+    
+    return {
+      ...baseStep,
+      title: productKey,
+      timeOfDay: mergedTiming,
+      applicationAdvice: finalAdvice,
+      applicationDuration: finalDuration,
+      stepNumber: Math.min(...stepsGroup.map(s => s.stepNumber)),
+      // NOUVEAU : Marquer comme fusionné
+      isMergedStep: true,
+      originalSteps: stepsGroup.length
+    } as UnifiedRoutineStep & { isMergedStep: boolean; originalSteps: number }
+  }
+
+  // SPRINT 2 : Fusion des timings multiples
+  const getMergedTiming = (timings: string[]): string => {
+    const uniqueTimings = [...new Set(timings)]
+    
+    if (uniqueTimings.includes('both')) return 'both'
+    if (uniqueTimings.includes('morning') && uniqueTimings.includes('evening')) return 'both'
+    if (uniqueTimings.length === 1) return uniqueTimings[0]
+    
+    return 'both' // Fallback
   }
 
   // Organiser par moment de la journée avec déduplication intelligente
@@ -97,18 +269,9 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
     const deduplicateByProduct = (steps: UnifiedRoutineStep[]) => {
       const productGroups = new Map<string, UnifiedRoutineStep[]>()
       
-      // Regrouper par catégorie ET fonction, pas par produit exact
+      // SPRINT 2 : Regroupement intelligent par fonction
       steps.forEach(step => {
-        let productKey = step.recommendedProducts[0]?.name || step.title
-        
-        // Regroupement intelligent pour produits similaires
-        if (step.category === 'protection' || step.title.includes('Protection solaire')) {
-          productKey = 'Protection solaire' // Unifier toutes les protections solaires
-        } else if (step.category === 'cleansing' || step.title.includes('Nettoyage')) {
-          productKey = 'Nettoyage doux' // Unifier tous les nettoyants
-        } else if (step.category === 'hydration' || step.title.includes('Hydratation')) {
-          productKey = 'Hydratation globale' // Unifier toutes les hydratations
-        }
+        const productKey = generateProductKey(step)
         
         if (!productGroups.has(productKey)) {
           productGroups.set(productKey, [])
@@ -116,7 +279,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
         productGroups.get(productKey)!.push(step)
       })
       
-      // Créer des étapes fusionnées pour chaque produit unique
+      // SPRINT 2 TÂCHE 2.2 : Fusion intelligente des étapes
       const deduplicatedSteps: UnifiedRoutineStep[] = []
       
       productGroups.forEach((stepsGroup, productKey) => {
@@ -124,39 +287,9 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
           // Pas de duplication, garder l'étape tel quel
           deduplicatedSteps.push(stepsGroup[0])
         } else {
-          // Fusionner les étapes multiples en une seule évolutive
-          const baseStep = stepsGroup[0]
-          const allPhases = stepsGroup.map(s => s.phase).filter((p, i, arr) => arr.indexOf(p) === i)
-          const phaseNames = allPhases.map(p => phaseLabels[p as keyof typeof phaseLabels])
-          
-          // Créer un titre nettoyé sans mentions évolutives
-          const cleanTitle = baseStep.title.replace(/(optimisée?|renforcée?|→\s*(évolutif|optimisé))/gi, '').trim()
-          
-          // Fusionner les conseils d'application
-          const uniqueAdvices = stepsGroup
-            .map(s => s.applicationAdvice)
-            .filter((advice, i, arr) => arr.indexOf(advice) === i)
-          
-          const finalAdvice = uniqueAdvices.length > 1
-            ? uniqueAdvices[0] // Prendre le premier conseil, le plus simple
-            : uniqueAdvices[0]
-          
-          // Créer la durée : garder temporaire si c'est un traitement, sinon "En continu"
-          const isBaseCareProduct = baseStep.category === 'cleansing' || baseStep.category === 'hydration' || baseStep.category === 'protection'
-          const finalDuration = allPhases.length > 1 && isBaseCareProduct
-            ? "En continu"
-            : baseStep.applicationDuration
-          
-          const evolvedStep: UnifiedRoutineStep = {
-            ...baseStep,
-            title: productKey, // Utiliser la clé unifiée comme titre
-            applicationAdvice: finalAdvice,
-            applicationDuration: finalDuration,
-            stepNumber: Math.min(...stepsGroup.map(s => s.stepNumber)),
-            phase: 'immediate' as const, // Phase de base pour l'affichage
-          }
-          
-          deduplicatedSteps.push(evolvedStep)
+          // Fusionner les étapes multiples
+          const mergedStep = mergeRoutineSteps(stepsGroup, productKey)
+          deduplicatedSteps.push(mergedStep)
         }
       })
       
@@ -164,11 +297,11 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
     }
     
     // Filtrage intelligent : éviter les doublons entre sections
-    const morningSteps = routine.filter(step => 
+    const morningSteps = deduplicatedRoutine.filter(step => 
       (step.timeOfDay === 'morning' || step.timeOfDay === 'both') && 
       step.frequency === 'daily' // Seulement les étapes quotidiennes
     )
-    const eveningSteps = routine.filter(step => 
+    const eveningSteps = deduplicatedRoutine.filter(step => 
       (step.timeOfDay === 'evening' || step.timeOfDay === 'both') && 
       step.frequency === 'daily' // Seulement les étapes quotidiennes
     )
@@ -176,18 +309,101 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
     return {
       morning: deduplicateByProduct(morningSteps),
       evening: deduplicateByProduct(eveningSteps),
-      weekly: routine.filter(step => step.frequency === 'weekly'),
-      monthly: routine.filter(step => step.frequency === 'monthly'),
-      asNeeded: routine.filter(step => step.frequency === 'as-needed')
+      weekly: deduplicatedRoutine.filter(step => step.frequency === 'weekly'),
+      monthly: deduplicatedRoutine.filter(step => step.frequency === 'monthly'),
+      asNeeded: deduplicatedRoutine.filter(step => step.frequency === 'as-needed')
     }
   }
 
   const phaseData = organizeByPhases()
   const scheduleData = organizeBySchedule()
+  
+  // SPRINT 3 : Calcul des dépendances de phase
+  const phaseDependencies = PhaseDependencyCalculator.calculatePhaseDependencies(
+    routine, 
+    beautyAssessment
+  )
+  
+  // 🔥 REFONTE V2: Utiliser directement la routine dédupliquée dans l'interface principale
 
-  const renderStep = (step: UnifiedRoutineStep, index: number, resetNumbering: boolean = false) => {
-    // Détection des étapes temporaires pour le badge uniquement
-    const isTemporary = step.applicationDuration && !step.applicationDuration.includes('continu')
+  // SPRINT 3 : Fonction pour rendre les en-têtes de phase avec dépendances
+  const renderPhaseHeader = (phase: string, dependencies: PhaseDependencies) => {
+    const phaseInfo = dependencies[phase as keyof PhaseDependencies]
+    
+    return (
+      <div className="mb-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-gray-900">
+            {phaseLabels[phase as keyof typeof phaseLabels]}
+          </h3>
+          <div className="text-sm text-gray-600">
+            {phaseInfo.duration}
+          </div>
+        </div>
+        
+        {/* NOUVEAU : Timeline et conditions */}
+        <div className="mt-2 p-3 bg-white/30 rounded-lg">
+          <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center space-x-2">
+              <Calendar className="w-4 h-4 text-gray-500" />
+              <span>Début : Jour {phaseInfo.startDay + 1}</span>
+            </div>
+            {phaseInfo.nextPhaseCondition && (
+              <div className="flex items-center space-x-2 text-green-600">
+                <CheckCircle className="w-4 h-4" />
+                <span>{phaseInfo.nextPhaseCondition}</span>
+              </div>
+            )}
+          </div>
+          
+          {/* Critères de transition */}
+          {phaseInfo.transitionCriteria && phaseInfo.transitionCriteria.length > 0 && (
+            <div className="mt-2 text-xs text-gray-600">
+              <span className="font-medium">Critères de passage : </span>
+              {phaseInfo.transitionCriteria.join(', ')}
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  const renderStep = (step: MergedRoutineStep, index: number, resetNumbering: boolean = false) => {
+    // 🔥 SPRINT 2: Badges et timing intelligents
+    const isTemporary = step.applicationDuration?.includes("Progressif") || 
+                       step.applicationDuration?.includes("jusqu'à") ||
+                       isTemporaryTreatment(step)
+    // Badge "Continu" supprimé dans Refonte V3
+    const isContinuous = false
+    
+    // 🔥 SPRINT 2: Couleurs de phase basées sur category
+    const getCategoryColor = (category: string) => {
+      switch (category?.toLowerCase()) {
+        case 'nettoyage':
+        case 'cleansing':
+          return 'from-green-400 to-green-500' // Vert pour nettoyage
+        case 'traitement':
+        case 'treatment':
+          return 'from-red-400 to-red-500' // Rouge pour traitement
+        case 'hydratation':
+        case 'moisturizing':
+          return 'from-blue-400 to-blue-500' // Bleu pour hydratation
+        case 'protection':
+          return 'from-amber-400 to-amber-500' // Ambre pour protection
+        default:
+          return 'from-dermai-ai-400 to-dermai-ai-500' // Couleur par défaut
+      }
+    }
+    
+    // CORRECTION 2: Titres cohérents nettoyés - SPRINT 1 AMÉLIORATION
+    const primaryProduct = step.recommendedProducts?.[0]
+    const cleanTitle = validateAndCleanTitle(step.title, step.category, primaryProduct)
+    
+    // CORRECTION 3: Timing précis et détaillé
+    const detailedTiming = getDetailedTiming(step)
+    
+    // CORRECTION 4: Badge zones différencié
+    const zoneBadge = renderZoneBadge(step)
     
     // Style uniforme pour toutes les étapes
     const className = "bg-white rounded-xl p-3 md:p-4 border border-gray-100 hover:shadow-md transition-all"
@@ -205,7 +421,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
       >
         <div className="flex items-start space-x-2 md:space-x-3">
           <div className="flex-shrink-0">
-            <div className="w-8 h-8 bg-gradient-to-r from-dermai-ai-400 to-dermai-ai-500 text-white rounded-full flex items-center justify-center text-sm font-semibold">
+            <div className={`w-8 h-8 bg-gradient-to-r ${getCategoryColor(step.category)} text-white rounded-full flex items-center justify-center text-sm font-semibold`}>
               {displayNumber}
             </div>
           </div>
@@ -214,36 +430,44 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
             {/* Titre sur une ligne, badges en dessous sur mobile */}
             <div className="mb-2">
               <div className="flex items-start justify-between mb-1">
-                <h4 className="font-medium text-gray-900 text-sm md:text-base leading-tight pr-2">{step.title}</h4>
-                {/* Badge timing - mieux adapté mobile */}
+                <h4 className="font-medium text-gray-900 text-sm md:text-base leading-tight pr-2">{cleanTitle}</h4>
+                {/* Badge timing précis - CORRECTION FINALE */}
                 <div className="flex items-center space-x-1 text-xs text-gray-500 flex-shrink-0">
                   {timeIcons[step.timeOfDay as keyof typeof timeIcons]}
-                  <span className="hidden sm:inline">{frequencyLabels[step.frequency as keyof typeof frequencyLabels]}</span>
+                  <span className="hidden sm:inline">
+                    {step.timeOfDay === 'morning' && 'Matin'}
+                    {step.timeOfDay === 'evening' && 'Soir'}
+                    {step.timeOfDay === 'both' && 'Matin et soir'}
+                  </span>
                   <span className="sm:hidden">
-                    {step.frequency === 'daily' && 'Jour'}
-                    {step.frequency === 'weekly' && 'Sem'}
-                    {step.frequency === 'monthly' && 'Mois'}
-                    {step.frequency === 'as-needed' && 'Besoin'}
-                    {step.frequency === 'progressive' && 'Prog'}
+                    {step.timeOfDay === 'morning' && '☀️'}
+                    {step.timeOfDay === 'evening' && '🌙'}
+                    {step.timeOfDay === 'both' && '🕐'}
                   </span>
                 </div>
               </div>
               
-              {/* Badge temporaire en dessous du titre sur mobile */}
-              {isTemporary && (
-                <div className="flex items-center space-x-1 px-2 py-1 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700 rounded-full text-xs font-medium w-fit">
-                  <Clock className="w-3 h-3" />
-                  <span>Temporaire</span>
-                </div>
-              )}
+              {/* 🔥 SPRINT 2: Badges intelligents temporaire/continu */}
+              <div className="flex items-center gap-2 flex-wrap">
+                {isTemporary && (
+                  <div className="flex items-center space-x-1 px-2 py-1 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700 border border-amber-200 rounded-full text-xs font-medium">
+                    <Clock className="w-3 h-3" />
+                    <span>Temporaire</span>
+                  </div>
+                )}
+                {/* Badge "Continu" supprimé dans Refonte V3 */}
+                
+                {/* SPRINT 2 TÂCHE 2.3 : Indicateur étape fusionnée */}
+                {step.isMergedStep && (
+                  <div className="flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+                    <Repeat className="w-3 h-3" />
+                    <span>Routine unifiée ({step.originalSteps} étapes)</span>
+                  </div>
+                )}
+              </div>
             </div>
             
-            {step.frequencyDetails && (
-              <div className="flex items-center space-x-1 text-xs text-blue-600 mb-2">
-                <Repeat className="w-3 h-3" />
-                <span>{step.frequencyDetails}</span>
-              </div>
-            )}
+            {/* Supprimer badge frequencyDetails redondant - déjà affiché en haut à droite */}
             
             {step.startAfterDays && (
               <div className="flex items-center space-x-1 text-xs text-orange-600 mb-2">
@@ -252,44 +476,103 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
               </div>
             )}
 
-            {/* Zones ciblées - version mobile optimisée */}
-            {step.targetArea === 'specific' && step.zones && step.zones.length > 0 && (
-              <div className="flex items-center gap-1 px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium w-fit mb-2">
-                <MapPin className="w-3 h-3 flex-shrink-0" />
-                <span className="truncate">
-                  <span className="hidden sm:inline">Zones : </span>
-                  {step.zones.join(', ')}
-                </span>
+            {/* 🔥 SPRINT 2: Zones spécifiques avec badges colorés */}
+            {step.targetArea === 'specific' && step.zones && step.zones.length > 0 ? (
+              <div className="flex items-center gap-1 flex-wrap mb-2">
+                <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-purple-100 to-purple-200 text-purple-700 border border-purple-300 rounded-full text-xs font-medium">
+                  <MapPin className="w-3 h-3" />
+                  <span>Zones ciblées :</span>
+                </div>
+                {step.zones.map((zone, zoneIndex) => (
+                  <div key={zoneIndex} className="px-2 py-1 bg-gradient-to-r from-purple-50 to-pink-50 text-purple-600 border border-purple-200 rounded-full text-xs font-medium">
+                    {zone}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-dermai-ai-100 to-dermai-ai-200 text-dermai-ai-700 border border-dermai-ai-300 rounded-full text-xs font-medium mb-2 w-fit">
+                <Globe className="w-3 h-3" />
+                <span>Visage entier</span>
               </div>
             )}
             
-            {/* Produits recommandés - optimisé mobile */}
+            {/* 🔥 SPRINT 2: Produits recommandés avec justifications et liens d'affiliation */}
             <div className="bg-dermai-ai-50 rounded-lg p-2 md:p-3 mb-2 md:mb-3 border border-dermai-ai-200">
               <div className="flex items-center space-x-1 text-xs text-dermai-ai-700 mb-1 md:mb-2">
                 <ShoppingBag className="w-3 h-3 flex-shrink-0" />
                 <span className="font-medium">Produit recommandé</span>
               </div>
-              {step.recommendedProducts.map((product, productIndex) => (
-                <div key={productIndex} className="mb-1 md:mb-2 last:mb-0">
-                  <div className="font-medium text-sm text-dermai-ai-800 leading-tight">
-                    {product.name}
+              {step.recommendedProducts && step.recommendedProducts.length > 0 ? (
+                step.recommendedProducts.map((product, productIndex) => (
+                  <div key={productIndex} className="mb-2 md:mb-3 last:mb-0 p-2 bg-white rounded-lg border border-dermai-ai-100">
+                    <div className="font-medium text-sm text-dermai-ai-800 leading-tight mb-1">
+                      {product.name}
+                    </div>
+                    <div className="text-xs text-gray-600 mb-2">
+                      {product.brand} • {product.category}
+                      {product.price && (
+                        <span className="ml-2 font-medium text-dermai-ai-600">
+                          {typeof product.price === 'number' ? `${product.price.toFixed(2)}€` : product.price}
+                        </span>
+                      )}
+                    </div>
+                    
+                    {/* 🔥 SPRINT 2: Afficher justification du produit */}
+                    {product.justification && (
+                      <div className="mb-2 p-2 bg-gradient-to-r from-green-50 to-emerald-50 rounded-md border-l-2 border-green-300">
+                        <div className="flex items-start space-x-1 text-xs text-green-700">
+                          <Target className="w-3 h-3 flex-shrink-0 mt-0.5" />
+                          <span className="font-medium">Pourquoi ce produit :</span>
+                        </div>
+                        <div className="text-xs text-green-600 mt-1 leading-relaxed">
+                          {product.justification}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* 🔥 SPRINT 2: Liens d'affiliation améliorés */}
+                    <div className="flex items-center justify-between">
+                      {product.affiliateLink ? (
+                        <a
+                          href={product.affiliateLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center px-3 py-1.5 bg-gradient-to-t from-dermai-ai-500 via-dermai-ai-400 to-dermai-ai-600 text-white rounded-full text-xs font-medium hover:from-dermai-ai-600 hover:via-dermai-ai-500 hover:to-dermai-ai-700 transition-all"
+                        >
+                          <ShoppingBag className="w-3 h-3 mr-1" />
+                          <span>Voir le produit</span>
+                          <ChevronRight className="w-3 h-3 ml-1" />
+                        </a>
+                      ) : (
+                        <div className="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-500 rounded-full text-xs font-medium">
+                          <Info className="w-3 h-3 mr-1" />
+                          <span>Lien bientôt disponible</span>
+                        </div>
+                      )}
+                      
+                      {product.category && (
+                        <div className={`px-2 py-1 rounded-full text-xs font-medium border ${
+                          product.category === 'nettoyage' ? 'bg-green-100 text-green-700 border-green-200' :
+                          product.category === 'traitement' ? 'bg-red-100 text-red-700 border-red-200' :
+                          product.category === 'hydratation' ? 'bg-dermai-ai-100 text-dermai-ai-700 border-dermai-ai-200' :
+                          product.category === 'protection' ? 'bg-amber-100 text-amber-700 border-amber-200' :
+                          'bg-gray-100 text-gray-700 border-gray-200'
+                        }`}>
+                          {product.category}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <div className="text-xs text-gray-600 mb-1">
-                    {product.brand} • {product.category}
+                ))
+              ) : (
+                <div className="flex items-center space-x-2 p-3 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border border-amber-200">
+                  <Clock className="w-4 h-4 text-amber-600 flex-shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-amber-800">Produit en cours de sélection...</div>
+                    <div className="text-xs text-amber-600 mt-1">Notre IA analyse le meilleur produit pour vos besoins</div>
                   </div>
-                  {product.affiliateLink && (
-                    <a
-                      href={product.affiliateLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center text-xs text-dermai-ai-600 hover:underline font-medium"
-                    >
-                      <span>Voir le produit</span>
-                      <span className="ml-1">→</span>
-                    </a>
-                  )}
                 </div>
-              ))}
+              )}
             </div>
             
             {/* Conseils d'application - optimisé mobile */}
@@ -303,11 +586,18 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
               </div>
             </div>
 
-            {/* Durée d'application simplifiée */}
+            {/* SPRINT 3 : Durée d'application avec contexte de phase */}
             {(() => {
-              const criteria = PhaseTimingCalculator.getVisualCriteria(step)
-              if (criteria) {
-                // Format simplifié pour les traitements avec critères visuels - mobile optimisé
+              // Créer le contexte de phase pour cette étape
+              const phaseContext: PhaseContext = PhaseDependencyCalculator.getPhaseContext(
+                step, 
+                phaseDependencies
+              )
+              
+              // Utiliser la nouvelle fonction formatApplicationDuration
+              const duration = formatApplicationDuration(step, phaseContext)
+              
+              if (duration) {
                 return (
                   <div className="space-y-1 mb-2 md:mb-3">
                     <div className="flex items-center space-x-1 text-xs text-blue-700">
@@ -315,20 +605,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                       <span className="font-medium">Durée d'application</span>
                     </div>
                     <div className="text-xs text-blue-600 leading-relaxed font-medium">
-                      {criteria.observation} ({criteria.estimatedDays})
-                    </div>
-                  </div>
-                )
-              } else if (step.applicationDuration) {
-                // Format classique - mobile optimisé
-                return (
-                  <div className="space-y-1 mb-2 md:mb-3">
-                    <div className="flex items-center space-x-1 text-xs text-blue-700">
-                      <Clock className="w-3 h-3 flex-shrink-0" />
-                      <span className="font-medium">Durée d'application</span>
-                    </div>
-                    <div className="text-xs text-blue-600 leading-relaxed font-medium">
-                      {step.applicationDuration}
+                      {duration}
                     </div>
                   </div>
                 )
@@ -336,18 +613,10 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
               return null
             })()}
 
-            {/* Timing détaillé - mobile optimisé */}
-            {step.timingDetails && (
-              <div className="space-y-1 mb-2 md:mb-3">
-                <div className="flex items-center space-x-1 text-xs text-purple-700">
-                  <Calendar className="w-3 h-3 flex-shrink-0" />
-                  <span className="font-medium">Timing</span>
-                </div>
-                <div className="text-xs text-purple-600 leading-relaxed">
-                  {step.timingDetails}
-                </div>
-              </div>
-            )}
+            {/* SPRINT 4 : Planning hebdomadaire pour produits à fréquence limitée */}
+            <WeeklyScheduleDisplay step={step} />
+
+            {/* Supprimer timing détaillé - redondant avec badge en haut à droite */}
 
             {/* Restrictions - mobile optimisé */}
             {step.restrictions && step.restrictions.length > 0 && (
@@ -380,10 +649,18 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
             <Calendar className="w-4 h-4 md:w-5 md:h-5 text-dermai-ai-600" />
           </div>
           <div>
-            <h2 className="text-lg md:text-2xl font-bold text-gray-900">Routines Personnalisées</h2>
-            <p className="text-xs md:text-sm text-dermai-neutral-600">Propulsé par DermAI</p>
+            <div className="flex items-center space-x-2 md:space-x-3 mb-1">
+              <h2 className="text-lg md:text-2xl font-bold text-gray-900">Routines Personnalisées</h2>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="inline-flex items-center space-x-1 text-xs font-medium text-dermai-ai-700 bg-dermai-ai-100 border border-dermai-ai-200 px-2 py-1 rounded-md">
+                <Sparkles className="w-3 h-3" />
+                <span>Routine IA</span>
+              </div>
+            </div>
           </div>
         </div>
+        
         
         <div className="flex bg-gray-100 rounded-lg p-1 w-fit">
           <button
@@ -452,17 +729,11 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                   {activePhase === 'adaptation' && <TrendingUp className="w-4 h-4" />}
                   {activePhase === 'maintenance' && <Heart className="w-4 h-4" />}
                 </div>
-                <div>
-                  <div className="flex items-baseline space-x-2">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {phaseLabels[activePhase]}
-                    </h3>
-                    {phaseTimings[activePhase] && (
-                      <span className="text-sm text-gray-600 font-medium">
-                        ({phaseTimings[activePhase].duration})
-                      </span>
-                    )}
-                  </div>
+                <div className="flex-1">
+                  {/* SPRINT 3 : Utilisation du nouveau renderPhaseHeader */}
+                  {renderPhaseHeader(activePhase, phaseDependencies)}
+                  
+                  {/* Conserver l'objectif éducatif existant */}
                   {phaseTimings[activePhase] && (
                     <p className="text-sm text-gray-700 mt-1">
                       {phaseTimings[activePhase].objective.title}
@@ -566,7 +837,7 @@ export function UnifiedRoutineSection({ routine, beautyAssessment }: UnifiedRout
                           setActivePhase(phases[currentIndex + 1])
                         }
                       }}
-                      className="flex items-center space-x-1 px-2.5 md:px-3 py-1.5 md:py-2 bg-gradient-to-r from-dermai-ai-400 to-dermai-ai-500 hover:from-dermai-ai-500 hover:to-dermai-ai-600 text-white rounded-lg text-xs md:text-sm font-medium transition-all shadow-md"
+                      className="flex items-center space-x-1 px-2.5 md:px-3 py-1.5 md:py-2 bg-gradient-to-br from-dermai-ai-400 via-dermai-ai-300 to-dermai-ai-500 hover:from-dermai-ai-500 hover:via-dermai-ai-400 hover:to-dermai-ai-600 text-white rounded-lg text-xs md:text-sm font-medium transition-all shadow-md"
                     >
                       <span className="whitespace-nowrap">
                         <span className="hidden sm:inline">

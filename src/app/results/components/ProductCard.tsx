@@ -117,7 +117,7 @@ export default function ProductCard({
             href={affiliateLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-600 text-white py-3 rounded-xl font-semibold flex items-center justify-center space-x-2 hover:from-dermai-ai-600 hover:to-dermai-ai-700 transition-all shadow-sm hover:shadow-md"
+            className="w-full bg-gradient-to-tl from-dermai-ai-500 via-dermai-ai-400 to-dermai-ai-600 text-white py-3 rounded-xl font-semibold flex items-center justify-center space-x-2 hover:from-dermai-ai-600 hover:via-dermai-ai-500 hover:to-dermai-ai-700 transition-all shadow-sm hover:shadow-md"
           >
             <ShoppingCart className="w-4 h-4" />
             <span>Acheter maintenant</span>

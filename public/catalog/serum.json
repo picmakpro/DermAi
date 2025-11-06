@@ -1,0 +1,361 @@
+{
+  "category": "serum",
+  "count": 15,
+  "products": [
+    {
+      "id": "B01MYEZPC8",
+      "name": "The Ordinary Hyaluronic Acid 2% + B5",
+      "brand": "The Ordinary",
+      "category": "serum",
+      "price": 9.9,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B01MYEZPC8/",
+      "activeIngredients": [
+        "Acide Hyaluronique 2%",
+        "Vitamine B5",
+        "Céramides"
+      ],
+      "skinTypes": [
+        "tous types",
+        "déshydratée"
+      ],
+      "benefits": [
+        "hydratation multi-profondeur",
+        "repulpe"
+      ]
+    },
+    {
+      "id": "B01MDTVZTZ",
+      "name": "The Ordinary Niacinamide 10% + Zinc 1%",
+      "brand": "The Ordinary",
+      "category": "serum",
+      "price": 6,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61QBAJHZNhL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B01MDTVZTZ/",
+      "activeIngredients": [
+        "Niacinamide 10%",
+        "Zinc 1%"
+      ],
+      "skinTypes": [
+        "grasse",
+        "mixte",
+        "pores dilatés"
+      ],
+      "benefits": [
+        "régule sébum",
+        "resserre pores",
+        "matifie"
+      ]
+    },
+    {
+      "id": "B0DP1GMQK4",
+      "name": "The Ordinary Skin Support Basics Duo",
+      "brand": "The Ordinary",
+      "category": "serum",
+      "price": 15.9,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71GGYOOrm1L._UF350,350_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0DP1GMQK4/",
+      "activeIngredients": [
+        "Acide Hyaluronique",
+        "Niacinamide",
+        "Zinc"
+      ],
+      "skinTypes": [
+        "tous types",
+        "routine complète"
+      ],
+      "benefits": [
+        "kit découverte",
+        "hydratation",
+        "régulation"
+      ]
+    },
+    {
+      "id": "B07QFHZZZL",
+      "name": "The Ordinary Most Loved Skincare Trio",
+      "brand": "The Ordinary",
+      "category": "serum",
+      "price": 22.59,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71rdx655AxL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B07QFHZZZL/",
+      "activeIngredients": [
+        "Acide Hyaluronique",
+        "Niacinamide",
+        "Caféine"
+      ],
+      "skinTypes": [
+        "tous types",
+        "routine complète"
+      ],
+      "benefits": [
+        "kit découverte",
+        "hydratation",
+        "régulation",
+        "yeux"
+      ]
+    },
+    {
+      "id": "B0BLHW7JZM",
+      "name": "The Ordinary Multi-Peptide + HA",
+      "brand": "The Ordinary",
+      "category": "serum",
+      "price": 19.9,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71EHCTpCkEL._UF350,350_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0BLHW7JZM/",
+      "activeIngredients": [
+        "Multi-peptides",
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "mature",
+        "ridules"
+      ],
+      "benefits": [
+        "anti-âge global",
+        "fermeté",
+        "élasticité"
+      ]
+    },
+    {
+      "id": "B071J1PBQ6",
+      "name": "The Ordinary Matrixyl 10% + HA",
+      "brand": "The Ordinary",
+      "category": "serum",
+      "price": 10.9,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71MhQ9hGQGL._UF350,350_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B071J1PBQ6/",
+      "activeIngredients": [
+        "Matrixyl 10%",
+        "Acide Hyaluronique"
+      ],
+      "skinTypes": [
+        "mature",
+        "ridules"
+      ],
+      "benefits": [
+        "anti-rides",
+        "fermeté",
+        "hydratation"
+      ]
+    },
+    {
+      "id": "B07P5TMHD9",
+      "name": "Eclat Skincare Vitamin C Face Serum",
+      "brand": "Eclat Skincare",
+      "category": "serum",
+      "price": 9.98,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B07P5TMHD9/",
+      "activeIngredients": [
+        "Vitamine C",
+        "Acide Hyaluronique",
+        "Acide Férulique"
+      ],
+      "skinTypes": [
+        "tous types",
+        "taches"
+      ],
+      "benefits": [
+        "éclat",
+        "anti-taches",
+        "antioxydant"
+      ]
+    },
+    {
+      "id": "B09FYLQH4G",
+      "name": "Vitamin C Serum Korean Skincare",
+      "brand": "Generic",
+      "category": "serum",
+      "price": 9.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61ogMFv+A0L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B09FYLQH4G/",
+      "activeIngredients": [
+        "Vitamine C",
+        "Niacinamide"
+      ],
+      "skinTypes": [
+        "tous types",
+        "Glass Skin"
+      ],
+      "benefits": [
+        "éclat coréen",
+        "anti-âge",
+        "luminosité"
+      ]
+    },
+    {
+      "id": "B082YJF4ZY",
+      "name": "Bliss Vitamin C + Tri-Peptide Bright Idea Serum",
+      "brand": "Bliss",
+      "category": "serum",
+      "price": 16.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61ogMFv+A0L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B082YJF4ZY/",
+      "activeIngredients": [
+        "Vitamine C 15%",
+        "Tri-Peptides"
+      ],
+      "skinTypes": [
+        "tous types",
+        "mature"
+      ],
+      "benefits": [
+        "éclat",
+        "raffermit",
+        "boost collagène"
+      ]
+    },
+    {
+      "id": "B0F8RDWX1D",
+      "name": "Vitamin C Retinol Serum Anti-Aging",
+      "brand": "Generic",
+      "category": "serum",
+      "price": 19.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61ogMFv+A0L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0F8RDWX1D/",
+      "activeIngredients": [
+        "Vitamine C",
+        "Rétinol",
+        "Peptides"
+      ],
+      "skinTypes": [
+        "mature",
+        "expérimentée"
+      ],
+      "benefits": [
+        "raffermit",
+        "lisse",
+        "éclat",
+        "anti-taches"
+      ]
+    },
+    {
+      "id": "B076611KCY",
+      "name": "Vitamin C Serum For Face Anti-Aging",
+      "brand": "Generic",
+      "category": "serum",
+      "price": 14.82,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61ogMFv+A0L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B076611KCY/",
+      "activeIngredients": [
+        "Vitamine C",
+        "Acide Hyaluronique",
+        "Niacinamide"
+      ],
+      "skinTypes": [
+        "tous types",
+        "terne"
+      ],
+      "benefits": [
+        "éclat",
+        "anti-taches",
+        "antioxydant"
+      ]
+    },
+    {
+      "id": "B07XJ7XWLW",
+      "name": "CeraVe Anti Aging Retinol Serum",
+      "brand": "CeraVe",
+      "category": "serum",
+      "price": 22.77,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71zvPJqU7FL._UF894,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B07XJ7XWLW/",
+      "activeIngredients": [
+        "Rétinol encapsulé",
+        "Acide Hyaluronique",
+        "Niacinamide"
+      ],
+      "skinTypes": [
+        "mature",
+        "tous types"
+      ],
+      "benefits": [
+        "anti-âge",
+        "lisse rides",
+        "éclaircit"
+      ]
+    },
+    {
+      "id": "B00387F42G",
+      "name": "RoC Retinol Correxion Deep Wrinkle Serum",
+      "brand": "RoC",
+      "category": "serum",
+      "price": 19.71,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61FQmT6QklL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B00387F42G/",
+      "activeIngredients": [
+        "Rétinol",
+        "Acide Ascorbique"
+      ],
+      "skinTypes": [
+        "mature",
+        "ridules"
+      ],
+      "benefits": [
+        "anti-rides profond",
+        "lisse",
+        "raffermit"
+      ]
+    },
+    {
+      "id": "B0FB5YZ7V6",
+      "name": "Retinol Serum with Hyaluronic Acid & Vitamin E",
+      "brand": "Generic",
+      "category": "serum",
+      "price": 9.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61FQmT6QklL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0FB5YZ7V6/",
+      "activeIngredients": [
+        "Rétinol",
+        "Acide Hyaluronique",
+        "Vitamine E"
+      ],
+      "skinTypes": [
+        "mature",
+        "ridules"
+      ],
+      "benefits": [
+        "anti-âge",
+        "hydrate",
+        "lisse"
+      ]
+    },
+    {
+      "id": "B088419TZG",
+      "name": "RoC Retinol Correxion Night Serum Capsules",
+      "brand": "RoC",
+      "category": "serum",
+      "price": 24.97,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71QOiN5LfAL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B088419TZG/",
+      "activeIngredients": [
+        "Rétinol pur",
+        "antioxydants"
+      ],
+      "skinTypes": [
+        "mature",
+        "expérimentée"
+      ],
+      "benefits": [
+        "anti-rides",
+        "capsules fraîcheur",
+        "résultats visibles"
+      ]
+    }
+  ]
+}

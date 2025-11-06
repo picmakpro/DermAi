@@ -1,0 +1,2724 @@
+{
+  "config": {
+    "configFile": "/Users/mak/dermai-v2/playwright.config.ts",
+    "rootDir": "/Users/mak/dermai-v2/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 4
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/e2e-results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "test-results/e2e-junit.xml"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/mak/dermai-v2/test-results/e2e-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/mak/dermai-v2/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/mak/dermai-v2/test-results/e2e-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/Users/mak/dermai-v2/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/mak/dermai-v2/test-results/e2e-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/Users/mak/dermai-v2/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/mak/dermai-v2/test-results/e2e-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "Mobile Chrome",
+        "name": "Mobile Chrome",
+        "testDir": "/Users/mak/dermai-v2/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/mak/dermai-v2/test-results/e2e-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "Mobile Safari",
+        "name": "Mobile Safari",
+        "testDir": "/Users/mak/dermai-v2/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/mak/dermai-v2/test-results/e2e-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "Tablet",
+        "name": "Tablet",
+        "testDir": "/Users/mak/dermai-v2/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.55.0",
+    "workers": 4,
+    "webServer": {
+      "command": "npm run dev",
+      "url": "http://localhost:3000",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "refonte-ia-first.spec.ts",
+      "file": "refonte-ia-first.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Refonte IA-First - Parcours Utilisateur Complet",
+          "file": "refonte-ia-first.spec.ts",
+          "line": 67,
+          "column": 6,
+          "specs": [
+            {
+              "title": "parcours complet upload → questionnaire → analyse → résultats personnalisés",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 19347,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected string: \u001b[32m\"DermAI\"\u001b[39m\nReceived string: \u001b[31m\"Partenaire IABeauté Fondé enScience\"\u001b[39m\nTimeout: 10000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    12 × locator resolved to <h1 class=\"text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold leading-tight text-dermai-neutral-900\">…</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Partenaire IABeauté Fondé enScience\"\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected string: \u001b[32m\"DermAI\"\u001b[39m\nReceived string: \u001b[31m\"Partenaire IABeauté Fondé enScience\"\u001b[39m\nTimeout: 10000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    12 × locator resolved to <h1 class=\"text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold leading-tight text-dermai-neutral-900\">…</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Partenaire IABeauté Fondé enScience\"\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:139:38",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 38,
+                          "line": 139
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 137 |\u001b[39m   test(\u001b[32m'parcours complet upload → questionnaire → analyse → résultats personnalisés'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m 138 |\u001b[39m     \u001b[90m// 1. Page d'accueil\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 139 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'h1'\u001b[39m))\u001b[33m.\u001b[39mtoContainText(\u001b[32m'DermAI'\u001b[39m)\n \u001b[90m     |\u001b[39m                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 140 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m 141 |\u001b[39m\n \u001b[90m 142 |\u001b[39m     \u001b[90m// 2. Upload de photos\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 38,
+                            "line": 139
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected string: \u001b[32m\"DermAI\"\u001b[39m\nReceived string: \u001b[31m\"Partenaire IABeauté Fondé enScience\"\u001b[39m\nTimeout: 10000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    12 × locator resolved to <h1 class=\"text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold leading-tight text-dermai-neutral-900\">…</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Partenaire IABeauté Fondé enScience\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 137 |\u001b[39m   test(\u001b[32m'parcours complet upload → questionnaire → analyse → résultats personnalisés'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m 138 |\u001b[39m     \u001b[90m// 1. Page d'accueil\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 139 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'h1'\u001b[39m))\u001b[33m.\u001b[39mtoContainText(\u001b[32m'DermAI'\u001b[39m)\n \u001b[90m     |\u001b[39m                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 140 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m 141 |\u001b[39m\n \u001b[90m 142 |\u001b[39m     \u001b[90m// 2. Upload de photos\u001b[39m\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:139:38\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:33:23.500Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 38,
+                        "line": 139
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-93c661ced471945980dd",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 137,
+              "column": 7
+            },
+            {
+              "title": "rendu dynamique du contenu IA variable",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 19384,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:234:29",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 29,
+                          "line": 234
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 232 |\u001b[39m     \u001b[90m// Vérifier que le contenu long s'affiche correctement\u001b[39m\n \u001b[90m 233 |\u001b[39m     \u001b[36mconst\u001b[39m longTitle \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 234 |\u001b[39m     \u001b[36mawait\u001b[39m expect(longTitle)\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 235 |\u001b[39m     \u001b[36mawait\u001b[39m expect(longTitle)\u001b[33m.\u001b[39mtoContainText(\u001b[32m'Titre très long'\u001b[39m)\n \u001b[90m 236 |\u001b[39m     \n \u001b[90m 237 |\u001b[39m     \u001b[90m// Vérifier que la description longue est lisible\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 29,
+                            "line": 234
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 232 |\u001b[39m     \u001b[90m// Vérifier que le contenu long s'affiche correctement\u001b[39m\n \u001b[90m 233 |\u001b[39m     \u001b[36mconst\u001b[39m longTitle \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 234 |\u001b[39m     \u001b[36mawait\u001b[39m expect(longTitle)\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 235 |\u001b[39m     \u001b[36mawait\u001b[39m expect(longTitle)\u001b[33m.\u001b[39mtoContainText(\u001b[32m'Titre très long'\u001b[39m)\n \u001b[90m 236 |\u001b[39m     \n \u001b[90m 237 |\u001b[39m     \u001b[90m// Vérifier que la description longue est lisible\u001b[39m\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:234:29\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:33:23.332Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 29,
+                        "line": 234
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-ab69f02371dd5bc113c6",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 198,
+              "column": 7
+            },
+            {
+              "title": "performance - analyse complète sous 45 secondes",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 14293,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:252:16",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 16,
+                          "line": 252
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 250 |\u001b[39m     \n \u001b[90m 251 |\u001b[39m     \u001b[90m// Parcours complet optimisé\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 252 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 253 |\u001b[39m     \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 254 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 255 |\u001b[39m     \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 16,
+                            "line": 252
+                          },
+                          "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 250 |\u001b[39m     \n \u001b[90m 251 |\u001b[39m     \u001b[90m// Parcours complet optimisé\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 252 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 253 |\u001b[39m     \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 254 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 255 |\u001b[39m     \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:252:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:33:23.512Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 16,
+                        "line": 252
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-d1ef1aa1f62ae95d1403",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 248,
+              "column": 7
+            },
+            {
+              "title": "cache - deuxième analyse identique plus rapide",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 19001,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:274:16",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 16,
+                          "line": 274
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 272 |\u001b[39m     \u001b[36mconst\u001b[39m startTime1 \u001b[33m=\u001b[39m \u001b[33mDate\u001b[39m\u001b[33m.\u001b[39mnow()\n \u001b[90m 273 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 274 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 275 |\u001b[39m     \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 276 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 277 |\u001b[39m     \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 16,
+                            "line": 274
+                          },
+                          "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 272 |\u001b[39m     \u001b[36mconst\u001b[39m startTime1 \u001b[33m=\u001b[39m \u001b[33mDate\u001b[39m\u001b[33m.\u001b[39mnow()\n \u001b[90m 273 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 274 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 275 |\u001b[39m     \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 276 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 277 |\u001b[39m     \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:274:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:33:23.436Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 16,
+                        "line": 274
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-d1781595a022284ab368",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 270,
+              "column": 7
+            },
+            {
+              "title": "gestion erreurs - budget OpenAI dépassé",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 15581,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:314:16",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 16,
+                          "line": 314
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 312 |\u001b[39m     })\n \u001b[90m 313 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 314 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 315 |\u001b[39m     \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 316 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 317 |\u001b[39m     \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 16,
+                            "line": 314
+                          },
+                          "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 312 |\u001b[39m     })\n \u001b[90m 313 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 314 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 315 |\u001b[39m     \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 316 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 317 |\u001b[39m     \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:314:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:33:41.216Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 16,
+                        "line": 314
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-348e1c755a03556fa0af",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 302,
+              "column": 7
+            },
+            {
+              "title": "accessibilité - navigation au clavier",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 19950,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator(':focus')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':focus')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator(':focus')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':focus')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:338:34",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 34,
+                          "line": 338
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 336 |\u001b[39m     \u001b[90m// Vérifier que les éléments sont focusables\u001b[39m\n \u001b[90m 337 |\u001b[39m     \u001b[36mconst\u001b[39m focusedElement \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m':focus'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 338 |\u001b[39m     \u001b[36mawait\u001b[39m expect(focusedElement)\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 339 |\u001b[39m     \n \u001b[90m 340 |\u001b[39m     \u001b[90m// Tester activation avec Enter/Space\u001b[39m\n \u001b[90m 341 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mkeyboard\u001b[33m.\u001b[39mpress(\u001b[32m'Enter'\u001b[39m)\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 34,
+                            "line": 338
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator(':focus')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':focus')\u001b[22m\n\n\n\u001b[0m \u001b[90m 336 |\u001b[39m     \u001b[90m// Vérifier que les éléments sont focusables\u001b[39m\n \u001b[90m 337 |\u001b[39m     \u001b[36mconst\u001b[39m focusedElement \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m':focus'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 338 |\u001b[39m     \u001b[36mawait\u001b[39m expect(focusedElement)\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 339 |\u001b[39m     \n \u001b[90m 340 |\u001b[39m     \u001b[90m// Tester activation avec Enter/Space\u001b[39m\n \u001b[90m 341 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mkeyboard\u001b[33m.\u001b[39mpress(\u001b[32m'Enter'\u001b[39m)\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:338:34\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:33:45.327Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 34,
+                        "line": 338
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-628c00f0a6539e2d3ded",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 327,
+              "column": 7
+            },
+            {
+              "title": "responsive - affichage mobile",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 19289,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('[data-testid=\"routine-section\"]')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"routine-section\"]')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('[data-testid=\"routine-section\"]')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"routine-section\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:353:34",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 34,
+                          "line": 353
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 351 |\u001b[39m     \u001b[90m// Vérifier que les éléments s'adaptent\u001b[39m\n \u001b[90m 352 |\u001b[39m     \u001b[36mconst\u001b[39m routineSection \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"routine-section\"]'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 353 |\u001b[39m     \u001b[36mawait\u001b[39m expect(routineSection)\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 354 |\u001b[39m     \n \u001b[90m 355 |\u001b[39m     \u001b[90m// Vérifier que le texte reste lisible\u001b[39m\n \u001b[90m 356 |\u001b[39m     \u001b[36mconst\u001b[39m stepTitle \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"step-title\"]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 34,
+                            "line": 353
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('[data-testid=\"routine-section\"]')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"routine-section\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 351 |\u001b[39m     \u001b[90m// Vérifier que les éléments s'adaptent\u001b[39m\n \u001b[90m 352 |\u001b[39m     \u001b[36mconst\u001b[39m routineSection \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"routine-section\"]'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 353 |\u001b[39m     \u001b[36mawait\u001b[39m expect(routineSection)\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 354 |\u001b[39m     \n \u001b[90m 355 |\u001b[39m     \u001b[90m// Vérifier que le texte reste lisible\u001b[39m\n \u001b[90m 356 |\u001b[39m     \u001b[36mconst\u001b[39m stepTitle \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"step-title\"]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:353:34\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:33:45.377Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 34,
+                        "line": 353
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-dd4a05d8df30ff7101ce",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 345,
+              "column": 7
+            },
+            {
+              "title": "partage - génération URL de partage",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 20898,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"share-button\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"share-button\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:368:16",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 16,
+                          "line": 368
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 366 |\u001b[39m     \n \u001b[90m 367 |\u001b[39m     \u001b[90m// Cliquer sur le bouton de partage\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 368 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"share-button\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 369 |\u001b[39m     \n \u001b[90m 370 |\u001b[39m     \u001b[90m// Vérifier que l'URL de partage est générée\u001b[39m\n \u001b[90m 371 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"share-url\"]'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 16,
+                            "line": 368
+                          },
+                          "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"share-button\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 366 |\u001b[39m     \n \u001b[90m 367 |\u001b[39m     \u001b[90m// Cliquer sur le bouton de partage\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 368 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"share-button\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 369 |\u001b[39m     \n \u001b[90m 370 |\u001b[39m     \u001b[90m// Vérifier que l'URL de partage est générée\u001b[39m\n \u001b[90m 371 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"share-url\"]'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:368:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:33:45.343Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 16,
+                        "line": 368
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-a46b179453a75b934a6f",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 364,
+              "column": 7
+            },
+            {
+              "title": "parcours complet upload → questionnaire → analyse → résultats personnalisés",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 25203,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected string: \u001b[32m\"DermAI\"\u001b[39m\nReceived string: \u001b[31m\"Partenaire IABeauté Fondé enScience\"\u001b[39m\nTimeout: 10000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    11 × locator resolved to <h1 class=\"text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold leading-tight text-dermai-neutral-900\">…</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Partenaire IABeauté Fondé enScience\"\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected string: \u001b[32m\"DermAI\"\u001b[39m\nReceived string: \u001b[31m\"Partenaire IABeauté Fondé enScience\"\u001b[39m\nTimeout: 10000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    11 × locator resolved to <h1 class=\"text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold leading-tight text-dermai-neutral-900\">…</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Partenaire IABeauté Fondé enScience\"\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:139:38",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 38,
+                          "line": 139
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 137 |\u001b[39m   test(\u001b[32m'parcours complet upload → questionnaire → analyse → résultats personnalisés'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m 138 |\u001b[39m     \u001b[90m// 1. Page d'accueil\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 139 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'h1'\u001b[39m))\u001b[33m.\u001b[39mtoContainText(\u001b[32m'DermAI'\u001b[39m)\n \u001b[90m     |\u001b[39m                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 140 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m 141 |\u001b[39m\n \u001b[90m 142 |\u001b[39m     \u001b[90m// 2. Upload de photos\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 38,
+                            "line": 139
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected string: \u001b[32m\"DermAI\"\u001b[39m\nReceived string: \u001b[31m\"Partenaire IABeauté Fondé enScience\"\u001b[39m\nTimeout: 10000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    11 × locator resolved to <h1 class=\"text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold leading-tight text-dermai-neutral-900\">…</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Partenaire IABeauté Fondé enScience\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 137 |\u001b[39m   test(\u001b[32m'parcours complet upload → questionnaire → analyse → résultats personnalisés'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m 138 |\u001b[39m     \u001b[90m// 1. Page d'accueil\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 139 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'h1'\u001b[39m))\u001b[33m.\u001b[39mtoContainText(\u001b[32m'DermAI'\u001b[39m)\n \u001b[90m     |\u001b[39m                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 140 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m 141 |\u001b[39m\n \u001b[90m 142 |\u001b[39m     \u001b[90m// 2. Upload de photos\u001b[39m\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:139:38\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:34:10.659Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-firefox/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-firefox/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-firefox/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 38,
+                        "line": 139
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-4a4f679bb619c20df14c",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 137,
+              "column": 7
+            },
+            {
+              "title": "rendu dynamique du contenu IA variable",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 30500,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:234:29",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 29,
+                          "line": 234
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 232 |\u001b[39m     \u001b[90m// Vérifier que le contenu long s'affiche correctement\u001b[39m\n \u001b[90m 233 |\u001b[39m     \u001b[36mconst\u001b[39m longTitle \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 234 |\u001b[39m     \u001b[36mawait\u001b[39m expect(longTitle)\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 235 |\u001b[39m     \u001b[36mawait\u001b[39m expect(longTitle)\u001b[33m.\u001b[39mtoContainText(\u001b[32m'Titre très long'\u001b[39m)\n \u001b[90m 236 |\u001b[39m     \n \u001b[90m 237 |\u001b[39m     \u001b[90m// Vérifier que la description longue est lisible\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 29,
+                            "line": 234
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 232 |\u001b[39m     \u001b[90m// Vérifier que le contenu long s'affiche correctement\u001b[39m\n \u001b[90m 233 |\u001b[39m     \u001b[36mconst\u001b[39m longTitle \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 234 |\u001b[39m     \u001b[36mawait\u001b[39m expect(longTitle)\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 235 |\u001b[39m     \u001b[36mawait\u001b[39m expect(longTitle)\u001b[33m.\u001b[39mtoContainText(\u001b[32m'Titre très long'\u001b[39m)\n \u001b[90m 236 |\u001b[39m     \n \u001b[90m 237 |\u001b[39m     \u001b[90m// Vérifier que la description longue est lisible\u001b[39m\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:234:29\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:34:10.737Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-firefox/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-firefox/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-firefox/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 29,
+                        "line": 234
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-8ca1a4bdaf5dfa06e5a4",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 198,
+              "column": 7
+            },
+            {
+              "title": "performance - analyse complète sous 45 secondes",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 30032,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:252:16",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 16,
+                          "line": 252
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 250 |\u001b[39m     \n \u001b[90m 251 |\u001b[39m     \u001b[90m// Parcours complet optimisé\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 252 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 253 |\u001b[39m     \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 254 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 255 |\u001b[39m     \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 16,
+                            "line": 252
+                          },
+                          "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 250 |\u001b[39m     \n \u001b[90m 251 |\u001b[39m     \u001b[90m// Parcours complet optimisé\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 252 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 253 |\u001b[39m     \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 254 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 255 |\u001b[39m     \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:252:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:34:19.864Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-firefox/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-firefox/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-firefox/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 16,
+                        "line": 252
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-d2b615bb50637eddebb7",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 248,
+              "column": 7
+            },
+            {
+              "title": "cache - deuxième analyse identique plus rapide",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 33297,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:274:16",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 16,
+                          "line": 274
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 272 |\u001b[39m     \u001b[36mconst\u001b[39m startTime1 \u001b[33m=\u001b[39m \u001b[33mDate\u001b[39m\u001b[33m.\u001b[39mnow()\n \u001b[90m 273 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 274 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 275 |\u001b[39m     \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 276 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 277 |\u001b[39m     \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 16,
+                            "line": 274
+                          },
+                          "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 272 |\u001b[39m     \u001b[36mconst\u001b[39m startTime1 \u001b[33m=\u001b[39m \u001b[33mDate\u001b[39m\u001b[33m.\u001b[39mnow()\n \u001b[90m 273 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 274 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 275 |\u001b[39m     \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 276 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 277 |\u001b[39m     \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:274:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:34:32.945Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-firefox/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-firefox/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-firefox/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 16,
+                        "line": 274
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-3f354655c8ae70fcebde",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 270,
+              "column": 7
+            },
+            {
+              "title": "gestion erreurs - budget OpenAI dépassé",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 23241,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:314:16",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 16,
+                          "line": 314
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 312 |\u001b[39m     })\n \u001b[90m 313 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 314 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 315 |\u001b[39m     \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 316 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 317 |\u001b[39m     \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 16,
+                            "line": 314
+                          },
+                          "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 312 |\u001b[39m     })\n \u001b[90m 313 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 314 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 315 |\u001b[39m     \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 316 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 317 |\u001b[39m     \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:314:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:35:07.851Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-firefox/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-firefox/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-firefox/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 16,
+                        "line": 314
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-494168df2dbb036f45ca",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 302,
+              "column": 7
+            },
+            {
+              "title": "accessibilité - navigation au clavier",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 21178,
+                      "error": {
+                        "message": "Error: expect.toBeVisible: Error: strict mode violation: locator(':focus') resolved to 2 elements:\n    1) <nextjs-portal></nextjs-portal> aka locator('nextjs-portal')\n    2) <button aria-haspopup=\"menu\" data-next-mark=\"true\" aria-expanded=\"false\" data-next-mark-loading=\"true\" aria-label=\"Open Next.js Dev Tools\" data-nextjs-dev-tools-button=\"true\" aria-controls=\"nextjs-dev-tools-menu\">…</button> aka getByRole('button', { name: 'Open Next.js Dev Tools' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':focus')\u001b[22m\n",
+                        "stack": "Error: expect.toBeVisible: Error: strict mode violation: locator(':focus') resolved to 2 elements:\n    1) <nextjs-portal></nextjs-portal> aka locator('nextjs-portal')\n    2) <button aria-haspopup=\"menu\" data-next-mark=\"true\" aria-expanded=\"false\" data-next-mark-loading=\"true\" aria-label=\"Open Next.js Dev Tools\" data-nextjs-dev-tools-button=\"true\" aria-controls=\"nextjs-dev-tools-menu\">…</button> aka getByRole('button', { name: 'Open Next.js Dev Tools' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':focus')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:338:34",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 34,
+                          "line": 338
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 336 |\u001b[39m     \u001b[90m// Vérifier que les éléments sont focusables\u001b[39m\n \u001b[90m 337 |\u001b[39m     \u001b[36mconst\u001b[39m focusedElement \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m':focus'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 338 |\u001b[39m     \u001b[36mawait\u001b[39m expect(focusedElement)\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 339 |\u001b[39m     \n \u001b[90m 340 |\u001b[39m     \u001b[90m// Tester activation avec Enter/Space\u001b[39m\n \u001b[90m 341 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mkeyboard\u001b[33m.\u001b[39mpress(\u001b[32m'Enter'\u001b[39m)\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 34,
+                            "line": 338
+                          },
+                          "message": "Error: expect.toBeVisible: Error: strict mode violation: locator(':focus') resolved to 2 elements:\n    1) <nextjs-portal></nextjs-portal> aka locator('nextjs-portal')\n    2) <button aria-haspopup=\"menu\" data-next-mark=\"true\" aria-expanded=\"false\" data-next-mark-loading=\"true\" aria-label=\"Open Next.js Dev Tools\" data-nextjs-dev-tools-button=\"true\" aria-controls=\"nextjs-dev-tools-menu\">…</button> aka getByRole('button', { name: 'Open Next.js Dev Tools' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':focus')\u001b[22m\n\n\n\u001b[0m \u001b[90m 336 |\u001b[39m     \u001b[90m// Vérifier que les éléments sont focusables\u001b[39m\n \u001b[90m 337 |\u001b[39m     \u001b[36mconst\u001b[39m focusedElement \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m':focus'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 338 |\u001b[39m     \u001b[36mawait\u001b[39m expect(focusedElement)\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 339 |\u001b[39m     \n \u001b[90m 340 |\u001b[39m     \u001b[90m// Tester activation avec Enter/Space\u001b[39m\n \u001b[90m 341 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mkeyboard\u001b[33m.\u001b[39mpress(\u001b[32m'Enter'\u001b[39m)\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:338:34\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:35:11.392Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-firefox/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-firefox/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-firefox/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 34,
+                        "line": 338
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-1bde062a275648f5b6db",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 327,
+              "column": 7
+            },
+            {
+              "title": "responsive - affichage mobile",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 15,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 30287,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('[data-testid=\"routine-section\"]')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"routine-section\"]')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('[data-testid=\"routine-section\"]')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"routine-section\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:353:34",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 34,
+                          "line": 353
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 351 |\u001b[39m     \u001b[90m// Vérifier que les éléments s'adaptent\u001b[39m\n \u001b[90m 352 |\u001b[39m     \u001b[36mconst\u001b[39m routineSection \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"routine-section\"]'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 353 |\u001b[39m     \u001b[36mawait\u001b[39m expect(routineSection)\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 354 |\u001b[39m     \n \u001b[90m 355 |\u001b[39m     \u001b[90m// Vérifier que le texte reste lisible\u001b[39m\n \u001b[90m 356 |\u001b[39m     \u001b[36mconst\u001b[39m stepTitle \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"step-title\"]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 34,
+                            "line": 353
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('[data-testid=\"routine-section\"]')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"routine-section\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 351 |\u001b[39m     \u001b[90m// Vérifier que les éléments s'adaptent\u001b[39m\n \u001b[90m 352 |\u001b[39m     \u001b[36mconst\u001b[39m routineSection \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"routine-section\"]'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 353 |\u001b[39m     \u001b[36mawait\u001b[39m expect(routineSection)\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 354 |\u001b[39m     \n \u001b[90m 355 |\u001b[39m     \u001b[90m// Vérifier que le texte reste lisible\u001b[39m\n \u001b[90m 356 |\u001b[39m     \u001b[36mconst\u001b[39m stepTitle \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"step-title\"]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:353:34\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:35:14.885Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-firefox/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-firefox/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-firefox/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 34,
+                        "line": 353
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-b7ec6ac8b5b7f5b07239",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 345,
+              "column": 7
+            },
+            {
+              "title": "partage - génération URL de partage",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 16,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 29310,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"share-button\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"share-button\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:368:16",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 16,
+                          "line": 368
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 366 |\u001b[39m     \n \u001b[90m 367 |\u001b[39m     \u001b[90m// Cliquer sur le bouton de partage\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 368 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"share-button\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 369 |\u001b[39m     \n \u001b[90m 370 |\u001b[39m     \u001b[90m// Vérifier que l'URL de partage est générée\u001b[39m\n \u001b[90m 371 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"share-url\"]'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 16,
+                            "line": 368
+                          },
+                          "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"share-button\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 366 |\u001b[39m     \n \u001b[90m 367 |\u001b[39m     \u001b[90m// Cliquer sur le bouton de partage\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 368 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"share-button\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 369 |\u001b[39m     \n \u001b[90m 370 |\u001b[39m     \u001b[90m// Vérifier que l'URL de partage est générée\u001b[39m\n \u001b[90m 371 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"share-url\"]'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:368:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:35:20.599Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-firefox/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-firefox/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-firefox/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 16,
+                        "line": 368
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-f26116fc529a3677f7c9",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 364,
+              "column": 7
+            },
+            {
+              "title": "parcours complet upload → questionnaire → analyse → résultats personnalisés",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 83168,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected string: \u001b[32m\"DermAI\"\u001b[39m\nReceived string: \u001b[31m\"Partenaire IABeauté Fondé enScience\"\u001b[39m\nTimeout: 10000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    9 × locator resolved to <h1 class=\"text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold leading-tight text-dermai-neutral-900\">…</h1>\u001b[22m\n\u001b[2m      - unexpected value \"Partenaire IABeauté Fondé enScience\"\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected string: \u001b[32m\"DermAI\"\u001b[39m\nReceived string: \u001b[31m\"Partenaire IABeauté Fondé enScience\"\u001b[39m\nTimeout: 10000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    9 × locator resolved to <h1 class=\"text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold leading-tight text-dermai-neutral-900\">…</h1>\u001b[22m\n\u001b[2m      - unexpected value \"Partenaire IABeauté Fondé enScience\"\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:139:38",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 38,
+                          "line": 139
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 137 |\u001b[39m   test(\u001b[32m'parcours complet upload → questionnaire → analyse → résultats personnalisés'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m 138 |\u001b[39m     \u001b[90m// 1. Page d'accueil\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 139 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'h1'\u001b[39m))\u001b[33m.\u001b[39mtoContainText(\u001b[32m'DermAI'\u001b[39m)\n \u001b[90m     |\u001b[39m                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 140 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m 141 |\u001b[39m\n \u001b[90m 142 |\u001b[39m     \u001b[90m// 2. Upload de photos\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 38,
+                            "line": 139
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected string: \u001b[32m\"DermAI\"\u001b[39m\nReceived string: \u001b[31m\"Partenaire IABeauté Fondé enScience\"\u001b[39m\nTimeout: 10000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    9 × locator resolved to <h1 class=\"text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold leading-tight text-dermai-neutral-900\">…</h1>\u001b[22m\n\u001b[2m      - unexpected value \"Partenaire IABeauté Fondé enScience\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 137 |\u001b[39m   test(\u001b[32m'parcours complet upload → questionnaire → analyse → résultats personnalisés'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m 138 |\u001b[39m     \u001b[90m// 1. Page d'accueil\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 139 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'h1'\u001b[39m))\u001b[33m.\u001b[39mtoContainText(\u001b[32m'DermAI'\u001b[39m)\n \u001b[90m     |\u001b[39m                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 140 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m 141 |\u001b[39m\n \u001b[90m 142 |\u001b[39m     \u001b[90m// 2. Upload de photos\u001b[39m\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:139:38\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:35:48.581Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-webkit/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-webkit/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 38,
+                        "line": 139
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-ff4f6c35cca1f5182fab",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 137,
+              "column": 7
+            },
+            {
+              "title": "rendu dynamique du contenu IA variable",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 19,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 80039,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:234:29",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 29,
+                          "line": 234
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 232 |\u001b[39m     \u001b[90m// Vérifier que le contenu long s'affiche correctement\u001b[39m\n \u001b[90m 233 |\u001b[39m     \u001b[36mconst\u001b[39m longTitle \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 234 |\u001b[39m     \u001b[36mawait\u001b[39m expect(longTitle)\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 235 |\u001b[39m     \u001b[36mawait\u001b[39m expect(longTitle)\u001b[33m.\u001b[39mtoContainText(\u001b[32m'Titre très long'\u001b[39m)\n \u001b[90m 236 |\u001b[39m     \n \u001b[90m 237 |\u001b[39m     \u001b[90m// Vérifier que la description longue est lisible\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 29,
+                            "line": 234
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 232 |\u001b[39m     \u001b[90m// Vérifier que le contenu long s'affiche correctement\u001b[39m\n \u001b[90m 233 |\u001b[39m     \u001b[36mconst\u001b[39m longTitle \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"routine-step\"]:first-child [data-testid=\"step-title\"]'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 234 |\u001b[39m     \u001b[36mawait\u001b[39m expect(longTitle)\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 235 |\u001b[39m     \u001b[36mawait\u001b[39m expect(longTitle)\u001b[33m.\u001b[39mtoContainText(\u001b[32m'Titre très long'\u001b[39m)\n \u001b[90m 236 |\u001b[39m     \n \u001b[90m 237 |\u001b[39m     \u001b[90m// Vérifier que la description longue est lisible\u001b[39m\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:234:29\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:35:54.114Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-webkit/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-webkit/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-9be79-ique-du-contenu-IA-variable-webkit/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 29,
+                        "line": 234
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-2abea8d96c18516b57b2",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 198,
+              "column": 7
+            },
+            {
+              "title": "performance - analyse complète sous 45 secondes",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 20,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 83183,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:252:16",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 16,
+                          "line": 252
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 250 |\u001b[39m     \n \u001b[90m 251 |\u001b[39m     \u001b[90m// Parcours complet optimisé\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 252 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 253 |\u001b[39m     \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 254 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 255 |\u001b[39m     \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 16,
+                            "line": 252
+                          },
+                          "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 250 |\u001b[39m     \n \u001b[90m 251 |\u001b[39m     \u001b[90m// Parcours complet optimisé\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 252 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 253 |\u001b[39m     \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 254 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 255 |\u001b[39m     \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:252:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:36:03.340Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-webkit/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-a24b2-e-complète-sous-45-secondes-webkit/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 16,
+                        "line": 252
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-214d5215022b415f206b",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 248,
+              "column": 7
+            },
+            {
+              "title": "cache - deuxième analyse identique plus rapide",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 21,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 42719,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:274:16",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 16,
+                          "line": 274
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 272 |\u001b[39m     \u001b[36mconst\u001b[39m startTime1 \u001b[33m=\u001b[39m \u001b[33mDate\u001b[39m\u001b[33m.\u001b[39mnow()\n \u001b[90m 273 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 274 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 275 |\u001b[39m     \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 276 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 277 |\u001b[39m     \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 16,
+                            "line": 274
+                          },
+                          "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 272 |\u001b[39m     \u001b[36mconst\u001b[39m startTime1 \u001b[33m=\u001b[39m \u001b[33mDate\u001b[39m\u001b[33m.\u001b[39mnow()\n \u001b[90m 273 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 274 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 275 |\u001b[39m     \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 276 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 277 |\u001b[39m     \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:274:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:36:55.955Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-webkit/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-webkit/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-d56e3-alyse-identique-plus-rapide-webkit/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 16,
+                        "line": 274
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-d856a98fd192953fea25",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 270,
+              "column": 7
+            },
+            {
+              "title": "gestion erreurs - budget OpenAI dépassé",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 22,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 40760,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:314:16",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 16,
+                          "line": 314
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 312 |\u001b[39m     })\n \u001b[90m 313 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 314 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 315 |\u001b[39m     \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 316 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 317 |\u001b[39m     \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 16,
+                            "line": 314
+                          },
+                          "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 312 |\u001b[39m     })\n \u001b[90m 313 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 314 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 315 |\u001b[39m     \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 316 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 317 |\u001b[39m     \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:314:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:37:42.612Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-webkit/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-webkit/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-f9c22-urs---budget-OpenAI-dépassé-webkit/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 16,
+                        "line": 314
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-f319c7895f66d6ef8335",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 302,
+              "column": 7
+            },
+            {
+              "title": "accessibilité - navigation au clavier",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 23,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 65452,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator(':focus')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':focus')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator(':focus')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':focus')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:338:34",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 34,
+                          "line": 338
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 336 |\u001b[39m     \u001b[90m// Vérifier que les éléments sont focusables\u001b[39m\n \u001b[90m 337 |\u001b[39m     \u001b[36mconst\u001b[39m focusedElement \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m':focus'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 338 |\u001b[39m     \u001b[36mawait\u001b[39m expect(focusedElement)\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 339 |\u001b[39m     \n \u001b[90m 340 |\u001b[39m     \u001b[90m// Tester activation avec Enter/Space\u001b[39m\n \u001b[90m 341 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mkeyboard\u001b[33m.\u001b[39mpress(\u001b[32m'Enter'\u001b[39m)\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 34,
+                            "line": 338
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator(':focus')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator(':focus')\u001b[22m\n\n\n\u001b[0m \u001b[90m 336 |\u001b[39m     \u001b[90m// Vérifier que les éléments sont focusables\u001b[39m\n \u001b[90m 337 |\u001b[39m     \u001b[36mconst\u001b[39m focusedElement \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m':focus'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 338 |\u001b[39m     \u001b[36mawait\u001b[39m expect(focusedElement)\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 339 |\u001b[39m     \n \u001b[90m 340 |\u001b[39m     \u001b[90m// Tester activation avec Enter/Space\u001b[39m\n \u001b[90m 341 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mkeyboard\u001b[33m.\u001b[39mpress(\u001b[32m'Enter'\u001b[39m)\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:338:34\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:37:55.423Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-webkit/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-webkit/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-e66d3-ité---navigation-au-clavier-webkit/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 34,
+                        "line": 338
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-12e29420fc763ad19f17",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 327,
+              "column": 7
+            },
+            {
+              "title": "responsive - affichage mobile",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 25,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 42543,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('[data-testid=\"routine-section\"]')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"routine-section\"]')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('[data-testid=\"routine-section\"]')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"routine-section\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:353:34",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 34,
+                          "line": 353
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 351 |\u001b[39m     \u001b[90m// Vérifier que les éléments s'adaptent\u001b[39m\n \u001b[90m 352 |\u001b[39m     \u001b[36mconst\u001b[39m routineSection \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"routine-section\"]'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 353 |\u001b[39m     \u001b[36mawait\u001b[39m expect(routineSection)\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 354 |\u001b[39m     \n \u001b[90m 355 |\u001b[39m     \u001b[90m// Vérifier que le texte reste lisible\u001b[39m\n \u001b[90m 356 |\u001b[39m     \u001b[36mconst\u001b[39m stepTitle \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"step-title\"]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 34,
+                            "line": 353
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('[data-testid=\"routine-section\"]')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-testid=\"routine-section\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 351 |\u001b[39m     \u001b[90m// Vérifier que les éléments s'adaptent\u001b[39m\n \u001b[90m 352 |\u001b[39m     \u001b[36mconst\u001b[39m routineSection \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"routine-section\"]'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 353 |\u001b[39m     \u001b[36mawait\u001b[39m expect(routineSection)\u001b[33m.\u001b[39mtoBeVisible()\n \u001b[90m     |\u001b[39m                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 354 |\u001b[39m     \n \u001b[90m 355 |\u001b[39m     \u001b[90m// Vérifier que le texte reste lisible\u001b[39m\n \u001b[90m 356 |\u001b[39m     \u001b[36mconst\u001b[39m stepTitle \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"step-title\"]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:353:34\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:38:00.775Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-webkit/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-webkit/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-78e88-sponsive---affichage-mobile-webkit/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 34,
+                        "line": 353
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-f8aaeb7964a47060dadf",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 345,
+              "column": 7
+            },
+            {
+              "title": "partage - génération URL de partage",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 24,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 61069,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"share-button\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"share-button\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:368:16",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 16,
+                          "line": 368
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 366 |\u001b[39m     \n \u001b[90m 367 |\u001b[39m     \u001b[90m// Cliquer sur le bouton de partage\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 368 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"share-button\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 369 |\u001b[39m     \n \u001b[90m 370 |\u001b[39m     \u001b[90m// Vérifier que l'URL de partage est générée\u001b[39m\n \u001b[90m 371 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"share-url\"]'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 16,
+                            "line": 368
+                          },
+                          "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"share-button\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 366 |\u001b[39m     \n \u001b[90m 367 |\u001b[39m     \u001b[90m// Cliquer sur le bouton de partage\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 368 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"share-button\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 369 |\u001b[39m     \n \u001b[90m 370 |\u001b[39m     \u001b[90m// Vérifier que l'URL de partage est générée\u001b[39m\n \u001b[90m 371 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'[data-testid=\"share-url\"]'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:368:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:38:00.776Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-webkit/test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-45f18---génération-URL-de-partage-webkit/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 16,
+                        "line": 368
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-29ef6c1568c72dbc5b10",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 364,
+              "column": 7
+            },
+            {
+              "title": "parcours complet upload → questionnaire → analyse → résultats personnalisés",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 27,
+                      "parallelIndex": 2,
+                      "status": "interrupted",
+                      "duration": 7562,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:38:58.536Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-Mobile-Chrome/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Refonte-I-4ad0b-e-→-résultats-personnalisés-Mobile-Chrome/video.webm"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-371cf6b52ed05470f7e7",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 137,
+              "column": 7
+            },
+            {
+              "title": "rendu dynamique du contenu IA variable",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-d68265636ab0e5e5dcc5",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 198,
+              "column": 7
+            },
+            {
+              "title": "performance - analyse complète sous 45 secondes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-23c7b425c648e7147e2d",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 248,
+              "column": 7
+            },
+            {
+              "title": "cache - deuxième analyse identique plus rapide",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-e1e81534f83bd879fb43",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 270,
+              "column": 7
+            },
+            {
+              "title": "gestion erreurs - budget OpenAI dépassé",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-01db4340cf0ded11993e",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 302,
+              "column": 7
+            },
+            {
+              "title": "accessibilité - navigation au clavier",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-4ed310a0498c2c36fa19",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 327,
+              "column": 7
+            },
+            {
+              "title": "responsive - affichage mobile",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-bc616d78c19d79aaba1b",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 345,
+              "column": 7
+            },
+            {
+              "title": "partage - génération URL de partage",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-f91dbcb07a7b22e9c444",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 364,
+              "column": 7
+            },
+            {
+              "title": "parcours complet upload → questionnaire → analyse → résultats personnalisés",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-838c9c485ab33bac61e9",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 137,
+              "column": 7
+            },
+            {
+              "title": "rendu dynamique du contenu IA variable",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-0e60c18c0d2d58c766df",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 198,
+              "column": 7
+            },
+            {
+              "title": "performance - analyse complète sous 45 secondes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-04dea15beb20c5ca5361",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 248,
+              "column": 7
+            },
+            {
+              "title": "cache - deuxième analyse identique plus rapide",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-5ee9c5d263ee8d3a4f41",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 270,
+              "column": 7
+            },
+            {
+              "title": "gestion erreurs - budget OpenAI dépassé",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-169b06bd749de697fae5",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 302,
+              "column": 7
+            },
+            {
+              "title": "accessibilité - navigation au clavier",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-57d4bb2ff764547916fa",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 327,
+              "column": 7
+            },
+            {
+              "title": "responsive - affichage mobile",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-a47440716ba1dd27240a",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 345,
+              "column": 7
+            },
+            {
+              "title": "partage - génération URL de partage",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-b028675b9d8d297549b8",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 364,
+              "column": 7
+            },
+            {
+              "title": "parcours complet upload → questionnaire → analyse → résultats personnalisés",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Tablet",
+                  "projectName": "Tablet",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-c5ff1f36ee2146dbef3f",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 137,
+              "column": 7
+            },
+            {
+              "title": "rendu dynamique du contenu IA variable",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Tablet",
+                  "projectName": "Tablet",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-ae3cb0da090a005b1d21",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 198,
+              "column": 7
+            },
+            {
+              "title": "performance - analyse complète sous 45 secondes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Tablet",
+                  "projectName": "Tablet",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-fd586f825d96f5ec4be0",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 248,
+              "column": 7
+            },
+            {
+              "title": "cache - deuxième analyse identique plus rapide",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Tablet",
+                  "projectName": "Tablet",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-8cd1cb7121ab33c4bad7",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 270,
+              "column": 7
+            },
+            {
+              "title": "gestion erreurs - budget OpenAI dépassé",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Tablet",
+                  "projectName": "Tablet",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-ded46cd59fc3ab1c9669",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 302,
+              "column": 7
+            },
+            {
+              "title": "accessibilité - navigation au clavier",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Tablet",
+                  "projectName": "Tablet",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-edd57dc6b02a9835cd40",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 327,
+              "column": 7
+            },
+            {
+              "title": "responsive - affichage mobile",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Tablet",
+                  "projectName": "Tablet",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-f335ad277665965c8d46",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 345,
+              "column": 7
+            },
+            {
+              "title": "partage - génération URL de partage",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Tablet",
+                  "projectName": "Tablet",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-b07485340a502eb8b258",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 364,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "Tests de Charge et Performance",
+          "file": "refonte-ia-first.spec.ts",
+          "line": 385,
+          "column": 6,
+          "specs": [
+            {
+              "title": "simulation charge - 10 analyses simultanées",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 22362,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:402:18\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:411:5",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 18,
+                          "line": 402
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 400 |\u001b[39m     \u001b[36mconst\u001b[39m analysisPromises \u001b[33m=\u001b[39m pages\u001b[33m.\u001b[39mmap(\u001b[36masync\u001b[39m (page\u001b[33m,\u001b[39m index) \u001b[33m=>\u001b[39m {\n \u001b[90m 401 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 402 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 403 |\u001b[39m       \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 404 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 405 |\u001b[39m       \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 18,
+                            "line": 402
+                          },
+                          "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 400 |\u001b[39m     \u001b[36mconst\u001b[39m analysisPromises \u001b[33m=\u001b[39m pages\u001b[33m.\u001b[39mmap(\u001b[36masync\u001b[39m (page\u001b[33m,\u001b[39m index) \u001b[33m=>\u001b[39m {\n \u001b[90m 401 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 402 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 403 |\u001b[39m       \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 404 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 405 |\u001b[39m       \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:402:18\u001b[22m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:411:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:34:07.851Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-chromium/test-failed-3.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-chromium/test-failed-5.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-chromium/test-failed-8.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-chromium/test-failed-6.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 18,
+                        "line": 402
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-492b4c635ef98169abf6",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 387,
+              "column": 7
+            },
+            {
+              "title": "simulation charge - 10 analyses simultanées",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 17,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 36944,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:402:18\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:411:5",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 18,
+                          "line": 402
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 400 |\u001b[39m     \u001b[36mconst\u001b[39m analysisPromises \u001b[33m=\u001b[39m pages\u001b[33m.\u001b[39mmap(\u001b[36masync\u001b[39m (page\u001b[33m,\u001b[39m index) \u001b[33m=>\u001b[39m {\n \u001b[90m 401 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 402 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 403 |\u001b[39m       \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 404 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 405 |\u001b[39m       \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 18,
+                            "line": 402
+                          },
+                          "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 400 |\u001b[39m     \u001b[36mconst\u001b[39m analysisPromises \u001b[33m=\u001b[39m pages\u001b[33m.\u001b[39mmap(\u001b[36masync\u001b[39m (page\u001b[33m,\u001b[39m index) \u001b[33m=>\u001b[39m {\n \u001b[90m 401 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 402 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 403 |\u001b[39m       \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 404 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 405 |\u001b[39m       \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:402:18\u001b[22m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:411:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:35:48.044Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-firefox/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 18,
+                        "line": 402
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-88802d5837f612996c66",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 387,
+              "column": 7
+            },
+            {
+              "title": "simulation charge - 10 analyses simultanées",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 26,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 33983,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:402:18\n    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:411:5",
+                        "location": {
+                          "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                          "column": 18,
+                          "line": 402
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 400 |\u001b[39m     \u001b[36mconst\u001b[39m analysisPromises \u001b[33m=\u001b[39m pages\u001b[33m.\u001b[39mmap(\u001b[36masync\u001b[39m (page\u001b[33m,\u001b[39m index) \u001b[33m=>\u001b[39m {\n \u001b[90m 401 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 402 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 403 |\u001b[39m       \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 404 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 405 |\u001b[39m       \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                            "column": 18,
+                            "line": 402
+                          },
+                          "message": "TimeoutError: page.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"start-analysis\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 400 |\u001b[39m     \u001b[36mconst\u001b[39m analysisPromises \u001b[33m=\u001b[39m pages\u001b[33m.\u001b[39mmap(\u001b[36masync\u001b[39m (page\u001b[33m,\u001b[39m index) \u001b[33m=>\u001b[39m {\n \u001b[90m 401 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/'\u001b[39m)\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 402 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"start-analysis\"]'\u001b[39m)\n \u001b[90m     |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 403 |\u001b[39m       \u001b[36mawait\u001b[39m uploadTestPhoto(page)\n \u001b[90m 404 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'[data-testid=\"continue-to-questionnaire\"]'\u001b[39m)\n \u001b[90m 405 |\u001b[39m       \u001b[36mawait\u001b[39m completeQuestionnaire(page)\u001b[0m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:402:18\u001b[22m\n\u001b[2m    at /Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts:411:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-11T23:38:28.368Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/mak/dermai-v2/test-results/e2e-artifacts/refonte-ia-first-Tests-de--764fe-e---10-analyses-simultanées-webkit/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/mak/dermai-v2/tests/e2e/refonte-ia-first.spec.ts",
+                        "column": 18,
+                        "line": 402
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4a825320670d9b949b71-0bb572d1d4df4c0a795a",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 387,
+              "column": 7
+            },
+            {
+              "title": "simulation charge - 10 analyses simultanées",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-6c2c45b6039ba2f4fe4b",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 387,
+              "column": 7
+            },
+            {
+              "title": "simulation charge - 10 analyses simultanées",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-03eee6877b3e5ff6093b",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 387,
+              "column": 7
+            },
+            {
+              "title": "simulation charge - 10 analyses simultanées",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Tablet",
+                  "projectName": "Tablet",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4a825320670d9b949b71-2b351a73bdcf882f80fc",
+              "file": "refonte-ia-first.spec.ts",
+              "line": 387,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-09-11T23:33:20.200Z",
+    "duration": 352024.109,
+    "expected": 0,
+    "skipped": 27,
+    "unexpected": 27,
+    "flaky": 0
+  }
+}

@@ -326,7 +326,7 @@ export function MobileEducationalTooltip({
                 {/* Footer */}
                 <button
                   onClick={() => setIsVisible(false)}
-                  className="w-full py-3 px-4 bg-gradient-to-r from-dermai-ai-400 to-dermai-ai-500 text-white font-medium rounded-lg hover:from-dermai-ai-500 hover:to-dermai-ai-600 transition-all"
+                  className="w-full py-3 px-4 bg-gradient-to-br from-dermai-ai-500 via-dermai-ai-400 to-dermai-ai-600 text-white font-medium rounded-lg hover:from-dermai-ai-600 hover:via-dermai-ai-500 hover:to-dermai-ai-700 transition-all"
                 >
                   Compris ✓
                 </button>

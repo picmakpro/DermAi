@@ -1,0 +1,72 @@
+{
+  "timestamp": "2025-09-11T23:25:32.250Z",
+  "config": {
+    "CONCURRENT_ANALYSES": 10,
+    "CACHE_TEST_ITERATIONS": 5,
+    "PERFORMANCE_THRESHOLD_MS": 45000,
+    "CACHE_HIT_THRESHOLD": 0.8,
+    "MEMORY_THRESHOLD_MB": 512
+  },
+  "results": {
+    "singleAnalysis": {
+      "success": true,
+      "duration": 3551.619424,
+      "passesThreshold": true,
+      "cost": 0.2705448600123961
+    },
+    "concurrentAnalyses": {
+      "success": true,
+      "totalDuration": 3743.761201,
+      "averageDuration": 3432.5626392,
+      "successRate": 1,
+      "totalCost": 2.5223218176806745,
+      "allUnderThreshold": true,
+      "averageUnderThreshold": true
+    },
+    "cacheEfficiency": {
+      "success": true,
+      "cacheHitRate": 0.5,
+      "passesThreshold": false,
+      "totalRequests": 10,
+      "cacheHits": 5
+    },
+    "memoryUsage": {
+      "success": true,
+      "initialMemoryMB": 4.497489929199219,
+      "finalMemoryMB": 4.591209411621094,
+      "memoryIncrease": 0.093719482421875,
+      "passesThreshold": true
+    },
+    "costOptimization": {
+      "success": true,
+      "results": [
+        {
+          "scenario": "Budget serré",
+          "budget": 0.2,
+          "actualCost": 0.17343771887342851,
+          "wasOptimized": true,
+          "respectsBudget": true
+        },
+        {
+          "scenario": "Budget normal",
+          "budget": 0.5,
+          "actualCost": 0.3854578070443945,
+          "wasOptimized": false,
+          "respectsBudget": true
+        },
+        {
+          "scenario": "Budget élevé",
+          "budget": 1,
+          "actualCost": 0.31982986751272596,
+          "wasOptimized": false,
+          "respectsBudget": true
+        }
+      ],
+      "allBudgetsRespected": true
+    }
+  },
+  "summary": {
+    "allTestsPass": false,
+    "totalDuration": 110.21903066300001
+  }
+}

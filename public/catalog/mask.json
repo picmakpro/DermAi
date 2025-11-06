@@ -1,0 +1,191 @@
+{
+  "category": "mask",
+  "count": 8,
+  "products": [
+    {
+      "id": "B081FK6L1G",
+      "name": "Aztec Secret Indian Healing Clay",
+      "brand": "Aztec Secret",
+      "category": "mask",
+      "price": 14.95,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71OElrEWgCL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B081FK6L1G/",
+      "activeIngredients": [
+        "Argile Bentonite Calcium 100%"
+      ],
+      "skinTypes": [
+        "grasse",
+        "acnéique",
+        "pores dilatés"
+      ],
+      "benefits": [
+        "detox profonde",
+        "resserre pores",
+        "purifie"
+      ]
+    },
+    {
+      "id": "B007CY2C76",
+      "name": "Freeman Dead Sea Clay Mask",
+      "brand": "Freeman",
+      "category": "mask",
+      "price": 4.95,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71Neu0lx++L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B007CY2C76/",
+      "activeIngredients": [
+        "Argile Mer Morte",
+        "Lavande",
+        "Sel marin"
+      ],
+      "skinTypes": [
+        "stress",
+        "tous types"
+      ],
+      "benefits": [
+        "anti-stress",
+        "équilibre",
+        "apaise"
+      ]
+    },
+    {
+      "id": "B092MWFKWJ",
+      "name": "Freeman Exotic Blends Facial Mask Set",
+      "brand": "Freeman",
+      "category": "mask",
+      "price": 9.06,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/81dOZfDBZcL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B092MWFKWJ/",
+      "activeIngredients": [
+        "Variés selon masque"
+      ],
+      "skinTypes": [
+        "tous types",
+        "découverte"
+      ],
+      "benefits": [
+        "kit 4 masques",
+        "peel-off",
+        "hydratant"
+      ]
+    },
+    {
+      "id": "B01AO7CFUQ",
+      "name": "Freeman Apple Cider Vinegar Clay Mask",
+      "brand": "Freeman",
+      "category": "mask",
+      "price": 9.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71+02KeB+-L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B01AO7CFUQ/",
+      "activeIngredients": [
+        "Vinaigre Cidre",
+        "Argile",
+        "Pierre Ponce"
+      ],
+      "skinTypes": [
+        "grasse",
+        "mixte"
+      ],
+      "benefits": [
+        "tonifie",
+        "purifie",
+        "exfolie"
+      ]
+    },
+    {
+      "id": "B00RDJTKZW",
+      "name": "Freeman Clearing Peel-Off Clay Mask",
+      "brand": "Freeman",
+      "category": "mask",
+      "price": 8.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/91nvYTEAx3L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B00RDJTKZW/",
+      "activeIngredients": [
+        "Thé",
+        "Citron",
+        "Argile"
+      ],
+      "skinTypes": [
+        "acnéique",
+        "terne"
+      ],
+      "benefits": [
+        "éclairant",
+        "peel-off",
+        "antioxydant"
+      ]
+    },
+    {
+      "id": "B00005NFBD",
+      "name": "Freeman Avocado & Oatmeal Clay Masque",
+      "brand": "Freeman",
+      "category": "mask",
+      "price": 8.97,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/917vLEZRL4L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B00005NFBD/",
+      "activeIngredients": [
+        "Avocat",
+        "Avoine",
+        "Argile"
+      ],
+      "skinTypes": [
+        "sèche",
+        "sensible"
+      ],
+      "benefits": [
+        "hydrate",
+        "apaise",
+        "nourrissant"
+      ]
+    },
+    {
+      "id": "B0F6VHMDB5",
+      "name": "Mediheal Hyaluronate Sheet Masks",
+      "brand": "Mediheal",
+      "category": "mask",
+      "price": 7.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71Neu0lx++L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0F6VHMDB5/",
+      "activeIngredients": [
+        "Hyalu Active 3x"
+      ],
+      "skinTypes": [
+        "tous types",
+        "déshydratée"
+      ],
+      "benefits": [
+        "hydratation intense",
+        "format tissu pratique"
+      ]
+    },
+    {
+      "id": "B01NCM25K7",
+      "name": "New York Biology Dead Sea Mud Mask",
+      "brand": "New York Biology",
+      "category": "mask",
+      "price": 15.26,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/817krianHrL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B01NCM25K7/",
+      "activeIngredients": [
+        "Boue Mer Morte pure"
+      ],
+      "skinTypes": [
+        "acné",
+        "points noirs",
+        "grasse"
+      ],
+      "benefits": [
+        "réducteur de pores",
+        "anti-acné",
+        "raffermit"
+      ]
+    }
+  ]
+}

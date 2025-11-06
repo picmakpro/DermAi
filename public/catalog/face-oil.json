@@ -1,0 +1,146 @@
+{
+  "category": "face-oil",
+  "count": 6,
+  "products": [
+    {
+      "id": "B095P98YRH",
+      "name": "Cliganic Organic Marula Oil",
+      "brand": "Cliganic",
+      "category": "face-oil",
+      "price": 9.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/81iw+HHuWIL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B095P98YRH/",
+      "activeIngredients": [
+        "Huile de Marula 100% pure"
+      ],
+      "skinTypes": [
+        "tous types",
+        "sèche"
+      ],
+      "benefits": [
+        "hydratation profonde",
+        "antioxydant",
+        "non comédogène"
+      ]
+    },
+    {
+      "id": "B098B1TW5F",
+      "name": "ANAI RUI Squalane + Vitamin E Rosehip Oil",
+      "brand": "ANAI RUI",
+      "category": "face-oil",
+      "price": 11.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71nT7j8p2vL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B098B1TW5F/",
+      "activeIngredients": [
+        "Squalane",
+        "Vitamine E",
+        "Huile Rosehip"
+      ],
+      "skinTypes": [
+        "mature",
+        "cicatrices"
+      ],
+      "benefits": [
+        "réduit cicatrices",
+        "anti-âge",
+        "hydrate"
+      ]
+    },
+    {
+      "id": "B0D1VWDW9S",
+      "name": "Brookethorne Gua Sha Oil",
+      "brand": "Brookethorne Naturals",
+      "category": "face-oil",
+      "price": 21.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71nT7j8p2vL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0D1VWDW9S/",
+      "activeIngredients": [
+        "Jojoba",
+        "Rosehip",
+        "Argan",
+        "AHA"
+      ],
+      "skinTypes": [
+        "tous types",
+        "massage"
+      ],
+      "benefits": [
+        "massage Gua Sha",
+        "raffermit",
+        "restaure"
+      ]
+    },
+    {
+      "id": "B0D8Y4WDKM",
+      "name": "Katz Beauty Miracle Beauty Oil",
+      "brand": "Katz Beauty",
+      "category": "face-oil",
+      "price": 19.89,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71nT7j8p2vL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0D8Y4WDKM/",
+      "activeIngredients": [
+        "Jojoba",
+        "Argan",
+        "Marula"
+      ],
+      "skinTypes": [
+        "tous types",
+        "anti-âge"
+      ],
+      "benefits": [
+        "éclat anti-âge",
+        "non comédogène"
+      ]
+    },
+    {
+      "id": "B09D1BQS8D",
+      "name": "Blossom Essentials Hydration Oil",
+      "brand": "Blossom Essentials",
+      "category": "face-oil",
+      "price": 34.96,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/81iw+HHuWIL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B09D1BQS8D/",
+      "activeIngredients": [
+        "Marula",
+        "Jojoba",
+        "Rosehip",
+        "Squalane"
+      ],
+      "skinTypes": [
+        "tous types",
+        "premium"
+      ],
+      "benefits": [
+        "hydratation profonde",
+        "anti-âge",
+        "antioxydant"
+      ]
+    },
+    {
+      "id": "B01N0GR5GG",
+      "name": "The Ordinary 100% Plant-Derived Squalane",
+      "brand": "The Ordinary",
+      "category": "face-oil",
+      "price": 9.9,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/41sva12Pq+L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B01N0GR5GG/",
+      "activeIngredients": [
+        "Squalane 100% végétal"
+      ],
+      "skinTypes": [
+        "tous types",
+        "sensible"
+      ],
+      "benefits": [
+        "hydratation légère",
+        "compatible tous produits"
+      ]
+    }
+  ]
+}

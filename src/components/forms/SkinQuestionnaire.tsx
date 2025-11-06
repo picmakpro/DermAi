@@ -3,16 +3,19 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { SKIN_TYPES, GENDER_OPTIONS, BUDGET_RANGES } from '@/constants'
+import { BUDGET_TIERS_UI, ROUTINE_STYLES_UI } from '@/constants/questionnaire'
 import IntroBeforeAfterScreen from './IntroBeforeAfterScreen'
 import SimilarConcernsProofScreen from './SimilarConcernsProofScreen'
 import SavingsProgressScreen from './SavingsProgressScreen'
 import ImprovedSummary from './ImprovedSummary'
+import type { PregnancyData, LocationData, BudgetTier, RoutineStyle } from '@/types/questionnaire'
 
 // Types simplifiés pour le questionnaire
 interface UserProfile {
   age: number
   gender: string
   skinType: string
+  pregnancy?: PregnancyData  // ✅ NOUVEAU V2
 }
 
 interface SkinConcerns {
@@ -22,12 +25,15 @@ interface SkinConcerns {
 interface CurrentRoutine {
   morningProducts: string[]
   eveningProducts: string[]
-  monthlyBudget: string
+  monthlyBudget: string  // Ancien format (garde valeur par défaut pour compatibilité)
   routinePreference?: string
+  budgetTier?: BudgetTier  // ✅ NOUVEAU V2
+  routineStyle?: RoutineStyle  // ✅ NOUVEAU V2
 }
 
 interface QuestionnaireData {
   userProfile: UserProfile
+  location?: LocationData  // ✅ NOUVEAU V2
   skinConcerns: SkinConcerns & {
     otherText: string // Nouveau champ pour "Autre"
   }
@@ -99,7 +105,14 @@ export default function SkinQuestionnaire() {
     userProfile: {
       age: 25,
       gender: 'Ne souhaite pas préciser',
-      skinType: 'Je ne sais pas'
+      skinType: 'Je ne sais pas',
+      pregnancy: undefined  // ✅ NOUVEAU V2
+    },
+    location: {  // ✅ NOUVEAU V2
+      city: '',
+      country: '',
+      lat: undefined,
+      lon: undefined
     },
     skinConcerns: {
       primary: [],
@@ -109,7 +122,9 @@ export default function SkinQuestionnaire() {
       morningProducts: [],
       eveningProducts: [],
       // routinePreference sera choisie à la fin du formulaire
-      monthlyBudget: '50-100€'
+      monthlyBudget: '50-100€',
+      budgetTier: undefined,  // ✅ NOUVEAU V2
+      routineStyle: undefined  // ✅ NOUVEAU V2
     },
     allergies: {
       ingredients: [],
@@ -117,7 +132,7 @@ export default function SkinQuestionnaire() {
     }
   })
 
-  const totalSteps = 8 // 3 nouveaux écrans + 5 étapes questionnaire (0-7)
+  const totalSteps = 9 // ✅ MODIFIÉ: 3 nouveaux écrans + 6 étapes questionnaire (0-8) incluant localisation
 
   useEffect(() => {
     // Récupérer le nombre de photos
@@ -142,12 +157,12 @@ export default function SkinQuestionnaire() {
       if (typeof window !== 'undefined' && (window as any).gtag) {
         (window as any).gtag('event', 'intro_before_after_cta_click');
       }
-    } else if (currentStep === 3) {
+    } else if (currentStep === 4) {
       // similar_concerns_cta_click
       if (typeof window !== 'undefined' && (window as any).gtag) {
         (window as any).gtag('event', 'similar_concerns_cta_click');
       }
-    } else if (currentStep === 6) {
+    } else if (currentStep === 7) {
       // savings_progress_cta_click
       if (typeof window !== 'undefined' && (window as any).gtag) {
         (window as any).gtag('event', 'savings_progress_cta_click');
@@ -191,10 +206,13 @@ export default function SkinQuestionnaire() {
     // Stocker toutes les données pour l'analyse
     const completeData = {
       photos: JSON.parse(photosData),
-      userProfile: data.userProfile,
+      userProfile: data.userProfile, // ✅ Contient déjà pregnancy
       skinConcerns: data.skinConcerns,
-      currentRoutine: data.currentRoutine,
-      allergies: data.allergies
+      currentRoutine: data.currentRoutine, // ✅ Contient déjà budgetTier et routineStyle
+      allergies: data.allergies,
+      // ✅ NOUVELLES DONNÉES V2 au niveau root
+      pregnancy: data.userProfile.pregnancy,
+      location: data.location,
     }
 
     sessionStorage.setItem('dermai_questionnaire', JSON.stringify(completeData))
@@ -237,14 +255,23 @@ export default function SkinQuestionnaire() {
     // Étape 1: Profil (tranche d'âge sélectionnée)
     const step1Valid = selectedAgeRange !== ''
 
-    // Étape 2: Préoccupations (au moins une sélection requise)
-    const step2Valid = data.skinConcerns.primary.length > 0
+    // ✅ Étape 2: Localisation (ville et pays requis)
+    const locationValid = !!(data.location?.city && data.location?.country)
 
-    // Étape 7: Préférence de routine choisie (dernière étape)
-    const step7Valid = !!data.currentRoutine.routinePreference
+    // Étape 3: Préoccupations (au moins une sélection requise)
+    const step3Valid = data.skinConcerns.primary.length > 0
 
-    console.log('Validation formulaire:', { step1Valid, step2Valid, step7Valid, currentStep })
-    return step1Valid && step2Valid && step7Valid
+    // Étape 8: Préférence de routine choisie (dernière étape)
+    const step8Valid = !!data.currentRoutine.routinePreference
+
+    console.log('Validation formulaire:', { 
+      step1Valid, 
+      locationValid, 
+      step3Valid, 
+      step8Valid, 
+      currentStep 
+    })
+    return step1Valid && locationValid && step3Valid && step8Valid
   }
 
   // Validation de l'étape actuelle
@@ -253,18 +280,21 @@ export default function SkinQuestionnaire() {
       case 0: // IntroBeforeAfterScreen
         return true
       case 1: // Profil
+        // Tranche d'âge sélectionnée (grossesse optionnelle)
         return selectedAgeRange !== ''
-      case 2: // Préoccupations
+      case 2: // ✅ NOUVEAU: Localisation
+        return !!(data.location?.city && data.location?.country)
+      case 3: // Préoccupations
         return data.skinConcerns.primary.length > 0
-      case 3: // SimilarConcernsProofScreen
+      case 4: // SimilarConcernsProofScreen
         return true
-      case 4: // Routine actuelle
+      case 5: // Routine actuelle
         return true // Routine optionnelle
-      case 5: // Allergies
+      case 6: // Allergies
         return true // Allergies optionnelles
-      case 6: // SavingsProgressScreen
+      case 7: // SavingsProgressScreen
         return true
-      case 7: // Type de routine + Budget (dernière étape)
+      case 8: // Type de routine + Budget (dernière étape)
         return !!data.currentRoutine.routinePreference // Doit choisir un type de routine
       default:
         return true
@@ -441,9 +471,9 @@ export default function SkinQuestionnaire() {
     useEffect(() => {
       if (currentStep === 0 && typeof window !== 'undefined' && (window as any).gtag) {
         (window as any).gtag('event', 'intro_before_after_view');
-      } else if (currentStep === 3 && typeof window !== 'undefined' && (window as any).gtag) {
+      } else if (currentStep === 4 && typeof window !== 'undefined' && (window as any).gtag) {
         (window as any).gtag('event', 'similar_concerns_view');
-      } else if (currentStep === 6 && typeof window !== 'undefined' && (window as any).gtag) {
+      } else if (currentStep === 7 && typeof window !== 'undefined' && (window as any).gtag) {
         (window as any).gtag('event', 'savings_progress_view');
       }
     }, [currentStep]);
@@ -488,13 +518,22 @@ export default function SkinQuestionnaire() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Genre</label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Genre *</label>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {GENDER_OPTIONS.map(option => (
                     <button
                       key={option}
                       type="button"
-                      onClick={() => updateData('userProfile', { gender: option as any })}
+                      onClick={() => {
+                        updateData('userProfile', { gender: option as any })
+                        // ✅ Reset pregnancy si pas Femme, initialiser à false si Femme
+                        if (option !== 'Femme') {
+                          updateData('userProfile', { pregnancy: undefined })
+                        } else {
+                          // Initialiser à false par défaut pour les femmes
+                          updateData('userProfile', { pregnancy: { isPregnant: false } })
+                        }
+                      }}
                       className={`p-3 text-sm rounded-xl border-2 transition-all hover-lift ${
                         data.userProfile.gender === option
                           ? 'border-dermai-ai-500 bg-dermai-ai-50 text-dermai-ai-700 shadow-glow'
@@ -506,6 +545,30 @@ export default function SkinQuestionnaire() {
                   ))}
                 </div>
               </div>
+
+              {/* ✅ NOUVEAU: Toggle Grossesse conditionnel */}
+              {data.userProfile.gender === 'Femme' && (
+                <div className="p-4 bg-dermai-ai-50 rounded-xl border border-dermai-ai-200">
+                  <label className="flex items-center justify-between cursor-pointer">
+                    <div className="flex-1">
+                      <div className="text-sm font-medium text-dermai-neutral-900">Grossesse en cours (optionnel)</div>
+                      <p className="text-xs text-dermai-neutral-600 mt-1">
+                        Si cochée, nous adapterons votre routine (exclusion rétinol, acides forts, etc.)
+                      </p>
+                    </div>
+                    <input
+                      type="checkbox"
+                      checked={data.userProfile.pregnancy?.isPregnant ?? false}
+                      onChange={(e) => {
+                        updateData('userProfile', { 
+                          pregnancy: { isPregnant: e.target.checked } 
+                        })
+                      }}
+                      className="w-5 h-5 text-dermai-ai-600 rounded focus:ring-dermai-ai-500 ml-3"
+                    />
+                  </label>
+                </div>
+              )}
 
               <div>
                 <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Type de peau (si vous le connaissez)</label>
@@ -530,7 +593,90 @@ export default function SkinQuestionnaire() {
           </div>
         )
 
-      case 2:
+      case 2: // ✅ NOUVEAU STEP: Localisation
+        return (
+          <div className="space-y-6">
+            <div className="text-center">
+              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">🌍 Localisation</h2>
+              <p className="text-dermai-neutral-600 mt-2">
+                Ces infos servent uniquement à adapter la protection solaire à votre climat.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              {/* Ville (requis) */}
+              <div>
+                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-2">Ville *</label>
+                <input
+                  type="text"
+                  placeholder="Ex: Paris"
+                  value={data.location?.city ?? ''}
+                  onChange={(e) => updateData('location', { 
+                    ...data.location!, 
+                    city: e.target.value 
+                  })}
+                  className="w-full px-4 py-3 border-2 border-dermai-nude-200 rounded-xl focus:border-dermai-ai-500 focus:outline-none transition-colors"
+                  required
+                />
+              </div>
+
+              {/* Pays (requis) */}
+              <div>
+                <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-2">Pays *</label>
+                <input
+                  type="text"
+                  placeholder="Ex: France"
+                  value={data.location?.country ?? ''}
+                  onChange={(e) => updateData('location', { 
+                    ...data.location!, 
+                    country: e.target.value 
+                  })}
+                  className="w-full px-4 py-3 border-2 border-dermai-nude-200 rounded-xl focus:border-dermai-ai-500 focus:outline-none transition-colors"
+                  required
+                />
+              </div>
+
+              {/* Latitude/Longitude (optionnels) */}
+              <details className="p-4 bg-dermai-nude-50 rounded-xl border border-dermai-nude-200">
+                <summary className="cursor-pointer text-sm font-medium text-dermai-neutral-700 select-none">
+                  Coordonnées GPS (optionnel, pour précision UV maximale)
+                </summary>
+                <div className="grid grid-cols-2 gap-3 mt-3">
+                  <div>
+                    <label className="block text-xs text-dermai-neutral-600 mb-1">Latitude</label>
+                    <input
+                      type="number"
+                      step="0.000001"
+                      placeholder="48.8566"
+                      value={data.location?.lat ?? ''}
+                      onChange={(e) => updateData('location', { 
+                        ...data.location!, 
+                        lat: e.target.value ? parseFloat(e.target.value) : undefined 
+                      })}
+                      className="w-full px-3 py-2 text-sm border border-dermai-nude-300 rounded-lg focus:border-dermai-ai-500 focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-dermai-neutral-600 mb-1">Longitude</label>
+                    <input
+                      type="number"
+                      step="0.000001"
+                      placeholder="2.3522"
+                      value={data.location?.lon ?? ''}
+                      onChange={(e) => updateData('location', { 
+                        ...data.location!, 
+                        lon: e.target.value ? parseFloat(e.target.value) : undefined 
+                      })}
+                      className="w-full px-3 py-2 text-sm border border-dermai-nude-300 rounded-lg focus:border-dermai-ai-500 focus:outline-none"
+                    />
+                  </div>
+                </div>
+              </details>
+            </div>
+          </div>
+        )
+
+      case 3:
         return (
           <div className="space-y-6">
             <div className="text-center">
@@ -601,7 +747,7 @@ export default function SkinQuestionnaire() {
           </div>
         )
 
-      case 3:
+      case 4:
         return (
           <SimilarConcernsProofScreen 
             onContinue={handleNext}
@@ -610,7 +756,7 @@ export default function SkinQuestionnaire() {
           />
         )
         
-      case 4:
+      case 5:
         return (
           <div className="space-y-6">
             <div className="text-center">
@@ -668,7 +814,7 @@ export default function SkinQuestionnaire() {
           </div>
         )
 
-      case 5:
+      case 6:
         return (
           <div className="space-y-6">
             <div className="text-center">
@@ -714,7 +860,7 @@ export default function SkinQuestionnaire() {
           </div>
         )
 
-      case 6:
+      case 7:
         return (
           <SavingsProgressScreen 
             onContinue={handleNext}
@@ -723,61 +869,67 @@ export default function SkinQuestionnaire() {
           />
         )
         
-      case 7:
+      case 8:
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Finalisation</h2>
-              <p className="text-dermai-neutral-600">Dernières préférences pour personnaliser vos recommandations</p>
+              <h2 className="text-2xl lg:text-3xl font-bold font-display text-dermai-neutral-900 mb-2">Budget et Routine</h2>
+              <p className="text-dermai-neutral-600">Aidez-nous à personnaliser vos recommandations</p>
             </div>
 
+            {/* ✅ NOUVEAU: Budget 3 paliers */}
             <div>
-              <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Type de routine souhaitée *</label>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {[
-                  { label: 'Minimaliste', help: '2-3 étapes essentielles' },
-                  { label: 'Simple', help: '3-4 étapes faciles' },
-                  { label: 'Équilibrée', help: '4-5 étapes optimisées' },
-                  { label: 'Complète', help: '5-7 étapes détaillées' }
-                ].map(opt => (
+              <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Budget mensuel produits skincare *</label>
+              <div className="space-y-3">
+                {BUDGET_TIERS_UI.map(({ value, label }) => (
                   <button
-                    key={opt.label}
-                    onClick={() => updateData('currentRoutine', { routinePreference: opt.label as any })}
-                    className={`p-3 text-left rounded-xl border-2 transition-all hover-lift ${
-                      data.currentRoutine.routinePreference === opt.label
-                        ? 'border-dermai-ai-500 bg-dermai-ai-50 text-dermai-ai-700 shadow-glow'
-                        : 'border-dermai-nude-200 bg-dermai-pure text-dermai-neutral-700 hover:border-dermai-ai-300 hover:bg-dermai-ai-50'
-                    }`}
-                  >
-                    <div className="font-semibold text-dermai-neutral-900">{opt.label}</div>
-                    <div className="text-xs text-dermai-neutral-600 mt-1">{opt.help}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Budget mensuel souhaité</label>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {BUDGET_RANGES.map(range => (
-                  <button
-                    key={range}
+                    key={value}
                     type="button"
-                    onClick={() => updateData('currentRoutine', { monthlyBudget: range as any })}
-                    className={`p-3 text-sm rounded-xl border-2 transition-all hover-lift ${
-                      data.currentRoutine.monthlyBudget === range
+                    onClick={() => updateData('currentRoutine', { 
+                      budgetTier: value,
+                      monthlyBudget: label.split('(')[1]?.replace(')', '') || '50-100€' // Compatibilité
+                    })}
+                    className={`w-full p-4 text-left rounded-xl border-2 transition-all hover-lift ${
+                      data.currentRoutine.budgetTier === value
                         ? 'border-dermai-ai-500 bg-dermai-ai-50 text-dermai-ai-700 shadow-glow'
                         : 'border-dermai-nude-200 bg-dermai-pure text-dermai-neutral-700 hover:border-dermai-ai-300 hover:bg-dermai-ai-50'
                     }`}
                   >
-                    {range}
+                    <div className="font-semibold text-dermai-neutral-900">{label.split('—')[0].trim()}</div>
+                    <div className="text-xs text-dermai-neutral-600 mt-1">{label.split('—')[1]?.trim()}</div>
                   </button>
                 ))}
               </div>
-              <p className="text-xs text-dermai-neutral-500 mt-2">
-                Cela nous aide à recommander des produits adaptés à votre fourchette de prix.
-              </p>
             </div>
+
+            {/* ✅ NOUVEAU: Style de routine */}
+            <div>
+              <label className="block text-sm font-semibold font-display text-dermai-neutral-800 mb-3">Style de routine souhaité *</label>
+              <div className="space-y-3">
+                {ROUTINE_STYLES_UI.map(({ value, label }) => (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => updateData('currentRoutine', { 
+                      routineStyle: value,
+                      routinePreference: value // Compatibilité temporaire
+                    })}
+                    className={`w-full p-4 text-left rounded-xl border-2 transition-all hover-lift ${
+                      data.currentRoutine.routineStyle === value
+                        ? 'border-dermai-ai-500 bg-dermai-ai-50 text-dermai-ai-700 shadow-glow'
+                        : 'border-dermai-nude-200 bg-dermai-pure text-dermai-neutral-700 hover:border-dermai-ai-300 hover:bg-dermai-ai-50'
+                    }`}
+                  >
+                    <div className="font-semibold text-dermai-neutral-900">{label.split('—')[0].trim()}</div>
+                    <div className="text-xs text-dermai-neutral-600 mt-1">{label.split('—')[1]?.trim()}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <p className="text-xs text-dermai-neutral-500 text-center">
+              Ces préférences optimiseront vos recommandations produits et timing
+            </p>
           </div>
         )
 
@@ -787,7 +939,8 @@ export default function SkinQuestionnaire() {
   }
 
   // Rendu direct pour les écrans plein écran
-  if (currentStep === 0 || currentStep === 3 || currentStep === 6) {
+  // ✅ CORRIGÉ: Mise à jour des numéros de steps après ajout localisation
+  if (currentStep === 0 || currentStep === 4 || currentStep === 7) {
     return renderStep()
   }
 

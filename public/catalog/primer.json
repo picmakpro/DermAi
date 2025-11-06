@@ -1,0 +1,115 @@
+{
+  "category": "primer",
+  "count": 5,
+  "products": [
+    {
+      "id": "B09XMYFTB7",
+      "name": "e.l.f. Power Grip Primer",
+      "brand": "e.l.f.",
+      "category": "primer",
+      "price": 10,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71h8bcec4eL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B09XMYFTB7/",
+      "activeIngredients": [
+        "base gel hydratante"
+      ],
+      "skinTypes": [
+        "tous types",
+        "base maquillage"
+      ],
+      "benefits": [
+        "lisse peau",
+        "grip maquillage",
+        "hydrate"
+      ]
+    },
+    {
+      "id": "B0814SFKG9",
+      "name": "Neutrogena Hydro Boost Glow Booster Primer",
+      "brand": "Neutrogena",
+      "category": "primer",
+      "price": 15.29,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71jXZS3BjsL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0814SFKG9/",
+      "activeIngredients": [
+        "Acide Hyaluronique purifié"
+      ],
+      "skinTypes": [
+        "sèche",
+        "terne"
+      ],
+      "benefits": [
+        "hydrate + accroche maquillage",
+        "fini rosée"
+      ]
+    },
+    {
+      "id": "B079RYB74X",
+      "name": "e.l.f. Hydrating Face Primer",
+      "brand": "e.l.f.",
+      "category": "primer",
+      "price": 10,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71h8bcec4eL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B079RYB74X/",
+      "activeIngredients": [
+        "agents hydratants"
+      ],
+      "skinTypes": [
+        "sèche",
+        "maquillage"
+      ],
+      "benefits": [
+        "lisse pores",
+        "hydrate",
+        "base parfaite"
+      ]
+    },
+    {
+      "id": "B0CQKFTGH1",
+      "name": "essence Jelly Grip Hydrating Primer",
+      "brand": "essence",
+      "category": "primer",
+      "price": 5.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71jXZS3BjsL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0CQKFTGH1/",
+      "activeIngredients": [
+        "gel hydratant"
+      ],
+      "skinTypes": [
+        "tous types",
+        "économique"
+      ],
+      "benefits": [
+        "hydrate peau",
+        "accroche maquillage",
+        "longue tenue"
+      ]
+    },
+    {
+      "id": "B0DMQM25H9",
+      "name": "Maybelline Grippy Serum Primer",
+      "brand": "Maybelline",
+      "category": "primer",
+      "price": 9.97,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71jXZS3BjsL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0DMQM25H9/",
+      "activeIngredients": [
+        "Niacinamide 2%"
+      ],
+      "skinTypes": [
+        "pores dilatés",
+        "mixte"
+      ],
+      "benefits": [
+        "tenue 24h",
+        "resserre pores",
+        "contrôle sébum"
+      ]
+    }
+  ]
+}

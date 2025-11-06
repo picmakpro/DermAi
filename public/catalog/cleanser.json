@@ -1,0 +1,239 @@
+{
+  "category": "cleanser",
+  "count": 10,
+  "products": [
+    {
+      "id": "B003JSEGNC",
+      "name": "La Roche-Posay Effaclar Gel Nettoyant Purifiant",
+      "brand": "La Roche-Posay",
+      "category": "cleanser",
+      "price": 18.74,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61Ze3zqMLTL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B003JSEGNC/",
+      "activeIngredients": [
+        "Zinc Pidolate",
+        "agents purifiants"
+      ],
+      "skinTypes": [
+        "grasse",
+        "mixte",
+        "acnéique"
+      ],
+      "benefits": [
+        "élimine excès sébum",
+        "purifie",
+        "respecte barrière cutanée"
+      ]
+    },
+    {
+      "id": "B0036SFTK4",
+      "name": "Bioderma Sensibio H2O Eau Micellaire",
+      "brand": "Bioderma",
+      "category": "cleanser",
+      "price": 10.49,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/51D9UzBWcqL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0036SFTK4/",
+      "activeIngredients": [
+        "micelles biomimétiques"
+      ],
+      "skinTypes": [
+        "sensible",
+        "tous types"
+      ],
+      "benefits": [
+        "démaquille",
+        "nettoie",
+        "apaise sans rinçage"
+      ]
+    },
+    {
+      "id": "B01MSSDEPK",
+      "name": "CeraVe Nettoyant Hydratant",
+      "brand": "CeraVe",
+      "category": "cleanser",
+      "price": 15.49,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61jeXEEvGAL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B01MSSDEPK/",
+      "activeIngredients": [
+        "Céramides",
+        "Acide Hyaluronique",
+        "Glycérine"
+      ],
+      "skinTypes": [
+        "sèche",
+        "normale",
+        "sensible"
+      ],
+      "benefits": [
+        "nettoie tout en hydratant",
+        "restaure barrière cutanée"
+      ]
+    },
+    {
+      "id": "B08CQDF382",
+      "name": "CeraVe Nettoyant Crème à Mousse",
+      "brand": "CeraVe",
+      "category": "cleanser",
+      "price": 15.13,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61ix-m8e4UL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B08CQDF382/",
+      "activeIngredients": [
+        "Acide Hyaluronique",
+        "Céramides"
+      ],
+      "skinTypes": [
+        "sèche",
+        "normale"
+      ],
+      "benefits": [
+        "démaquille",
+        "texture crème à mousse",
+        "hydrate"
+      ]
+    },
+    {
+      "id": "B08CQ9T6KN",
+      "name": "CeraVe Nettoyant à l'Acide Salicylique",
+      "brand": "CeraVe",
+      "category": "cleanser",
+      "price": 14.24,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61pIL2maVKL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B08CQ9T6KN/",
+      "activeIngredients": [
+        "Acide Salicylique",
+        "Niacinamide",
+        "Céramides"
+      ],
+      "skinTypes": [
+        "grasse",
+        "mixte",
+        "acnéique"
+      ],
+      "benefits": [
+        "exfoliation douce BHA",
+        "lisse",
+        "adoucit"
+      ]
+    },
+    {
+      "id": "B01CDPCWYG",
+      "name": "Bioderma Sensibio H2O Lingettes",
+      "brand": "Bioderma",
+      "category": "cleanser",
+      "price": 12.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61RK0VFmkzL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B01CDPCWYG/",
+      "activeIngredients": [
+        "micelles",
+        "agents apaisants"
+      ],
+      "skinTypes": [
+        "sensible",
+        "voyage"
+      ],
+      "benefits": [
+        "démaquillage nomade",
+        "apaise",
+        "pratique"
+      ]
+    },
+    {
+      "id": "B0C37XZYZ1",
+      "name": "Bioderma Sensibio Huile Micellaire",
+      "brand": "Bioderma",
+      "category": "cleanser",
+      "price": 17.24,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/51Dr8YqbVDL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0C37XZYZ1/",
+      "activeIngredients": [
+        "huiles végétales",
+        "micelles"
+      ],
+      "skinTypes": [
+        "sensible",
+        "sèche"
+      ],
+      "benefits": [
+        "démaquillage en profondeur",
+        "texture huile-lait"
+      ]
+    },
+    {
+      "id": "B00B27040G",
+      "name": "Bioderma Sébium H2O Eau Micellaire",
+      "brand": "Bioderma",
+      "category": "cleanser",
+      "price": 20.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61NS8KEjA7L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B00B27040G/",
+      "activeIngredients": [
+        "micelles purifiantes",
+        "complexe sébo-correcteur"
+      ],
+      "skinTypes": [
+        "mixte",
+        "grasse"
+      ],
+      "benefits": [
+        "purifie",
+        "régule sébum",
+        "resserre pores"
+      ]
+    },
+    {
+      "id": "B01ES79K4M",
+      "name": "Bioderma Hydrabio H2O Eau Micellaire",
+      "brand": "Bioderma",
+      "category": "cleanser",
+      "price": 14.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61NS8KEjA7L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B01ES79K4M/",
+      "activeIngredients": [
+        "aquagenium",
+        "micelles hydratantes"
+      ],
+      "skinTypes": [
+        "déshydratée",
+        "sensible"
+      ],
+      "benefits": [
+        "réhydrate",
+        "démaquille",
+        "apaise"
+      ]
+    },
+    {
+      "id": "B0C7J7CWBN",
+      "name": "CeraVe Nettoyant Huile Moussante",
+      "brand": "CeraVe",
+      "category": "cleanser",
+      "price": 18.38,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/71wZCEu0P0L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0C7J7CWBN/",
+      "activeIngredients": [
+        "Squalane",
+        "Acide Hyaluronique",
+        "Céramides"
+      ],
+      "skinTypes": [
+        "très sèche",
+        "sensible"
+      ],
+      "benefits": [
+        "nettoie sans résidu",
+        "hydrate",
+        "texture unique"
+      ]
+    }
+  ]
+}

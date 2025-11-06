@@ -1,0 +1,119 @@
+{
+  "category": "mist",
+  "count": 5,
+  "products": [
+    {
+      "id": "B000O7PH34",
+      "name": "Avène Thermal Spring Water",
+      "brand": "Avène",
+      "category": "mist",
+      "price": 10,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/51D9UzBWcqL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B000O7PH34/",
+      "activeIngredients": [
+        "Eau thermale Avène pure"
+      ],
+      "skinTypes": [
+        "sensible",
+        "irritée",
+        "tous types"
+      ],
+      "benefits": [
+        "apaise",
+        "rafraîchit",
+        "propriétés minérales"
+      ]
+    },
+    {
+      "id": "B001RO8MNK",
+      "name": "Evian Brumisateur Facial",
+      "brand": "Evian",
+      "category": "mist",
+      "price": 19.5,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61NS8KEjA7L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B001RO8MNK/",
+      "activeIngredients": [
+        "Eau minérale naturelle Evian"
+      ],
+      "skinTypes": [
+        "tous types",
+        "hydratation quotidienne"
+      ],
+      "benefits": [
+        "rafraîchit maquillage",
+        "tonifie",
+        "hydrate"
+      ]
+    },
+    {
+      "id": "B002NX0B4W",
+      "name": "La Roche-Posay Eau Thermale Spray",
+      "brand": "La Roche-Posay",
+      "category": "mist",
+      "price": 13.99,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/51D9UzBWcqL._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B002NX0B4W/",
+      "activeIngredients": [
+        "Eau thermale",
+        "Sélénium antioxydant"
+      ],
+      "skinTypes": [
+        "tous types",
+        "antioxydant"
+      ],
+      "benefits": [
+        "hydrate",
+        "apaise",
+        "protège du stress oxydatif"
+      ]
+    },
+    {
+      "id": "B000ULBC5Q",
+      "name": "Evian Facial Spray Mini",
+      "brand": "Evian",
+      "category": "mist",
+      "price": 23.5,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61NS8KEjA7L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B000ULBC5Q/",
+      "activeIngredients": [
+        "Eau minérale Evian"
+      ],
+      "skinTypes": [
+        "voyage",
+        "retouches maquillage"
+      ],
+      "benefits": [
+        "format voyage TSA",
+        "hydratation nomade"
+      ]
+    },
+    {
+      "id": "B0D8BZ5K3S",
+      "name": "Evian Protect Facial Mist",
+      "brand": "Evian",
+      "category": "mist",
+      "price": 22,
+      "currency": "EUR",
+      "imageUrl": "https://m.media-amazon.com/images/I/61NS8KEjA7L._UF1000,1000_QL80_.jpg",
+      "affiliateLink": "https://amazon.fr/dp/B0D8BZ5K3S/",
+      "activeIngredients": [
+        "Eau minérale",
+        "Aloe",
+        "Extraits naturels"
+      ],
+      "skinTypes": [
+        "sensible",
+        "protection"
+      ],
+      "benefits": [
+        "rafraîchit",
+        "protège barrière",
+        "formule enrichie"
+      ]
+    }
+  ]
+}

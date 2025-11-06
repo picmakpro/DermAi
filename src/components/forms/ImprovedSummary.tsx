@@ -12,6 +12,13 @@ interface SummaryProps {
       gender: string
       age: number
       skinType: string
+      pregnancy?: { isPregnant: boolean }  // ✅ V2
+    }
+    location?: {  // ✅ V2
+      city: string
+      country: string
+      lat?: number
+      lon?: number
     }
     skinConcerns: {
       primary: string[]
@@ -22,6 +29,8 @@ interface SummaryProps {
       eveningProducts: string[]
       monthlyBudget: string
       routinePreference?: string
+      budgetTier?: string  // ✅ V2
+      routineStyle?: string  // ✅ V2
     }
     allergies: {
       ingredients: string[]

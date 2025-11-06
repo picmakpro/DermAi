@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="15" failures="0" errors="0" time="2.216">
+  <testsuite name="BudgetOptimizer" errors="0" failures="0" skipped="0" timestamp="2025-10-03T17:13:30" time="0.718" tests="15">
+    <testcase classname="BudgetOptimizer optimize() devrait retourner routine inchangée si budget respecté" name="BudgetOptimizer optimize() devrait retourner routine inchangée si budget respecté" time="0.054">
+    </testcase>
+    <testcase classname="BudgetOptimizer optimize() devrait optimiser routine si budget dépassé" name="BudgetOptimizer optimize() devrait optimiser routine si budget dépassé" time="0.029">
+    </testcase>
+    <testcase classname="BudgetOptimizer optimize() devrait préserver SPF et nettoyant (priorités critiques)" name="BudgetOptimizer optimize() devrait préserver SPF et nettoyant (priorités critiques)" time="0.026">
+    </testcase>
+    <testcase classname="BudgetOptimizer optimize() devrait supprimer produits optionnels (priorité ≤ 3) en premier" name="BudgetOptimizer optimize() devrait supprimer produits optionnels (priorité ≤ 3) en premier" time="0.023">
+    </testcase>
+    <testcase classname="BudgetOptimizer optimize() devrait substituer par alternatives moins chères si disponibles" name="BudgetOptimizer optimize() devrait substituer par alternatives moins chères si disponibles" time="0.016">
+    </testcase>
+    <testcase classname="BudgetOptimizer CARETYPE_BUDGET_PRIORITIES devrait avoir Protection comme priorité 10 (la plus haute)" name="BudgetOptimizer CARETYPE_BUDGET_PRIORITIES devrait avoir Protection comme priorité 10 (la plus haute)" time="0.001">
+    </testcase>
+    <testcase classname="BudgetOptimizer CARETYPE_BUDGET_PRIORITIES devrait avoir Nettoyage comme priorité 9" name="BudgetOptimizer CARETYPE_BUDGET_PRIORITIES devrait avoir Nettoyage comme priorité 9" time="0">
+    </testcase>
+    <testcase classname="BudgetOptimizer CARETYPE_BUDGET_PRIORITIES devrait avoir Traitements actifs avec priorité 8" name="BudgetOptimizer CARETYPE_BUDGET_PRIORITIES devrait avoir Traitements actifs avec priorité 8" time="0.001">
+    </testcase>
+    <testcase classname="BudgetOptimizer CARETYPE_BUDGET_PRIORITIES devrait avoir Tonification et Masque comme priorités basses (3)" name="BudgetOptimizer CARETYPE_BUDGET_PRIORITIES devrait avoir Tonification et Masque comme priorités basses (3)" time="0.001">
+    </testcase>
+    <testcase classname="BudgetOptimizer CARETYPE_BUDGET_PRIORITIES devrait couvrir tous les 10 careTypes" name="BudgetOptimizer CARETYPE_BUDGET_PRIORITIES devrait couvrir tous les 10 careTypes" time="0.002">
+    </testcase>
+    <testcase classname="BudgetOptimizer Efficience Calculation devrait calculer efficiency (score perdu / € économisé)" name="BudgetOptimizer Efficience Calculation devrait calculer efficiency (score perdu / € économisé)" time="0.018">
+    </testcase>
+    <testcase classname="BudgetOptimizer Edge Cases devrait gérer routine vide" name="BudgetOptimizer Edge Cases devrait gérer routine vide" time="0.015">
+    </testcase>
+    <testcase classname="BudgetOptimizer Edge Cases devrait gérer produits sans alternatives" name="BudgetOptimizer Edge Cases devrait gérer produits sans alternatives" time="0.029">
+    </testcase>
+    <testcase classname="BudgetOptimizer Edge Cases devrait gérer budget illimité (undefined)" name="BudgetOptimizer Edge Cases devrait gérer budget illimité (undefined)" time="0">
+    </testcase>
+    <testcase classname="BudgetOptimizer Métriques Succès devrait atteindre score moyen ≥ 90% du score idéal" name="BudgetOptimizer Métriques Succès devrait atteindre score moyen ≥ 90% du score idéal" time="0.033">
+    </testcase>
+  </testsuite>
+</testsuites>

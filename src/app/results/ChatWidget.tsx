@@ -53,7 +53,7 @@ export default function ChatWidget({ analysis, onClose }: { analysis: SkinAnalys
   return (
     <div className="fixed bottom-4 left-4 right-4 md:inset-auto md:bottom-6 md:right-6 md:w-full md:max-w-md bg-white rounded-2xl shadow-2xl border border-dermai-ai-100 overflow-hidden z-50 max-h-[80vh] md:max-h-none">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 md:px-6 py-3 md:py-4 bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-600 text-white">
+      <div className="flex items-center justify-between px-4 md:px-6 py-3 md:py-4 bg-gradient-to-l from-dermai-ai-500 via-dermai-ai-400 to-dermai-ai-600 text-white">
         <div className="flex items-center space-x-2 md:space-x-3">
           <div className="w-6 h-6 md:w-8 md:h-8 bg-white/20 rounded-full flex items-center justify-center">
             <MessageCircle className="w-3 h-3 md:w-4 md:h-4" />
@@ -86,7 +86,7 @@ export default function ChatWidget({ analysis, onClose }: { analysis: SkinAnalys
               )}
               <div className={`px-3 md:px-4 py-2 md:py-3 rounded-xl md:rounded-2xl text-sm leading-relaxed ${
                 m.role === 'user' 
-                  ? 'bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-600 text-white shadow-md' 
+                  ? 'bg-gradient-to-br from-dermai-ai-500 via-dermai-ai-400 to-dermai-ai-600 text-white shadow-md' 
                   : 'bg-white text-gray-800 shadow-sm border border-dermai-ai-100'
               }`}>
                 {m.content}
@@ -128,7 +128,7 @@ export default function ChatWidget({ analysis, onClose }: { analysis: SkinAnalys
           <button 
             onClick={send} 
             disabled={isSending || !input.trim()} 
-            className="bg-gradient-to-r from-dermai-ai-500 to-dermai-ai-600 text-white px-3 md:px-4 py-2 md:py-3 rounded-lg md:rounded-xl text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:from-dermai-ai-600 hover:to-dermai-ai-700 transition-all shadow-sm hover:shadow-md"
+            className="bg-gradient-to-br from-dermai-ai-500 via-dermai-ai-400 to-dermai-ai-600 text-white px-3 md:px-4 py-2 md:py-3 rounded-lg md:rounded-xl text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:from-dermai-ai-600 hover:via-dermai-ai-500 hover:to-dermai-ai-700 transition-all shadow-sm hover:shadow-md"
           >
             <Send className="w-4 h-4" />
           </button>

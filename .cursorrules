@@ -1,76 +1,131 @@
-```
-# Règles de génération de code pour DermAI V2
+# 📚 RÈGLES DOCUMENTATION DERMAI V2
 
-# Général
-- Utiliser TypeScript pour tous les nouveaux fichiers et composants.
-- Respecter les conventions de nommage CamelCase pour les variables et fonctions, PascalCase pour les composants React.
-- Privilégier les fonctions fléchées pour les callbacks et les fonctions anonymes.
-- Utiliser `const` par défaut, `let` si la variable doit être réassignée, `var` jamais.
-- Ajouter des commentaires JSDoc pour les fonctions et composants complexes.
+## 🎯 PRINCIPE FONDAMENTAL
+**spec.md est le point central** qui résume TOUTES les spécificités de l'application et référence TOUTE la documentation.
 
-# Frontend (Next.js, React, Tailwind CSS)
-- Utiliser le `App Router` de Next.js pour la structure des routes.
-- Créer des composants réutilisables dans le dossier `src/components`.
-- Utiliser `Tailwind CSS` pour le stylisme, en privilégiant les classes utilitaires.
-- Définir les couleurs et polices personnalisées dans `tailwind.config.js`.
-- Pour les animations, utiliser `Framer Motion`.
-- Gérer l'état des formulaires avec `React Hook Form` et la validation avec `Zod`.
-- Stocker les données locales (photos, métadonnées) dans `IndexedDB` ou `SessionStorage` selon la persistance requise.
-- Optimiser les images et les chargements de composants pour la performance mobile.
+## 📁 STRUCTURE DOCUMENTAIRE OBLIGATOIRE
 
-# Intelligence Artificielle (GPT-4o Vision)
-- Les appels à l'API GPT-4o Vision doivent être encapsulés dans `src/services/ai.ts`.
-- Utiliser des prompts structurés et détaillés pour le diagnostic et la sélection de produits.
-- Assurer la gestion des erreurs et des timeouts pour les appels API.
-- Les prompts système doivent être versionnés et documentés.
+### **Localisation des documents**
+- **TOUS** les documents de spécifications doivent être dans `/docs/`
+- **AUCUN** document `.md` de spécification à la racine (sauf README.md projet)
+- **INTERDICTION** de créer des documents temporaires de correction/changelog
 
-# Catalogue Affilié
-- Le catalogue de produits doit être géré via `src/data/affiliateCatalog.json`.
-- Les fonctions de sélection de produits doivent être dans `src/services/catalog.ts`.
-- Implémenter une logique de fallback pour les produits non trouvés.
-- Gérer les liens d'affiliation de manière sécurisée.
+### **Documents centraux autorisés dans /docs/**
+1. **spec.md** - Point central, résumé complet application
+2. **diagnostic-technique-complet.md** - 🔬 **RÉFÉRENCE OFFICIELLE** - Fiche technique évolutive
+3. **architecture-fiabilite.md** - Architecture de fiabilité détaillée
+4. **dermatological-logic.md** - Logique métier dermatologique
+5. **planning-dermai-v2.md** - Roadmap et planning
+6. **monetization-strategy.md** - Stratégie business et revenus
+7. **educational-interface.md** - Interface éducative utilisateur
+8. **dermai-diagnostic-improvement-strategy.md** - Amélioration IA
+9. **README.md** - Index navigation documentation
 
-# Structure des routes (Next.js App Router)
-- `/`: Landing page
-- `/upload`: Page d'upload de photos
-- `/questionnaire`: Page du questionnaire intelligent
-- `/analyze`: Page d'analyse (traitement IA)
-- `/results`: Page des résultats du diagnostic
-- `/api/*`: Routes API pour les services backend (ex: `api/analyze`, `api/catalog`)
+## 🔬 **RÈGLE FICHE TECHNIQUE ÉVOLUTIVE - RÉFÉRENCE OFFICIELLE**
 
-# Sécurité et Performance
-- Ne jamais exposer directement les clés API côté client.
-- Compresser les données pour les partages via URL (ex: `LZ-String`).
-- Implémenter des `Error Boundaries` pour une meilleure gestion des erreurs UI.
-- Mettre en place des mécanismes de retry pour les appels réseau.
+### **DOCUMENT DE RÉFÉRENCE OBLIGATOIRE**
+**`docs/diagnostic-technique-refonte-ia-complete.md`** est la RÉFÉRENCE OFFICIELLE du projet DermAI V2.
 
-# Déploiement Vercel (CRITIQUE)
-- TOUJOURS inclure un fichier `vercel.json` avec la configuration Next.js explicite.
-- Le framework doit être défini comme "nextjs" pour éviter les erreurs 404 en production.
-- Configuration requise :
-  ```json
-  {
-    "framework": "nextjs",
-    "buildCommand": "npm run build",
-    "outputDirectory": ".next",
-    "installCommand": "npm install",
-    "devCommand": "npm run dev",
-    "rewrites": [{ "source": "/(.*)", "destination": "/$1" }]
-  }
-  ```
-- Augmenter le buffer Git si images volumineuses : `git config http.postBuffer 524288000`
-- Toujours tester avec `vercel build` localement avant déploiement production.
-- En cas d'erreur 404 persistante : vérifier que le framework n'est pas `null` dans les settings.
+⚠️ **OBSOLÈTE** : `docs/diagnostic-technique-complet.md` (architecture hybride remplacée)
 
-# Fonctionnalités Futures (Roadmap)
-- Prévoir des structures pour l'authentification utilisateur et les dashboards (`/dashboard`).
-- Anticiper l'intégration d'un coach IA conversationnel (`src/services/chat.ts`).
-- Préparer l'architecture pour une marketplace intégrée.
-- Penser à l'export PDF des diagnostics.
+### **OBLIGATIONS DÉVELOPPEMENT**
+- **Consulter SYSTÉMATIQUEMENT** avant tout développement
+- **S'appuyer sur les prompts opérationnels** fournis dans la fiche technique
+- **Respecter la priorisation** et le planning définis (4 sprints de 2 semaines)
+- **Utiliser les schémas de validation** Zod spécifiés
+- **Suivre l'architecture cible** : Logique 4 étapes IA-First pure
 
-# Historique des Corrections Critiques
-- **30/08/2025** : Erreur 404 Vercel résolue par ajout de `vercel.json` avec framework "nextjs"
-- **30/08/2025** : 3 nouveaux écrans plein écran intégrés dans le parcours formulaire
-- **30/08/2025** : Harmonisation couleurs sélection et récapitulatif avec miniatures photos IndexedDB
-```
+### **OBLIGATIONS MISE À JOUR**
+- **Mettre à jour après chaque sprint** : métriques, problèmes résolus
+- **Ajouter nouveaux problèmes** découverts avec solutions
+- **Modifier architecture** → mise à jour documentation
+- **Versioning obligatoire** : 1.0, 1.1, 1.2...
 
+### **INTERDICTIONS STRICTES**
+- **Développer sans consulter** la fiche technique
+- **Modifier l'architecture** sans mise à jour documentation
+- **Ajouter features** non priorisées dans la roadmap
+- **Ignorer les points de vigilance** identifiés
+- **Dévier du focus fiabilité** avant stabilisation complète
+
+### **PROMPTS OPÉRATIONNELS À UTILISER**
+La fiche technique contient des prompts prêts à l'emploi pour chaque étape :
+- **Étape 1** : Diagnostic pur IA (photos uniquement)
+- **Étape 2** : Routine personnalisée IA (diagnostic + profil)
+- **Étape 3** : Sélection produits IA (routine + catalogue)
+- **Étape 4** : Assemblage et validation (algorithmique)
+
+## 🚨 **RÈGLES STRICTES DE CRÉATION**
+
+### **AVANT de créer un nouveau document :**
+1. **OBLIGATOIRE** : Vérifier si l'information peut être intégrée dans un document existant
+2. **SI NOUVEAU DOCUMENT nécessaire** :
+   - Créer d'ABORD la section dans `spec.md` qui référence ce nouveau document
+   - Expliquer dans `spec.md` pourquoi ce document séparé est nécessaire
+   - Ajouter le lien dans `docs/README.md` section appropriée
+
+### **Types de documents INTERDITS :**
+❌ `CORRECTION_*.md` - Intégrer directement dans le code ou doc principal
+❌ `FIX_*.md` - Corriger directement, pas de documentation intermédiaire  
+❌ `CHANGELOG_*.md` - Utiliser git commits et intégrer dans doc principal
+❌ `SUMMARY_*.md` - Résumer dans le document principal concerné
+❌ `IMPLEMENTATION_*.md` - Documenter dans spec.md section technique
+❌ `UPDATE_*.md` - Mettre à jour le document principal directement
+❌ Tout fichier temporaire de correction ou de travail
+
+## 🧬 **RÈGLES SPÉCIFIQUES DERMAI V2**
+
+### **🏥 CONFORMITÉ DERMATOLOGIQUE**
+- ❌ **JAMAIS de diagnostic médical** - Rester dans l'univers cosmétique
+- ❌ **JAMAIS de termes anxiogènes** : "maladie", "pathologie", "traitement médical"
+- ✅ **Toujours utiliser** : "soin", "amélioration", "optimisation", "routine beauté"
+
+### **🎯 PRIORITÉ ABSOLUE : FIABILITÉ**
+- **Focus total** sur stabilité et MVP solide
+- **Pas de dispersion** sur nouvelles features tant que base pas stable
+- **Allocation ressources** concentrée sur développement fiabilité
+- **Métriques cibles** : 95% reproductibilité, <2% erreur, 90% cohérence
+
+### **🔧 ARCHITECTURE TECHNIQUE OBLIGATOIRE**
+- **Déterminisme IA** : Température 0.0 + seed fixe
+- **Validation Zod** : Schémas stricts pour tous inputs/outputs
+- **Retry intelligent** : Backoff exponentiel avec classification erreurs
+- **Fallback maîtrisé** : Mode dégradé transparent basé profil statistique
+- **Monitoring** : Métriques temps réel + alerting intelligent
+
+### **📅 PLANNING STRICT**
+- **Sprint 1** (Sem 1-2) : Stabilisation critique (déterminisme + timeouts + validation)
+- **Sprint 2** (Sem 3-4) : Robustesse (retry + fallback + observabilité)
+- **Sprint 3** (Sem 5-6) : Qualité (cohérence + tests unitaires + monitoring)
+- **Sprint 4** (Sem 7-8) : Validation (tests E2E + optimisations + documentation)
+
+## ⚠️ **SANCTIONS AUTOMATIQUES**
+
+Si ces règles ne sont pas respectées :
+1. **Document mal placé** → Déplacer immédiatement dans /docs/
+2. **Document temporaire** → Intégrer contenu et supprimer
+3. **spec.md non mis à jour** → Ajouter référence obligatoire
+4. **Fiche technique ignorée** → Retour aux spécifications officielles
+5. **Développement sans consultation** → Review obligatoire avec fiche technique
+
+## 🔄 **MAINTENANCE DOCUMENTATION**
+
+### **Révision après chaque sprint :**
+- Vérifier que diagnostic-technique-complet.md est à jour
+- Mettre à jour métriques et statuts problèmes
+- Ajouter nouveaux problèmes découverts
+- Valider cohérence entre tous documents
+
+### **Avant chaque release :**
+- Validation complète de spec.md
+- Vérification cohérence fiche technique
+- Mise à jour exemples et procédures
+- Synchronisation avec état réel du code
+
+Cette organisation documentaire est **NON-NÉGOCIABLE** et doit être respectée par tous les contributeurs pour maintenir la clarté, la fiabilité et la maintenabilité du projet DermAI V2.
+
+---
+
+**STATUT FICHE TECHNIQUE : ACTIVE**  
+**VERSION ACTUELLE : 1.0**  
+**PROCHAINE MISE À JOUR : Fin Sprint 1**
